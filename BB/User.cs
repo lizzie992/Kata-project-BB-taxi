@@ -74,6 +74,15 @@ namespace BB
 			set { _rating = value; }
 		}
 
+		private List<int> _listOfRatings;
+
+		public List<int> ListOfRatings
+        {
+			get { return _listOfRatings; }
+			set { _listOfRatings = value; }
+		}
+
+
 		private int _numberOfWarnings;
 
 		public int NumberOfWarnings
