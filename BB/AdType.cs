@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BB
 {
-    public enum UserTypes
+    public enum AdType
     {
-        regular,
-        admin
+        Driver,
+        Passenger
     }
 }

@@ -6,28 +6,30 @@ using System.Threading.Tasks;
 
 namespace BB
 {
-    public class Ads
+    public class Ad
     {
-		private int _adType;
 
-		public int AdType
+        private List<Ad> _adList;
+
+        public List<Ad> AdvertList
+        {
+            get { return _adList; }
+            set { _adList = value; }
+        }
+
+
+        private AdType _adType;
+
+		public AdType AdType
 		{
 			get { return _adType; }
 			set { _adType = value; }
 		}
 
 
-		private DirectionOfTravel _direction;
+		private Route _route; //no map yet just a simple text :)
 
-		public DirectionOfTravel Direction
-		{
-			get { return _direction; }
-			set { _direction = value; }
-		}
-
-		private string _route; //no map yet just a simple text :)
-
-		public string Route
+		public Route Route
 		{
 			get { return _route; }
 			set { _route = value; }
@@ -57,13 +59,7 @@ namespace BB
 			set { _specificRequests = value; }
 		}
 
-		private string _contact;
-
-		public string Contact
-		{
-			get { return _contact; }
-			set { _contact = value; }
-		}
+		
 
 	}
 }

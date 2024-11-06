@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace BB
 {
-    public enum DirectionOfTravel
+    public enum PreferredLanguage
     {
-        To_Baierbrunn,
-        From_Baierbrunn
+        Chinese, English, Spanish, Arabic, French, German, Russian, Portuguese, Italian, Turkish, Korean, Japanese
     }
 }

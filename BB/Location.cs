@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace BB
 {
-    public enum PreferredLanguages
+    public class Location
     {
-        English,
-        German,
-        Other
+        public string latitude;
+        public string longitude;
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BB
 {
-    public enum Departments
+    public enum Department
     {
         //ok I need a full list for this:D but this is a good start
         Lab,

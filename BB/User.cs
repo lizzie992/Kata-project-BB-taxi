@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace BB
 {
-    public class Users
+    public class User
     {
-		private UserTypes _userType;
+		private UserType _userType;
 
-		public UserTypes UserType
+		public UserType UserType
 		{
 			get { return _userType; }
 			set { _userType = value; }
@@ -25,13 +25,6 @@ namespace BB
 			set { _emailAddress = value; }
 		}
 
-		private string _password;
-
-		public string Password
-		{
-			get { return _password; }
-			set { _password = value; }
-		}
 
 		private string _firstName;
 
@@ -49,25 +42,25 @@ namespace BB
 			set { _lastName = value; }
 		}
 
-		private Departments _department;
+		private Department _department;
 
-		public Departments Department
+		public Department Department
 		{
 			get { return _department; }
 			set { _department = value; }
 		}
 
-		private PreferredLanguages _preferredLanguage;
+		private PreferredLanguage _preferredLanguage;
 
-		public PreferredLanguages PreferredLanguage
+		public PreferredLanguage PreferredLanguage
         {
 			get { return _preferredLanguage; }
 			set { _preferredLanguage = value; }
 		}
 
-		private Locations _location;
+		private Location _location;
 
-		public Locations Location
+		public Location Location
 		{
 			get { return _location; }
 			set { _location = value; }
@@ -89,5 +82,12 @@ namespace BB
 			set { _numberOfWarnings = value; }
 		}
 
-	}
+        private string _contact;
+
+        public string Contact
+        {
+            get { return _contact; }
+            set { _contact = value; }
+        }
+    }
 }
