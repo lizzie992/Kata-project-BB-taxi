@@ -15,6 +15,6 @@ namespace BB
         Supply_chain,
         EHS,
         IT,
-        other
+        Other
     }
 }

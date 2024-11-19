@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace BB
 {
-    public enum UserType
+    public class LogicalCode
     {
-        Regular,
-        Admin
     }
 }

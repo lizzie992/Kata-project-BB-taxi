@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace BB
 {
-    public enum UserType
+    public class Constants
     {
-        Regular,
-        Admin
+        public static string COMPANYNAME = "Company";
+        public static string SELECTREGISTER = "R";
+
     }
 }
