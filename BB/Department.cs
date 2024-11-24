@@ -12,7 +12,7 @@ namespace BB
         Lab,
         Sales,
         Production,
-        Supply_chain,
+        SupplyChain,
         EHS,
         IT,
         Other

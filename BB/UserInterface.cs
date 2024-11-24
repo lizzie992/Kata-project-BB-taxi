@@ -13,8 +13,9 @@ namespace BB
         public static string MainMenuSelection(string answer)
         {
             Console.WriteLine("Welcome to Baxi! Please, select from the following options: ");
-            Console.WriteLine("Press R to Register a new user");
-            Console.WriteLine("Press L for Login");
+            Console.WriteLine($"Press {Constants.SELECT_REGISTER} to Register a new user");
+            Console.WriteLine($"Press {Constants.SELECT_LOGIN} for Login");
+            Console.WriteLine($"Press {Constants.SELECT_EXIT} to close the site");
             answer = Console.ReadLine().ToUpper();
             return answer;
         }
