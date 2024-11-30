@@ -11,6 +11,9 @@ namespace BB
             
             do
             {
+                UserList = LogicalCode.LoadListFromFile();
+
+
                 //main menu part:
                 answer = UserInterface.MainMenuSelection(answer);
                 UserInterface.ClearScreen();
@@ -49,8 +52,6 @@ namespace BB
                     UserList.Add(newUser);
                     LogicalCode.SaveToFile(UserList);
                 }
-
-                UserList = LogicalCode.LoadListFromFile();
 
             } while (answer != Constants.SELECT_EXIT);
         }

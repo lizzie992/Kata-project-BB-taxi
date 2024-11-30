@@ -14,7 +14,7 @@ namespace BB
         public static XmlSerializer serializer = new XmlSerializer(typeof(List<User>));
         public static void SaveToFile(List<User> UserList)
         {
-            using (FileStream file = File.OpenWrite(Constants.FILE_PATH))
+            using (FileStream file = File.Create(Constants.FILE_PATH))
             {
                 serializer.Serialize(file, UserList);
             }
