@@ -71,7 +71,7 @@ namespace BB
 
         public static string getContact()
         {
-            Console.WriteLine("Contact: ");
+            Console.WriteLine("Contact information (phone number / email) // not mandatory: ");
             string contact = Console.ReadLine();
             return contact;
         }
@@ -79,9 +79,11 @@ namespace BB
         
         public static void printList(Type myEnumType)
         {
+            int i = 1;
             foreach (var value in Enum.GetValues(myEnumType))
             {
-                Console.WriteLine(value.ToString());
+                Console.WriteLine($"{i}: {value.ToString()}");
+                i++;
             }
         }
 

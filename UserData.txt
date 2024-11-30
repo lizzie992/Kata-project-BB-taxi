@@ -3,25 +3,12 @@
   <User>
     <UserType>Regular</UserType>
     <EmailAddress>email</EmailAddress>
-    <FirstName>martin</FirstName>
-    <LastName>b</LastName>
-    <Department>Production</Department>
-    <PreferredLanguage>German</PreferredLanguage>
-    <Rating>0</Rating>
-    <NumberOfWarnings>0</NumberOfWarnings>
-    <Contact>no</Contact>
-  </User>
-</ArrayOfUser>
-  </User>
-  <User>
-    <UserType>Regular</UserType>
-    <EmailAddress>email</EmailAddress>
-    <FirstName>giuseppe</FirstName>
-    <LastName>c</LastName>
+    <FirstName>kata</FirstName>
+    <LastName>gulyas</LastName>
     <Department>SupplyChain</Department>
-    <PreferredLanguage>Italian</PreferredLanguage>
+    <PreferredLanguage>English</PreferredLanguage>
     <Rating>0</Rating>
     <NumberOfWarnings>0</NumberOfWarnings>
-    <Contact>no</Contact>
+    <Contact>email</Contact>
   </User>
 </ArrayOfUser>

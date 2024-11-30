@@ -11,7 +11,7 @@ namespace BB
             
             do
             {
-                UserList = LogicalCode.LoadListFromFile();
+                //UserList = LogicalCode.LoadListFromFile();
 
 
                 //main menu part:
