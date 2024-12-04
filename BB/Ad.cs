@@ -27,23 +27,40 @@ namespace BB
 		}
 
 
-		private Route _route; //no map yet just a simple text :)
+		private string _route; //no map yet just a simple text :)
 
-		public Route Route
+		public string Route
 		{
 			get { return _route; }
 			set { _route = value; }
 		}
 
-		private DateTime _pickUpTime;
+		private DateTime _pickUpDateAndTime;
 
-		public DateTime pickUpTime
-		{
-			get { return _pickUpTime; }
-			set { _pickUpTime = value; }
+		public DateTime pickUpDateAndTime
+        {
+			get { return _pickUpDateAndTime; }
+			set { _pickUpDateAndTime = value; }
 		}
 
-		private int _numberOfSeats;
+		private DateOnly _pickUpDate;
+
+        public DateOnly pickUpDate
+		{
+            get { return _pickUpDate; }
+            set { _pickUpDate = value; }
+        }
+
+        private TimeOnly _pickUpTime;
+
+        public TimeOnly pickUpTime
+        {
+            get { return _pickUpTime; }
+            set { _pickUpTime = value; }
+        }
+
+
+        private int _numberOfSeats;
 
 		public int NumberOfSeats
 		{
@@ -59,7 +76,14 @@ namespace BB
 			set { _specificRequests = value; }
 		}
 
-		
+        public override string ToString()
+        {
+            return $"Ad type: {AdType}\r\n" +
+				$"In the following route: {Route}\r\n" +
+				$"On {pickUpDate} at {pickUpTime}\r\n" +
+				$"Available seats: {NumberOfSeats}\r\n" +
+				$"Any speicifc requests: {SpecificRequests}\r\n";
+        }
 
-	}
+    }
 }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BB
 {
@@ -15,6 +16,8 @@ namespace BB
             Console.WriteLine("Welcome to Baxi! Please, select from the following options: ");
             Console.WriteLine($"Press {Constants.SELECT_REGISTER} to Register a new user");
             Console.WriteLine($"Press {Constants.SELECT_LOGIN} for Login");
+            Console.WriteLine($"Press {Constants.SELECT_CREATE_AD} for Ad Creation");
+            Console.WriteLine($"Press {Constants.SELECT_CHECK_ADS} to check out the ads posted");
             Console.WriteLine($"Press {Constants.SELECT_EXIT} to close the site");
             answer = Console.ReadLine().ToUpper();
             return answer;
@@ -77,7 +80,7 @@ namespace BB
         }
 
         
-        public static void printList(Type myEnumType)
+        public static void printListofEnums(Type myEnumType)
         {
             int i = 1;
             foreach (var value in Enum.GetValues(myEnumType))
@@ -86,6 +89,68 @@ namespace BB
                 i++;
             }
         }
+
+        public static int getAdType()
+        {
+            Console.WriteLine("Please select if you are a driver or passenger: ");
+            int adType = Convert.ToInt32(Console.ReadLine());
+            return adType;
+        }
+
+        public static string getRoute()
+        {
+            Console.WriteLine("Please write the stops on your route: ");
+            string route = Console.ReadLine();
+            return route;
+        }
+
+        public static DateOnly getPickUpDate()
+        {
+            Console.WriteLine("Please give me the year: ");
+            int year = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Please give me the month: ");
+            int month = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Please give me the day: ");
+            int day = Convert.ToInt32(Console.ReadLine());
+            DateOnly date = new DateOnly(year, month, day);
+            return date;
+        }
+
+        public static TimeOnly getPickUpTime()
+        {
+            Console.WriteLine("Please give me the hour: ");
+            int hour = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Please give me the minute: ");
+            int minute = Convert.ToInt32(Console.ReadLine());
+            TimeOnly time = new TimeOnly(hour, minute);
+            return time;
+        }
+
+        public static int getNumberOfSeats()
+        {
+            Console.WriteLine("How many seats are you offering / looking for?");
+            int seats = Convert.ToInt32(Console.ReadLine());
+            return seats;
+        }
+
+        public static string getSpecificRequests()
+        {
+            Console.WriteLine("Do you have any specific requests?");
+            string requests = Console.ReadLine();
+            return requests;
+        }
+
+
+        public static void printAdlist(List<Ad> AdList)
+        {
+            foreach (Ad ad in AdList)
+            {
+                    Console.WriteLine(ad);
+            }
+
+        }
+
+        
 
     }
 }

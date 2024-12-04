@@ -5,34 +5,21 @@
     <EmailAddress>email</EmailAddress>
     <FirstName>kata</FirstName>
     <LastName>gulyas</LastName>
-    <Department>SupplyChain</Department>
+    <Department>Production</Department>
     <PreferredLanguage>English</PreferredLanguage>
     <Rating>0</Rating>
-    <ListOfRatings />
     <NumberOfWarnings>0</NumberOfWarnings>
     <Contact>email</Contact>
   </User>
   <User>
     <UserType>Regular</UserType>
-    <EmailAddress>email</EmailAddress>
-    <FirstName>kata</FirstName>
-    <LastName>gulyas</LastName>
-    <Department>SupplyChain</Department>
-    <PreferredLanguage>Italian</PreferredLanguage>
-    <Rating>0</Rating>
-    <ListOfRatings />
-    <NumberOfWarnings>0</NumberOfWarnings>
-    <Contact>email2</Contact>
-  </User>
-  <User>
-    <UserType>Regular</UserType>
-    <EmailAddress>email</EmailAddress>
-    <FirstName />
-    <LastName>giuseppe</LastName>
+    <EmailAddress>giuseppe</EmailAddress>
+    <FirstName>cristaldi</FirstName>
+    <LastName>cristaldi</LastName>
     <Department>SupplyChain</Department>
     <PreferredLanguage>Italian</PreferredLanguage>
     <Rating>0</Rating>
     <NumberOfWarnings>0</NumberOfWarnings>
-    <Contact>email</Contact>
+    <Contact>no</Contact>
   </User>
 </ArrayOfUser>

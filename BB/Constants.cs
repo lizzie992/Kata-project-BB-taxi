@@ -13,7 +13,9 @@ namespace BB
         public static string SELECT_REGISTER = "R";
         public static string SELECT_LOGIN = "L";
         public static string SELECT_EXIT = "X";
-        public static string FILE_PATH = @"..\..\..\..\UserData.txt";
-
+        public static string SELECT_CREATE_AD = "C";
+        public static string SELECT_CHECK_ADS = "D";
+        public static string FILE_PATH_USERDATA = @"..\..\..\..\UserData.txt";
+        public static string FILE_PATH_AD = @"..\..\..\..\Ads.txt";
     }
 }
