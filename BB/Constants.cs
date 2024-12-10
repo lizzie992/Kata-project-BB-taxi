@@ -9,7 +9,6 @@ namespace BB
 {
     public class Constants
     {
-        public static string COMPANYNAME = "Company";
         public static string SELECT_REGISTER = "R";
         public static string SELECT_LOGIN = "L";
         public static string SELECT_EXIT = "X";
@@ -17,5 +16,6 @@ namespace BB
         public static string SELECT_CHECK_ADS = "D";
         public static string FILE_PATH_USERDATA = @"..\..\..\..\UserData.txt";
         public static string FILE_PATH_AD = @"..\..\..\..\Ads.txt";
+        public static string COMPANY_NAME = "company";
     }
 }

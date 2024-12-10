@@ -25,7 +25,16 @@ namespace BB
                     UserInterface.WriteNewUserMessage();
                     User newUser = new User();
 
-                    newUser.EmailAddress = UserInterface.getEmail();
+                    do
+                    {
+                        newUser.EmailAddress = UserInterface.getEmail();
+                        if (!LogicalCode.IsCompanyEmailValid(newUser.EmailAddress.ToLower()))
+                        {
+                            UserInterface.printCompanyEmailNotValid();
+                        }
+                    } while (!LogicalCode.IsCompanyEmailValid(newUser.EmailAddress.ToLower())!);
+
+
                     newUser.FirstName = UserInterface.getFirstName();
                     newUser.LastName = UserInterface.getLastName();
 

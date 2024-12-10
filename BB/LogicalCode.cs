@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace BB
 {
     public class LogicalCode
     {
+
 
 
         public static XmlSerializer serializerAd = new XmlSerializer(typeof(List<Ad>));
@@ -54,6 +56,21 @@ namespace BB
                 return UserList;
             }
         }
+
+
+
+        public static bool IsCompanyEmailValid(string companyEmail)
+        {
+            if (companyEmail.Contains(Constants.COMPANY_NAME))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
     }
 }

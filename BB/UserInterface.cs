@@ -33,7 +33,7 @@ namespace BB
 
         public static void WriteNewUserMessage()
         {
-            Console.WriteLine($"Thank you for signing up for our {Constants.COMPANYNAME} Taxi!");
+            Console.WriteLine($"Thank you for signing up for our {Constants.COMPANY_NAME} Taxi!");
             Console.WriteLine("Please, give us the following data to prepare your profile: ");
         }
 
@@ -170,7 +170,10 @@ namespace BB
 
         }
 
-        
+        public static void printCompanyEmailNotValid()
+        {
+            Console.WriteLine("This email address is not valid! Please give me a valid company email address: ");
+        }
 
     }
 }
