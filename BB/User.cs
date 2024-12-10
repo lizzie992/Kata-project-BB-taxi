@@ -58,9 +58,9 @@ namespace BB
 			set { _preferredLanguage = value; }
 		}
 
-		private Location _location;
+		private string _location;
 
-		public Location Location
+		public string Location
 		{
 			get { return _location; }
 			set { _location = value; }

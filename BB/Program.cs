@@ -46,6 +46,8 @@ namespace BB
                     int numberOfPreferredLanguage = UserInterface.getPreferrefLanguage();
                     newUser.PreferredLanguage = (PreferredLanguage)numberOfPreferredLanguage - 1;
 
+                    newUser.Location = UserInterface.getLocation();
+
                     newUser.Contact = UserInterface.getContact();
 
                     newUser.Rating = 0;
@@ -82,6 +84,76 @@ namespace BB
                 {
                     UserInterface.printAdlist(AdList);
                     UserInterface.ClearScreen();
+                }
+
+
+                if (answer == Constants.SELECT_PROFILE)
+                {
+                    int user = UserList.Count - 1; //I decided to print the data of the last user of the list, as the login is not working yet, so we do not know who is using the system at this test phase yet
+                    User User = UserList[user];
+                    UserInterface.printProfileData(UserList);
+                    string profileAnswer = string.Empty;
+
+                    do
+                    {
+                        profileAnswer = UserInterface.printProfileMenu(profileAnswer);
+                        UserInterface.ClearScreen();
+
+                        if (profileAnswer == Constants.SELECT_CHANGE_PROFILE_DATA)
+                        {
+                            string changeAnswer = string.Empty;
+                            changeAnswer = UserInterface.printProfileChangeOptions(changeAnswer);
+
+                            
+
+                            if (changeAnswer == Constants.CHANGE_FIRST_NAME)
+                            {
+                                User.FirstName = UserInterface.getFirstName();
+                            }
+
+                            if (changeAnswer == Constants.CHANGE_LAST_NAME)
+                            {
+                                User.LastName = UserInterface.getLastName();
+                            }
+
+                            if (changeAnswer == Constants.CHANGE_DEPARTMENT)
+                            {
+                                UserInterface.printListofEnums(typeof(Department));
+                                int numberOfDepartment = UserInterface.getDepartmentName();
+                                User.Department = (Department)numberOfDepartment - 1;
+                            }
+
+                            if (changeAnswer == Constants.CHANGE_PREFERRED_LANGUAGE)
+                            {
+                                UserInterface.printListofEnums(typeof(PreferredLanguage));
+                                int numberOfPreferredLanguage = UserInterface.getPreferrefLanguage();
+                                User.PreferredLanguage = (PreferredLanguage)numberOfPreferredLanguage - 1;
+                            }
+
+                            if (changeAnswer == Constants.CHANGE_LOCATION)
+                            {
+                                User.Location = UserInterface.getLocation();
+                            }
+
+                            if (changeAnswer == Constants.CHANGE_CONTACT)
+                            {
+                                User.Contact = UserInterface.getContact();
+                            }
+
+                            UserList[user] = User;
+                            LogicalCode.SaveUserToFile(UserList, Constants.FILE_PATH_USERDATA);
+
+                            UserInterface.ClearScreen();
+                        }
+
+
+                        if (profileAnswer == Constants.SELECT_CHECK_MY_OWN_ADS)
+                        {
+
+                        }
+
+
+                    } while (profileAnswer != Constants.SELECT_EXIT);
                 }
 
 

@@ -16,6 +16,7 @@ namespace BB
             Console.WriteLine("Welcome to Baxi! Please, select from the following options: ");
             Console.WriteLine($"Press {Constants.SELECT_REGISTER} to Register a new user");
             Console.WriteLine($"Press {Constants.SELECT_LOGIN} for Login");
+            Console.WriteLine($"Press {Constants.SELECT_PROFILE} to open your profile data");
             Console.WriteLine($"Press {Constants.SELECT_CREATE_AD} for Ad Creation");
             Console.WriteLine($"Press {Constants.SELECT_CHECK_ADS} to check out the ads posted");
             Console.WriteLine($"Press {Constants.SELECT_EXIT} to close the site");
@@ -71,6 +72,14 @@ namespace BB
             int preferredLanguage = Convert.ToInt32(Console.ReadLine());
             return preferredLanguage;
         }
+
+        public static string getLocation()
+        {
+            Console.WriteLine("Base location: ");
+            string location = Console.ReadLine();
+            return location;
+        }
+
 
         public static string getContact()
         {
@@ -167,7 +176,6 @@ namespace BB
             {
                     Console.WriteLine(ad);
             }
-
         }
 
         public static void printCompanyEmailNotValid()
@@ -175,5 +183,40 @@ namespace BB
             Console.WriteLine("This email address is not valid! Please give me a valid company email address: ");
         }
 
+        public static void printProfileData(List<User> UserList)
+        {
+            int user = UserList.Count-1; //I decided to print the data of the last user of the list, as the login is not working yet, so we do not know who is using the system at this test phase yet
+            User User = UserList[user];
+            Console.WriteLine($"Email address: {User.EmailAddress}");
+            Console.WriteLine($"Name: {User.FirstName} {User.LastName}");
+            Console.WriteLine($"Department: {User.Department}");
+            Console.WriteLine($"Preferred Language: {User.PreferredLanguage}");
+            Console.WriteLine($"Location: {User.Location}");
+            Console.WriteLine($"Contact: {User.Contact}");
+            Console.WriteLine($"Rating: {User.Rating}");
+            Console.WriteLine($"Number of warnings: {User.NumberOfWarnings}");
+        }
+
+        public static string printProfileMenu(string answer)
+        {
+            Console.WriteLine($"\r\nPlease press {Constants.SELECT_CHANGE_PROFILE_DATA} to change your personal data");
+            Console.WriteLine($"Please press {Constants.SELECT_CHECK_MY_OWN_ADS} to see your ads");
+            Console.WriteLine($"Press {Constants.SELECT_EXIT} to close the site");
+            answer = Console.ReadLine().ToUpper();
+            return answer;
+        }
+
+        public static string printProfileChangeOptions(string answer)
+        {
+            
+            Console.WriteLine($"Please press {Constants.CHANGE_FIRST_NAME} to change your first name\r\n" +
+                $"Please press {Constants.CHANGE_LAST_NAME} to change your last name\r\n" +
+                $"Please press {Constants.CHANGE_DEPARTMENT} to change your department\r\n" +
+                $"Please press {Constants.CHANGE_PREFERRED_LANGUAGE} to change your preferred language\r\n" +
+                $"Please press {Constants.CHANGE_LOCATION} to change your base location\r\n" +
+                $"Please press {Constants.CHANGE_CONTACT} to change your public contact info!\r\n");
+            answer = Console.ReadLine().ToUpper();
+            return answer;
+        }
     }
 }

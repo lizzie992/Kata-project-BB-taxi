@@ -8,18 +8,20 @@
     <Department>Production</Department>
     <PreferredLanguage>English</PreferredLanguage>
     <Rating>0</Rating>
+    <ListOfRatings />
     <NumberOfWarnings>0</NumberOfWarnings>
     <Contact>email</Contact>
   </User>
   <User>
     <UserType>Regular</UserType>
     <EmailAddress>giuseppe</EmailAddress>
-    <FirstName>cristaldi</FirstName>
+    <FirstName>Giuseppe</FirstName>
     <LastName>cristaldi</LastName>
     <Department>SupplyChain</Department>
     <PreferredLanguage>Italian</PreferredLanguage>
     <Rating>0</Rating>
+    <ListOfRatings />
     <NumberOfWarnings>0</NumberOfWarnings>
-    <Contact>no</Contact>
+    <Contact>absolutely no pineapple on pizza</Contact>
   </User>
 </ArrayOfUser>
