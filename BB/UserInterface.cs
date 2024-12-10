@@ -172,9 +172,11 @@ namespace BB
 
         public static void printAdlist(List<Ad> AdList)
         {
+            int number = 1;
             foreach (Ad ad in AdList)
             {
-                    Console.WriteLine(ad);
+                Console.WriteLine($"{number}.: \r\n{ad}");
+                number++;
             }
         }
 
@@ -218,5 +220,35 @@ namespace BB
             answer = Console.ReadLine().ToUpper();
             return answer;
         }
+
+        public static string printCheckAdsMenu(string answer)
+        {
+            Console.WriteLine($"If you want to modify any of them, please, press {Constants.CHANGE_AD}");
+            Console.WriteLine($"Press {Constants.SELECT_EXIT} to close the site");
+            answer = Console.ReadLine().ToUpper();
+            return answer;
+        }
+
+        public static int printChooseAdMessage(int number)
+        {
+            Console.WriteLine("Please select which ad you want to modify. Give me the number of the ad: ");
+            number = Convert.ToInt32(Console.ReadLine());
+            return number;
+        }
+
+
+        public static string printAdChangeOptions(Ad ad, string answer)
+        {
+            Console.WriteLine(ad);
+            Console.WriteLine($"Press {Constants.CHANGE_AD_TYPE} to change the ad type!");
+            Console.WriteLine($"Press {Constants.CHANGE_ROUTE} to change the route!");
+            Console.WriteLine($"Press {Constants.CHANGE_DATE_TIME} to change the date and time!");
+            Console.WriteLine($"Press {Constants.CHANGE_NUMBER_OF_SEATS} to change the number of seats!");
+            Console.WriteLine($"Press {Constants.CHANGE_SPECIFIC_REQUESTS} to change the specific requests!");
+            Console.WriteLine($"Press {Constants.DELETE_AD} to delete the ad!");
+            answer = Console.ReadLine().ToUpper();
+            return answer;
+        }
+
     }
 }

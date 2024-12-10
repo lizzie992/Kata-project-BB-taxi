@@ -91,11 +91,11 @@ namespace BB
                 {
                     int user = UserList.Count - 1; //I decided to print the data of the last user of the list, as the login is not working yet, so we do not know who is using the system at this test phase yet
                     User User = UserList[user];
-                    UserInterface.printProfileData(UserList);
                     string profileAnswer = string.Empty;
 
                     do
                     {
+                        UserInterface.printProfileData(UserList);
                         profileAnswer = UserInterface.printProfileMenu(profileAnswer);
                         UserInterface.ClearScreen();
 
@@ -103,8 +103,6 @@ namespace BB
                         {
                             string changeAnswer = string.Empty;
                             changeAnswer = UserInterface.printProfileChangeOptions(changeAnswer);
-
-                            
 
                             if (changeAnswer == Constants.CHANGE_FIRST_NAME)
                             {
@@ -149,9 +147,65 @@ namespace BB
 
                         if (profileAnswer == Constants.SELECT_CHECK_MY_OWN_ADS)
                         {
+                            UserInterface.printAdlist(AdList); //at the moment all ads as we are not logged in
+                            string changeAnswer = string.Empty;
+                            changeAnswer = UserInterface.printCheckAdsMenu(changeAnswer);
+
+                            if (changeAnswer == Constants.CHANGE_AD)
+                            {
+
+                                int number = 0;
+                                number = UserInterface.printChooseAdMessage(number);
+
+                                Ad ad = new Ad();
+                                ad = AdList[number - 1];
+
+                                UserInterface.ClearScreen();
+
+                                answer = UserInterface.printAdChangeOptions(ad, answer);
+
+                                if (answer == Constants.CHANGE_AD_TYPE)
+                                {
+                                    UserInterface.printListofEnums(typeof(AdType));
+                                    int adType = UserInterface.getAdType();
+                                    ad.AdType = (AdType)adType - 1;
+                                }
+
+                                if (answer == Constants.CHANGE_ROUTE)
+                                {
+                                    ad.Route = UserInterface.getRoute();
+                                }
+
+                                if (answer == Constants.CHANGE_DATE_TIME)
+                                {
+                                    ad.pickUpDateAndTime = UserInterface.getPickUpDateAndTime();
+                                }
+
+                                if (answer == Constants.CHANGE_NUMBER_OF_SEATS)
+                                {
+                                    ad.NumberOfSeats = UserInterface.getNumberOfSeats();
+                                }
+
+                                if (answer == Constants.CHANGE_SPECIFIC_REQUESTS)
+                                {
+                                    ad.SpecificRequests = UserInterface.getSpecificRequests();
+                                }
+
+                                AdList[number - 1] = ad;
+                                LogicalCode.SaveAdToFile(AdList, Constants.FILE_PATH_AD);
+
+
+                                if (answer == Constants.DELETE_AD)
+                                {
+                                    AdList.Remove(ad);
+                                    LogicalCode.SaveAdToFile(AdList, Constants.FILE_PATH_AD);
+                                }
+
+                            }
+                            UserInterface.ClearScreen();
+
 
                         }
-
 
                     } while (profileAnswer != Constants.SELECT_EXIT);
                 }
