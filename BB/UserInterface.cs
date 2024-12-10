@@ -126,6 +126,26 @@ namespace BB
             return time;
         }
 
+
+        public static DateTime getPickUpDateAndTime()
+        {
+            Console.WriteLine("Please give me the year: ");
+            int year = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Please give me the month: ");
+            int month = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Please give me the day: ");
+            int day = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Please give me the hour: ");
+            int hour = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Please give me the minute: ");
+            int minute = Convert.ToInt32(Console.ReadLine());
+            int second = 0;
+            DateTime DateAndTime = new DateTime(year, month, day, hour, minute, second);
+            return DateAndTime;
+        }
+
+
+
         public static int getNumberOfSeats()
         {
             Console.WriteLine("How many seats are you offering / looking for?");

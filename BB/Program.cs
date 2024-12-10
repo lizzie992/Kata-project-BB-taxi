@@ -57,8 +57,7 @@ namespace BB
 
                     Ad.Route = UserInterface.getRoute();
 
-                    Ad.pickUpDate = UserInterface.getPickUpDate();
-                    Ad.pickUpTime = UserInterface.getPickUpTime();
+                    Ad.pickUpDateAndTime = UserInterface.getPickUpDateAndTime();
 
                     Ad.NumberOfSeats = UserInterface.getNumberOfSeats();
 

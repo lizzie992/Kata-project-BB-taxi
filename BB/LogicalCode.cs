@@ -11,13 +11,13 @@ namespace BB
     {
 
 
-        public static XmlSerializer serializer = new XmlSerializer(typeof(List<Ad>));
+        public static XmlSerializer serializerAd = new XmlSerializer(typeof(List<Ad>));
 
         public static void SaveAdToFile(List<Ad> Adlist, string path)
         {
             using (FileStream file = File.Create(path))
             {
-                serializer.Serialize(file, Adlist);
+                serializerAd.Serialize(file, Adlist);
             }
         }
 
@@ -26,7 +26,7 @@ namespace BB
             List<Ad> UserList = new List<Ad>();
             using (FileStream file = File.OpenRead(path))
             {
-                UserList = serializer.Deserialize(file) as List<Ad>;
+                UserList = serializerAd.Deserialize(file) as List<Ad>;
                 return UserList;
             }
         }
@@ -35,13 +35,13 @@ namespace BB
 
 
 
-        public static XmlSerializer serializer2 = new XmlSerializer(typeof(List<User>));
+        public static XmlSerializer serializerUser = new XmlSerializer(typeof(List<User>));
 
         public static void SaveUserToFile(List<User> UserList, string path)
         {
             using (FileStream file = File.Create(path))
             {
-                serializer2.Serialize(file, UserList);
+                serializerUser.Serialize(file, UserList);
             }
         }
 
@@ -50,7 +50,7 @@ namespace BB
             List<User> UserList = new List<User>();
             using (FileStream file = File.OpenRead(path))
             {
-                UserList = serializer2.Deserialize(file) as List<User>;
+                UserList = serializerUser.Deserialize(file) as List<User>;
                 return UserList;
             }
         }

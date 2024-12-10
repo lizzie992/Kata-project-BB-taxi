@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfAD xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Ad>
+    <AdvertList />
     <AdType>Passenger</AdType>
     <Route>harras, solln</Route>
     <pickUpDateAndTime>0001-01-01T00:00:00</pickUpDateAndTime>
@@ -10,6 +11,7 @@
     <SpecificRequests>no</SpecificRequests>
   </Ad>
   <Ad>
+    <AdvertList />
     <AdType>Driver</AdType>
     <Route>harras, mittersendling, pullach</Route>
     <pickUpDateAndTime>0001-01-01T00:00:00</pickUpDateAndTime>
@@ -17,5 +19,14 @@
     <pickUpTime />
     <NumberOfSeats>3</NumberOfSeats>
     <SpecificRequests>no hawaii pizza</SpecificRequests>
+  </Ad>
+  <Ad>
+    <AdType>Passenger</AdType>
+    <Route>harras solln</Route>
+    <pickUpDateAndTime>2024-12-10T09:00:00</pickUpDateAndTime>
+    <pickUpDate />
+    <pickUpTime />
+    <NumberOfSeats>1</NumberOfSeats>
+    <SpecificRequests>no</SpecificRequests>
   </Ad>
 </ArrayOfAD>
