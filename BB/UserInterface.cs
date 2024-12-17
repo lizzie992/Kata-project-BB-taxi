@@ -33,7 +33,7 @@
         public static string GetEmail()
         {
             Console.WriteLine("Email address (please, do not forget to use your company email address!): ");
-            string emailAddress = Console.ReadLine();
+            string emailAddress = Console.ReadLine().ToLower();
             return emailAddress;
         }
 
