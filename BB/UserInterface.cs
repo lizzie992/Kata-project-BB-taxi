@@ -3,7 +3,7 @@
     public class UserInterface
     {
 
-        public static string MainMenuSelection(string answer)
+        public static string MainMenuSelection()
         {
             Console.WriteLine("Welcome to Baxi! Please, select from the following options: ");
             Console.WriteLine($"Press {Constants.SELECT_REGISTER} to Register a new user");
@@ -12,7 +12,7 @@
             Console.WriteLine($"Press {Constants.SELECT_CREATE_AD} for Ad Creation");
             Console.WriteLine($"Press {Constants.SELECT_CHECK_ADS} to check out the ads posted");
             Console.WriteLine($"Press {Constants.SELECT_EXIT} to close the site");
-            answer = Console.ReadLine().ToUpper();
+            string answer = Console.ReadLine().ToUpper();
             return answer;
         }
 

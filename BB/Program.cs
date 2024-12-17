@@ -16,7 +16,7 @@ namespace BB
                 AdList = LogicalCode.LoadAdListFromFile(Constants.FILE_PATH_AD);
 
                 //main menu part:
-                answer = UserInterface.MainMenuSelection(answer);
+                answer = UserInterface.MainMenuSelection();
                 UserInterface.ClearScreen();
 
 
