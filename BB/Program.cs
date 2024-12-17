@@ -12,8 +12,8 @@ namespace BB
 
             do
             {
-                UserList = LogicalCode.LoadUserListFromFile(Constants.FILE_PATH_USERDATA);
-                AdList = LogicalCode.LoadAdListFromFile(Constants.FILE_PATH_AD);
+                UserList = LogicalCode.LoadUserListFromFile();
+                AdList = LogicalCode.LoadAdListFromFile();
 
                 //main menu part:
                 answer = UserInterface.MainMenuSelection();
@@ -56,7 +56,7 @@ namespace BB
                     newUser.NumberOfWarnings = 0; //these are just basic setup for all users at the beginning:)
 
                     UserList.Add(newUser);
-                    LogicalCode.SaveUserToFile(UserList, Constants.FILE_PATH_USERDATA);
+                    LogicalCode.SaveUserToFile(UserList);
                     UserInterface.ClearScreen();
                 }
 
@@ -77,7 +77,7 @@ namespace BB
                     Ad.SpecificRequests = UserInterface.GetSpecificRequests();
 
                     AdList.Add(Ad);
-                    LogicalCode.SaveAdToFile(AdList, Constants.FILE_PATH_AD);
+                    LogicalCode.SaveAdToFile(AdList);
                     UserInterface.ClearScreen();
 
                 }
@@ -141,7 +141,7 @@ namespace BB
                             }
 
                             UserList[user] = User;
-                            LogicalCode.SaveUserToFile(UserList, Constants.FILE_PATH_USERDATA);
+                            LogicalCode.SaveUserToFile(UserList);
 
                             UserInterface.ClearScreen();
                         }
@@ -194,13 +194,13 @@ namespace BB
                                 }
 
                                 AdList[number - 1] = ad;
-                                LogicalCode.SaveAdToFile(AdList, Constants.FILE_PATH_AD);
+                                LogicalCode.SaveAdToFile(AdList);
 
 
                                 if (answer == Constants.DELETE_AD.ToString())
                                 {
                                     AdList.Remove(ad);
-                                    LogicalCode.SaveAdToFile(AdList, Constants.FILE_PATH_AD);
+                                    LogicalCode.SaveAdToFile(AdList);
                                 }
 
                             }

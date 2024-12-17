@@ -15,18 +15,18 @@ namespace BB
 
         public static XmlSerializer serializerAd = new XmlSerializer(typeof(List<Ad>));
 
-        public static void SaveAdToFile(List<Ad> Adlist, string path)
+        public static void SaveAdToFile(List<Ad> Adlist)
         {
-            using (FileStream file = File.Create(path))
+            using (FileStream file = File.Create(Constants.FILE_PATH_AD))
             {
                 serializerAd.Serialize(file, Adlist);
             }
         }
 
-        public static List<Ad> LoadAdListFromFile(string path)
+        public static List<Ad> LoadAdListFromFile()
         {
             List<Ad> UserList = new List<Ad>();
-            using (FileStream file = File.OpenRead(path))
+            using (FileStream file = File.OpenRead(Constants.FILE_PATH_AD))
             {
                 UserList = serializerAd.Deserialize(file) as List<Ad>;
                 return UserList;
@@ -39,18 +39,18 @@ namespace BB
 
         public static XmlSerializer serializerUser = new XmlSerializer(typeof(List<User>));
 
-        public static void SaveUserToFile(List<User> UserList, string path)
+        public static void SaveUserToFile(List<User> UserList)
         {
-            using (FileStream file = File.Create(path))
+            using (FileStream file = File.Create(Constants.FILE_PATH_USERDATA))
             {
                 serializerUser.Serialize(file, UserList);
             }
         }
 
-        public static List<User> LoadUserListFromFile(string path)
+        public static List<User> LoadUserListFromFile()
         {
             List<User> UserList = new List<User>();
-            using (FileStream file = File.OpenRead(path))
+            using (FileStream file = File.OpenRead(Constants.FILE_PATH_USERDATA))
             {
                 UserList = serializerUser.Deserialize(file) as List<User>;
                 return UserList;
