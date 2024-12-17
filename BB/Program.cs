@@ -27,28 +27,28 @@ namespace BB
 
                     do
                     {
-                        newUser.EmailAddress = UserInterface.getEmail();
+                        newUser.EmailAddress = UserInterface.GetEmail();
                         if (!LogicalCode.IsCompanyEmailValid(newUser.EmailAddress.ToLower()))
                         {
-                            UserInterface.printCompanyEmailNotValid();
+                            UserInterface.PrintCompanyEmailNotValid();
                         }
                     } while (!LogicalCode.IsCompanyEmailValid(newUser.EmailAddress.ToLower())!);
 
 
-                    newUser.FirstName = UserInterface.getFirstName();
-                    newUser.LastName = UserInterface.getLastName();
+                    newUser.FirstName = UserInterface.GetFirstName();
+                    newUser.LastName = UserInterface.GetLastName();
 
-                    UserInterface.printListofEnums(typeof(Department));
-                    int numberOfDepartment = UserInterface.getDepartmentName();
+                    UserInterface.printListOfEnums(typeof(Department));
+                    int numberOfDepartment = UserInterface.GetDepartmentName();
                     newUser.Department = (Department)numberOfDepartment - 1;
 
-                    UserInterface.printListofEnums(typeof(PreferredLanguage));
-                    int numberOfPreferredLanguage = UserInterface.getPreferrefLanguage();
+                    UserInterface.printListOfEnums(typeof(PreferredLanguage));
+                    int numberOfPreferredLanguage = UserInterface.GetPreferrefLanguage();
                     newUser.PreferredLanguage = (PreferredLanguage)numberOfPreferredLanguage - 1;
 
-                    newUser.Location = UserInterface.getLocation();
+                    newUser.Location = UserInterface.GetLocation();
 
-                    newUser.Contact = UserInterface.getContact();
+                    newUser.Contact = UserInterface.GetContact();
 
                     newUser.Rating = 0;
                     newUser.NumberOfWarnings = 0; //these are just basic setup for all users at the beginning:)
@@ -62,17 +62,17 @@ namespace BB
                 {
                     Ad Ad = new Ad();
 
-                    UserInterface.printListofEnums(typeof(AdType));
-                    int adType = UserInterface.getAdType();
+                    UserInterface.printListOfEnums(typeof(AdType));
+                    int adType = UserInterface.GetAdType();
                     Ad.AdType = (AdType)adType - 1;
 
-                    Ad.Route = UserInterface.getRoute();
+                    Ad.Route = UserInterface.GetRoute();
 
-                    Ad.pickUpDateAndTime = UserInterface.getPickUpDateAndTime();
+                    Ad.pickUpDateAndTime = UserInterface.GetPickUpDateAndTime();
 
-                    Ad.NumberOfSeats = UserInterface.getNumberOfSeats();
+                    Ad.NumberOfSeats = UserInterface.GetNumberOfSeats();
 
-                    Ad.SpecificRequests = UserInterface.getSpecificRequests();
+                    Ad.SpecificRequests = UserInterface.GetSpecificRequests();
 
                     AdList.Add(Ad);
                     LogicalCode.SaveAdToFile(AdList, Constants.FILE_PATH_AD);
@@ -82,7 +82,7 @@ namespace BB
 
                 if (answer == Constants.SELECT_CHECK_ADS.ToString())
                 {
-                    UserInterface.printAdlist(AdList);
+                    UserInterface.PrintAdList(AdList);
                     UserInterface.ClearScreen();
                 }
 
@@ -95,47 +95,47 @@ namespace BB
 
                     do
                     {
-                        UserInterface.printProfileData(UserList);
-                        profileAnswer = UserInterface.printProfileMenu(profileAnswer);
+                        UserInterface.PrintProfileData(UserList);
+                        profileAnswer = UserInterface.PrintProfileMenu(profileAnswer);
                         UserInterface.ClearScreen();
 
                         if (profileAnswer == Constants.SELECT_CHANGE_PROFILE_DATA)
                         {
                             string changeAnswer = string.Empty;
-                            changeAnswer = UserInterface.printProfileChangeOptions(changeAnswer);
+                            changeAnswer = UserInterface.PrintProfileChangeOptions(changeAnswer);
 
                             if (changeAnswer == Constants.CHANGE_FIRST_NAME)
                             {
-                                User.FirstName = UserInterface.getFirstName();
+                                User.FirstName = UserInterface.GetFirstName();
                             }
 
                             if (changeAnswer == Constants.CHANGE_LAST_NAME)
                             {
-                                User.LastName = UserInterface.getLastName();
+                                User.LastName = UserInterface.GetLastName();
                             }
 
                             if (changeAnswer == Constants.CHANGE_DEPARTMENT.ToString())
                             {
-                                UserInterface.printListofEnums(typeof(Department));
-                                int numberOfDepartment = UserInterface.getDepartmentName();
+                                UserInterface.printListOfEnums(typeof(Department));
+                                int numberOfDepartment = UserInterface.GetDepartmentName();
                                 User.Department = (Department)numberOfDepartment - 1;
                             }
 
                             if (changeAnswer == Constants.CHANGE_PREFERRED_LANGUAGE)
                             {
-                                UserInterface.printListofEnums(typeof(PreferredLanguage));
-                                int numberOfPreferredLanguage = UserInterface.getPreferrefLanguage();
+                                UserInterface.printListOfEnums(typeof(PreferredLanguage));
+                                int numberOfPreferredLanguage = UserInterface.GetPreferrefLanguage();
                                 User.PreferredLanguage = (PreferredLanguage)numberOfPreferredLanguage - 1;
                             }
 
                             if (changeAnswer == Constants.CHANGE_LOCATION.ToString())
                             {
-                                User.Location = UserInterface.getLocation();
+                                User.Location = UserInterface.GetLocation();
                             }
 
                             if (changeAnswer == Constants.CHANGE_CONTACT.ToString())
                             {
-                                User.Contact = UserInterface.getContact();
+                                User.Contact = UserInterface.GetContact();
                             }
 
                             UserList[user] = User;
@@ -147,48 +147,48 @@ namespace BB
 
                         if (profileAnswer == Constants.SELECT_CHECK_MY_OWN_ADS)
                         {
-                            UserInterface.printAdlist(AdList); //at the moment all ads as we are not logged in
+                            UserInterface.PrintAdList(AdList); //at the moment all ads as we are not logged in
                             string changeAnswer = string.Empty;
-                            changeAnswer = UserInterface.printCheckAdsMenu(changeAnswer);
+                            changeAnswer = UserInterface.PrintCheckAdsMenu(changeAnswer);
 
                             if (changeAnswer == Constants.CHANGE_AD.ToString())
                             {
 
                                 int number = 0;
-                                number = UserInterface.printChooseAdMessage(number);
+                                number = UserInterface.PrintChooseAdMessage(number);
 
                                 Ad ad = new Ad();
                                 ad = AdList[number - 1];
 
                                 UserInterface.ClearScreen();
 
-                                answer = UserInterface.printAdChangeOptions(ad, answer);
+                                answer = UserInterface.PrintAdChangeOptions(ad, answer);
 
                                 if (answer == Constants.CHANGE_AD_TYPE)
                                 {
-                                    UserInterface.printListofEnums(typeof(AdType));
-                                    int adType = UserInterface.getAdType();
+                                    UserInterface.printListOfEnums(typeof(AdType));
+                                    int adType = UserInterface.GetAdType();
                                     ad.AdType = (AdType)adType - 1;
                                 }
 
                                 if (answer == Constants.CHANGE_ROUTE)
                                 {
-                                    ad.Route = UserInterface.getRoute();
+                                    ad.Route = UserInterface.GetRoute();
                                 }
 
                                 if (answer == Constants.CHANGE_DATE_TIME)
                                 {
-                                    ad.pickUpDateAndTime = UserInterface.getPickUpDateAndTime();
+                                    ad.pickUpDateAndTime = UserInterface.GetPickUpDateAndTime();
                                 }
 
                                 if (answer == Constants.CHANGE_NUMBER_OF_SEATS)
                                 {
-                                    ad.NumberOfSeats = UserInterface.getNumberOfSeats();
+                                    ad.NumberOfSeats = UserInterface.GetNumberOfSeats();
                                 }
 
                                 if (answer == Constants.CHANGE_SPECIFIC_REQUESTS)
                                 {
-                                    ad.SpecificRequests = UserInterface.getSpecificRequests();
+                                    ad.SpecificRequests = UserInterface.GetSpecificRequests();
                                 }
 
                                 AdList[number - 1] = ad;

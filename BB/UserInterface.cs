@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace BB
+﻿namespace BB
 {
     public class UserInterface
     {
@@ -38,42 +30,42 @@ namespace BB
             Console.WriteLine("Please, give us the following data to prepare your profile: ");
         }
 
-        public static string getEmail()
+        public static string GetEmail()
         {
             Console.WriteLine("Email address (please, do not forget to use your company email address!): ");
             string emailAddress = Console.ReadLine();
             return emailAddress;
         }
 
-        public static string getFirstName()
+        public static string GetFirstName()
         {
             Console.WriteLine("First name: ");
             string firstName = Console.ReadLine();
             return firstName;
         }
 
-        public static string getLastName()
+        public static string GetLastName()
         {
             Console.WriteLine("Last name: ");
             string lastName = Console.ReadLine();
             return lastName;
         }
 
-        public static int getDepartmentName()
+        public static int GetDepartmentName()
         {
             Console.WriteLine("Number of department from the list: ");
             int department = Convert.ToInt32(Console.ReadLine());
             return department;
         }
 
-        public static int getPreferrefLanguage()
+        public static int GetPreferrefLanguage()
         {
             Console.WriteLine("Number of preferred language from the list: ");
             int preferredLanguage = Convert.ToInt32(Console.ReadLine());
             return preferredLanguage;
         }
 
-        public static string getLocation()
+        public static string GetLocation()
         {
             Console.WriteLine("Base location: ");
             string location = Console.ReadLine();
@@ -81,7 +73,7 @@ namespace BB
         }
 
 
-        public static string getContact()
+        public static string GetContact()
         {
             Console.WriteLine("Contact information (phone number / email) // not mandatory: ");
             string contact = Console.ReadLine();
@@ -89,7 +81,7 @@ namespace BB
         }
 
         
-        public static void printListofEnums(Type myEnumType)
+        public static void printListOfEnums(Type myEnumType)
         {
             int i = 1;
             foreach (var value in Enum.GetValues(myEnumType))
@@ -99,21 +91,21 @@ namespace BB
             }
         }
 
-        public static int getAdType()
+        public static int GetAdType()
         {
             Console.WriteLine("Please select if you are a driver or passenger: ");
             int adType = Convert.ToInt32(Console.ReadLine());
             return adType;
         }
 
-        public static string getRoute()
+        public static string GetRoute()
         {
             Console.WriteLine("Please write the stops on your route: ");
             string route = Console.ReadLine();
             return route;
         }
 
-        public static DateOnly getPickUpDate()
+        public static DateOnly GetPickUpDate()
         {
             Console.WriteLine("Please give me the year: ");
             int year = Convert.ToInt32(Console.ReadLine());
@@ -125,7 +117,7 @@ namespace BB
             return date;
         }
 
-        public static TimeOnly getPickUpTime()
+        public static TimeOnly GetPickUpTime()
         {
             Console.WriteLine("Please give me the hour: ");
             int hour = Convert.ToInt32(Console.ReadLine());
@@ -136,7 +128,7 @@ namespace BB
         }
 
 
-        public static DateTime getPickUpDateAndTime()
+        public static DateTime GetPickUpDateAndTime()
         {
             Console.WriteLine("Please give me the year: ");
             int year = Convert.ToInt32(Console.ReadLine());
@@ -155,14 +147,14 @@ namespace BB
 
 
 
-        public static int getNumberOfSeats()
+        public static int GetNumberOfSeats()
         {
             Console.WriteLine("How many seats are you offering / looking for?");
             int seats = Convert.ToInt32(Console.ReadLine());
             return seats;
         }
 
-        public static string getSpecificRequests()
+        public static string GetSpecificRequests()
         {
             Console.WriteLine("Do you have any specific requests?");
             string requests = Console.ReadLine();
@@ -170,7 +162,7 @@ namespace BB
         }
 
 
-        public static void printAdlist(List<Ad> AdList)
+        public static void PrintAdList(List<Ad> AdList)
         {
             int number = 1;
             foreach (Ad ad in AdList)
@@ -180,12 +172,12 @@ namespace BB
             }
         }
 
-        public static void printCompanyEmailNotValid()
+        public static void PrintCompanyEmailNotValid()
         {
             Console.WriteLine("This email address is not valid! Please give me a valid company email address: ");
         }
 
-        public static void printProfileData(List<User> UserList)
+        public static void PrintProfileData(List<User> UserList)
         {
             int user = UserList.Count-1; //I decided to print the data of the last user of the list, as the login is not working yet, so we do not know who is using the system at this test phase yet
             User User = UserList[user];
@@ -199,7 +191,7 @@ namespace BB
             Console.WriteLine($"Number of warnings: {User.NumberOfWarnings}");
         }
 
-        public static string printProfileMenu(string answer)
+        public static string PrintProfileMenu(string answer)
         {
             Console.WriteLine($"\r\nPlease press {Constants.SELECT_CHANGE_PROFILE_DATA} to change your personal data");
             Console.WriteLine($"Please press {Constants.SELECT_CHECK_MY_OWN_ADS} to see your ads");
@@ -208,7 +200,7 @@ namespace BB
             return answer;
         }
 
-        public static string printProfileChangeOptions(string answer)
+        public static string PrintProfileChangeOptions(string answer)
         {
             
             Console.WriteLine($"Please press {Constants.CHANGE_FIRST_NAME} to change your first name\r\n" +
@@ -221,7 +213,7 @@ namespace BB
             return answer;
         }
 
-        public static string printCheckAdsMenu(string answer)
+        public static string PrintCheckAdsMenu(string answer)
         {
             Console.WriteLine($"If you want to modify any of them, please, press {Constants.CHANGE_AD}");
             Console.WriteLine($"Press {Constants.SELECT_EXIT} to close the site");
@@ -229,7 +221,7 @@ namespace BB
             return answer;
         }
 
-        public static int printChooseAdMessage(int number)
+        public static int PrintChooseAdMessage(int number)
         {
             Console.WriteLine("Please select which ad you want to modify. Give me the number of the ad: ");
             number = Convert.ToInt32(Console.ReadLine());
@@ -237,7 +229,7 @@ namespace BB
         }
 
 
-        public static string printAdChangeOptions(Ad ad, string answer)
+        public static string PrintAdChangeOptions(Ad ad, string answer)
         {
             Console.WriteLine(ad);
             Console.WriteLine($"Press {Constants.CHANGE_AD_TYPE} to change the ad type!");
