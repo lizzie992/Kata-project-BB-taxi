@@ -20,7 +20,7 @@ namespace BB
                 UserInterface.ClearScreen();
 
 
-                if (answer == Constants.SELECT_REGISTER)
+                if (answer == Constants.SELECT_REGISTER.ToString())
                 {
                     UserInterface.WriteNewUserMessage();
                     User newUser = new User();
@@ -58,7 +58,7 @@ namespace BB
                     UserInterface.ClearScreen();
                 }
 
-                if (answer == Constants.SELECT_CREATE_AD)
+                if (answer == Constants.SELECT_CREATE_AD.ToString())
                 {
                     Ad Ad = new Ad();
 
@@ -80,14 +80,14 @@ namespace BB
 
                 }
 
-                if (answer == Constants.SELECT_CHECK_ADS)
+                if (answer == Constants.SELECT_CHECK_ADS.ToString())
                 {
                     UserInterface.printAdlist(AdList);
                     UserInterface.ClearScreen();
                 }
 
 
-                if (answer == Constants.SELECT_PROFILE)
+                if (answer == Constants.SELECT_PROFILE.ToString())
                 {
                     int user = UserList.Count - 1; //I decided to print the data of the last user of the list, as the login is not working yet, so we do not know who is using the system at this test phase yet
                     User User = UserList[user];
@@ -114,7 +114,7 @@ namespace BB
                                 User.LastName = UserInterface.getLastName();
                             }
 
-                            if (changeAnswer == Constants.CHANGE_DEPARTMENT)
+                            if (changeAnswer == Constants.CHANGE_DEPARTMENT.ToString())
                             {
                                 UserInterface.printListofEnums(typeof(Department));
                                 int numberOfDepartment = UserInterface.getDepartmentName();
@@ -128,12 +128,12 @@ namespace BB
                                 User.PreferredLanguage = (PreferredLanguage)numberOfPreferredLanguage - 1;
                             }
 
-                            if (changeAnswer == Constants.CHANGE_LOCATION)
+                            if (changeAnswer == Constants.CHANGE_LOCATION.ToString())
                             {
                                 User.Location = UserInterface.getLocation();
                             }
 
-                            if (changeAnswer == Constants.CHANGE_CONTACT)
+                            if (changeAnswer == Constants.CHANGE_CONTACT.ToString())
                             {
                                 User.Contact = UserInterface.getContact();
                             }
@@ -151,7 +151,7 @@ namespace BB
                             string changeAnswer = string.Empty;
                             changeAnswer = UserInterface.printCheckAdsMenu(changeAnswer);
 
-                            if (changeAnswer == Constants.CHANGE_AD)
+                            if (changeAnswer == Constants.CHANGE_AD.ToString())
                             {
 
                                 int number = 0;
@@ -195,7 +195,7 @@ namespace BB
                                 LogicalCode.SaveAdToFile(AdList, Constants.FILE_PATH_AD);
 
 
-                                if (answer == Constants.DELETE_AD)
+                                if (answer == Constants.DELETE_AD.ToString())
                                 {
                                     AdList.Remove(ad);
                                     LogicalCode.SaveAdToFile(AdList, Constants.FILE_PATH_AD);
@@ -207,11 +207,11 @@ namespace BB
 
                         }
 
-                    } while (profileAnswer != Constants.SELECT_EXIT);
+                    } while (profileAnswer != Constants.SELECT_EXIT.ToString());
                 }
 
 
-            } while (answer != Constants.SELECT_EXIT);
+            } while (answer != Constants.SELECT_EXIT.ToString());
         }
     }
 }
