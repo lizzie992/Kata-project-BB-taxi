@@ -20,4 +20,13 @@
     <NumberOfSeats>4</NumberOfSeats>
     <SpecificRequests>no hawaii pizza</SpecificRequests>
   </Ad>
+  <Ad>
+    <AdType>Passenger</AdType>
+    <Route>harras solln</Route>
+    <pickUpDateAndTime>2022-09-04T09:30:00</pickUpDateAndTime>
+    <pickUpDate />
+    <pickUpTime />
+    <NumberOfSeats>2</NumberOfSeats>
+    <SpecificRequests>no</SpecificRequests>
+  </Ad>
 </ArrayOfAD>

@@ -143,6 +143,7 @@
         {
             do
             {
+                Console.WriteLine(instruction);
                 if (int.TryParse(Console.ReadLine(), out int userInput))
                 {
                     return userInput;
@@ -171,22 +172,11 @@
             return time;
         }
 
-
         public static DateTime GetPickUpDateAndTime()
         {
-            Console.WriteLine("Please give me the year: ");
-            int year = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Please give me the month: ");
-            int month = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Please give me the day: ");
-            int day = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Please give me the hour: ");
-            int hour = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Please give me the minute: ");
-            int minute = Convert.ToInt32(Console.ReadLine());
-            int second = 0;
-            DateTime DateAndTime = new DateTime(year, month, day, hour, minute, second);
-            return DateAndTime;
+            DateOnly date = GetPickUpDate();
+            TimeOnly time = GetPickUpTime();
+            return new DateTime(date, time);
         }
 
 
