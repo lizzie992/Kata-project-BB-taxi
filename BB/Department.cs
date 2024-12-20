@@ -9,7 +9,7 @@ namespace BB
     public enum Department
     {
         //ok I need a full list for this:D but this is a good start
-        Lab,
+        Lab = 1,
         Sales,
         Production,
         SupplyChain,

@@ -8,7 +8,7 @@ namespace BB
 {
     public enum AdType
     {
-        Driver,
+        Driver = 1,
         Passenger
     }
 }

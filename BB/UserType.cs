@@ -8,7 +8,7 @@ namespace BB
 {
     public enum UserType
     {
-        Regular,
+        Regular = 1,
         Admin
     }
 }

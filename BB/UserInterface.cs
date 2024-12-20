@@ -51,18 +51,40 @@
             return lastName;
         }
 
-        public static int GetDepartmentName()
+        public static Enum GetDepartmentName()
         {
-            Console.WriteLine("Number of department from the list: ");
-            int department = Convert.ToInt32(Console.ReadLine());
-            return department;
+            do
+            {
+                if (int.TryParse(Console.ReadLine(), out int userInput))
+                {
+                    if (Enum.IsDefined(typeof(AdType), userInput))
+                    {
+                        return (Department)userInput;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Please give me a valid number: ");
+                }
+            } while (true);
         }
 
-        public static int GetPreferrefLanguage()
+        public static Enum GetPreferrefLanguage()
         {
-            Console.WriteLine("Number of preferred language from the list: ");
-            int preferredLanguage = Convert.ToInt32(Console.ReadLine());
-            return preferredLanguage;
+            do
+            {
+                if (int.TryParse(Console.ReadLine(), out int userInput))
+                {
+                    if (Enum.IsDefined(typeof(AdType), userInput))
+                    {
+                        return (PreferredLanguage)userInput;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Please give me a valid number: ");
+                }
+            } while (true);
         }
 
         public static string GetLocation()
@@ -80,8 +102,8 @@
             return contact;
         }
 
-        
-        public static void printListOfEnums(Type myEnumType)
+
+        public static void PrintListOfEnums(Type myEnumType)
         {
             int i = 1;
             foreach (var value in Enum.GetValues(myEnumType))
@@ -91,11 +113,22 @@
             }
         }
 
-        public static int GetAdType()
+        public static Enum GetAdType()
         {
-            Console.WriteLine("Please select if you are a driver or passenger: ");
-            int adType = Convert.ToInt32(Console.ReadLine());
-            return adType;
+            do
+            {
+                if (int.TryParse(Console.ReadLine(), out int userInput))
+                {
+                    if (Enum.IsDefined(typeof(AdType), userInput))
+                    {
+                        return (AdType)userInput;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Please give me a valid number: ");
+                }
+            } while (true);
         }
 
         public static string GetRoute()
@@ -179,7 +212,7 @@
 
         public static void PrintProfileData(List<User> UserList)
         {
-            int user = UserList.Count-1; //I decided to print the data of the last user of the list, as the login is not working yet, so we do not know who is using the system at this test phase yet
+            int user = UserList.Count - 1; //I decided to print the data of the last user of the list, as the login is not working yet, so we do not know who is using the system at this test phase yet
             User User = UserList[user];
             Console.WriteLine($"Email address: {User.EmailAddress}");
             Console.WriteLine($"Name: {User.FirstName} {User.LastName}");
@@ -202,7 +235,7 @@
 
         public static string PrintProfileChangeOptions(string answer)
         {
-            
+
             Console.WriteLine($"Please press {Constants.CHANGE_FIRST_NAME} to change your first name\r\n" +
                 $"Please press {Constants.CHANGE_LAST_NAME} to change your last name\r\n" +
                 $"Please press {Constants.CHANGE_DEPARTMENT} to change your department\r\n" +

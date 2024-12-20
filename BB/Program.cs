@@ -40,13 +40,11 @@ namespace BB
                     newUser.FirstName = UserInterface.GetFirstName();
                     newUser.LastName = UserInterface.GetLastName();
 
-                    UserInterface.printListOfEnums(typeof(Department));
-                    int numberOfDepartment = UserInterface.GetDepartmentName();
-                    newUser.Department = (Department)numberOfDepartment - 1;
+                    UserInterface.PrintListOfEnums(typeof(Department));
+                    newUser.Department = (Department)UserInterface.GetDepartmentName();
 
-                    UserInterface.printListOfEnums(typeof(PreferredLanguage));
-                    int numberOfPreferredLanguage = UserInterface.GetPreferrefLanguage();
-                    newUser.PreferredLanguage = (PreferredLanguage)numberOfPreferredLanguage - 1;
+                    UserInterface.PrintListOfEnums(typeof(PreferredLanguage));
+                    newUser.PreferredLanguage = (PreferredLanguage)UserInterface.GetPreferrefLanguage();
 
                     newUser.Location = UserInterface.GetLocation();
 
@@ -64,9 +62,8 @@ namespace BB
                 {
                     Ad Ad = new Ad();
 
-                    UserInterface.printListOfEnums(typeof(AdType));
-                    int adType = UserInterface.GetAdType();
-                    Ad.AdType = (AdType)adType - 1;
+                    UserInterface.PrintListOfEnums(typeof(AdType));
+                    Ad.AdType = (AdType)UserInterface.GetAdType();
 
                     Ad.Route = UserInterface.GetRoute();
 
@@ -118,16 +115,14 @@ namespace BB
 
                             if (changeAnswer == Constants.CHANGE_DEPARTMENT.ToString())
                             {
-                                UserInterface.printListOfEnums(typeof(Department));
-                                int numberOfDepartment = UserInterface.GetDepartmentName();
-                                User.Department = (Department)numberOfDepartment - 1;
+                                UserInterface.PrintListOfEnums(typeof(Department));
+                                User.Department = (Department)UserInterface.GetDepartmentName();
                             }
 
                             if (changeAnswer == Constants.CHANGE_PREFERRED_LANGUAGE)
                             {
-                                UserInterface.printListOfEnums(typeof(PreferredLanguage));
-                                int numberOfPreferredLanguage = UserInterface.GetPreferrefLanguage();
-                                User.PreferredLanguage = (PreferredLanguage)numberOfPreferredLanguage - 1;
+                                UserInterface.PrintListOfEnums(typeof(PreferredLanguage));
+                                User.PreferredLanguage = (PreferredLanguage)UserInterface.GetPreferrefLanguage();
                             }
 
                             if (changeAnswer == Constants.CHANGE_LOCATION.ToString())
@@ -168,9 +163,8 @@ namespace BB
 
                                 if (answer == Constants.CHANGE_AD_TYPE)
                                 {
-                                    UserInterface.printListOfEnums(typeof(AdType));
-                                    int adType = UserInterface.GetAdType();
-                                    ad.AdType = (AdType)adType - 1;
+                                    UserInterface.PrintListOfEnums(typeof(AdType));
+                                    ad.AdType = (AdType)UserInterface.GetAdType();
                                 }
 
                                 if (answer == Constants.CHANGE_ROUTE)
