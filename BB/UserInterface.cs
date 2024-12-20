@@ -139,24 +139,34 @@
             return route;
         }
 
+        public static int GetInt(string instruction)
+        {
+            do
+            {
+                if (int.TryParse(Console.ReadLine(), out int userInput))
+                {
+                    return userInput;
+                }
+                else
+                {
+                    Console.WriteLine("Please give me a valid number: ");
+                }
+            } while (true);
+        }
+
         public static DateOnly GetPickUpDate()
         {
-            Console.WriteLine("Please give me the year: ");
-            int year = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Please give me the month: ");
-            int month = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Please give me the day: ");
-            int day = Convert.ToInt32(Console.ReadLine());
+            int year = GetInt("Please give me the year: ");
+            int month = GetInt("Please give me the month: ");
+            int day = GetInt("Please give me the day: ");
             DateOnly date = new DateOnly(year, month, day);
             return date;
         }
 
         public static TimeOnly GetPickUpTime()
         {
-            Console.WriteLine("Please give me the hour: ");
-            int hour = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Please give me the minute: ");
-            int minute = Convert.ToInt32(Console.ReadLine());
+            int hour = GetInt("Please give me the hour: ");
+            int minute = GetInt("Please give me the minute: ");
             TimeOnly time = new TimeOnly(hour, minute);
             return time;
         }
