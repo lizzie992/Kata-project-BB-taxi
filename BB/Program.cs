@@ -41,10 +41,10 @@ namespace BB
                     newUser.LastName = UserInterface.GetLastName();
 
                     UserInterface.PrintListOfEnums(typeof(Department));
-                    newUser.Department = (Department)UserInterface.GetDepartmentName();
+                    newUser.Department = UserInterface.GetDepartmentName();
 
                     UserInterface.PrintListOfEnums(typeof(PreferredLanguage));
-                    newUser.PreferredLanguage = (PreferredLanguage)UserInterface.GetPreferrefLanguage();
+                    newUser.PreferredLanguage = UserInterface.GetPreferrefLanguage();
 
                     newUser.Location = UserInterface.GetLocation();
 
@@ -63,7 +63,7 @@ namespace BB
                     Ad Ad = new Ad();
 
                     UserInterface.PrintListOfEnums(typeof(AdType));
-                    Ad.AdType = (AdType)UserInterface.GetAdType();
+                    Ad.AdType = UserInterface.GetAdType();
 
                     Ad.Route = UserInterface.GetRoute();
 
@@ -116,13 +116,13 @@ namespace BB
                             if (changeAnswer == Constants.CHANGE_DEPARTMENT.ToString())
                             {
                                 UserInterface.PrintListOfEnums(typeof(Department));
-                                User.Department = (Department)UserInterface.GetDepartmentName();
+                                User.Department = UserInterface.GetDepartmentName();
                             }
 
                             if (changeAnswer == Constants.CHANGE_PREFERRED_LANGUAGE)
                             {
                                 UserInterface.PrintListOfEnums(typeof(PreferredLanguage));
-                                User.PreferredLanguage = (PreferredLanguage)UserInterface.GetPreferrefLanguage();
+                                User.PreferredLanguage = UserInterface.GetPreferrefLanguage();
                             }
 
                             if (changeAnswer == Constants.CHANGE_LOCATION.ToString())
@@ -164,7 +164,7 @@ namespace BB
                                 if (answer == Constants.CHANGE_AD_TYPE)
                                 {
                                     UserInterface.PrintListOfEnums(typeof(AdType));
-                                    ad.AdType = (AdType)UserInterface.GetAdType();
+                                    ad.AdType = UserInterface.GetAdType();
                                 }
 
                                 if (answer == Constants.CHANGE_ROUTE)

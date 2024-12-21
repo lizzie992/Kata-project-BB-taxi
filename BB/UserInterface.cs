@@ -51,15 +51,17 @@
             return lastName;
         }
 
-        public static Enum GetDepartmentName()
+        public static Department GetDepartmentName()
         {
             do
             {
                 if (int.TryParse(Console.ReadLine(), out int userInput))
                 {
-                    if (Enum.IsDefined(typeof(AdType), userInput))
+                    if (Enum.IsDefined(typeof(Department), userInput))
                     {
-                        return (Department)userInput;
+                        User newUser = new User();
+                        newUser.Department = (Department)userInput;
+                        return newUser.Department;
                     }
                 }
                 else
@@ -69,15 +71,17 @@
             } while (true);
         }
 
-        public static Enum GetPreferrefLanguage()
+        public static PreferredLanguage GetPreferrefLanguage()
         {
             do
             {
                 if (int.TryParse(Console.ReadLine(), out int userInput))
                 {
-                    if (Enum.IsDefined(typeof(AdType), userInput))
+                    if (Enum.IsDefined(typeof(PreferredLanguage), userInput))
                     {
-                        return (PreferredLanguage)userInput;
+                        User newUser = new User();
+                        newUser.PreferredLanguage = (PreferredLanguage)userInput;
+                        return newUser.PreferredLanguage;
                     }
                 }
                 else
@@ -114,7 +118,7 @@
         }
 
 
-        public static Enum GetAdType()
+        public static AdType GetAdType()
         {
             do
             {
@@ -122,7 +126,9 @@
                 {
                     if (Enum.IsDefined(typeof(AdType), userInput))
                     {
-                        return (AdType)userInput;
+                        Ad Ad = new Ad();
+                        Ad.AdType = (AdType)userInput;
+                        return Ad.AdType;
                     }
                 }
                 else

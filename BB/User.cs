@@ -42,7 +42,7 @@ namespace BB
 			set { _lastName = value; }
 		}
 
-		private Department _department;
+        private Department _department;
 
 		public Department Department
 		{
