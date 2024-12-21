@@ -61,15 +61,8 @@
                     {
                         return (Department)userInput;
                     }
-                    else
-                    {
-                        Console.WriteLine("Please give me a valid number: ");
-                    }
                 }
-                else
-                {
-                    Console.WriteLine("Please give me a valid number: ");
-                }
+                Console.WriteLine("Please give me a valid number: ");
             } while (true);
         }
 
@@ -83,15 +76,8 @@
                     {
                         return (PreferredLanguage)userInput;
                     }
-                    else
-                    {
-                        Console.WriteLine("Please give me a valid number: ");
-                    }
                 }
-                else
-                {
-                    Console.WriteLine("Please give me a valid number: ");
-                }
+                Console.WriteLine("Please give me a valid number: ");
             } while (true);
         }
 
@@ -132,15 +118,8 @@
                     {
                         return (AdType)userInput;
                     }
-                    else
-                    {
-                        Console.WriteLine("Please give me a valid number: ");
-                    }
                 }
-                else
-                {
-                    Console.WriteLine("Please give me a valid number: ");
-                }
+                Console.WriteLine("Please give me a valid number: ");
             } while (true);
         }
 
