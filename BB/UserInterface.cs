@@ -59,9 +59,11 @@
                 {
                     if (Enum.IsDefined(typeof(Department), userInput))
                     {
-                        User newUser = new User();
-                        newUser.Department = (Department)userInput;
-                        return newUser.Department;
+                        return (Department)userInput;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please give me a valid number: ");
                     }
                 }
                 else
@@ -79,9 +81,11 @@
                 {
                     if (Enum.IsDefined(typeof(PreferredLanguage), userInput))
                     {
-                        User newUser = new User();
-                        newUser.PreferredLanguage = (PreferredLanguage)userInput;
-                        return newUser.PreferredLanguage;
+                        return (PreferredLanguage)userInput;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please give me a valid number: ");
                     }
                 }
                 else
@@ -126,9 +130,11 @@
                 {
                     if (Enum.IsDefined(typeof(AdType), userInput))
                     {
-                        Ad Ad = new Ad();
-                        Ad.AdType = (AdType)userInput;
-                        return Ad.AdType;
+                        return (AdType)userInput;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please give me a valid number: ");
                     }
                 }
                 else
