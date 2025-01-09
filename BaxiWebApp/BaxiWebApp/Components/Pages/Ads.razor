@@ -1,0 +1,45 @@
+﻿<h3>Ads</h3>
+
+page "/Ads"
+
+<PageTitle>Ads</PageTitle>
+
+<h1>Ads</h1>
+
+<p>This page shows you the list of ads</p>
+
+@if (Ads == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ad type</th>
+                <th>Route</th>
+                <th>Date and Time</th>
+                <th>Number of seats</th>
+                <th>Specific requests</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Ad in BB.Ad)
+            {
+                <tr>
+                    <td>@</td>
+                    <td>@</td>
+                    <td>@</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+@code {
+
+}
