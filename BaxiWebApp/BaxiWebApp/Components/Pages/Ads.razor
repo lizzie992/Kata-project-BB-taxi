@@ -1,6 +1,7 @@
 ﻿<h3>Ads</h3>
 
-page "/Ads"
+@page "/Ads"
+@using BB
 
 <PageTitle>Ads</PageTitle>
 
@@ -8,7 +9,7 @@ page "/Ads"
 
 <p>This page shows you the list of ads</p>
 
-@if (Ads == null)
+@if (false)
 {
     <p><em>Loading...</em></p>
 }
@@ -25,12 +26,14 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var Ad in BB.Ad)
+            @foreach (var Ad in AdList)
             {
+
+                @Ad.AdType
                 <tr>
+           @*          <td>@</td>
                     <td>@</td>
-                    <td>@</td>
-                    <td>@</td>
+                    <td>@</td> *@
                 </tr>
             }
         </tbody>
@@ -41,5 +44,10 @@ else
 
 
 @code {
+    List<Ad> AdList = BB.LogicalCode.LoadAdListFromFile();
 
+    void Test()
+    {
+        Console.WriteLine("test method :)");
+    }
 }
