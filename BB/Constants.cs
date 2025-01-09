@@ -36,8 +36,8 @@ namespace BB
         public static char DELETE_AD = 'D';
 
 
-        public static string FILE_PATH_USERDATA = @"..\..\..\..\UserData.txt";
-        public static string FILE_PATH_AD = @"..\..\..\..\Ads.txt";
+        public static string FILE_PATH_USERDATA = @"..\..\UserData.txt";
+        public static string FILE_PATH_AD = @"..\..\Ads.txt";
         public static string COMPANY_NAME = "company";
     }
 }

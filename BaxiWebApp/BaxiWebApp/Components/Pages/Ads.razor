@@ -1,13 +1,39 @@
-﻿<h3>Ads</h3>
-
-@page "/Ads"
+﻿@page "/Ads"
 @using BB
 
 <PageTitle>Ads</PageTitle>
 
-<h1>Ads</h1>
+<style>
 
-<p>This page shows you the list of ads</p>
+    .adList {
+        display: grid;
+        grid-template-columns: 33% 33% 33%;
+    }
+
+    .ad {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        margin: auto;
+        text-align: center;
+        font-family: arial;
+    }
+
+        .ad button {
+            border: none;
+            outline: 0;
+            padding: 12px;
+            color: white;
+            background-color: #000;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+
+</style>
+
+<h1 style="text-align:center;">Ads</h1>
+<p style="text-align:center; font-size:150%;">This page shows you the list of ads</p>
 
 @if (false)
 {
@@ -15,39 +41,24 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Ad type</th>
-                <th>Route</th>
-                <th>Date and Time</th>
-                <th>Number of seats</th>
-                <th>Specific requests</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var Ad in AdList)
-            {
+    <div class="adList">
+        @foreach (var Ad in AdList)
+        {
+            <div class="ad">
+                <p>Ad type: @Ad.AdType</p>
+                <p>Route: @Ad.Route</p>
+                <p>Date and Time: @Ad.pickUpDateAndTime</p>
+                <p>Number of seats: @Ad.NumberOfSeats</p>
+                <p>Specific requests: @Ad.SpecificRequests</p>
+                <p><button>Contact me!</button></p>
+            </div>
+        }
+    </div>
 
-                @Ad.AdType
-                <tr>
-           @*          <td>@</td>
-                    <td>@</td>
-                    <td>@</td> *@
-                </tr>
-            }
-        </tbody>
-    </table>
 }
-
 
 
 
 @code {
     List<Ad> AdList = BB.LogicalCode.LoadAdListFromFile();
-
-    void Test()
-    {
-        Console.WriteLine("test method :)");
-    }
 }
