@@ -1,0 +1,30 @@
+﻿@page "/Profile"
+@using BB
+
+
+<PageTitle>Profile</PageTitle>
+
+<h1 style="text-align:center;">Profile data</h1>
+
+<div class="profileData">
+    <p>Email address: @user.EmailAddress</p>
+    <p>Name: @user.FirstName @user.LastName</p>
+    <p>Department: @user.Department</p>
+    <p>Location: @user.Location</p>
+    <p>Preferred language: @user.PreferredLanguage</p>
+    <p>Contact: @user.Contact</p>
+    <p>Rating: @user.Rating</p>
+    <p>Number of warnings: @user.NumberOfWarnings</p>
+
+    <a href="ProfileDataChange">
+        <button>Click here to change your profile data!</button>
+    </a>
+
+</div>
+
+
+@code {
+    //I will get the last user data from the list, as I still dont know anything about the login process :D
+    public static List<User> userList = BB.LogicalCode.LoadUserListFromFile();
+    public static User user = userList[userList.Count() - 1];
+}
