@@ -15,7 +15,7 @@
   <User>
     <UserType>Regular</UserType>
     <EmailAddress>giuseppe</EmailAddress>
-    <FirstName>Giuseppe</FirstName>
+    <FirstName>not giuseppe</FirstName>
     <LastName>cristaldi</LastName>
     <Department>SupplyChain</Department>
     <PreferredLanguage>Italian</PreferredLanguage>

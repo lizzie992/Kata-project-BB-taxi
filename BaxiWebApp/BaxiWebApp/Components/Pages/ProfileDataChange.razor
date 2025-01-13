@@ -6,10 +6,15 @@
 <h1 style="text-align:center;">Change your profile data!</h1>
 
 <form>
-    <label for="fname">First name:</label><br>
-    <input type="text" id="fname" name="fname"><br>
+    @*     <label for="fname">First name:</label><br>
+    <input type="text" @bind-value="newFirstName"><br> *@
 
-    <label for="lname">Last name:</label><br>
+    First name:
+    <InputText @bind-Value="firstName"></InputText><br>
+    <button class="btn btn-primary" @onclick="SaveNewName">Save</button><br>
+
+
+    @* <label for="lname">Last name:</label><br>
     <input type="text" id="lname" name="lname"><br>
 
     <label for="department">Department:</label><br>
@@ -22,14 +27,23 @@
     <input type="text" id="preflang" name="preflang"><br>
 
     <label for="contact">Contact:</label><br>
-    <input type="text" id="contact" name="contact"><br>
-    <br>
-    <button>Save</button>
+    <input type="text" id="contact" name="contact"><br> *@
+
 
 </form>
 
 
 @code {
     User user = Profile.user;
+
+    [Parameter]
+    public string firstName { get; set; }
+
+    private void SaveNewName()
+    {
+        user.FirstName = firstName;
+        BB.LogicalCode.SaveUserToFile(Profile.userList);
+        Console.WriteLine(firstName);
+    }
 
 }
