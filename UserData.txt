@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfUser xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <User>
+    <UserType>Regular</UserType>
+    <EmailAddress>company email</EmailAddress>
+    <FirstName>kata</FirstName>
+    <LastName>g</LastName>
+    <Department>Lab</Department>
+    <PreferredLanguage>English</PreferredLanguage>
+    <Location>harras</Location>
+    <Rating>0</Rating>
+    <ListOfRatings />
+    <NumberOfWarnings>0</NumberOfWarnings>
+    <Contact>pineapples</Contact>
+  </User>
+</ArrayOfUser>
