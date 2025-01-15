@@ -5,27 +5,103 @@
 
 <h1 style="text-align:center;">Change your profile data!</h1>
 
-<form>
+<EditForm Model="@author" OnValidSubmit="SaveAuthor">
     First name:
     <InputText @bind-Value="firstName"></InputText><br>
-    <button class="btn btn-primary" @onclick="SaveNewName">Save</button><br>
+    <button class="btn btn-primary" @onclick="SaveFirstName">Save</button><br>
+    <br>
+    Last name:
+    <InputText @bind-Value="lastName"></InputText><br>
+    <button class="btn btn-primary" @onclick="SaveLastName">Save</button><br>
+    <br>
+    Department:
+    <select name="department" id="department">
+        @foreach (var value in Enum.GetValues<Department>())
+        {
+            <option value="@value">@value.ToString()</option>
+        }
+    </select>
+    <button class="btn btn-primary" @onclick="SaveDepartment">Save</button><br>
+    <br>
+    Location:
+    <InputText @bind-Value="location"></InputText><br>
+    <button class="btn btn-primary" @onclick="SaveLocation">Save</button><br>
+    <br>
+    Contact:
+    <InputText @bind-Value="contact"></InputText><br>
+    <button class="btn btn-primary" @onclick="SaveContact">Save</button><br>
+    <br>
+    <a href="Profile">
+        <button>Back to your profile!</button>
+    </a>
 
-
-
-
-</form>
+</EditForm>
 
 
 @code {
     User user = Profile.user;
 
-    [Parameter]
     public string firstName { get; set; }
 
-    private void SaveNewName()
+    public string lastName { get; set; }
+
+    public Department department { get; set; }
+
+    public PreferredLanguage preferredLanguage { get; set; }
+
+    public string location { get; set; }
+
+    public string contact { get; set; }
+
+
+
+    private void SaveFirstName()
     {
         user.FirstName = firstName;
         BB.LogicalCode.SaveUserToFile(Profile.userList);
+    }
+
+    private void SaveLastName()
+    {
+        user.LastName = lastName;
+        BB.LogicalCode.SaveUserToFile(Profile.userList);
+    }
+
+    private void SaveDepartment()
+    {
+        user.Department = department;
+        BB.LogicalCode.SaveUserToFile(Profile.userList);
+    }
+
+    private void SavePreferredLanguage()
+    {
+        user.PreferredLanguage = preferredLanguage;
+        BB.LogicalCode.SaveUserToFile(Profile.userList);
+    }
+
+    private void SaveLocation()
+    {
+        user.Location = location;
+        BB.LogicalCode.SaveUserToFile(Profile.userList);
+    }
+
+    private void SaveContact()
+    {
+        user.Contact = contact;
+        BB.LogicalCode.SaveUserToFile(Profile.userList);
+    }
+
+    Author author = new Author();
+
+
+
+    private void SaveAuthor()
+    {
+        Console.WriteLine(author.FirstName);
+    }
+    public class Author
+    {
+        public string FirstName { get; set; } = "Kataa";
     }
 
 }

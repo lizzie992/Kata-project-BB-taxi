@@ -12,8 +12,8 @@ namespace BB
 
             do
             {
-                UserList = LogicalCode.LoadUserListFromFile();
-                AdList = LogicalCode.LoadAdListFromFile();
+                //UserList = LogicalCode.LoadUserListFromFile();
+                //AdList = LogicalCode.LoadAdListFromFile();
 
                 //main menu part:
                 answer = UserInterface.MainMenuSelection();
