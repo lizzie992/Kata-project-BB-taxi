@@ -6,28 +6,11 @@
 <h1 style="text-align:center;">Change your profile data!</h1>
 
 <form>
-    @*     <label for="fname">First name:</label><br>
-    <input type="text" @bind-value="newFirstName"><br> *@
-
     First name:
     <InputText @bind-Value="firstName"></InputText><br>
     <button class="btn btn-primary" @onclick="SaveNewName">Save</button><br>
 
 
-    @* <label for="lname">Last name:</label><br>
-    <input type="text" id="lname" name="lname"><br>
-
-    <label for="department">Department:</label><br>
-    <input type="text" id="department" name="department"><br>
-
-    <label for="location">Location:</label><br>
-    <input type="text" id="location" name="location"><br>
-
-    <label for="preflang">Preferred language:</label><br>
-    <input type="text" id="preflang" name="preflang"><br>
-
-    <label for="contact">Contact:</label><br>
-    <input type="text" id="contact" name="contact"><br> *@
 
 
 </form>
@@ -43,7 +26,6 @@
     {
         user.FirstName = firstName;
         BB.LogicalCode.SaveUserToFile(Profile.userList);
-        Console.WriteLine(firstName);
     }
 
 }
