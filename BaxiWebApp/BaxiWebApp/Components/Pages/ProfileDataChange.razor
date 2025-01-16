@@ -5,41 +5,45 @@
 
 <h1 style="text-align:center;">Change your profile data!</h1>
 
-<EditForm Model="@author" OnValidSubmit="SaveAuthor">
+<EditForm Model="@user" OnValidSubmit="Save">
+
     First name:
-    <InputText @bind-Value="firstName"></InputText><br>
-    <button class="btn btn-primary" @onclick="SaveFirstName">Save</button><br>
+    <InputText @bind-Value="user.FirstName"></InputText><br>
     <br>
+
     Last name:
-    <InputText @bind-Value="lastName"></InputText><br>
-    <button class="btn btn-primary" @onclick="SaveLastName">Save</button><br>
+    <InputText @bind-Value="user.LastName"></InputText><br>
     <br>
+
     Department:
-    <InputSelect @bind-Value="department" id="department">
+    <InputSelect @bind-Value="user.Department" id="department">
         @foreach (var value in Enum.GetValues<Department>())
         {
             <option value="@value">@value.ToString()</option>
         }
     </InputSelect>
-    <button class="btn btn-primary" @onclick="SaveDepartment">Save</button><br>
     <br>
+
     Preferred language:
-    <InputSelect @bind-Value="preferredLanguage" id="preferredLanguage">
+    <InputSelect @bind-Value="user.PreferredLanguage" id="preferredLanguage">
         @foreach (var value in Enum.GetValues<PreferredLanguage>())
         {
             <option value="@value">@value.ToString()</option>
         }
     </InputSelect>
-    <button class="btn btn-primary" @onclick="SavePreferredLanguage">Save</button><br>
     <br>
+
     Location:
-    <InputText @bind-Value="location"></InputText><br>
-    <button class="btn btn-primary" @onclick="SaveLocation">Save</button><br>
+    <InputText @bind-Value="user.Location"></InputText><br>
     <br>
+
     Contact:
-    <InputText @bind-Value="contact"></InputText><br>
-    <button class="btn btn-primary" @onclick="SaveContact">Save</button><br>
+    <InputText @bind-Value="user.Contact"></InputText><br>
     <br>
+
+    <button class="btn btn-primary" @onclick="Save">Save</button>
+    <br>
+
     <a href="Profile">
         <button>Back to your profile!</button>
     </a>
@@ -48,69 +52,24 @@
 
 
 @code {
-    User user = Profile.user;
+    private static User user { get; set; } = new();
 
-    public string firstName { get; set; }
-
-    public string lastName { get; set; }
-
-    public Department department { get; set; }
-
-    public PreferredLanguage preferredLanguage { get; set; }
-
-    public string location { get; set; }
-
-    public string contact { get; set; }
-
-
-
-    private void SaveFirstName()
+    protected override void OnParametersSet()
     {
-        user.FirstName = firstName;
+        user = new User();
+        user.EmailAddress = Profile.user.EmailAddress;
+        user.FirstName = Profile.user.FirstName;
+        user.LastName = Profile.user.LastName;
+        user.Department = Profile.user.Department;
+        user.Location = Profile.user.Location;
+        user.Contact = Profile.user.Contact;
+        base.OnParametersSet();
+    }
+
+    private void Save()
+    {
+        Profile.user = user;
         BB.LogicalCode.SaveUserToFile(Profile.userList);
-    }
-
-    private void SaveLastName()
-    {
-        user.LastName = lastName;
-        BB.LogicalCode.SaveUserToFile(Profile.userList);
-    }
-
-    private void SaveDepartment()
-    {
-        user.Department = department;
-        BB.LogicalCode.SaveUserToFile(Profile.userList);
-    }
-
-    private void SavePreferredLanguage()
-    {
-        user.PreferredLanguage = preferredLanguage;
-        BB.LogicalCode.SaveUserToFile(Profile.userList);
-    }
-
-    private void SaveLocation()
-    {
-        user.Location = location;
-        BB.LogicalCode.SaveUserToFile(Profile.userList);
-    }
-
-    private void SaveContact()
-    {
-        user.Contact = contact;
-        BB.LogicalCode.SaveUserToFile(Profile.userList);
-    }
-
-    Author author = new Author();
-
-
-
-    private void SaveAuthor()
-    {
-        Console.WriteLine(author.FirstName);
-    }
-    public class Author
-    {
-        public string FirstName { get; set; } = "Kataa";
     }
 
 }
