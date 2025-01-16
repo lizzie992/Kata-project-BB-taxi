@@ -15,13 +15,22 @@
     <button class="btn btn-primary" @onclick="SaveLastName">Save</button><br>
     <br>
     Department:
-    <select name="department" id="department">
+    <InputSelect @bind-Value="department" id="department">
         @foreach (var value in Enum.GetValues<Department>())
         {
             <option value="@value">@value.ToString()</option>
         }
-    </select>
+    </InputSelect>
     <button class="btn btn-primary" @onclick="SaveDepartment">Save</button><br>
+    <br>
+    Preferred language:
+    <InputSelect @bind-Value="preferredLanguage" id="preferredLanguage">
+        @foreach (var value in Enum.GetValues<PreferredLanguage>())
+        {
+            <option value="@value">@value.ToString()</option>
+        }
+    </InputSelect>
+    <button class="btn btn-primary" @onclick="SavePreferredLanguage">Save</button><br>
     <br>
     Location:
     <InputText @bind-Value="location"></InputText><br>

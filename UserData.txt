@@ -5,7 +5,7 @@
     <EmailAddress>company email</EmailAddress>
     <FirstName>kata</FirstName>
     <LastName>g</LastName>
-    <Department>Lab</Department>
+    <Department>IT</Department>
     <PreferredLanguage>English</PreferredLanguage>
     <Location>harras</Location>
     <Rating>0</Rating>
