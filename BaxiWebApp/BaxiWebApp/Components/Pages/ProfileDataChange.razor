@@ -69,6 +69,7 @@
     private void Save()
     {
         Profile.user = user;
+        Profile.userList.Add(user);
         BB.LogicalCode.SaveUserToFile(Profile.userList);
     }
 
