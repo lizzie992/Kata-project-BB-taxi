@@ -4,7 +4,7 @@
 <PageTitle>Create A New Ad</PageTitle>
 
 <EditForm Model="@ad" OnValidSubmit="Save">
-    Ad type: <br>
+    I am a: <br>
     <InputSelect @bind-Value="ad.AdType" id="adType">
         @foreach (var value in Enum.GetValues<AdType>())
         {
