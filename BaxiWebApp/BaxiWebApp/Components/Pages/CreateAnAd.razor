@@ -1,0 +1,69 @@
+﻿@page "/CreateAnAd"
+@using BB
+
+<PageTitle>Create A New Ad</PageTitle>
+
+<EditForm Model="@ad" OnValidSubmit="Save">
+    Ad type: <br>
+    <InputSelect @bind-Value="ad.AdType" id="adType">
+        @foreach (var value in Enum.GetValues<AdType>())
+        {
+            <option value="@value">@value.ToString()</option>
+        }
+    </InputSelect>
+    <br>
+
+    Route: <br>
+    <InputText @bind-Value="ad.Route"></InputText><br>
+    <br>
+
+    Pick up date: <br>
+    <InputDate Type="InputDateType.DateTimeLocal"
+           min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.pickUpDateAndTime">
+       </InputDate>
+    <br>
+
+    Number of seats: <br>
+    <InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+    </InputSelect>
+    <br>
+
+    Specific requests: <br>
+    <InputText @bind-Value="ad.SpecificRequests"></InputText><br>
+    <br>
+
+    <button class="btn btn-primary" @onclick="Save">Save</button>
+    <br>
+
+</EditForm>
+
+@code {
+
+    private static Ad ad { get; set; } = new();
+
+    protected override void OnParametersSet()
+    {
+        ad = new Ad();
+        ad.AdType = CreateAnAd.ad.AdType;
+        ad.Route = CreateAnAd.ad.Route;
+        ad.pickUpDateAndTime = CreateAnAd.ad.pickUpDateAndTime;
+        ad.NumberOfSeats = CreateAnAd.ad.NumberOfSeats;
+        ad.SpecificRequests = CreateAnAd.ad.SpecificRequests;
+        base.OnParametersSet();
+    }
+
+
+    private void Save()
+    {
+        List<Ad> adList = BB.LogicalCode.LoadAdListFromFile();
+        adList.Add(ad);
+        BB.LogicalCode.SaveAdToFile(adList);
+    }
+
+}
