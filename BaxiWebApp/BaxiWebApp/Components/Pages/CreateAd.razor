@@ -1,4 +1,4 @@
-﻿@page "/CreateAnAd"
+﻿@page "/CreateAd"
 @using BB
 
 <PageTitle>Create A New Ad</PageTitle>
@@ -50,11 +50,12 @@
     protected override void OnParametersSet()
     {
         ad = new Ad();
-        ad.AdType = CreateAnAd.ad.AdType;
-        ad.Route = CreateAnAd.ad.Route;
-        ad.pickUpDateAndTime = CreateAnAd.ad.pickUpDateAndTime;
-        ad.NumberOfSeats = CreateAnAd.ad.NumberOfSeats;
-        ad.SpecificRequests = CreateAnAd.ad.SpecificRequests;
+        ad.AdType = CreateAd.ad.AdType;
+        ad.Route = CreateAd.ad.Route;
+        ad.pickUpDateAndTime = DateTime.Today;
+        ad.pickUpDateAndTime = CreateAd.ad.pickUpDateAndTime;
+        ad.NumberOfSeats = CreateAd.ad.NumberOfSeats;
+        ad.SpecificRequests = CreateAd.ad.SpecificRequests;
         base.OnParametersSet();
     }
 
