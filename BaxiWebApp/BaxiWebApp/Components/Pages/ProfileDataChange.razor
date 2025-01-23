@@ -52,11 +52,10 @@
 
 
 @code {
-    private static User user { get; set; } = new();
+    private static User user { get; set; } = Profile.user;
 
     protected override void OnParametersSet()
     {
-        User user = new User();
         user.EmailAddress = Profile.user.EmailAddress;
         user.FirstName = Profile.user.FirstName;
         user.LastName = Profile.user.LastName;
@@ -68,8 +67,7 @@
 
     private void Save()
     {
-        user = Profile.user;
-        Profile.userList.Add(user);
+        Profile.userList[Profile.ID] = user;
         BB.LogicalCode.SaveUserToFile(Profile.userList);
     }
 

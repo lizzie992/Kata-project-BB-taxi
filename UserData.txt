@@ -6,59 +6,7 @@
     <FirstName>kata</FirstName>
     <LastName>gulyas</LastName>
     <Department>IT</Department>
-    <PreferredLanguage>English</PreferredLanguage>
-    <Location>westpark</Location>
-    <Rating>0</Rating>
-    <ListOfRatings />
-    <NumberOfWarnings>0</NumberOfWarnings>
-    <Contact>pineapples</Contact>
-  </User>
-  <User>
-    <UserType>Regular</UserType>
-    <EmailAddress>company email</EmailAddress>
-    <FirstName>kata</FirstName>
-    <LastName>gulyas</LastName>
-    <Department>IT</Department>
-    <PreferredLanguage>English</PreferredLanguage>
-    <Location>westpark</Location>
-    <Rating>0</Rating>
-    <ListOfRatings />
-    <NumberOfWarnings>0</NumberOfWarnings>
-    <Contact>pineapples</Contact>
-  </User>
-  <User>
-    <UserType>Regular</UserType>
-    <EmailAddress>company email</EmailAddress>
-    <FirstName>kata</FirstName>
-    <LastName>gulyas</LastName>
-    <Department>IT</Department>
-    <PreferredLanguage>English</PreferredLanguage>
-    <Location>westpark</Location>
-    <Rating>0</Rating>
-    <ListOfRatings />
-    <NumberOfWarnings>0</NumberOfWarnings>
-    <Contact>pineapples</Contact>
-  </User>
-  <User>
-    <UserType>Regular</UserType>
-    <EmailAddress>company email</EmailAddress>
-    <FirstName>kata</FirstName>
-    <LastName>gulyas</LastName>
-    <Department>IT</Department>
-    <PreferredLanguage>English</PreferredLanguage>
-    <Location>westpark</Location>
-    <Rating>0</Rating>
-    <ListOfRatings />
-    <NumberOfWarnings>0</NumberOfWarnings>
-    <Contact>pineapples</Contact>
-  </User>
-  <User>
-    <UserType>Regular</UserType>
-    <EmailAddress>company email</EmailAddress>
-    <FirstName>kata</FirstName>
-    <LastName>gulyas</LastName>
-    <Department>IT</Department>
-    <PreferredLanguage>English</PreferredLanguage>
+    <PreferredLanguage>Spanish</PreferredLanguage>
     <Location>westpark</Location>
     <Rating>0</Rating>
     <ListOfRatings />
