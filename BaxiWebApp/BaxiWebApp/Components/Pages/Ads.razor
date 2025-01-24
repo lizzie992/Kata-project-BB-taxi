@@ -41,10 +41,10 @@
 }
 else
 {
+    @deleteOldAds(AdList)
     <div class="adList">
         @foreach (var Ad in AdList)
         {
-            @deleteOldAds(Ad, AdList)
             <div class="ad">
                 <p>Ad type: @Ad.AdType</p>
                 <p>Route: @Ad.Route</p>
@@ -63,13 +63,9 @@ else
 @code {
     List<Ad> AdList = BB.LogicalCode.LoadAdListFromFile();
 
-    public static Ad deleteOldAds(Ad ad, List<Ad> AdList)
+    public static List<Ad> deleteOldAds(List<Ad> AdList)
     {
-        int result = DateTime.Compare(ad.pickUpDateAndTime, DateTime.Now);
-        if (result < 0)
-        {
-            AdList.Remove(ad);
-        }
-        return ad;
+        AdList.RemoveAll(ad => ad.pickUpDateAndTime < DateTime.Now);
+        return AdList;
     }
 }
