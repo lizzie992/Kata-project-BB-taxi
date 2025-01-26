@@ -1,6 +1,7 @@
 ﻿@page "/Ads"
 @using BB
 
+
 <PageTitle>Ads</PageTitle>
 
 <style>
@@ -41,7 +42,23 @@
 }
 else
 {
-    @deleteOldAds(AdList)
+   @*  @deleteOldAds(AdList) *@
+
+
+    <QuickGrid Items="@AdList" Virtualize="true" PageSize="5" Class="table table-striped table-hover">
+        @foreach (var Ad in AdList)
+        {
+            <Propertycolumn title="Ad type:"><Property="@(Ad => Ad.AdType)" Sortable="true" /></Propertycolumn>
+            <Propertycolumn title="Route:"><Property="@(Ad => Ad.Route)" Sortable="true" /></Propertycolumn>
+            <Propertycolumn title="Pick up date and time:"><Property="@(Ad => Ad.pickUpDateAndTime)" Sortable="true" /></Propertycolumn>
+            <Propertycolumn title="Number of seats:"><Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" /></Propertycolumn>
+            <Propertycolumn title="Specific requests:"><Property="@(Ad => Ad.SpecificRequests)" Sortable="true" /></Propertycolumn>
+            <Propertycolumn title="Contact:"><button>Contact me!</button></Propertycolumn>
+        }
+    </QuickGrid>
+
+
+
     <div class="adList">
         @foreach (var Ad in AdList)
         {
@@ -68,4 +85,5 @@ else
         AdList.RemoveAll(ad => ad.pickUpDateAndTime < DateTime.Now);
         return AdList;
     }
+}
 }
