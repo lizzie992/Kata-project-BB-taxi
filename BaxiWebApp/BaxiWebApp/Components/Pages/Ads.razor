@@ -1,5 +1,6 @@
 ﻿@page "/Ads"
 @using BB
+@using Microsoft.AspNetCore.Components.QuickGrid
 
 
 <PageTitle>Ads</PageTitle>
@@ -42,23 +43,26 @@
 }
 else
 {
-   @*  @deleteOldAds(AdList) *@
+    @*  @deleteOldAds(AdList) *@
 
+    <div>
+        <QuickGrid Items="@AdList.AsQueryable()" @ref="grid">
+            <PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
+            </PropertyColumn>
+            <PropertyColumn Title="Route:" Property="@(Ad => Ad.Route)" Sortable="true">
+            </PropertyColumn>
+            <PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.pickUpDateAndTime)" Sortable="true" />
+            <PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
+            <PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+            <TemplateColumn Title="Contact">
+                <button>Contact me!</button> @* button not working yet, it should open the chat *@
+            </TemplateColumn>
+        </QuickGrid>
+    </div>
 
-    <QuickGrid Items="@AdList" Virtualize="true" PageSize="5" Class="table table-striped table-hover">
-        @foreach (var Ad in AdList)
-        {
-            <Propertycolumn title="Ad type:"><Property="@(Ad => Ad.AdType)" Sortable="true" /></Propertycolumn>
-            <Propertycolumn title="Route:"><Property="@(Ad => Ad.Route)" Sortable="true" /></Propertycolumn>
-            <Propertycolumn title="Pick up date and time:"><Property="@(Ad => Ad.pickUpDateAndTime)" Sortable="true" /></Propertycolumn>
-            <Propertycolumn title="Number of seats:"><Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" /></Propertycolumn>
-            <Propertycolumn title="Specific requests:"><Property="@(Ad => Ad.SpecificRequests)" Sortable="true" /></Propertycolumn>
-            <Propertycolumn title="Contact:"><button>Contact me!</button></Propertycolumn>
-        }
-    </QuickGrid>
-
-
-
+    <br>
+    <br>
+    <br>
     <div class="adList">
         @foreach (var Ad in AdList)
         {
@@ -85,5 +89,12 @@ else
         AdList.RemoveAll(ad => ad.pickUpDateAndTime < DateTime.Now);
         return AdList;
     }
+
+
+
+    QuickGrid<Ad>? grid;
+
+
+
 }
 }
