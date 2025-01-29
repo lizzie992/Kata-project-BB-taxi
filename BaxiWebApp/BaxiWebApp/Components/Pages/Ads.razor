@@ -45,8 +45,50 @@ else
 {
     @*  @deleteOldAds(AdList) *@
 
+    <p>I am looking for a:</p>
+    <InputSelect @bind-Value="_adType" id="adType">
+        @foreach (var value in Enum.GetValues<AdType>())
+        {
+            <option value="@value">@value.ToString()</option>
+        } 
+    </InputSelect>
+    <br>
+    <br>
+
+    <p>On a route:</p>
+    <div class="search-box">
+        <input type="search" autofocus @bind="_searchRoute" @bind:event="oninput" placeholder="Route..." />
+    </div>
+    <br>
+    <br>
+
+    <p>Between the following date and time:</p>
+    <InputDate Type="InputDateType.DateTimeLocal"
+               min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
+    </InputDate>
+    <InputDate Type="InputDateType.DateTimeLocal"
+               min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime2">
+    </InputDate>
+    <br>
+    <br>
+
+    <p>Requested number of seats:</p>
+    <InputSelect @bind-Value="_requestedSeats" id="numberOfSeats">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+    </InputSelect>
+    <br>
+
+
+    <br>
+    <br>
+    <p>Click on the title of the column to sort it!</p>
     <div>
-        <QuickGrid Items="@AdList.AsQueryable()" @ref="grid">
+        <QuickGrid Items="FilteredAds" @ref="grid">
             <PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
             </PropertyColumn>
             <PropertyColumn Title="Route:" Property="@(Ad => Ad.Route)" Sortable="true">
@@ -90,11 +132,34 @@ else
         return AdList;
     }
 
+    string? _searchRoute = "";
+    int _requestedSeats = 1;
+
+    BB.AdType _adType = new AdType();
+    public static List<AdType> _allAdTypes;
 
 
+    DateTime _datetime1 = DateTime.Now;
+    DateTime _datetime2 = DateTime.Now.AddDays(90);
+
+    IQueryable<Ad>? itemsQueryable = BB.LogicalCode.LoadAdListFromFile().AsQueryable();
     QuickGrid<Ad>? grid;
 
+    IQueryable<Ad> FilteredAds
+    {
+        get
+        {
+            var result = itemsQueryable;
 
+            result = result.Where(Ad => Ad.AdType == _adType
+                && Ad.Route.Contains(_searchRoute, StringComparison.CurrentCultureIgnoreCase)
+            && Ad.NumberOfSeats >= _requestedSeats
+            && _datetime1 <= Ad.pickUpDateAndTime
+            && Ad.pickUpDateAndTime <= _datetime2);
+
+            return result;
+        }
+    }
 
 }
 }
