@@ -50,7 +50,7 @@ else
         @foreach (var value in Enum.GetValues<AdType>())
         {
             <option value="@value">@value.ToString()</option>
-        } 
+        }
     </InputSelect>
     <br>
     <br>
@@ -105,7 +105,7 @@ else
     <br>
     <br>
     <br>
-    <div class="adList">
+    @*  <div class="adList">
         @foreach (var Ad in AdList)
         {
             <div class="ad">
@@ -117,7 +117,7 @@ else
                 <p><button>Contact me!</button></p>
             </div>
         }
-    </div>
+    </div> *@
 
 }
 
@@ -135,8 +135,9 @@ else
     string? _searchRoute = "";
     int _requestedSeats = 1;
 
-    BB.AdType _adType = new AdType();
-    public static List<AdType> _allAdTypes;
+    BB.AdType _adType = AdType.SelectAll;
+
+    public static string allAdTypes;
 
 
     DateTime _datetime1 = DateTime.Now;
@@ -151,15 +152,20 @@ else
         {
             var result = itemsQueryable;
 
-            result = result.Where(Ad => Ad.AdType == _adType
-                && Ad.Route.Contains(_searchRoute, StringComparison.CurrentCultureIgnoreCase)
-            && Ad.NumberOfSeats >= _requestedSeats
-            && _datetime1 <= Ad.pickUpDateAndTime
-            && Ad.pickUpDateAndTime <= _datetime2);
+            result = result.Where(Ad => 
+                   Ad.Route.Contains(_searchRoute, StringComparison.CurrentCultureIgnoreCase)
+                && Ad.NumberOfSeats >= _requestedSeats
+                && _datetime1 <= Ad.pickUpDateAndTime
+                && Ad.pickUpDateAndTime <= _datetime2);
+
+            if (_adType != AdType.SelectAll)
+            {
+                result = result.Where(Ad => Ad.AdType == _adType);
+            }
+
 
             return result;
         }
     }
 
-}
 }

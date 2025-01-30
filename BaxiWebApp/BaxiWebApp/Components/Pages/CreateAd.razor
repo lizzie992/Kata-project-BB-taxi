@@ -8,6 +8,10 @@
     <InputSelect @bind-Value="ad.AdType" id="adType">
         @foreach (var value in Enum.GetValues<AdType>())
         {
+            if (value == AdType.SelectAll)
+            {
+                continue;
+            }
             <option value="@value">@value.ToString()</option>
         }
     </InputSelect>
