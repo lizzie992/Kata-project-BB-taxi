@@ -1,4 +1,9 @@
 using BaxiWebApp.Components;
+using BaxiWebApp.Components.Account;
+using BaxiWebApp.Data;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BaxiWebApp
 {
@@ -7,10 +12,35 @@ namespace BaxiWebApp
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var connectionString = builder.Configuration.GetConnectionString("BaxiWebAppContextConnection") ?? throw new InvalidOperationException("Connection string 'BaxiWebAppContextConnection' not found.");;
+
+            builder.Services.AddDbContext<BaxiWebAppContext>(options => options.UseSqlite(connectionString));
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            builder.Services.AddCascadingAuthenticationState();
+
+            builder.Services.AddScoped<IdentityUserAccessor>();
+
+            builder.Services.AddScoped<IdentityRedirectManager>();
+
+            builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+
+            builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = IdentityConstants.ApplicationScheme;
+        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+    })
+    .AddIdentityCookies();
+
+            builder.Services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<BaxiWebAppContext>()
+    .AddSignInManager()
+    .AddDefaultTokenProviders();
+
+            builder.Services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
 
             var app = builder.Build();
 
@@ -29,6 +59,8 @@ namespace BaxiWebApp
 
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
+
+            app.MapAdditionalIdentityEndpoints();;
 
             app.Run();
         }
