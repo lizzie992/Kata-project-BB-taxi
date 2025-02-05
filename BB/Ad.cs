@@ -9,6 +9,14 @@ namespace BB
     public class Ad
     {
 
+        private int _id;
+        public int ID
+        {
+
+            get { return _id; }
+            set { _id = value; }
+        }
+
         private List<Ad> _adList;
 
         public List<Ad> AdvertList

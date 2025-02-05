@@ -10,92 +10,92 @@ namespace BB
 {
     public class User : IdentityUser
     {
-		private UserType _userType;
+        private UserType _userType;
 
-		public UserType UserType
-		{
-			get { return _userType; }
-			set { _userType = value; }
-		}
-
-
-		private string _emailAddress;
-
-		public string EmailAddress
-		{
-			get { return _emailAddress; }
-			set { _emailAddress = value; }
-		}
+        public UserType UserType
+        {
+            get { return _userType; }
+            set { _userType = value; }
+        }
 
 
-		private string _firstName;
+        private string? _emailAddress;
 
-		public string FirstName
-		{
-			get { return _firstName; }
-			set { _firstName = value; }
-		}
+        public string? EmailAddress
+        {
+            get { return _emailAddress; }
+            set { _emailAddress = value; }
+        }
 
-		private string _lastName;
 
-		public string LastName
-		{
-			get { return _lastName; }
-			set { _lastName = value; }
-		}
+        private string? _firstName;
+
+        public string? FirstName
+        {
+            get { return _firstName; }
+            set { _firstName = value; }
+        }
+
+        private string? _lastName;
+
+        public string? LastName
+        {
+            get { return _lastName; }
+            set { _lastName = value; }
+        }
 
         private Department _department;
 
-		public Department Department
-		{
-			get { return _department; }
-			set { _department = value; }
-		}
-
-		private PreferredLanguage _preferredLanguage;
-
-		public PreferredLanguage PreferredLanguage
+        public Department Department
         {
-			get { return _preferredLanguage; }
-			set { _preferredLanguage = value; }
-		}
+            get { return _department; }
+            set { _department = value; }
+        }
 
-		private string _location;
+        private PreferredLanguage _preferredLanguage;
 
-		public string Location
-		{
-			get { return _location; }
-			set { _location = value; }
-		}
-
-		private int _rating;
-
-		public int Rating
-		{
-			get { return _rating; }
-			set { _rating = value; }
-		}
-
-		private List<int> _listOfRatings;
-
-		public List<int> ListOfRatings
+        public PreferredLanguage PreferredLanguage
         {
-			get { return _listOfRatings; }
-			set { _listOfRatings = value; }
-		}
+            get { return _preferredLanguage; }
+            set { _preferredLanguage = value; }
+        }
 
+        private string? _location;
 
-		private int _numberOfWarnings;
-
-		public int NumberOfWarnings
+        public string? Location
         {
-			get { return _numberOfWarnings; }
-			set { _numberOfWarnings = value; }
-		}
+            get { return _location; }
+            set { _location = value; }
+        }
 
-        private string _contact;
+        private int _rating;
 
-        public string Contact
+        public int Rating
+        {
+            get { return _rating; }
+            set { _rating = value; }
+        }
+
+        private List<int>? _listOfRatings;
+
+        public List<int>? ListOfRatings
+        {
+            get { return _listOfRatings; }
+            set { _listOfRatings = value; }
+        }
+
+
+        private int _numberOfWarnings;
+
+        public int NumberOfWarnings
+        {
+            get { return _numberOfWarnings; }
+            set { _numberOfWarnings = value; }
+        }
+
+        private string? _contact;
+
+        public string? Contact
         {
             get { return _contact; }
             set { _contact = value; }
