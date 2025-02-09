@@ -51,22 +51,6 @@ namespace BB
 			set { _pickUpDateAndTime = value; }
 		}
 
-		private DateOnly _pickUpDate;
-
-        public DateOnly pickUpDate
-		{
-            get { return _pickUpDate; }
-            set { _pickUpDate = value; }
-        }
-
-        private TimeOnly _pickUpTime;
-
-        public TimeOnly pickUpTime
-        {
-            get { return _pickUpTime; }
-            set { _pickUpTime = value; }
-        }
-
 
         private int _numberOfSeats;
 
@@ -88,7 +72,7 @@ namespace BB
         {
             return $"Ad type: {AdType}\r\n" +
 				$"In the following route: {Route}\r\n" +
-				$"On {pickUpDate} at {pickUpTime}\r\n" +
+				$"On {pickUpDateAndTime}\r\n" +
 				$"Available seats: {NumberOfSeats}\r\n" +
 				$"Any speicifc requests: {SpecificRequests}\r\n";
         }
