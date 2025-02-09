@@ -40,13 +40,7 @@ namespace BaxiWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateOnly>("pickUpDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("pickUpDateAndTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<TimeOnly>("pickUpTime")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");

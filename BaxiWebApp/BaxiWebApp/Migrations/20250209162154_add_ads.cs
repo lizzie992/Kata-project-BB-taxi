@@ -20,8 +20,6 @@ namespace BaxiWebApp.Migrations
                     AdType = table.Column<int>(type: "INTEGER", nullable: false),
                     Route = table.Column<string>(type: "TEXT", nullable: false),
                     pickUpDateAndTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    pickUpDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
-                    pickUpTime = table.Column<TimeOnly>(type: "TEXT", nullable: false),
                     NumberOfSeats = table.Column<int>(type: "INTEGER", nullable: false),
                     SpecificRequests = table.Column<string>(type: "TEXT", nullable: false),
                     AdID = table.Column<int>(type: "INTEGER", nullable: true)

@@ -1,5 +1,6 @@
 ﻿@page "/CreateAd"
 @using BB
+@inject Data.BaxiWebAppContext context;
 
 <PageTitle>Create A New Ad</PageTitle>
 
@@ -42,7 +43,7 @@
     <InputText @bind-Value="ad.SpecificRequests"></InputText><br>
     <br>
 
-    <button class="btn btn-primary" @onclick="Save">Save</button>
+    <button class="btn btn-primary" @onclick="WriteData">Save</button>
     <br>
 
 </EditForm>
@@ -63,12 +64,18 @@
         base.OnParametersSet();
     }
 
-
-    private void Save()
+    async Task WriteData()
     {
-        List<Ad> adList = BB.LogicalCode.LoadAdListFromFile();
-        adList.Add(ad);
-        BB.LogicalCode.SaveAdToFile(adList);
+        context.Ads.Add(ad);
+        context.SaveChanges();
     }
+
+
+    // private void Save()
+    // {
+    //     List<Ad> adList = BB.LogicalCode.LoadAdListFromFile();
+    //     adList.Add(ad);
+    //     BB.LogicalCode.SaveAdToFile(adList);
+    // }
 
 }

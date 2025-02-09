@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaxiWebApp.Migrations
 {
     [DbContext(typeof(BaxiWebAppContext))]
-    [Migration("20250209142635_add_ads")]
+    [Migration("20250209162154_add_ads")]
     partial class add_ads
     {
         /// <inheritdoc />
@@ -43,13 +43,7 @@ namespace BaxiWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateOnly>("pickUpDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("pickUpDateAndTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<TimeOnly>("pickUpTime")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
