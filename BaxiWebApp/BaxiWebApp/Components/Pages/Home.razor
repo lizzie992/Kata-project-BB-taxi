@@ -1,5 +1,8 @@
 ﻿@page "/"
-
+@using BB
+@using Microsoft.AspNetCore.Identity
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject UserManager<User> UserManager;
 <PageTitle>Home</PageTitle>
 
 
@@ -15,5 +18,29 @@
 <h1 style="text-align:center;">Welcome to Baierbrunn!</h1>
 
 <img src="https://www.bayregio.de/baierbrunn/oben.jpg" alt="Beautiful Baierbrunn" class="center" style="width:90%;">
+
+
+@code{
+
+
+    public static User? user;
+    public async Task identifyLoggedInUser()
+    {
+        //example
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        var claims = authState.User;
+
+        user = await UserManager.GetUserAsync(claims);
+
+        // //changes to uiser ob:
+        // user.Contact = "bla";
+
+        // await UserManager.UpdateAsync(user);
+
+    }
+
+
+}
 
 

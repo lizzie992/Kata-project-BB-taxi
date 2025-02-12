@@ -43,6 +43,10 @@
                 <label for="confirm-password">Confirm Password</label>
                 <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
             </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="firstName" class="form-control" autocomplete="first name" aria-required="true" placeholder="first name" />
+                <label for="First name">First name</label>
+            </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </EditForm>
     </div>
@@ -66,14 +70,19 @@
 
     private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
 
+    string firstName = string.Empty;
+
     public async Task RegisterUser(EditContext editContext)
     {
+
         var user = CreateUser();
 
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
         var result = await UserManager.CreateAsync(user, Input.Password);
+
+        user.FirstName = firstName;
 
         if (!result.Succeeded)
         {
@@ -101,6 +110,9 @@
 
         await SignInManager.SignInAsync(user, isPersistent: false);
         RedirectManager.RedirectTo(ReturnUrl);
+
+
+
     }
 
     private User CreateUser()
@@ -143,4 +155,7 @@
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } = "";
     }
+
+
+
 }
