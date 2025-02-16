@@ -47,6 +47,40 @@
                 <InputText @bind-Value="Input.firstName" class="form-control" autocomplete="firstName" aria-required="true" placeholder="first name" />
                 <label for="First name">First name</label>
             </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.lastName" class="form-control" autocomplete="lastName" aria-required="true" placeholder="last name" />
+                <label for="Last name">Last name</label>
+            </div>
+            <div class="form-floating mb-3">
+                Department:
+                <br>
+                <InputSelect @bind-Value="Input.department" id="department">
+                    @foreach (var value in Enum.GetValues<Department>())
+                    {
+                        <option value="@value">@value.ToString()</option>
+                    }
+                </InputSelect>
+                <label for="Department"></label>
+            </div>
+            <div class="form-floating mb-3">
+                Preferred language of communication
+                <br>
+                <InputSelect @bind-Value="Input.preferredLanguage" id="preferredLanguage">
+                    @foreach (var value in Enum.GetValues<PreferredLanguage>())
+                    {
+                        <option value="@value">@value.ToString()</option>
+                    }
+                </InputSelect>
+                <label for="preferredLanguage"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.location" class="form-control" autocomplete="location" aria-required="true" placeholder="location" />
+                <label for="Location">Location</label>
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.contact" class="form-control" autocomplete="contact" aria-required="true" placeholder="contact" />
+                <label for="Contact">Contact</label>
+            </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </EditForm>
     </div>
@@ -80,6 +114,14 @@
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+        user.FirstName = Input.firstName;
+        user.LastName = Input.lastName;
+        user.Department = Input.department;
+        user.PreferredLanguage = Input.preferredLanguage;
+        user.Location = Input.location;
+        user.Contact = Input.contact;
+
         var result = await UserManager.CreateAsync(user, Input.Password);
 
 
@@ -98,7 +140,7 @@
             NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
             new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
 
-        user.FirstName = Input.firstName;
+
 
         await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
@@ -112,7 +154,7 @@
         await SignInManager.SignInAsync(user, isPersistent: false);
         RedirectManager.RedirectTo(ReturnUrl);
 
-        
+
 
     }
 
@@ -160,7 +202,37 @@
         [Required]
         [Display(Name = "First Name")]
         public string firstName { get; set; } = "";
-        
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string lastName { get; set; } = "";
+
+        [Required]
+        [Display(Name = "Department")]
+        public Department department { get; set; }
+
+        [Required]
+        [Display(Name = "Preferred language")]
+        public PreferredLanguage preferredLanguage { get; set; }
+
+        [Required]
+        [Display(Name = "Location")]
+        public string location { get; set; } = "";
+
+        [Required]
+        [Display(Name = "Rating")]
+        public int? rating;
+
+        [Required]
+        [Display(Name = "listOfRatings")]
+        public List<int>? listOfRatings = new List<int>();
+
+        [Required]
+        [Display(Name = "numberOfWarnings")]
+        public int numberOfWarnings = 0; //this is default 0, the admins can add warnings later if needed
+
+        [Display(Name = "Contact")]
+        public string? contact { get; set; } = ""; //not mandatory so it can stay null if someone does not want to give contact info
 
     }
 
