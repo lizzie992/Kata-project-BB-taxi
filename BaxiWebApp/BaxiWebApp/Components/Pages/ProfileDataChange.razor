@@ -1,9 +1,16 @@
 ﻿@page "/ProfileDataChange"
 @using BB
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject UserManager<User> UserManager;
 
 <PageTitle>ProfileDataChange</PageTitle>
 
 <h1 style="text-align:center;">Change your profile data!</h1>
+
+@identifyLoggedInUser();
 
 <EditForm Model="@user" OnValidSubmit="Save">
 
@@ -52,18 +59,26 @@
 
 
 @code {
-    private static User user { get; set; } = Profile.user;
-
-    protected override void OnParametersSet()
+    public static User user;
+    public async Task identifyLoggedInUser()
     {
-        user.EmailAddress = Profile.user.EmailAddress;
-        user.FirstName = Profile.user.FirstName;
-        user.LastName = Profile.user.LastName;
-        user.Department = Profile.user.Department;
-        user.Location = Profile.user.Location;
-        user.Contact = Profile.user.Contact;
-        base.OnParametersSet();
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        var claims = authState.User;
+
+        user = await UserManager.GetUserAsync(claims);
     }
+
+    // protected override void OnParametersSet()
+    // {
+    //     user.EmailAddress = Profile.user.EmailAddress;
+    //     user.FirstName = Profile.user.FirstName;
+    //     user.LastName = Profile.user.LastName;
+    //     user.Department = Profile.user.Department;
+    //     user.Location = Profile.user.Location;
+    //     user.Contact = Profile.user.Contact;
+    //     base.OnParametersSet();
+    // }
 
     private void Save()
     {
