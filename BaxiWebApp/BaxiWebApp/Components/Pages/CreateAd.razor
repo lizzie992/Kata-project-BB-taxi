@@ -55,6 +55,7 @@
     protected override void OnParametersSet()
     {
         ad = new Ad();
+        ad.AdOwner = Home.user;
         ad.AdType = CreateAd.ad.AdType;
         ad.Route = CreateAd.ad.Route;
         ad.pickUpDateAndTime = DateTime.Today;
