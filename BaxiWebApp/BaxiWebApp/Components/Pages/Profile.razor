@@ -2,7 +2,9 @@
 @using BB
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
-@using Pages
+@using Microsoft.AspNetCore.Identity
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject UserManager<User> UserManager;
 
 
 
@@ -30,5 +32,14 @@
 @code {
     // public static List<User> userList = BB.LogicalCode.LoadUserListFromFile();
     // public static int ID = userList.Count - 1; //I will get the last user data from the list, as I still dont know anything about the login process :D
-    public static User user = Home.user;
+    
+    public static User user;
+    public async Task identifyLoggedInUser()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        var claims = authState.User;
+
+        user = await UserManager.GetUserAsync(claims);
+    }
 }
