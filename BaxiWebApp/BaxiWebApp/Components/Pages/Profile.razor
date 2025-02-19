@@ -12,29 +12,38 @@
 
 <h1 style="text-align:center;">Profile data</h1>
 
-@identifyLoggedInUser();
+@* @identifyLoggedInUser(); *@
 
-<div class="profileData">
-    <p>Email address: @user.EmailAddress</p>
-    <p>Name: @user.FirstName @user.LastName</p>
-    <p>Department: @user.Department</p>
-    <p>Location: @user.Location</p>
-    <p>Preferred language: @user.PreferredLanguage</p>
-    <p>Contact: @user.Contact</p>
-    <p>Rating: @user.Rating</p>
-    <p>Number of warnings: @user.NumberOfWarnings</p>
+@if(user!=null)
+{
+    <div class="profileData">
+        <p>Email address: @user.EmailAddress</p>
+        <p>Name: @user.FirstName @user.LastName</p>
+        <p>Department: @user.Department</p>
+        <p>Location: @user.Location</p>
+        <p>Preferred language: @user.PreferredLanguage</p>
+        <p>Contact: @user.Contact</p>
+        <p>Rating: @user.Rating</p>
+        <p>Number of warnings: @user.NumberOfWarnings</p>
 
-    <a href="ProfileDataChange">
-        <button>Click here to change your profile data!</button>
-    </a>
+        <a href="ProfileDataChange">
+            <button>Click here to change your profile data!</button>
+        </a>
 
-</div>
+    </div>
+}
+else
+{
+    <div>Please log in to see your profile data!</div>
+}
+
+
 
 
 @code {
     // public static List<User> userList = BB.LogicalCode.LoadUserListFromFile();
     // public static int ID = userList.Count - 1; //I will get the last user data from the list, as I still dont know anything about the login process :D
-    
+
     public static User user;
     public async Task identifyLoggedInUser()
     {
@@ -43,5 +52,19 @@
         var claims = authState.User;
 
         user = await UserManager.GetUserAsync(claims);
+    }
+
+    protected override void OnParametersSet()
+    {
+        user.EmailAddress = Profile.user.EmailAddress;
+        user.FirstName = Profile.user.FirstName;
+        user.LastName = Profile.user.LastName;
+        user.Department = Profile.user.Department;
+        user.PreferredLanguage = Profile.user.PreferredLanguage;
+        user.Location = Profile.user.Location;
+        user.Contact = Profile.user.Contact;
+        user.NumberOfWarnings = Profile.user.NumberOfWarnings;
+        user.Rating = Profile.user.Rating;
+        base.OnParametersSet();
     }
 }
