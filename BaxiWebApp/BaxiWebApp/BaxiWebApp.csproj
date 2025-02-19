@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Components\Account\Pages\Logout.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\BB\BB.csproj" />
   </ItemGroup>
 
@@ -21,6 +25,18 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Account\Pages\Logout.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Account\Pages\Logout.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\Account\Pages\Logout.razor" />
   </ItemGroup>
 
 </Project>

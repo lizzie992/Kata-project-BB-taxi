@@ -1,0 +1,18 @@
+﻿@page "/Logout"
+@using BB
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject SignInManager<User> signInManger;
+@inject UserManager<User> UserManager;
+
+
+<h3>Logout</h3>
+
+<Button @onclick="signInManger.SignOutAsync">Log Out</Button>
+
+
+@code {
+
+}
