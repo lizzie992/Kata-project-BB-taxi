@@ -10,7 +10,6 @@
 
 <h1 style="text-align:center;">Change your profile data!</h1>
 
-@identifyLoggedInUser();
 
 <EditForm Model="@user" OnValidSubmit="Save">
 
@@ -48,11 +47,8 @@
     <InputText @bind-Value="user.Contact"></InputText><br>
     <br>
 
-    <button class="btn btn-primary" @onclick="Save">Save</button>
-    <br>
-
     <a href="Profile">
-        <button>Back to your profile!</button>
+        <button @onclick="Save">Save</button>
     </a>
 
 </EditForm>
@@ -69,21 +65,15 @@
         user = await UserManager.GetUserAsync(claims);
     }
 
-    // protected override void OnParametersSet()
-    // {
-    //     user.EmailAddress = Profile.user.EmailAddress;
-    //     user.FirstName = Profile.user.FirstName;
-    //     user.LastName = Profile.user.LastName;
-    //     user.Department = Profile.user.Department;
-    //     user.Location = Profile.user.Location;
-    //     user.Contact = Profile.user.Contact;
-    //     base.OnParametersSet();
-    // }
+    protected override void OnParametersSet()
+    {
+        identifyLoggedInUser();
+        base.OnParametersSet();
+    }
 
     private void Save()
     {
-        // Profile.userList[Profile.ID] = user;
-        // BB.LogicalCode.SaveUserToFile(Profile.userList);
+        UserManager.UpdateAsync(user);
     }
 
 }
