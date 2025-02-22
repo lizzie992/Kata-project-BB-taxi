@@ -125,7 +125,21 @@ else
 
 
 @code {
-    List<Ad> AdList = BB.LogicalCode.LoadAdListFromFile();
+
+    public static List<Ad> AdList = new List<Ad>();
+
+    protected override void OnParametersSet()
+    {
+        AdList = context.Ads.ToList<Ad>();
+        base.OnParametersSet();
+    }
+
+    // async Task<List<Ad>> LoadList()
+    // {
+    //     AdList = context.Ads.ToList<Ad>();
+    //     return AdList;
+    // }
+
 
     public static List<Ad> deleteOldAds(List<Ad> AdList)
     {
@@ -144,14 +158,17 @@ else
     DateTime _datetime1 = DateTime.Now;
     DateTime _datetime2 = DateTime.Now.AddDays(90);
 
-    IQueryable<Ad>? itemsQueryable = BB.LogicalCode.LoadAdListFromFile().AsQueryable();
+
+    // IQueryable<Ad>? itemsQueryable = context.Ads.ToList<Ad>().AsQueryable();
+
+
     QuickGrid<Ad>? grid;
 
     IQueryable<Ad> FilteredAds
     {
         get
         {
-            var result = itemsQueryable;
+            var result = context.Ads.ToList<Ad>().AsQueryable(); 
 
             result = result.Where(Ad => 
                    Ad.Route.Contains(_searchRoute, StringComparison.CurrentCultureIgnoreCase)

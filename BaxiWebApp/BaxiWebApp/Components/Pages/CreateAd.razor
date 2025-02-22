@@ -1,6 +1,12 @@
 ﻿@page "/CreateAd"
 @using BB
 @inject Data.BaxiWebAppContext context;
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject SignInManager<User> signInManger;
+@inject UserManager<User> UserManager;
+@inject NavigationManager NavigationManager
 
 <PageTitle>Create A New Ad</PageTitle>
 
@@ -54,23 +60,35 @@
 
     protected override void OnParametersSet()
     {
+        identifyLoggedInUser().GetAwaiter().GetResult();
         ad = new Ad();
-        // ad.AdOwner = 
+        ad.AdOwner = user;
         ad.AdType = CreateAd.ad.AdType;
         ad.Route = CreateAd.ad.Route;
         ad.pickUpDateAndTime = DateTime.Today;
         ad.pickUpDateAndTime = CreateAd.ad.pickUpDateAndTime;
         ad.NumberOfSeats = CreateAd.ad.NumberOfSeats;
         ad.SpecificRequests = CreateAd.ad.SpecificRequests;
+
         base.OnParametersSet();
+    }
+
+    private User user;
+    public async Task identifyLoggedInUser()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        var claims = authState.User;
+
+        user = await UserManager.GetUserAsync(claims);
     }
 
     async Task WriteData()
     {
         context.Ads.Add(ad);
         context.SaveChanges();
+        NavigationManager.NavigateTo("Ads");
     }
-
 
     // private void Save()
     // {

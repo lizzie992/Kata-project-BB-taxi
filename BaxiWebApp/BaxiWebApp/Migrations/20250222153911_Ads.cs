@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BaxiWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class add_ads : Migration
+    public partial class Ads : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,6 +17,7 @@ namespace BaxiWebApp.Migrations
                 {
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    AdOwnerId = table.Column<string>(type: "TEXT", nullable: true),
                     AdType = table.Column<int>(type: "INTEGER", nullable: false),
                     Route = table.Column<string>(type: "TEXT", nullable: false),
                     pickUpDateAndTime = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -32,12 +33,22 @@ namespace BaxiWebApp.Migrations
                         column: x => x.AdID,
                         principalTable: "Ads",
                         principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Ads_AspNetUsers_AdOwnerId",
+                        column: x => x.AdOwnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ads_AdID",
                 table: "Ads",
                 column: "AdID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ads_AdOwnerId",
+                table: "Ads",
+                column: "AdOwnerId");
         }
 
         /// <inheritdoc />

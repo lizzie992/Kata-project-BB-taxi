@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaxiWebApp.Migrations
 {
     [DbContext(typeof(BaxiWebAppContext))]
-    [Migration("20250209162154_add_ads")]
-    partial class add_ads
+    [Migration("20250222153911_Ads")]
+    partial class Ads
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,9 @@ namespace BaxiWebApp.Migrations
 
                     b.Property<int?>("AdID")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("AdOwnerId")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("AdType")
                         .HasColumnType("INTEGER");
@@ -49,6 +52,8 @@ namespace BaxiWebApp.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("AdID");
+
+                    b.HasIndex("AdOwnerId");
 
                     b.ToTable("Ads");
                 });
@@ -283,6 +288,12 @@ namespace BaxiWebApp.Migrations
                     b.HasOne("BB.Ad", null)
                         .WithMany("AdvertList")
                         .HasForeignKey("AdID");
+
+                    b.HasOne("BB.User", "AdOwner")
+                        .WithMany()
+                        .HasForeignKey("AdOwnerId");
+
+                    b.Navigation("AdOwner");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
