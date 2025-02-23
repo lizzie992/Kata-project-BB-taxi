@@ -23,6 +23,7 @@ else
     <p>Click on the title of the column to sort it!</p>
     <div>
         <QuickGrid Items="FilteredAds" @ref="grid">
+            
             <PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
             </PropertyColumn>
             <PropertyColumn Title="Route:" Property="@(Ad => Ad.Route)" Sortable="true">
@@ -30,8 +31,11 @@ else
             <PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.pickUpDateAndTime)" Sortable="true" />
             <PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
             <PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
-            <TemplateColumn Title="Modify/Delete Ad">
-                <button>Modify/Delete Ad</button>
+            <TemplateColumn Title="Modify Ads" Context="Ad">
+                <button class="btn btn-primary btn-sm mx-1" @onclick="() => ModifyAd(Ad)">Edit me!</button>
+            </TemplateColumn>
+            <TemplateColumn Title="Delete Ads" Context="Ad">
+                <button class="btn btn-primary btn-sm mx-1" @onclick="() => DeleteAd(Ad)">Delete me!</button>
             </TemplateColumn>
         </QuickGrid>
     </div>
@@ -70,5 +74,17 @@ else
         }
     }
 
+    private void ModifyAd(Ad ad)
+    {
+
+
+    }
+
+    private void DeleteAd(Ad ad)
+    {
+        context.Ads.Remove(ad);
+        context.SaveChanges();
+        grid.RefreshDataAsync();
+    }
 
 }
