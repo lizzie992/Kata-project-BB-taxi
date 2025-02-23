@@ -74,10 +74,11 @@ else
         }
     }
 
-    private void ModifyAd(Ad ad)
+    public static int ID;
+    public void ModifyAd(Ad ad)
     {
-
-
+        ID = ad.ID;
+        NavigationManager.NavigateTo("ModifyAd");
     }
 
     private void DeleteAd(Ad ad)
