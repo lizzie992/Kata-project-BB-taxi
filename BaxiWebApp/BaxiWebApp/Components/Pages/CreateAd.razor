@@ -8,51 +8,57 @@
 @inject UserManager<User> UserManager;
 @inject NavigationManager NavigationManager
 
-<PageTitle>Create A New Ad</PageTitle>
+<AuthorizeView Context="authContext">
+    <Authorized>
 
-<EditForm Model="@ad">
-    I am a: <br>
-    <InputSelect @bind-Value="ad.AdType" id="adType">
-        @foreach (var value in Enum.GetValues<AdType>())
-        {
-            if (value == AdType.SelectAll)
-            {
-                continue;
-            }
-            <option value="@value">@value.ToString()</option>
-        }
-    </InputSelect>
-    <br>
+        <PageTitle>Create A New Ad</PageTitle>
 
-    Route: <br>
-    <InputText @bind-Value="ad.Route"></InputText><br>
-    <br>
+        <EditForm Model="@ad">
+            I am a: <br>
+            <InputSelect @bind-Value="ad.AdType" id="adType">
+                @foreach (var value in Enum.GetValues<AdType>())
+                {
+                    if (value == AdType.SelectAll)
+                    {
+                        continue;
+                    }
+                    <option value="@value">@value.ToString()</option>
+                }
+            </InputSelect>
+            <br>
 
-    Pick up date: <br>
-    <InputDate Type="InputDateType.DateTimeLocal"
-           min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.pickUpDateAndTime">
-       </InputDate>
-    <br>
+            Route: <br>
+            <InputText @bind-Value="ad.Route"></InputText><br>
+            <br>
 
-    Number of seats: <br>
-    <InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-    </InputSelect>
-    <br>
+            Pick up date: <br>
+            <InputDate Type="InputDateType.DateTimeLocal"
+                       min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.pickUpDateAndTime">
+            </InputDate>
+            <br>
 
-    Specific requests: <br>
-    <InputText @bind-Value="ad.SpecificRequests"></InputText><br>
-    <br>
+            Number of seats: <br>
+            <InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            </InputSelect>
+            <br>
 
-    <button class="btn btn-primary" @onclick="WriteData">Save</button>
-    <br>
+            Specific requests: <br>
+            <InputText @bind-Value="ad.SpecificRequests"></InputText><br>
+            <br>
 
-</EditForm>
+            <button class="btn btn-primary" @onclick="WriteData">Save</button>
+            <br>
+
+        </EditForm>
+
+    </Authorized>
+</AuthorizeView>
 
 @code {
 

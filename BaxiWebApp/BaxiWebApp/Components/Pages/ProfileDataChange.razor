@@ -2,57 +2,60 @@
 @using BB
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.Identity
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject UserManager<User> UserManager;
 
-<PageTitle>ProfileDataChange</PageTitle>
 
-<h1 style="text-align:center;">Change your profile data!</h1>
+<AuthorizeView Context="authContext">
+    <Authorized>
+        <PageTitle>ProfileDataChange</PageTitle>
+
+        <h1 style="text-align:center;">Change your profile data!</h1>
 
 
-<EditForm Model="@user" OnValidSubmit="Save">
+        <EditForm Model="@user" OnValidSubmit="Save">
 
-    First name:
-    <InputText @bind-Value="user.FirstName"></InputText><br>
-    <br>
+            First name:
+            <InputText @bind-Value="user.FirstName"></InputText><br>
+            <br>
 
-    Last name:
-    <InputText @bind-Value="user.LastName"></InputText><br>
-    <br>
+            Last name:
+            <InputText @bind-Value="user.LastName"></InputText><br>
+            <br>
 
-    Department:
-    <InputSelect @bind-Value="user.Department" id="department">
-        @foreach (var value in Enum.GetValues<Department>())
-        {
-            <option value="@value">@value.ToString()</option>
-        }
-    </InputSelect>
-    <br>
+            Department:
+            <InputSelect @bind-Value="user.Department" id="department">
+                @foreach (var value in Enum.GetValues<Department>())
+                {
+                    <option value="@value">@value.ToString()</option>
+                }
+            </InputSelect>
+            <br>
 
-    Preferred language:
-    <InputSelect @bind-Value="user.PreferredLanguage" id="preferredLanguage">
-        @foreach (var value in Enum.GetValues<PreferredLanguage>())
-        {
-            <option value="@value">@value.ToString()</option>
-        }
-    </InputSelect>
-    <br>
+            Preferred language:
+            <InputSelect @bind-Value="user.PreferredLanguage" id="preferredLanguage">
+                @foreach (var value in Enum.GetValues<PreferredLanguage>())
+                {
+                    <option value="@value">@value.ToString()</option>
+                }
+            </InputSelect>
+            <br>
 
-    Location:
-    <InputText @bind-Value="user.Location"></InputText><br>
-    <br>
+            Location:
+            <InputText @bind-Value="user.Location"></InputText><br>
+            <br>
 
-    Contact:
-    <InputText @bind-Value="user.Contact"></InputText><br>
-    <br>
+            Contact:
+            <InputText @bind-Value="user.Contact"></InputText><br>
+            <br>
 
-    <a href="Profile">
-        <button @onclick="Save">Save</button>
-    </a>
+            <a href="Profile">
+                <button @onclick="Save">Save</button>
+            </a>
 
-</EditForm>
-
+        </EditForm>
+    </Authorized>
+</AuthorizeView>
 
 @code {
     public static User user;

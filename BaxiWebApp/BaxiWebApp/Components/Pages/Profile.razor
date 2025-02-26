@@ -7,36 +7,38 @@
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
 
+<AuthorizeView>
+    <Authorized>
+
+        <PageTitle>Profile</PageTitle>
+
+        <h1 style="text-align:center;">Profile data</h1>
 
 
-<PageTitle>Profile</PageTitle>
-
-<h1 style="text-align:center;">Profile data</h1>
 
 
+        <div class="profileData">
+            <p>Email address: @user.Email</p>
+            <p>Name: @user.FirstName @user.LastName</p>
+            <p>Department: @user.Department</p>
+            <p>Location: @user.Location</p>
+            <p>Preferred language: @user.PreferredLanguage</p>
+            <p>Contact: @user.Contact</p>
+            <p>Rating: @user.Rating</p>
+            <p>Number of warnings: @user.NumberOfWarnings</p>
 
+            <a href="ProfileDataChange">
+                <button>Click here to change your profile data!</button>
+            </a>
 
-<div class="profileData">
-    <p>Email address: @user.Email</p>
-    <p>Name: @user.FirstName @user.LastName</p>
-    <p>Department: @user.Department</p>
-    <p>Location: @user.Location</p>
-    <p>Preferred language: @user.PreferredLanguage</p>
-    <p>Contact: @user.Contact</p>
-    <p>Rating: @user.Rating</p>
-    <p>Number of warnings: @user.NumberOfWarnings</p>
+            <a href="/Account/Manage/ChangePassword">
+                <button>Click here to change your password!</button>
+            </a>
 
-    <a href="ProfileDataChange">
-        <button>Click here to change your profile data!</button>
-    </a>
+        </div>
 
-    <a href="/Account/Manage/ChangePassword">
-        <button>Click here to change your password!</button>
-    </a>
-
-</div>
-
-
+    </Authorized>
+</AuthorizeView>
 
 @code {
     // public static List<User> userList = BB.LogicalCode.LoadUserListFromFile();
