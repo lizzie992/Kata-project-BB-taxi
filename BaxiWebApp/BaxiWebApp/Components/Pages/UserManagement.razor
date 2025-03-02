@@ -1,0 +1,45 @@
+﻿@page "/UserManagement"
+
+@using BB
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject UserManager<User> UserManager;
+@inject Data.BaxiWebAppContext context;
+
+<h3>User Management Page</h3>
+
+<p>Click on the title of the column to sort it!</p>
+<div>
+    <QuickGrid Items="UserList" @ref="grid">
+        <PropertyColumn Title="User type:" Property="@(User => User.)" Sortable="true">
+        </PropertyColumn>
+    </QuickGrid>
+</div>
+
+
+
+@code {
+    
+    
+    
+    QuickGrid<User>? grid;
+
+    IQueryable<User> UserList
+    {
+        get
+        {
+            var result = context.AspNetUsers.ToList<User>().AsQueryable();
+
+            // result = result.Where();
+
+            return result;
+        }
+    }
+
+
+
+
+}
