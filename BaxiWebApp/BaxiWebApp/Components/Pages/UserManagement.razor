@@ -14,7 +14,7 @@
 <p>Click on the title of the column to sort it!</p>
 <div>
     <QuickGrid Items="UserList" @ref="grid">
-        <PropertyColumn Title="User type:" Property="@(User => User.)" Sortable="true">
+        <PropertyColumn Title="User type:" Property="@(User => User.UserType)" Sortable="true">
         </PropertyColumn>
     </QuickGrid>
 </div>
@@ -22,17 +22,18 @@
 
 
 @code {
-    
-    
-    
+
+
+
     QuickGrid<User>? grid;
 
     IQueryable<User> UserList
     {
         get
         {
-            var result = context.AspNetUsers.ToList<User>().AsQueryable();
+            var result =  UserManager.Users;// context. //AspNetUsers.ToList<User>().AsQueryable();
 
+           
             // result = result.Where();
 
             return result;

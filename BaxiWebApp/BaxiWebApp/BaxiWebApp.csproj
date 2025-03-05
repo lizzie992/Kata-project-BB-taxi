@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Components\Pages\UserManagement.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\BB\BB.csproj" />
   </ItemGroup>
 
@@ -27,8 +23,5 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="Components\Pages\UserManagement.razor" />
-  </ItemGroup>
 
 </Project>
