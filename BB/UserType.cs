@@ -9,6 +9,7 @@ namespace BB
     public enum UserType
     {
         Regular = 0,
-        Admin
+        Admin,
+        SelectAll,
     }
 }

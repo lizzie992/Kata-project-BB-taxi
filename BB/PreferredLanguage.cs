@@ -8,6 +8,6 @@ namespace BB
 {
     public enum PreferredLanguage
     {
-        Chinese = 0, English, Spanish, Arabic, French, German, Russian, Portuguese, Italian, Turkish, Korean, Japanese
+        Chinese = 0, English, Spanish, Arabic, French, German, Russian, Portuguese, Italian, Turkish, Korean, Japanese, SelectAll,
     }
 }
