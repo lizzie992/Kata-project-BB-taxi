@@ -17,6 +17,8 @@ namespace BaxiWebApp
 
             builder.Services.AddDbContext<BaxiWebAppContext>(options => options.UseSqlite(connectionString));
 
+            builder.Services.AddQuickGridEntityFrameworkAdapter();
+
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();

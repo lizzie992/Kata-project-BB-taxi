@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter
 
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject UserManager<User> UserManager;
@@ -11,11 +12,67 @@
 
 <h3>User Management Page</h3>
 
+<style>
+
+    .UserList {
+        display: grid;
+        grid-template-columns: 33% 33% 33%;
+    }
+
+    .User {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        margin: auto;
+        text-align: center;
+        font-family: arial;
+    }
+
+        .User button {
+            border: none;
+            outline: 0;
+            padding: 12px;
+            color: white;
+            background-color: #000;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+
+</style>
+
 <p>Click on the title of the column to sort it!</p>
 <div>
     <QuickGrid Items="UserList" @ref="grid">
         <PropertyColumn Title="User type:" Property="@(User => User.UserType)" Sortable="true">
         </PropertyColumn>
+        <PropertyColumn Title="Email address:" Property="@(User => User.Email)" Sortable="true">
+        </PropertyColumn>
+        <PropertyColumn Title="First name:" Property="@(User => User.FirstName)" Sortable="true">
+        </PropertyColumn>
+        <PropertyColumn Title="Last name:" Property="@(User => User.LastName)" Sortable="true">
+        </PropertyColumn>
+        <PropertyColumn Title="Department:" Property="@(User => User.Department)" Sortable="true">
+        </PropertyColumn>
+        <PropertyColumn Title="Preferred language:" Property="@(User => User.PreferredLanguage)" Sortable="true">
+        </PropertyColumn>
+        <PropertyColumn Title="Location:" Property="@(User => User.Location)" Sortable="true">
+        </PropertyColumn>
+        <PropertyColumn Title="Rating:" Property="@(User => User.Rating)" Sortable="true">
+        </PropertyColumn>
+        <PropertyColumn Title="Number of warnings:" Property="@(User => User.NumberOfWarnings)" Sortable="true">
+        </PropertyColumn>
+        <PropertyColumn Title="Contact:" Property="@(User => User.Contact)" Sortable="true">
+        </PropertyColumn>
+        <TemplateColumn Title="Message:">
+            <button>Send a message!</button>
+        </TemplateColumn>
+        <TemplateColumn Title="Warning:">
+            <button>Give a warning!</button>
+        </TemplateColumn>
+        <TemplateColumn Title="Ban user:">
+            <button>Ban user!</button>
+        </TemplateColumn>
     </QuickGrid>
 </div>
 
@@ -23,7 +80,7 @@
 
 @code {
 
-
+    
 
     QuickGrid<User>? grid;
 
@@ -31,8 +88,7 @@
     {
         get
         {
-            var result =  UserManager.Users;// context. //AspNetUsers.ToList<User>().AsQueryable();
-
+            var result =  UserManager.Users;
            
             // result = result.Where();
 
