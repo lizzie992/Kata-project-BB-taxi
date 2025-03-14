@@ -93,7 +93,7 @@
 		<option value="@value">@value.ToString()</option>
 	}
 </InputSelect>
-<p>Rating:</p>
+@* <p>Rating:</p>
 <InputSelect @bind-Value="_rating" id="_rating">
 	<option value="">Show all</option>
 	<option value="0">No rating yet</option>
@@ -110,7 +110,7 @@
 	<option value="0">No warning yet</option>
 	<option value="1">1</option>
 	<option value="2">2</option>
-</InputSelect>
+</InputSelect> *@
 <br>
 <br>
 <p>Click on the title of the column to sort it!</p>
@@ -139,11 +139,11 @@
 		<TemplateColumn Title="Message:">
 			<button>Send a message!</button>
 		</TemplateColumn>
-		<TemplateColumn Title="Warning:">
-			<button>Give a warning!</button>
+		<TemplateColumn Title="Warning:" Context="User">
+			<button @onclick="() => giveUserAWarning(User)">Give a warning!</button>
 		</TemplateColumn>
-		<TemplateColumn Title="Ban user:">
-			<button>Ban user!</button>
+		<TemplateColumn Title="Delete user:" Context="User">
+			<button @onclick="() => deleteUser(User)">Delete user!</button>
 		</TemplateColumn>
 	</QuickGrid>
 </div>
@@ -175,8 +175,8 @@
 			User.FirstName.Contains(_searchFirstName, StringComparison.CurrentCultureIgnoreCase) &&
 			User.LastName.Contains(_searchLastName, StringComparison.CurrentCultureIgnoreCase) &&
 			User.Location.Contains(_location, StringComparison.CurrentCultureIgnoreCase) &&
-			User.Contact.Contains(_contact, StringComparison.CurrentCultureIgnoreCase) &&
-			_rating == User.Rating && _numberOfWarnings == User.NumberOfWarnings);
+			User.Contact.Contains(_contact, StringComparison.CurrentCultureIgnoreCase) /* && */
+			/* _rating == User.Rating && _numberOfWarnings == User.NumberOfWarnings */);
 
 			if (_userType != UserType.SelectAll)
 			{
@@ -197,7 +197,26 @@
 		}
 	}
 
+	int maxNumberOfWarnings = 3;
 
+	public void giveUserAWarning(User user)
+	{
+		user.NumberOfWarnings++;
+		if (user.NumberOfWarnings == maxNumberOfWarnings)
+		{
+			context.Users.Remove(user);
+			grid.RefreshDataAsync();
+		}
+		context.SaveChanges();
+		grid.RefreshDataAsync();
+	}
+
+	public void deleteUser(User user)
+	{
+		context.Users.Remove(user);
+		context.SaveChanges();
+		grid.RefreshDataAsync();
+	}
 
 
 }

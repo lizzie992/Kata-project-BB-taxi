@@ -34,7 +34,6 @@
                     <PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
                     <PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
                     <TemplateColumn Title="Modify Ads" Context="Ad">
-                   
                         <button class="btn btn-primary btn-sm mx-1" @onclick="() => ModifyAd(Ad)">Edit me!</button>
                     </TemplateColumn>
                     <TemplateColumn Title="Delete Ads" Context="Ad">
