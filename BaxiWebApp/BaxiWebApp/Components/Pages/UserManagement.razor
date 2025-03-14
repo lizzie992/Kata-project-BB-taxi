@@ -14,30 +14,30 @@
 
 <style>
 
-    .UserList {
-    display: grid;
-    grid-template-columns: 33% 33% 33%;
-    }
+	.UserList {
+	display: grid;
+	grid-template-columns: 33% 33% 33%;
+	}
 
-    .User {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    margin: auto;
-    text-align: center;
-    font-family: arial;
-    }
+	.User {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	max-width: 400px;
+	margin: auto;
+	text-align: center;
+	font-family: arial;
+	}
 
-    .User button {
-    border: none;
-    outline: 0;
-    padding: 12px;
-    color: white;
-    background-color: #000;
-    text-align: center;
-    cursor: pointer;
-    width: 100%;
-    font-size: 18px;
-    }
+	.User button {
+	border: none;
+	outline: 0;
+	padding: 12px;
+	color: white;
+	background-color: #000;
+	text-align: center;
+	cursor: pointer;
+	width: 100%;
+	font-size: 18px;
+	}
 
 </style>
 
@@ -46,146 +46,156 @@
 <br>
 <p>Role:</p>
 <InputSelect @bind-Value="_userType" id="_userType">
-    @foreach (var value in Enum.GetValues<UserType>())
-    {
-        <option value="@value">@value.ToString()</option>
-    }
+	@foreach (var value in Enum.GetValues<UserType>())
+	{
+		<option value="@value">@value.ToString()</option>
+	}
 </InputSelect>
 <br>
 
 
 <p>Email address contains:</p>
 <div class="search-box">
-    <input type="search" autofocus @bind="_searchEmail" @bind:event="oninput" placeholder="Email..." />
+	<input type="search" autofocus @bind="_searchEmail" @bind:event="oninput" placeholder="Email..." />
 </div>
-<br>
 <br>
 <p>First name contains:</p>
 <div class="search-box">
-    <input type="search" autofocus @bind="_searchFirstName" @bind:event="oninput" placeholder="First name..." />
+	<input type="search" autofocus @bind="_searchFirstName" @bind:event="oninput" placeholder="First name..." />
 </div>
-<br>
 <br>
 <p>Last name contains:</p>
 <div class="search-box">
-    <input type="search" autofocus @bind="_searchLastName" @bind:event="oninput" placeholder="Last name..." />
+	<input type="search" autofocus @bind="_searchLastName" @bind:event="oninput" placeholder="Last name..." />
 </div>
-<br>
 <br>
 <p>Location contains:</p>
 <div class="search-box">
-    <input type="search" autofocus @bind="_location" @bind:event="oninput" placeholder="Location..." />
+	<input type="search" autofocus @bind="_location" @bind:event="oninput" placeholder="Location..." />
 </div>
-<br>
 <br>
 <p>Contact contains:</p>
 <div class="search-box">
-    <input type="search" autofocus @bind="_contact" @bind:event="oninput" placeholder="Contact..." />
+	<input type="search" autofocus @bind="_contact" @bind:event="oninput" placeholder="Contact..." />
 </div>
-
 <p>Department:</p>
 <InputSelect @bind-Value="_department" id="_department">
-    @foreach (var value in Enum.GetValues<Department>())
-    {
-        <option value="@value">@value.ToString()</option>
-    }
+	@foreach (var value in Enum.GetValues<Department>())
+	{
+		<option value="@value">@value.ToString()</option>
+	}
 </InputSelect>
-<br>
 <br>
 <p>Preferred language:</p>
 <InputSelect @bind-Value="_preferredLanguage" id="_preferredLanguage">
-    @foreach (var value in Enum.GetValues<PreferredLanguage>())
-    {
-        <option value="@value">@value.ToString()</option>
-    }
+	@foreach (var value in Enum.GetValues<PreferredLanguage>())
+	{
+		<option value="@value">@value.ToString()</option>
+	}
+</InputSelect>
+<p>Rating:</p>
+<InputSelect @bind-Value="_rating" id="_rating">
+	<option value="">Show all</option>
+	<option value="0">No rating yet</option>
+	<option value="1">1</option>
+	<option value="2">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+	<option value="5">5</option>
 </InputSelect>
 <br>
-
-
+<p>Number of warnings:</p>
+<InputSelect @bind-Value="_numberOfWarnings" id="_numberOfWarnings">
+	<option value="">Show all</option>
+	<option value="0">No warning yet</option>
+	<option value="1">1</option>
+	<option value="2">2</option>
+</InputSelect>
 <br>
 <br>
 <p>Click on the title of the column to sort it!</p>
 <div>
-    <QuickGrid Items="UserList" @ref="grid">
-        <PropertyColumn Title="User type:" Property="@(User => User.UserType)" Sortable="true">
-        </PropertyColumn>
-        <PropertyColumn Title="Email address:" Property="@(User => User.Email)" Sortable="true">
-        </PropertyColumn>
-        <PropertyColumn Title="First name:" Property="@(User => User.FirstName)" Sortable="true">
-        </PropertyColumn>
-        <PropertyColumn Title="Last name:" Property="@(User => User.LastName)" Sortable="true">
-        </PropertyColumn>
-        <PropertyColumn Title="Department:" Property="@(User => User.Department)" Sortable="true">
-        </PropertyColumn>
-        <PropertyColumn Title="Preferred language:" Property="@(User => User.PreferredLanguage)" Sortable="true">
-        </PropertyColumn>
-        <PropertyColumn Title="Location:" Property="@(User => User.Location)" Sortable="true">
-        </PropertyColumn>
-        <PropertyColumn Title="Rating:" Property="@(User => User.Rating)" Sortable="true">
-        </PropertyColumn>
-        <PropertyColumn Title="Number of warnings:" Property="@(User => User.NumberOfWarnings)" Sortable="true">
-        </PropertyColumn>
-        <PropertyColumn Title="Contact:" Property="@(User => User.Contact)" Sortable="true">
-        </PropertyColumn>
-        <TemplateColumn Title="Message:">
-            <button>Send a message!</button>
-        </TemplateColumn>
-        <TemplateColumn Title="Warning:">
-            <button>Give a warning!</button>
-        </TemplateColumn>
-        <TemplateColumn Title="Ban user:">
-            <button>Ban user!</button>
-        </TemplateColumn>
-    </QuickGrid>
+	<QuickGrid Items="UserList" @ref="grid">
+		<PropertyColumn Title="User type:" Property="@(User => User.UserType)" Sortable="true">
+		</PropertyColumn>
+		<PropertyColumn Title="Email address:" Property="@(User => User.Email)" Sortable="true">
+		</PropertyColumn>
+		<PropertyColumn Title="First name:" Property="@(User => User.FirstName)" Sortable="true">
+		</PropertyColumn>
+		<PropertyColumn Title="Last name:" Property="@(User => User.LastName)" Sortable="true">
+		</PropertyColumn>
+		<PropertyColumn Title="Department:" Property="@(User => User.Department)" Sortable="true">
+		</PropertyColumn>
+		<PropertyColumn Title="Preferred language:" Property="@(User => User.PreferredLanguage)" Sortable="true">
+		</PropertyColumn>
+		<PropertyColumn Title="Location:" Property="@(User => User.Location)" Sortable="true">
+		</PropertyColumn>
+		<PropertyColumn Title="Rating:" Property="@(User => User.Rating)" Sortable="true">
+		</PropertyColumn>
+		<PropertyColumn Title="Number of warnings:" Property="@(User => User.NumberOfWarnings)" Sortable="true">
+		</PropertyColumn>
+		<PropertyColumn Title="Contact:" Property="@(User => User.Contact)" Sortable="true">
+		</PropertyColumn>
+		<TemplateColumn Title="Message:">
+			<button>Send a message!</button>
+		</TemplateColumn>
+		<TemplateColumn Title="Warning:">
+			<button>Give a warning!</button>
+		</TemplateColumn>
+		<TemplateColumn Title="Ban user:">
+			<button>Ban user!</button>
+		</TemplateColumn>
+	</QuickGrid>
 </div>
 
 
 
 @code {
+	BB.UserType _userType = UserType.SelectAll;
+	string _searchEmail = "";
+	string _searchFirstName = "";
+	string _searchLastName = "";
+	BB.Department _department = Department.SelectAll;
+	BB.PreferredLanguage _preferredLanguage = PreferredLanguage.SelectAll;
+	string _location = "";
+	int _rating = 0;
+	int _numberOfWarnings = 0;
+	string _contact = "";
 
-    BB.UserType _userType = UserType.SelectAll;
-    string? _searchEmail = "";
-    string? _searchFirstName = "";
-    string? _searchLastName = "";
-    BB.Department _department = Department.SelectAll;
-    BB.PreferredLanguage _preferredLanguage = PreferredLanguage.SelectAll;
-    string? _location = "";
-    int? _rating;
-    int? _numberOfWarnings;
-    string? _contact = "";
+	QuickGrid<User>? grid;
 
-    QuickGrid<User>? grid;
+	IQueryable<User> UserList
+	{
+		get
+		{
+			var result = UserManager.Users.ToList<User>().AsQueryable();
 
-    IQueryable<User> UserList
-    {
-        get
-        {
-            var result =  UserManager.Users;
-           
-            result = result.Where(User => User.Email.Contains(_searchEmail, StringComparison.CurrentCultureIgnoreCase) &&
-            User.FirstName.Contains(_searchFirstName, StringComparison.CurrentCultureIgnoreCase) &&
-            User.LastName.Contains(_searchLastName, StringComparison.CurrentCultureIgnoreCase) &&
-            User.Location.Contains(_location, StringComparison.CurrentCultureIgnoreCase) &&
-            User.Contact.Contains(_contact, StringComparison.CurrentCultureIgnoreCase));
 
-            if (_userType != UserType.SelectAll)
-            {
-                result = result.Where(User => User.UserType == _userType);
-            }
+			result = result.Where(User => User.Email.Contains(_searchEmail, StringComparison.CurrentCultureIgnoreCase) &&
+			User.FirstName.Contains(_searchFirstName, StringComparison.CurrentCultureIgnoreCase) &&
+			User.LastName.Contains(_searchLastName, StringComparison.CurrentCultureIgnoreCase) &&
+			User.Location.Contains(_location, StringComparison.CurrentCultureIgnoreCase) &&
+			User.Contact.Contains(_contact, StringComparison.CurrentCultureIgnoreCase) &&
+			_rating == User.Rating && _numberOfWarnings == User.NumberOfWarnings);
 
-            if (_department != Department.SelectAll)
-            {
-                result = result.Where(User => User.Department == _department);
-            }
+			if (_userType != UserType.SelectAll)
+			{
+				result = result.Where(User => User.UserType == _userType);
+			}
 
-            if (_preferredLanguage != PreferredLanguage.SelectAll)
-            {
-                result = result.Where(User => User.PreferredLanguage == _preferredLanguage);
-            }
+			if (_department != Department.SelectAll)
+			{
+				result = result.Where(User => User.Department == _department);
+			}
 
-            return result;
-        }
-    }
+			if (_preferredLanguage != PreferredLanguage.SelectAll)
+			{
+				result = result.Where(User => User.PreferredLanguage == _preferredLanguage);
+			}
+
+			return result;
+		}
+	}
 
 
 

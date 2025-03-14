@@ -36,7 +36,7 @@ namespace BB
             set { _firstName = value; }
         }
 
-        private string? _lastName;
+        private string? _lastName = "";
 
         public string? LastName
         {
