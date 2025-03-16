@@ -121,6 +121,7 @@
         user.PreferredLanguage = Input.PreferredLanguage;
         user.Location = Input.Location;
         user.Contact = Input.Contact;
+        await UserManager.AddToRoleAsync(user, "User");
 
         var result = await UserManager.CreateAsync(user, Input.Password);
 

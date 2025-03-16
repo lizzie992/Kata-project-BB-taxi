@@ -13,9 +13,11 @@ namespace BaxiWebApp
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var connectionString = builder.Configuration.GetConnectionString("BaxiWebAppContext") ?? throw new InvalidOperationException("Connection string 'BaxiWebAppContextConnection' not found.");;
+            var connectionString = builder.Configuration.GetConnectionString("BaxiWebAppContext") ?? throw new InvalidOperationException("Connection string 'BaxiWebAppContextConnection' not found."); ;
 
             builder.Services.AddDbContext<BaxiWebAppContext>(options => options.UseSqlite(connectionString));
+
+
 
             builder.Services.AddQuickGridEntityFrameworkAdapter();
 
@@ -39,6 +41,7 @@ namespace BaxiWebApp
     .AddIdentityCookies();
 
             builder.Services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BaxiWebAppContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
@@ -63,9 +66,11 @@ namespace BaxiWebApp
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
 
-            app.MapAdditionalIdentityEndpoints();;
+            app.MapAdditionalIdentityEndpoints(); ;
 
             app.Run();
         }
+
+
     }
 }
