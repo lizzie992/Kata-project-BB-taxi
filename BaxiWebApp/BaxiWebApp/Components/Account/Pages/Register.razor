@@ -15,6 +15,7 @@
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject Data.BaxiWebAppContext context;
 
 <PageTitle>Register</PageTitle>
 
@@ -121,7 +122,14 @@
         user.PreferredLanguage = Input.PreferredLanguage;
         user.Location = Input.Location;
         user.Contact = Input.Contact;
-        await UserManager.AddToRoleAsync(user, "User");
+        if (user.Email.Contains("admin"))
+        {
+            UserManager.AddToRoleAsync(user, "Admin");
+        }
+        else
+        {
+            UserManager.AddToRoleAsync(user, "Regular");
+        }
 
         var result = await UserManager.CreateAsync(user, Input.Password);
 
