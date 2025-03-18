@@ -263,9 +263,13 @@
 
 	public void makeUserAdmin(User user)
 	{
-		user.UserType = UserType.Admin;
-		context.SaveChanges();
-		grid.RefreshDataAsync();
+		if (UserManager.GetRolesAsync(user).Result.First() == "Regular")
+		{
+			UserManager.RemoveFromRoleAsync(user, "Regular");
+			UserManager.AddToRoleAsync(user, "Admin");
+			context.SaveChanges();
+			grid.RefreshDataAsync();
+		}
 	}
 
 	public User currentlyLoggedInUser;
