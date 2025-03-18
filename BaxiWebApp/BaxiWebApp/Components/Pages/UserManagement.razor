@@ -15,35 +15,35 @@
 <style>
 
 	.UserList {
-		display: grid;
-		grid-template-columns: 33% 33% 33%;
+	display: grid;
+	grid-template-columns: 33% 33% 33%;
 	}
 
 	.User {
-		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-		max-width: 400px;
-		margin: auto;
-		text-align: center;
-		font-family: arial;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	max-width: 400px;
+	margin: auto;
+	text-align: center;
+	font-family: arial;
 	}
 
-		.User button {
-			border: none;
-			outline: 0;
-			padding: 12px;
-			color: white;
-			background-color: #000;
-			text-align: center;
-			cursor: pointer;
-			width: 100%;
-			font-size: 18px;
-		}
+	.User button {
+	border: none;
+	outline: 0;
+	padding: 12px;
+	color: white;
+	background-color: #000;
+	text-align: center;
+	cursor: pointer;
+	width: 100%;
+	font-size: 18px;
+	}
 
 </style>
 
 <AuthorizeView Roles="Admin" Context="authContext">
 
-	<p>Show me the following users:</p>
+	@* <p>Show me the following users:</p>
 	<br>
 	<p>Role:</p>
 	<InputSelect @bind-Value="_userType" id="_userType">
@@ -52,7 +52,19 @@
 			<option value="@value">@value.ToString()</option>
 		}
 	</InputSelect>
+	<br> *@
+
+	<p>Show me the following users:</p>
 	<br>
+	<p>Role:</p>
+	<InputSelect @bind-Value="_role" id="_role">
+		<option value="allRoles">Select all!</option>
+		@foreach (var value in context.Roles)
+		{
+			<option value="@value">@value.ToString()</option>
+		}
+	</InputSelect>
+
 
 
 	<p>Email address contains:</p>
@@ -117,7 +129,7 @@
 	<p>Click on the title of the column to sort it!</p>
 	<div>
 		<QuickGrid Items="UserList" @ref="grid">
-			<PropertyColumn Title="Role:" Property="@(User => UserManager.GetRolesAsync(User).ToString())" Sortable="true">
+			<PropertyColumn Title="Role:" Property="@(User => getRole(User).ToString())" Sortable="true">
 			</PropertyColumn>
 			<PropertyColumn Title="User type:" Property="@(User => User.UserType)" Sortable="true">
 			</PropertyColumn>
@@ -170,6 +182,7 @@
 	int _rating = -1;
 	int _numberOfWarnings = -1;
 	string _contact = "";
+	string _role = "allRoles";
 
 	protected override void OnParametersSet()
 	{
@@ -193,6 +206,11 @@
 			User.Location.Contains(_location, StringComparison.CurrentCultureIgnoreCase) &&
 			User.Contact.Contains(_contact, StringComparison.CurrentCultureIgnoreCase));
 
+			if (_role != "allRoles")
+			{
+				result = result.Where(User => _role == getRole(User));
+			}
+
 			if (_rating != -1)
 			{
 				result = result.Where(User => User.Rating == _rating);
@@ -203,10 +221,10 @@
 				result = result.Where(User => User.NumberOfWarnings == _numberOfWarnings);
 			}
 
-			if (_userType != UserType.SelectAll)
-			{
-				result = result.Where(User => User.UserType == _userType);
-			}
+			// if (_userType != UserType.SelectAll)
+			// {
+			// 	result = result.Where(User => User.UserType == _userType);
+			// }
 
 			if (_department != Department.SelectAll)
 			{
@@ -256,6 +274,13 @@
 		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 		var claims = authState.User;
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+	}
+
+
+	public string getRole(User user)
+	{
+		var list = UserManager.GetRolesAsync(user).Result;
+		return list.First();
 	}
 
 }
