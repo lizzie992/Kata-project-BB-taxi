@@ -131,8 +131,8 @@
 		<QuickGrid Items="UserList" @ref="grid">
 			<PropertyColumn Title="Role:" Property="@(User => getRole(User).ToString())" Sortable="true">
 			</PropertyColumn>
-			<PropertyColumn Title="User type:" Property="@(User => User.UserType)" Sortable="true">
-			</PropertyColumn>
+			@* <PropertyColumn Title="User type:" Property="@(User => User.UserType)" Sortable="true">
+			</PropertyColumn> *@
 			<PropertyColumn Title="Email address:" Property="@(User => User.Email)" Sortable="true">
 			</PropertyColumn>
 			<PropertyColumn Title="First name:" Property="@(User => User.FirstName)" Sortable="true">
@@ -155,7 +155,10 @@
 				<button>Send a message!</button>
 			</TemplateColumn>
 			<TemplateColumn Title="Make User an Admin:" Context="User">
-				<button @onclick="() => makeUserAdmin(User)">Give this user admin rights!</button>
+				@if (UserManager.GetRolesAsync(User).Result.First() == "Regular")
+				{
+					<button @onclick="() => makeUserAdmin(User)">Give this user admin rights!</button>
+				}
 			</TemplateColumn>
 			<TemplateColumn Title="Warning:" Context="User">
 				<button @onclick="() => giveUserAWarning(User)">Give a warning!</button>
