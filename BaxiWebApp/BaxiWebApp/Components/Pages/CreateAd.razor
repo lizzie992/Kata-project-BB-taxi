@@ -3,104 +3,138 @@
 @inject Data.BaxiWebAppContext context;
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
+@using System.Net.Mail
+@using System.Net
+@using System.IO
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
 @inject NavigationManager NavigationManager
 
 <AuthorizeView Context="authContext">
-    <Authorized>
+	<Authorized>
 
-        <PageTitle>Create A New Ad</PageTitle>
+		<PageTitle>Create A New Ad</PageTitle>
 
-        <EditForm Model="@ad">
-            I am a: <br>
-            <InputSelect @bind-Value="ad.AdType" id="adType">
-                @foreach (var value in Enum.GetValues<AdType>())
-                {
-                    if (value == AdType.SelectAll)
-                    {
-                        continue;
-                    }
-                    <option value="@value">@value.ToString()</option>
-                }
-            </InputSelect>
-            <br>
+		<EditForm Model="@ad">
+			I am a: <br>
+			<InputSelect @bind-Value="ad.AdType" id="adType">
+				@foreach (var value in Enum.GetValues<AdType>())
+				{
+					if (value == AdType.SelectAll)
+					{
+						continue;
+					}
+					<option value="@value">@value.ToString()</option>
+				}
+			</InputSelect>
+			<br>
 
-            Route: <br>
-            <InputText @bind-Value="ad.Route"></InputText><br>
-            <br>
+			Route: <br>
+			<InputText @bind-Value="ad.Route"></InputText><br>
+			<br>
 
-            Pick up date: <br>
-            <InputDate Type="InputDateType.DateTimeLocal"
-                       min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.pickUpDateAndTime">
-            </InputDate>
-            <br>
+			Pick up date: <br>
+			<InputDate Type="InputDateType.DateTimeLocal"
+			min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.pickUpDateAndTime">
+			</InputDate>
+			<br>
 
-            Number of seats: <br>
-            <InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-            </InputSelect>
-            <br>
+			Number of seats: <br>
+			<InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+			</InputSelect>
+			<br>
 
-            Specific requests: <br>
-            <InputText @bind-Value="ad.SpecificRequests"></InputText><br>
-            <br>
+			Specific requests: <br>
+			<InputText @bind-Value="ad.SpecificRequests"></InputText><br>
+			<br>
 
-            <button class="btn btn-primary" @onclick="WriteData">Save</button>
-            <br>
+			<button class="btn btn-primary" @onclick="WriteData">Save</button>
+			<br>
 
-        </EditForm>
+		</EditForm>
 
-    </Authorized>
+	</Authorized>
 </AuthorizeView>
 
 @code {
 
-    private static Ad ad { get; set; } = new();
+	private static Ad ad { get; set; } = new();
 
-    protected override void OnParametersSet()
-    {
-        identifyLoggedInUser().GetAwaiter().GetResult();
-        ad = new Ad();
-        ad.AdOwner = user;
-        ad.AdType = CreateAd.ad.AdType;
-        ad.Route = CreateAd.ad.Route;
-        ad.pickUpDateAndTime = DateTime.Today;
-        ad.pickUpDateAndTime = CreateAd.ad.pickUpDateAndTime;
-        ad.NumberOfSeats = CreateAd.ad.NumberOfSeats;
-        ad.SpecificRequests = CreateAd.ad.SpecificRequests;
+	private string anything = string.Empty;
 
-        base.OnParametersSet();
-    }
 
-    private User user;
-    public async Task identifyLoggedInUser()
-    {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-        var claims = authState.User;
 
-        user = await UserManager.GetUserAsync(claims);
-    }
+	protected override void OnParametersSet()
+	{
+		identifyLoggedInUser().GetAwaiter().GetResult();
+		ad = new Ad();
+		ad.AdOwner = user;
+		ad.AdType = CreateAd.ad.AdType;
+		ad.Route = CreateAd.ad.Route;
+		ad.pickUpDateAndTime = DateTime.Today;
+		ad.pickUpDateAndTime = CreateAd.ad.pickUpDateAndTime;
+		ad.NumberOfSeats = CreateAd.ad.NumberOfSeats;
+		ad.SpecificRequests = CreateAd.ad.SpecificRequests;
 
-    async Task WriteData()
-    {
-        context.Ads.Add(ad);
-        context.SaveChanges();
-        NavigationManager.NavigateTo("Ads");
-    }
+		base.OnParametersSet();
+	}
 
-    // private void Save()
-    // {
-    //     List<Ad> adList = BB.LogicalCode.LoadAdListFromFile();
-    //     adList.Add(ad);
-    //     BB.LogicalCode.SaveAdToFile(adList);
-    // }
+	private User user;
+	public async Task identifyLoggedInUser()
+	{
+		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+		var claims = authState.User;
+
+		user = await UserManager.GetUserAsync(claims);
+	}
+
+	public void sendEmailAboutRoute()
+	{
+		if (ad.Route.Contains("Sendling"))
+		{
+			SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+			client.EnableSsl = true;
+			client.UseDefaultCredentials = false;
+			string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
+			client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
+			MailMessage mailMessage = new MailMessage();
+			mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
+			mailMessage.To.Add("gulyaskata99@gmail.com");
+			mailMessage.Body = "Check out this new ad: ";
+			mailMessage.Subject = "You might be interested in this new Ad!";
+			client.Send(mailMessage);
+		}
+	}
+
+
+
+	async Task WriteData()
+	{
+		context.Ads.Add(ad);
+		context.SaveChanges();
+		sendEmailAboutRoute();
+		NavigationManager.NavigateTo("Ads");
+	}
+
+	// private void Save()
+	// {
+	//     List<Ad> adList = BB.LogicalCode.LoadAdListFromFile();
+	//     adList.Add(ad);
+	//     BB.LogicalCode.SaveAdToFile(adList);
+	// }
+
+
+	
+
+
 
 }
