@@ -100,5 +100,14 @@ namespace BB
             get { return _contact; }
             set { _contact = value; }
         }
+
+
+        private List<string>? _notificationForRoute;
+
+        public List<string> NotificationForRoute
+        {
+            get { return _notificationForRoute; }
+            set { _notificationForRoute = value; }
+        }
     }
 }

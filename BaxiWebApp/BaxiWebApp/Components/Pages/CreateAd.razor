@@ -76,7 +76,7 @@
 	{
 		identifyLoggedInUser().GetAwaiter().GetResult();
 		ad = new Ad();
-		ad.AdOwner = user;
+		ad.AdOwner = currentlyLoggedInUser;
 		ad.AdType = CreateAd.ad.AdType;
 		ad.Route = CreateAd.ad.Route;
 		ad.pickUpDateAndTime = DateTime.Today;
@@ -87,18 +87,24 @@
 		base.OnParametersSet();
 	}
 
-	private User user;
+	private User currentlyLoggedInUser;
 	public async Task identifyLoggedInUser()
 	{
 		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
 		var claims = authState.User;
 
-		user = await UserManager.GetUserAsync(claims);
+		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
 	public void sendEmailAboutRoute()
 	{
+
+		// var result = UserManager.Users.ToList<User>();
+
+		// result = result.Where()
+
+
 		if (ad.Route.Contains("Sendling"))
 		{
 			SmtpClient client = new SmtpClient("smtp.gmail.com", 587);

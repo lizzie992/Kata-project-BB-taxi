@@ -2,7 +2,6 @@
 @using BB
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.Identity
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
@@ -26,6 +25,13 @@
             <p>Contact: @user.Contact</p>
             <p>Rating: @user.Rating</p>
             <p>Number of warnings: @user.NumberOfWarnings</p>
+            <br>
+
+            <p>Here you can set up some notifications if someone is posting an ad that is convenient for you!</p>
+            <a href="NotificationsForRoutes">
+                <button>Click here to set up some notifications!</button>
+            </a>
+            <br>
 
             <a href="ProfileDataChange">
                 <button>Click here to change your profile data!</button>
@@ -35,15 +41,15 @@
                 <button>Click here to change your password!</button>
             </a>
 
+            
+
         </div>
 
     </Authorized>
 </AuthorizeView>
 
 @code {
-    // public static List<User> userList = BB.LogicalCode.LoadUserListFromFile();
-    // public static int ID = userList.Count - 1; //I will get the last user data from the list, as I still dont know anything about the login process :D
-
+    
     private User user;
     public async Task identifyLoggedInUser()
     {

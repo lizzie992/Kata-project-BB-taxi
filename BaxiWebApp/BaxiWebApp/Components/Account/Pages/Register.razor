@@ -122,6 +122,7 @@
         user.PreferredLanguage = Input.PreferredLanguage;
         user.Location = Input.Location;
         user.Contact = Input.Contact;
+        user.NotificationForRoute = new List<string>();
         if (user.Email.Contains("admin"))
         {
             UserManager.AddToRoleAsync(user, "Admin");
