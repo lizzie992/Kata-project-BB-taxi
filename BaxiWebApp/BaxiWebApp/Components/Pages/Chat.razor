@@ -1,56 +1,56 @@
-﻿@using BB
+﻿@page "/Chat/{ID:int}"
 
+@using BB
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@inject Data.BaxiWebAppContext context;
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject SignInManager<User> signInManger;
+@inject UserManager<User> UserManager;
+@inject NavigationManager NavigationManager
 
 <h3>Chat</h3>
 
 
 
 
+
+
+<InputText @bind-Value="textMessage"></InputText>
+<button class="btn btn-primary" @onclick="sendMessage">Send</button>
+
+
 @code {
 
+	private string textMessage;
+	private static Message message { get; set; } = new();
+	private List<Message> conversation { get; set; } = new();
 
+	public void sendMessage()
+	{
+		message = new Message();
+		// message.fromUser = currentlyLoggedInUser;
+		// message.toUser = 
+		// message.messageText = textMessage;
+		// message.timeStamp = DateTime.Now;
+		conversation.Add(message);
+		context.SaveChanges();
+	}
 
-    private List<Message> _conversation;
+	protected override void OnParametersSet()
+	{
+		identifyLoggedInUser().GetAwaiter().GetResult();
+		base.OnParametersSet();
+	}
 
-    public List<Message> conversation
-    {
-        get { return _conversation; }
-        set { _conversation = value; }
-    }
+	public User currentlyLoggedInUser;
+	public async Task identifyLoggedInUser()
+	{
+		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
+		var claims = authState.User;
 
-
-
-    public class Message
-    {
-        private User _fromUser;
-        public User fromUser
-        {
-            get { return _fromUser; }
-            set { _fromUser = value; }
-        }
-
-        private User _toUser;
-        public User toUser
-        {
-            get { return _toUser; }
-            set { _toUser = value; }
-        }
-
-        private string _message;
-        public string message
-        {
-            get { return _message; }
-            set { _message = value; }
-        }
-
-        private DateTime _timeStamp;
-
-        public DateTime timeStamp
-        {
-            get { return _timeStamp; }
-            set { _timeStamp = value; }
-        }
-    }
+		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+	}
 
 }

@@ -1,114 +1,120 @@
 ﻿@page "/Ads"
 @using BB
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
 @inject Data.BaxiWebAppContext context;
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject SignInManager<User> signInManger;
+@inject UserManager<User> UserManager;
+@inject NavigationManager NavigationManager
 
 <AuthorizeView Context="authContext">
-    <Authorized>
+	<Authorized>
 
-        <PageTitle>Ads</PageTitle>
+		<PageTitle>Ads</PageTitle>
 
-        <style>
+		<style>
 
-            .adList {
-                display: grid;
-                grid-template-columns: 33% 33% 33%;
-            }
+			.adList {
+			display: grid;
+			grid-template-columns: 33% 33% 33%;
+			}
 
-            .ad {
-                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-                max-width: 400px;
-                margin: auto;
-                text-align: center;
-                font-family: arial;
-            }
+			.ad {
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+			max-width: 400px;
+			margin: auto;
+			text-align: center;
+			font-family: arial;
+			}
 
-                .ad button {
-                    border: none;
-                    outline: 0;
-                    padding: 12px;
-                    color: white;
-                    background-color: #000;
-                    text-align: center;
-                    cursor: pointer;
-                    width: 100%;
-                    font-size: 18px;
-                }
+			.ad button {
+			border: none;
+			outline: 0;
+			padding: 12px;
+			color: white;
+			background-color: #000;
+			text-align: center;
+			cursor: pointer;
+			width: 100%;
+			font-size: 18px;
+			}
 
-        </style>
+		</style>
 
-        <h1 style="text-align:center;">Ads</h1>
-        <p style="text-align:center; font-size:150%;">This page shows you the list of ads</p>
+		<h1 style="text-align:center;">Ads</h1>
+		<p style="text-align:center; font-size:150%;">This page shows you the list of ads</p>
 
-        @if (false)
-        {
-            <p><em>Loading...</em></p>
-        }
-        else
-        {
-            @*  @deleteOldAds(AdList) *@
+		@if (false)
+		{
+			<p><em>Loading...</em></p>
+		}
+		else
+		{
+			@*  @deleteOldAds(AdList) *@
 
-            <p>I am looking for a:</p>
-            <InputSelect @bind-Value="_adType" id="adType">
-                @foreach (var value in Enum.GetValues<AdType>())
-                {
-                    <option value="@value">@value.ToString()</option>
-                }
-            </InputSelect>
-            <br>
-            <br>
+			<p>I am looking for a:</p>
+			<InputSelect @bind-Value="_adType" id="adType">
+				@foreach (var value in Enum.GetValues<AdType>())
+				{
+					<option value="@value">@value.ToString()</option>
+				}
+			</InputSelect>
+			<br>
+			<br>
 
-            <p>On a route:</p>
-            <div class="search-box">
-                <input type="search" autofocus @bind="_searchRoute" @bind:event="oninput" placeholder="Route..." />
-            </div>
-            <br>
-            <br>
+			<p>On a route:</p>
+			<div class="search-box">
+				<input type="search" autofocus @bind="_searchRoute" @bind:event="oninput" placeholder="Route..." />
+			</div>
+			<br>
+			<br>
 
-            <p>Between the following date and time:</p>
-            <InputDate Type="InputDateType.DateTimeLocal"
-                       min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
-            </InputDate>
-            <InputDate Type="InputDateType.DateTimeLocal"
-                       min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime2">
-            </InputDate>
-            <br>
-            <br>
+			<p>Between the following date and time:</p>
+			<InputDate Type="InputDateType.DateTimeLocal"
+			min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
+			</InputDate>
+			<InputDate Type="InputDateType.DateTimeLocal"
+			min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime2">
+			</InputDate>
+			<br>
+			<br>
 
-            <p>Requested number of seats:</p>
-            <InputSelect @bind-Value="_requestedSeats" id="numberOfSeats">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-            </InputSelect>
-            <br>
+			<p>Requested number of seats:</p>
+			<InputSelect @bind-Value="_requestedSeats" id="numberOfSeats">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+			</InputSelect>
+			<br>
 
 
-            <br>
-            <br>
-            <p>Click on the title of the column to sort it!</p>
-            <div>
-                <QuickGrid Items="FilteredAds" @ref="grid">
-                    <PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
-                    </PropertyColumn>
-                    <PropertyColumn Title="Route:" Property="@(Ad => Ad.Route)" Sortable="true">
-                    </PropertyColumn>
-                    <PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.pickUpDateAndTime)" Sortable="true" />
-                    <PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
-                    <PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
-                    <TemplateColumn Title="Contact">
-                        <button>Contact me!</button> @* button not working yet, it should open the chat *@
-                    </TemplateColumn>
-                </QuickGrid>
-            </div>
+			<br>
+			<br>
+			<p>Click on the title of the column to sort it!</p>
+			<div>
+				<QuickGrid Items="FilteredAds" @ref="grid">
+					<PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
+					</PropertyColumn>
+					<PropertyColumn Title="Route:" Property="@(Ad => Ad.Route)" Sortable="true">
+					</PropertyColumn>
+					<PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.pickUpDateAndTime)" Sortable="true" />
+					<PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
+					<PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+					<TemplateColumn Title="Contact" Context="Ad">
+						<button @onclick="() => createChat(Ad)">Contact me!</button> @* button not working yet, it should open the chat *@
+					</TemplateColumn>
+				</QuickGrid>
+			</div>
 
-            <br>
-            <br>
-            <br>
-            @*  <div class="adList">
+			<br>
+			<br>
+			<br>
+			@*  <div class="adList">
         @foreach (var Ad in AdList)
         {
         <div class="ad">
@@ -122,71 +128,106 @@
         }
         </div> *@
 
-        }
-    </Authorized>
+		}
+	</Authorized>
 </AuthorizeView>
 
 
 @code {
-    
-    public static List<Ad> AdList = new List<Ad>();
-   
-    protected override void OnParametersSet()
-    {
-        AdList = context.Ads.ToList<Ad>();
-        base.OnParametersSet();
-    }
 
-    // async Task<List<Ad>> LoadList()
-    // {
-    //     AdList = context.Ads.ToList<Ad>();
-    //     return AdList;
-    // }
+	public static List<Ad> AdList = new List<Ad>();
 
+	protected override void OnParametersSet()
+	{
+		AdList = context.Ads.ToList<Ad>();
+		identifyLoggedInUser().GetAwaiter().GetResult();
+		base.OnParametersSet();
+	}
 
-    public static List<Ad> deleteOldAds(List<Ad> AdList)
-    {
-        AdList.RemoveAll(ad => ad.pickUpDateAndTime < DateTime.Now);
-        return AdList;
-    }
-
-    string? _searchRoute = "";
-    int _requestedSeats = 1;
-
-    BB.AdType _adType = AdType.SelectAll;
-
-    public static string allAdTypes;
+	// async Task<List<Ad>> LoadList()
+	// {
+	//     AdList = context.Ads.ToList<Ad>();
+	//     return AdList;
+	// }
 
 
-    DateTime _datetime1 = DateTime.Now;
-    DateTime _datetime2 = DateTime.Now.AddDays(90);
+	public static List<Ad> deleteOldAds(List<Ad> AdList)
+	{
+		AdList.RemoveAll(ad => ad.pickUpDateAndTime < DateTime.Now);
+		return AdList;
+	}
+
+	string? _searchRoute = "";
+	int _requestedSeats = 1;
+
+	BB.AdType _adType = AdType.SelectAll;
+
+	public static string allAdTypes;
 
 
-    // IQueryable<Ad>? itemsQueryable = context.Ads.ToList<Ad>().AsQueryable();
+	DateTime _datetime1 = DateTime.Now;
+	DateTime _datetime2 = DateTime.Now.AddDays(90);
 
 
-    QuickGrid<Ad>? grid;
-
-    IQueryable<Ad> FilteredAds
-    {
-        get
-        {
-            var result = context.Ads.ToList<Ad>().AsQueryable();
-
-            result = result.Where(Ad =>
-                   Ad.Route.Contains(_searchRoute, StringComparison.CurrentCultureIgnoreCase)
-                && Ad.NumberOfSeats >= _requestedSeats
-                && _datetime1 <= Ad.pickUpDateAndTime
-                && Ad.pickUpDateAndTime <= _datetime2);
-
-            if (_adType != AdType.SelectAll)
-            {
-                result = result.Where(Ad => Ad.AdType == _adType);
-            }
+	// IQueryable<Ad>? itemsQueryable = context.Ads.ToList<Ad>().AsQueryable();
 
 
-            return result;
-        }
-    }
+	QuickGrid<Ad>? grid;
+
+	IQueryable<Ad> FilteredAds
+	{
+		get
+		{
+			var result = context.Ads.ToList<Ad>().AsQueryable();
+
+			result = result.Where(Ad =>
+							Ad.Route.Contains(_searchRoute, StringComparison.CurrentCultureIgnoreCase)
+				&& Ad.NumberOfSeats >= _requestedSeats
+				&& _datetime1 <= Ad.pickUpDateAndTime
+				&& Ad.pickUpDateAndTime <= _datetime2);
+
+			if (_adType != AdType.SelectAll)
+			{
+				result = result.Where(Ad => Ad.AdType == _adType);
+			}
+
+
+			return result;
+		}
+	}
+
+
+	private int ID;
+	public void createChat(Ad ad)
+	{
+		//check current ad if matching conversation exists:
+		var previousConversations = ad.adConversations.AsQueryable();
+		previousConversations = previousConversations.Where(Conversation => Conversation.contactingUser == currentlyLoggedInUser);
+		if (previousConversations.ToList().Count != 0)
+		{
+			Conversation conversation = previousConversations.FirstOrDefault(); 
+			ID = conversation.ID;														//find id of conversation
+			NavigationManager.NavigateTo("Chat/" + ID);									//navigate to chat page with conversation id
+		}
+		else        //if not found, create new conversasion (+id)
+		{
+			Conversation conversation = new();
+			ID = conversation.ID;
+			conversation.adOwnerUser = ad.AdOwner;
+			conversation.contactingUser = currentlyLoggedInUser;
+			NavigationManager.NavigateTo("Chat/" + ID);
+		}
+	}
+
+
+	public User currentlyLoggedInUser;
+	public async Task identifyLoggedInUser()
+	{
+		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+		var claims = authState.User;
+
+		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+	}
 
 }

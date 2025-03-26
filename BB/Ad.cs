@@ -84,5 +84,15 @@ namespace BB
                 $"Any speicifc requests: {SpecificRequests}\r\n";
         }
 
+
+
+        public List<Conversation> _adConversations;
+        public List<Conversation> adConversations
+        {
+            get { return _adConversations; }
+            set { _adConversations = value; }
+        }
+
+
     }
 }
