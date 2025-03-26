@@ -1,0 +1,56 @@
+﻿@using BB
+
+
+<h3>Chat</h3>
+
+
+
+
+@code {
+
+
+
+    private List<Message> _conversation;
+
+    public List<Message> conversation
+    {
+        get { return _conversation; }
+        set { _conversation = value; }
+    }
+
+
+
+
+    public class Message
+    {
+        private User _fromUser;
+        public User fromUser
+        {
+            get { return _fromUser; }
+            set { _fromUser = value; }
+        }
+
+        private User _toUser;
+        public User toUser
+        {
+            get { return _toUser; }
+            set { _toUser = value; }
+        }
+
+        private string _message;
+        public string message
+        {
+            get { return _message; }
+            set { _message = value; }
+        }
+
+        private DateTime _timeStamp;
+
+        public DateTime timeStamp
+        {
+            get { return _timeStamp; }
+            set { _timeStamp = value; }
+        }
+    }
+
+}
