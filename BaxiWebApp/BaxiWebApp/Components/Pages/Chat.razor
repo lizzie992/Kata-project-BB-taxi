@@ -3,6 +3,7 @@
 @using BB
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
 @inject Data.BaxiWebAppContext context;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
@@ -22,13 +23,32 @@
 
 @code {
 
+	[Parameter]
+	public int ID { get; set; }
+	Conversations c
+	{
+		get
+		{
+			
+		}
+	}
+
+	// Ad ad
+	// {
+	// 	get
+	// 	{
+	// 		var result = context.Ads.FirstOrDefault(Ad => Ad.ID == ID);
+	// 		return result;
+	// 	}
+	// }
+
+
 	private string textMessage;
-	private static Message message { get; set; } = new();
-	private List<Message> conversation { get; set; } = new();
+	private List<Messages> conversation = new List<Messages>();
 
 	public void sendMessage()
 	{
-		message = new Message();
+		Messages message = new Messages();
 		// message.fromUser = currentlyLoggedInUser;
 		// message.toUser = 
 		// message.messageText = textMessage;

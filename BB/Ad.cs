@@ -86,8 +86,8 @@ namespace BB
 
 
 
-        public List<Conversation> _adConversations;
-        public List<Conversation> adConversations
+        public List<Conversations> _adConversations = new();
+        public List<Conversations> adConversations
         {
             get { return _adConversations; }
             set { _adConversations = value; }

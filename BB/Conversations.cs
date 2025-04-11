@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace BB
 {
-    public class Conversation
+    public class Conversations
     {
 
         private int _id;
@@ -19,8 +20,8 @@ namespace BB
 
 
 
-        private List<Message> _conversation;
-        public List<Message> conversation
+        private List<Messages> _conversation;
+        public List<Messages> conversation
         {
             get { return _conversation; }
             set { _conversation = value; }

@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
 @inject Data.BaxiWebAppContext context;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
@@ -178,7 +179,7 @@
 	{
 		get
 		{
-			var result = context.Ads.ToList<Ad>().AsQueryable();
+			var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
 
 			result = result.Where(Ad =>
 							Ad.Route.Contains(_searchRoute, StringComparison.CurrentCultureIgnoreCase)
@@ -197,7 +198,6 @@
 	}
 
 
-	private int ID;
 	public void createChat(Ad ad)
 	{
 		//check current ad if matching conversation exists:
@@ -205,17 +205,21 @@
 		previousConversations = previousConversations.Where(Conversation => Conversation.contactingUser == currentlyLoggedInUser);
 		if (previousConversations.ToList().Count != 0)
 		{
-			Conversation conversation = previousConversations.FirstOrDefault(); 
-			ID = conversation.ID;														//find id of conversation
-			NavigationManager.NavigateTo("Chat/" + ID);									//navigate to chat page with conversation id
+			Conversations conversation = previousConversations.FirstOrDefault(); 
+			NavigationManager.NavigateTo("Chat/" + conversation.ID);  //find id of conversation    //navigate to chat page with conversation id
 		}
 		else        //if not found, create new conversasion (+id)
 		{
-			Conversation conversation = new();
-			ID = conversation.ID;
+			Conversations conversation = new();
 			conversation.adOwnerUser = ad.AdOwner;
 			conversation.contactingUser = currentlyLoggedInUser;
-			NavigationManager.NavigateTo("Chat/" + ID);
+			//in service
+			//add new conversation boject to context
+			ad.adConversations.Add(conversation);
+			// savechanges
+			context.SaveChanges();
+			int id = conversation.ID;
+			NavigationManager.NavigateTo("Chat/" + id);
 		}
 	}
 
@@ -229,5 +233,8 @@
 
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
+
+
+
 
 }
