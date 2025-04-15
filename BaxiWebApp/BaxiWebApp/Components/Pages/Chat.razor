@@ -13,15 +13,19 @@
 <h3>Chat</h3>
 
 
-<div class="Message">
-	@foreach (Message M in conversation.conversation)
-	{
+
+@foreach (Message M in conversation.conversation)
+{
+	<div class="Message">
 		<p>From: @M.fromUser</p>
 		<p>To: @M.toUser</p>
 		<p>Message: @M.messageText</p>
 		<p>Timestamp: @M.timeStamp</p>
-	}
-</div>
+	</div>
+	<br>
+	<br>
+}
+
 
 
 <InputText @bind-Value="textMessage"></InputText>
@@ -42,7 +46,7 @@
 		}
 	}
 
-	public void defineList() 
+	public void defineList()
 	{
 		conversation.conversation = context.Messages.ToList<Message>();
 		conversation.conversation = conversation.conversation.FindAll(message => message.ConversationID == conversation.ID);
