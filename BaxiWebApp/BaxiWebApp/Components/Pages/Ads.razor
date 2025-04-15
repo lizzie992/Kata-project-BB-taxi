@@ -205,12 +205,12 @@
 		previousConversations = previousConversations.Where(Conversation => Conversation.contactingUser == currentlyLoggedInUser);
 		if (previousConversations.ToList().Count != 0)
 		{
-			Conversations conversation = previousConversations.FirstOrDefault(); 
+			Conversation conversation = previousConversations.FirstOrDefault(); 
 			NavigationManager.NavigateTo("Chat/" + conversation.ID);  //find id of conversation    //navigate to chat page with conversation id
 		}
 		else        //if not found, create new conversasion (+id)
 		{
-			Conversations conversation = new();
+			Conversation conversation = new();
 			conversation.adOwnerUser = ad.AdOwner;
 			conversation.contactingUser = currentlyLoggedInUser;
 			//in service

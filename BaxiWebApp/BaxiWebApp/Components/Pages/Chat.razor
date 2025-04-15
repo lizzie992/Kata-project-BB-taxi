@@ -25,7 +25,7 @@
 
 	[Parameter]
 	public int ID { get; set; }
-	Conversations c
+	Conversation c
 	{
 		get
 		{
@@ -44,11 +44,11 @@
 
 
 	private string textMessage;
-	private List<Messages> conversation = new List<Messages>();
+	private List<Message> conversation = new List<Message>();
 
 	public void sendMessage()
 	{
-		Messages message = new Messages();
+		Message message = new Message();
 		// message.fromUser = currentlyLoggedInUser;
 		// message.toUser = 
 		// message.messageText = textMessage;

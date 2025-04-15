@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BB
 {
-    public class Messages
+    public class Message
     {
         public int Id { get; set; }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BB
 {
-    public class Conversations
+    public class Conversation
     {
 
         private int _id;
@@ -20,8 +20,8 @@ namespace BB
 
 
 
-        private List<Messages> _conversation;
-        public List<Messages> conversation
+        private List<Message> _conversation;
+        public List<Message> conversation
         {
             get { return _conversation; }
             set { _conversation = value; }
