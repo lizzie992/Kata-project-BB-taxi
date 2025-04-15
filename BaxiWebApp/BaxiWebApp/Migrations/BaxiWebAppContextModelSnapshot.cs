@@ -55,7 +55,7 @@ namespace BaxiWebApp.Migrations
                     b.ToTable("Ads");
                 });
 
-            modelBuilder.Entity("BB.Conversations", b =>
+            modelBuilder.Entity("BB.Conversation", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -65,11 +65,9 @@ namespace BaxiWebApp.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("adOwnerUserId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("contactingUserId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -83,17 +81,16 @@ namespace BaxiWebApp.Migrations
                     b.ToTable("Conversations");
                 });
 
-            modelBuilder.Entity("BB.Messages", b =>
+            modelBuilder.Entity("BB.Message", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ConversationsID")
+                    b.Property<int?>("ConversationID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("fromUserId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("messageText")
@@ -104,12 +101,11 @@ namespace BaxiWebApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("toUserId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ConversationsID");
+                    b.HasIndex("ConversationID");
 
                     b.HasIndex("fromUserId");
 
@@ -247,15 +243,15 @@ namespace BaxiWebApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2e00a390-cf86-447f-9a7e-f40d11ec8996",
-                            ConcurrencyStamp = "f4963337-6588-4306-be22-f0d0a7e4a8c1",
+                            Id = "ad50cb4a-3f23-4d5d-a41d-d127e117dda1",
+                            ConcurrencyStamp = "c125ca49-8597-40fb-a9a3-48693e39d2f5",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         },
                         new
                         {
-                            Id = "6c1df3f1-a2bf-4f28-981a-d4af71798bbf",
-                            ConcurrencyStamp = "5f17abcd-2d3b-41cf-8506-0111dbd2f5b5",
+                            Id = "b246b2c8-425c-40d9-bce1-9398d4f839b2",
+                            ConcurrencyStamp = "8f4d5dfd-3005-428f-b152-fe2d3fc0e297",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -376,7 +372,7 @@ namespace BaxiWebApp.Migrations
                     b.Navigation("AdOwner");
                 });
 
-            modelBuilder.Entity("BB.Conversations", b =>
+            modelBuilder.Entity("BB.Conversation", b =>
                 {
                     b.HasOne("BB.Ad", null)
                         .WithMany("adConversations")
@@ -384,38 +380,30 @@ namespace BaxiWebApp.Migrations
 
                     b.HasOne("BB.User", "adOwnerUser")
                         .WithMany()
-                        .HasForeignKey("adOwnerUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("adOwnerUserId");
 
                     b.HasOne("BB.User", "contactingUser")
                         .WithMany()
-                        .HasForeignKey("contactingUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("contactingUserId");
 
                     b.Navigation("adOwnerUser");
 
                     b.Navigation("contactingUser");
                 });
 
-            modelBuilder.Entity("BB.Messages", b =>
+            modelBuilder.Entity("BB.Message", b =>
                 {
-                    b.HasOne("BB.Conversations", null)
+                    b.HasOne("BB.Conversation", null)
                         .WithMany("conversation")
-                        .HasForeignKey("ConversationsID");
+                        .HasForeignKey("ConversationID");
 
                     b.HasOne("BB.User", "fromUser")
                         .WithMany()
-                        .HasForeignKey("fromUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("fromUserId");
 
                     b.HasOne("BB.User", "toUser")
                         .WithMany()
-                        .HasForeignKey("toUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("toUserId");
 
                     b.Navigation("fromUser");
 
@@ -480,7 +468,7 @@ namespace BaxiWebApp.Migrations
                     b.Navigation("adConversations");
                 });
 
-            modelBuilder.Entity("BB.Conversations", b =>
+            modelBuilder.Entity("BB.Conversation", b =>
                 {
                     b.Navigation("conversation");
                 });

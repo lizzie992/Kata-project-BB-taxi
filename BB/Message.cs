@@ -10,6 +10,8 @@ namespace BB
     {
         public int Id { get; set; }
 
+        public int ConversationID { get; set; }
+
         private User _fromUser;
         public User fromUser
         {

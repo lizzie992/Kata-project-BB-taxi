@@ -11,14 +11,111 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaxiWebApp.Migrations
 {
     [DbContext(typeof(BaxiWebAppContext))]
-    [Migration("20250205195423_change_ratings")]
-    partial class change_ratings
+    [Migration("20250415210132_Messages")]
+    partial class Messages
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
+
+            modelBuilder.Entity("BB.Ad", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("AdID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AdOwnerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AdType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("NumberOfSeats")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Route")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SpecificRequests")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("pickUpDateAndTime")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AdID");
+
+                    b.HasIndex("AdOwnerId");
+
+                    b.ToTable("Ads");
+                });
+
+            modelBuilder.Entity("BB.Conversation", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("AdID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("adOwnerUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("contactingUserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AdID");
+
+                    b.HasIndex("adOwnerUserId");
+
+                    b.HasIndex("contactingUserId");
+
+                    b.ToTable("Conversations");
+                });
+
+            modelBuilder.Entity("BB.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ConversationID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("fromUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("messageText")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("timeStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("toUserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationID");
+
+                    b.HasIndex("fromUserId");
+
+                    b.HasIndex("toUserId");
+
+                    b.ToTable("Messages");
+                });
 
             modelBuilder.Entity("BB.User", b =>
                 {
@@ -33,7 +130,6 @@ namespace BaxiWebApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Contact")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Department")
@@ -44,25 +140,21 @@ namespace BaxiWebApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("EmailAddress")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ListOfRatings")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Location")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
@@ -77,6 +169,10 @@ namespace BaxiWebApp.Migrations
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NotificationForRoute")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("NumberOfWarnings")
@@ -146,6 +242,22 @@ namespace BaxiWebApp.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "ad50cb4a-3f23-4d5d-a41d-d127e117dda1",
+                            ConcurrencyStamp = "c125ca49-8597-40fb-a9a3-48693e39d2f5",
+                            Name = "Regular",
+                            NormalizedName = "REGULAR"
+                        },
+                        new
+                        {
+                            Id = "b246b2c8-425c-40d9-bce1-9398d4f839b2",
+                            ConcurrencyStamp = "8f4d5dfd-3005-428f-b152-fe2d3fc0e297",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -250,6 +362,57 @@ namespace BaxiWebApp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("BB.Ad", b =>
+                {
+                    b.HasOne("BB.Ad", null)
+                        .WithMany("AdvertList")
+                        .HasForeignKey("AdID");
+
+                    b.HasOne("BB.User", "AdOwner")
+                        .WithMany()
+                        .HasForeignKey("AdOwnerId");
+
+                    b.Navigation("AdOwner");
+                });
+
+            modelBuilder.Entity("BB.Conversation", b =>
+                {
+                    b.HasOne("BB.Ad", null)
+                        .WithMany("adConversations")
+                        .HasForeignKey("AdID");
+
+                    b.HasOne("BB.User", "adOwnerUser")
+                        .WithMany()
+                        .HasForeignKey("adOwnerUserId");
+
+                    b.HasOne("BB.User", "contactingUser")
+                        .WithMany()
+                        .HasForeignKey("contactingUserId");
+
+                    b.Navigation("adOwnerUser");
+
+                    b.Navigation("contactingUser");
+                });
+
+            modelBuilder.Entity("BB.Message", b =>
+                {
+                    b.HasOne("BB.Conversation", null)
+                        .WithMany("conversation")
+                        .HasForeignKey("ConversationID");
+
+                    b.HasOne("BB.User", "fromUser")
+                        .WithMany()
+                        .HasForeignKey("fromUserId");
+
+                    b.HasOne("BB.User", "toUser")
+                        .WithMany()
+                        .HasForeignKey("toUserId");
+
+                    b.Navigation("fromUser");
+
+                    b.Navigation("toUser");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -299,6 +462,18 @@ namespace BaxiWebApp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BB.Ad", b =>
+                {
+                    b.Navigation("AdvertList");
+
+                    b.Navigation("adConversations");
+                });
+
+            modelBuilder.Entity("BB.Conversation", b =>
+                {
+                    b.Navigation("conversation");
                 });
 #pragma warning restore 612, 618
         }

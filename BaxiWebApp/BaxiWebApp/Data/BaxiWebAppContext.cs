@@ -9,6 +9,7 @@ namespace BaxiWebApp.Data
     {
         public DbSet<Ad> Ads { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

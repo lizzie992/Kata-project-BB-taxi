@@ -13,8 +13,15 @@
 <h3>Chat</h3>
 
 
-
-
+<div class="Message">
+	@foreach (Message M in conversation.conversation)
+	{
+		<p>From: @M.fromUser</p>
+		<p>To: @M.toUser</p>
+		<p>Message: @M.messageText</p>
+		<p>Timestamp: @M.timeStamp</p>
+	}
+</div>
 
 
 <InputText @bind-Value="textMessage"></InputText>
@@ -25,41 +32,46 @@
 
 	[Parameter]
 	public int ID { get; set; }
-	Conversation c
+
+	public Conversation conversation
 	{
 		get
 		{
-			
+			var result = context.Conversations.FirstOrDefault(conversation => conversation.ID == ID);
+			return result;
 		}
 	}
 
-	// Ad ad
-	// {
-	// 	get
-	// 	{
-	// 		var result = context.Ads.FirstOrDefault(Ad => Ad.ID == ID);
-	// 		return result;
-	// 	}
-	// }
-
+	public void defineList() 
+	{
+		conversation.conversation = context.Messages.ToList<Message>();
+		conversation.conversation = conversation.conversation.FindAll(message => message.ConversationID == conversation.ID);
+	}
 
 	private string textMessage;
-	private List<Message> conversation = new List<Message>();
 
 	public void sendMessage()
 	{
 		Message message = new Message();
-		// message.fromUser = currentlyLoggedInUser;
-		// message.toUser = 
-		// message.messageText = textMessage;
-		// message.timeStamp = DateTime.Now;
-		conversation.Add(message);
+		message.fromUser = currentlyLoggedInUser;
+		if (currentlyLoggedInUser == conversation._contactingUser)
+		{
+			message.toUser = conversation._adOwnerUser;
+		}
+		if (currentlyLoggedInUser == conversation._adOwnerUser)
+		{
+			message.toUser = conversation._contactingUser;
+		}
+		message.messageText = textMessage;
+		message.timeStamp = DateTime.Now;
+		conversation.conversation.Add(message);
 		context.SaveChanges();
 	}
 
 	protected override void OnParametersSet()
 	{
 		identifyLoggedInUser().GetAwaiter().GetResult();
+		defineList();
 		base.OnParametersSet();
 	}
 

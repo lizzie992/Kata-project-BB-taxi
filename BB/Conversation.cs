@@ -20,8 +20,8 @@ namespace BB
 
 
 
-        private List<Message> _conversation;
-        public List<Message> conversation
+        private List<Message>? _conversation;
+        public List<Message>? conversation
         {
             get { return _conversation; }
             set { _conversation = value; }

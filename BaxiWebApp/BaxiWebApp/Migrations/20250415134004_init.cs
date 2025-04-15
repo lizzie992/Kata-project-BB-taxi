@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace BaxiWebApp.Migrations
 {
     /// <inheritdoc />
@@ -31,16 +33,17 @@ namespace BaxiWebApp.Migrations
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     UserType = table.Column<int>(type: "INTEGER", nullable: false),
-                    EmailAddress = table.Column<string>(type: "TEXT", nullable: false),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: false),
+                    EmailAddress = table.Column<string>(type: "TEXT", nullable: true),
+                    FirstName = table.Column<string>(type: "TEXT", nullable: true),
+                    LastName = table.Column<string>(type: "TEXT", nullable: true),
                     Department = table.Column<int>(type: "INTEGER", nullable: false),
                     PreferredLanguage = table.Column<int>(type: "INTEGER", nullable: false),
-                    Location = table.Column<string>(type: "TEXT", nullable: false),
+                    Location = table.Column<string>(type: "TEXT", nullable: true),
                     Rating = table.Column<int>(type: "INTEGER", nullable: false),
-                    ListOfRatings = table.Column<string>(type: "TEXT", nullable: false),
+                    ListOfRatings = table.Column<string>(type: "TEXT", nullable: true),
                     NumberOfWarnings = table.Column<int>(type: "INTEGER", nullable: false),
-                    Contact = table.Column<string>(type: "TEXT", nullable: false),
+                    Contact = table.Column<string>(type: "TEXT", nullable: true),
+                    NotificationForRoute = table.Column<string>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -80,6 +83,35 @@ namespace BaxiWebApp.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ads",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    AdOwnerId = table.Column<string>(type: "TEXT", nullable: true),
+                    AdType = table.Column<int>(type: "INTEGER", nullable: false),
+                    Route = table.Column<string>(type: "TEXT", nullable: false),
+                    pickUpDateAndTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    NumberOfSeats = table.Column<int>(type: "INTEGER", nullable: false),
+                    SpecificRequests = table.Column<string>(type: "TEXT", nullable: false),
+                    AdID = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ads", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Ads_Ads_AdID",
+                        column: x => x.AdID,
+                        principalTable: "Ads",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Ads_AspNetUsers_AdOwnerId",
+                        column: x => x.AdOwnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -167,6 +199,89 @@ namespace BaxiWebApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Conversations",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    adOwnerUserId = table.Column<string>(type: "TEXT", nullable: true),
+                    contactingUserId = table.Column<string>(type: "TEXT", nullable: true),
+                    AdID = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Conversations", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Conversations_Ads_AdID",
+                        column: x => x.AdID,
+                        principalTable: "Ads",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Conversations_AspNetUsers_adOwnerUserId",
+                        column: x => x.adOwnerUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Conversations_AspNetUsers_contactingUserId",
+                        column: x => x.contactingUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Message",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    fromUserId = table.Column<string>(type: "TEXT", nullable: false),
+                    toUserId = table.Column<string>(type: "TEXT", nullable: false),
+                    messageText = table.Column<string>(type: "TEXT", nullable: false),
+                    timeStamp = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ConversationID = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Message", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Message_AspNetUsers_fromUserId",
+                        column: x => x.fromUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Message_AspNetUsers_toUserId",
+                        column: x => x.toUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Message_Conversations_ConversationID",
+                        column: x => x.ConversationID,
+                        principalTable: "Conversations",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "4ecd4988-714a-44e6-a5c8-f19f801989a3", "8e32c30a-31f7-488b-97b5-a14bdd261535", "Admin", "ADMIN" },
+                    { "dbfc9ad6-2c07-440c-9eb0-b4b5bf26e34b", "e1813126-cc81-47ea-a05e-766c471a7ed6", "Regular", "REGULAR" }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ads_AdID",
+                table: "Ads",
+                column: "AdID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ads_AdOwnerId",
+                table: "Ads",
+                column: "AdOwnerId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -203,6 +318,36 @@ namespace BaxiWebApp.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Conversations_AdID",
+                table: "Conversations",
+                column: "AdID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Conversations_adOwnerUserId",
+                table: "Conversations",
+                column: "adOwnerUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Conversations_contactingUserId",
+                table: "Conversations",
+                column: "contactingUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Message_ConversationID",
+                table: "Message",
+                column: "ConversationID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Message_fromUserId",
+                table: "Message",
+                column: "fromUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Message_toUserId",
+                table: "Message",
+                column: "toUserId");
         }
 
         /// <inheritdoc />
@@ -224,7 +369,16 @@ namespace BaxiWebApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Message");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Conversations");
+
+            migrationBuilder.DropTable(
+                name: "Ads");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
