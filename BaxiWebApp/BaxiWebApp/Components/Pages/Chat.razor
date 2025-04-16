@@ -23,7 +23,6 @@
 		<p>Timestamp: @M.timeStamp</p>
 	</div>
 	<br>
-	<br>
 }
 
 
@@ -41,7 +40,7 @@
 	{
 		get
 		{
-			var result = context.Conversations.FirstOrDefault(conversation => conversation.ID == ID);
+			var result = context.Conversations.Include(c => c.adOwnerUser).FirstOrDefault(conversation => conversation.ID == ID);
 			return result;
 		}
 	}
@@ -70,6 +69,9 @@
 		message.timeStamp = DateTime.Now;
 		conversation.conversation.Add(message);
 		context.SaveChanges();
+
+		//you dont need it here but youll need it soon 
+		//StateHasChanged();
 	}
 
 	protected override void OnParametersSet()
