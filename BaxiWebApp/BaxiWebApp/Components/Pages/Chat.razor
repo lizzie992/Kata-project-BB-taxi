@@ -25,10 +25,10 @@
 	<br>
 }
 
-
-
 <InputText @bind-Value="textMessage"></InputText>
 <button class="btn btn-primary" @onclick="sendMessage">Send</button>
+
+
 
 
 @code {
@@ -40,7 +40,7 @@
 	{
 		get
 		{
-			var result = context.Conversations.Include(c => c.adOwnerUser).FirstOrDefault(conversation => conversation.ID == ID);
+			var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).FirstOrDefault(conversation => conversation.ID == ID);
 			return result;
 		}
 	}

@@ -4,9 +4,11 @@
 @using BB
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
+@inject Data.BaxiWebAppContext context;
 
 <div class="top-row ps-3 navbar navbar-dark">
 	<div class="container-fluid">
@@ -47,6 +49,11 @@
 						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> My ads
 					</NavLink>
 				</div>
+@* 				<div class="nav-item px-3">
+					<NavLink class="nav-link" href="Chat/" + @ID>
+						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Chat
+					</NavLink>
+				</div> *@
 				<AuthorizeView Roles="Admin" Context="authContext">
 					<div class="nav-item px-3">
 						<NavLink class="nav-link" href="UserManagement">
@@ -121,4 +128,17 @@
 
 		user = await UserManager.GetUserAsync(claims);
 	}
+
+
+	// public int ID { get; set; }
+	// public Conversation conversation
+	// {
+	// 	get
+	// 	{
+	// 		var result = context.Conversations.Where(conversation => conversation.contactingUser == user || conversation.adOwnerUser == user).Last(conversation => conversation.ID == ID);
+	// 		return result;
+	// 	}
+	// }
+
+
 }
