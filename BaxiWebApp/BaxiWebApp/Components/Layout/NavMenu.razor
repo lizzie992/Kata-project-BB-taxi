@@ -49,11 +49,11 @@
 						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> My ads
 					</NavLink>
 				</div>
-@* 				<div class="nav-item px-3">
-					<NavLink class="nav-link" href="Chat/" + @ID>
+				<div class="nav-item px-3">
+					<NavLink class="nav-link" href="Chat"D>
 						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Chat
 					</NavLink>
-				</div> *@
+				</div>
 				<AuthorizeView Roles="Admin" Context="authContext">
 					<div class="nav-item px-3">
 						<NavLink class="nav-link" href="UserManagement">
@@ -129,16 +129,6 @@
 		user = await UserManager.GetUserAsync(claims);
 	}
 
-
-	// public int ID { get; set; }
-	// public Conversation conversation
-	// {
-	// 	get
-	// 	{
-	// 		var result = context.Conversations.Where(conversation => conversation.contactingUser == user || conversation.adOwnerUser == user).Last(conversation => conversation.ID == ID);
-	// 		return result;
-	// 	}
-	// }
 
 
 }

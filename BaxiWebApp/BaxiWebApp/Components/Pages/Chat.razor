@@ -1,4 +1,5 @@
 ﻿@page "/Chat/{ID:int}"
+@page "/Chat"
 
 @using BB
 @using Microsoft.AspNetCore.Authorization
@@ -32,6 +33,26 @@
 		width: 75%;
 		}
 
+
+		.clickable-div {
+		width: 100%;
+		height: 150px;
+		background-color: lightblue;
+		cursor: pointer;
+		text-align: center;
+		line-height: 150px;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #E70000;
+		}
+
+		a {
+		text-decoration: none;
+		display: block;
+		width: 100%;
+		height: 100%;
+		}
+
 	</style>
 </head>
 <body>
@@ -41,28 +62,34 @@
 			<p>
 				@foreach (Conversation C in convoList)
 				{
-					<div class="Conversation">
-						<p>@C.adOwnerUser</p>
+					<div class="clickable-div">
+						<a href="Chat/@C.ID">@C.adOwnerUser</a>
 					</div>
-					<br>
 				}
 			</p>
 		</div>
 		<div class="column right" style="background-color:#bbb;">
 			<h2>Chat</h2>
 			<p>
-				@foreach (Message M in conversation.conversation)
+				@if (CurrentConversation is null)
 				{
-					<div class="Message">
-						<p>From: @M.fromUser</p>
-						<p>To: @M.toUser</p>
-						<p>Message: @M.messageText</p>
-						<p>Timestamp: @M.timeStamp</p>
-					</div>
-					<br>
+					<p>Click on a chat!</p>
 				}
-				<InputText @bind-Value="textMessage"></InputText>
-				<button class="btn btn-primary" @onclick="sendMessage">Send</button>
+				else
+				{
+					@foreach (Message M in messages)
+					{
+						<div class="Message">
+							<p>From: @M.fromUser</p>
+							<p>To: @M.toUser</p>
+							<p>Message: @M.messageText</p>
+							<p>Timestamp: @M.timeStamp</p>
+						</div>
+						<br>
+					}
+					<InputText @bind-Value="textMessage"></InputText>
+					<button class="btn btn-primary" @onclick="sendMessage">Send</button>
+				}
 			</p>
 		</div>
 	</div>
@@ -77,9 +104,9 @@
 @code {
 
 	[Parameter]
-	public int ID { get; set; }
+	public int? ID { get; set; }
 
-	public Conversation conversation
+	public Conversation? CurrentConversation
 	{
 		get
 		{
@@ -87,6 +114,17 @@
 			return result;
 		}
 	}
+
+	public List<Message> messages
+	{
+		get
+		{
+			var result = context.Messages.ToList<Message>();
+			result = result.FindAll(message => message.ConversationID == CurrentConversation.ID);
+			return result;
+		}
+	}
+
 
 	public IQueryable<Conversation> convoList
 	{
@@ -98,12 +136,7 @@
 		}
 	}
 
-
-	public void defineList()
-	{
-		conversation.conversation = context.Messages.ToList<Message>();
-		conversation.conversation = conversation.conversation.FindAll(message => message.ConversationID == conversation.ID);
-	}
+	
 
 	private string textMessage;
 
@@ -111,27 +144,26 @@
 	{
 		Message message = new Message();
 		message.fromUser = currentlyLoggedInUser;
-		if (currentlyLoggedInUser == conversation._contactingUser)
+		if (currentlyLoggedInUser == CurrentConversation._contactingUser)
 		{
-			message.toUser = conversation._adOwnerUser;
+			message.toUser = CurrentConversation._adOwnerUser;
 		}
-		if (currentlyLoggedInUser == conversation._adOwnerUser)
+		if (currentlyLoggedInUser == CurrentConversation._adOwnerUser)
 		{
-			message.toUser = conversation._contactingUser;
+			message.toUser = CurrentConversation._contactingUser;
 		}
 		message.messageText = textMessage;
 		message.timeStamp = DateTime.Now;
-		conversation.conversation.Add(message);
+		CurrentConversation.conversation.Add(message);
 		context.SaveChanges();
 
-		//you dont need it here but youll need it soon 
+		//you dont need it here but youll need it soon
 		//StateHasChanged();
 	}
 
 	protected override void OnParametersSet()
 	{
 		identifyLoggedInUser().GetAwaiter().GetResult();
-		defineList();
 		base.OnParametersSet();
 	}
 

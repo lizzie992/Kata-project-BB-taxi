@@ -21,7 +21,7 @@ namespace BB
 
 
         private List<Message>? _conversation;
-        public List<Message>? conversation
+        public List<Message>? conversation //TODO reanme to messages
         {
             get { return _conversation; }
             set { _conversation = value; }
