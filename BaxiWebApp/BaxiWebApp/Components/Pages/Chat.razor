@@ -10,23 +10,58 @@
 @inject UserManager<User> UserManager;
 @inject NavigationManager NavigationManager
 
-<h3>Chat</h3>
+@* <h3>Chat</h3> *@
 
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		* {
+			box-sizing: border-box;
+		}
 
+		column {
+			float: left;
+			padding: 10px;
+		}
 
-@foreach (Message M in conversation.conversation)
-{
-	<div class="Message">
-		<p>From: @M.fromUser</p>
-		<p>To: @M.toUser</p>
-		<p>Message: @M.messageText</p>
-		<p>Timestamp: @M.timeStamp</p>
+		.left {
+			width: 25%;
+		}
+
+		.right {
+			width: 75%;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="row">
+		<div class="column left" style="background-color:#aaa;">
+			<h2>All chat conversations</h2>
+			<p>Here you will be able to see all chat conversations</p>
+		</div>
+		<div class="column right" style="background-color:#bbb;">
+			<h2>Chat</h2>
+			<p>
+				@foreach (Message M in conversation.conversation)
+				{
+					<div class="Message">
+						<p>From: @M.fromUser</p>
+						<p>To: @M.toUser</p>
+						<p>Message: @M.messageText</p>
+						<p>Timestamp: @M.timeStamp</p>
+					</div>
+					<br>
+				}
+				<InputText @bind-Value="textMessage"></InputText>
+				<button class="btn btn-primary" @onclick="sendMessage">Send</button>
+			</p>
+		</div>
 	</div>
-	<br>
-}
 
-<InputText @bind-Value="textMessage"></InputText>
-<button class="btn btn-primary" @onclick="sendMessage">Send</button>
+</body>
+
+
 
 
 
