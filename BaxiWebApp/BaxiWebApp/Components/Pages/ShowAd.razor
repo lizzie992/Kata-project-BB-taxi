@@ -4,6 +4,10 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
+@using System.Net.Mail
+@using System.Net
+@using System.IO
+@using System.Text;
 @inject Data.BaxiWebAppContext context;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
@@ -16,7 +20,7 @@
 
 @if (CurrentAd is null)
 {
-<p>This ad must have been deleted!</p>
+	<p>This ad must have been deleted!</p>
 }
 else
 {
@@ -32,7 +36,7 @@ else
 		<button @onclick="() => createChat(CurrentAd)">Contact me!</button>
 	}
 
-
+	<button @onclick="() => reportAd(CurrentAd)">Report ad!</button>
 
 }
 
@@ -95,4 +99,23 @@ else
 			NavigationManager.NavigateTo("Chat/" + id);
 		}
 	}
+
+
+	public void reportAd(Ad ad)
+	{
+		string adDetails = $"Ad owner: {ad.AdOwner}\r\nAd type: {ad.AdType}\r\nRoute: {ad.Route}\r\nPick up date and time: {ad.pickUpDateAndTime}\r\nNumber of seats: {ad.NumberOfSeats}\r\nSpecific requests: {ad.SpecificRequests}\r\n";
+
+		SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+		client.EnableSsl = true;
+		client.UseDefaultCredentials = false;
+		string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
+		client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
+		MailMessage mailMessage = new MailMessage();
+		mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
+		mailMessage.To.Add("gulyaskata99@gmail.com");
+		mailMessage.Body = $"Please check out the following ad below that {currentlyLoggedInUser} reported to you: \r\n{adDetails}\r\nOpen the ad here: LINK";
+		mailMessage.Subject = "An ad was just reported to you";
+		client.Send(mailMessage);
+	}
+	
 }
