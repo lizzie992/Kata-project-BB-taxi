@@ -106,10 +106,13 @@
 					<PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.pickUpDateAndTime)" Sortable="true" />
 					<PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
 					<PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+					<TemplateColumn Title="Show me the ad" Context="Ad">
+							<button @onclick="() => showAd(Ad)">Show me the ad!</button>
+					</TemplateColumn>
 					<TemplateColumn Title="Contact" Context="Ad">
 						@if (currentlyLoggedInUser != Ad.AdOwner)
 						{
-							<button @onclick="() => createChat(Ad)">Contact me!</button> 
+							<button @onclick="() => createChat(Ad)">Contact me!</button>
 						}
 					</TemplateColumn>
 				</QuickGrid>
@@ -239,6 +242,10 @@
 	}
 
 
-
+	public void showAd(Ad ad)
+	{
+		int id = ad.ID;
+		NavigationManager.NavigateTo("ShowAd/" + id);
+	}
 
 }

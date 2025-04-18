@@ -1,0 +1,98 @@
+﻿@page "/ShowAd/{ID:int}"
+@using BB
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@inject Data.BaxiWebAppContext context;
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject SignInManager<User> signInManger;
+@inject UserManager<User> UserManager;
+@inject NavigationManager NavigationManager
+
+
+
+<h3>Ad</h3>
+
+@if (CurrentAd is null)
+{
+<p>This ad must have been deleted!</p>
+}
+else
+{
+
+	<div>Ad type: @CurrentAd.AdType</div>
+	<div>Route: @CurrentAd.Route</div>
+	<div>Pick up Date and Time: @CurrentAd.pickUpDateAndTime</div>
+	<div>Number of seats: @CurrentAd.NumberOfSeats</div>
+	<div>Specific requests: @CurrentAd.SpecificRequests</div>
+
+	@if (currentlyLoggedInUser != CurrentAd.AdOwner)
+	{
+		<button @onclick="() => createChat(CurrentAd)">Contact me!</button>
+	}
+
+
+
+}
+
+
+
+
+
+@code {
+
+	[Parameter]
+	public int? ID { get; set; }
+
+	public Ad? CurrentAd
+	{
+		get
+		{
+			var result = context.Ads.FirstOrDefault(ad => ad.ID == ID);
+			return result;
+		}
+	}
+
+	protected override void OnParametersSet()
+	{
+		identifyLoggedInUser().GetAwaiter().GetResult();
+		base.OnParametersSet();
+	}
+
+	public User currentlyLoggedInUser;
+	public async Task identifyLoggedInUser()
+	{
+		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+		var claims = authState.User;
+
+		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+	}
+
+	public void createChat(Ad ad)
+	{
+		//check current ad if matching conversation exists:
+		var previousConversations = ad.adConversations.AsQueryable();
+		previousConversations = previousConversations.Where(Conversation => Conversation.contactingUser == currentlyLoggedInUser);
+		if (previousConversations.ToList().Count != 0)
+		{
+			Conversation conversation = previousConversations.FirstOrDefault();
+			NavigationManager.NavigateTo("Chat/" + conversation.ID);  //find id of conversation    //navigate to chat page with conversation id
+		}
+		else        //if not found, create new conversasion (+id)
+		{
+			Conversation conversation = new();
+			conversation.adOwnerUser = ad.AdOwner;
+			conversation.contactingUser = currentlyLoggedInUser;
+			conversation.conversation = new List<Message>();
+			//in service
+			//add new conversation boject to context
+			ad.adConversations.Add(conversation);
+			// savechanges
+			context.SaveChanges();
+			int id = conversation.ID;
+			NavigationManager.NavigateTo("Chat/" + id);
+		}
+	}
+}
