@@ -56,6 +56,8 @@
 	</style>
 </head>
 <body>
+
+
 	<div class="row">
 		<div class="column left" style="background-color:#aaa;">
 			<h2>All chat conversations</h2>
@@ -77,8 +79,10 @@
 				}
 				else
 				{
-					@foreach (Message M in messages)
+					@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
 					{
+						@foreach (Message M in messages)
+						{
 						<div class="Message">
 							<p>From: @M.fromUser</p>
 							<p>To: @M.toUser</p>
@@ -86,14 +90,18 @@
 							<p>Timestamp: @M.timeStamp</p>
 						</div>
 						<br>
-					}
-					<InputText @bind-Value="textMessage"></InputText>
+						}
+					<InputText @bind-Value="TextMessage"></InputText>
 					<button class="btn btn-primary" @onclick="sendMessage">Send</button>
+					}
+					else
+					{
+					<p>Looks like you are lost :) Please navigate back to the chat using the navigation menu on the left!</p>
+					}
 				}
 			</p>
 		</div>
 	</div>
-
 </body>
 
 
@@ -136,9 +144,9 @@
 		}
 	}
 
-	
 
-	private string textMessage;
+
+	private string TextMessage { get; set; }
 
 	public void sendMessage()
 	{
@@ -152,13 +160,14 @@
 		{
 			message.toUser = CurrentConversation._contactingUser;
 		}
-		message.messageText = textMessage;
+		message.messageText = TextMessage;
 		message.timeStamp = DateTime.Now;
 		CurrentConversation.conversation.Add(message);
 		context.SaveChanges();
 
 		//you dont need it here but youll need it soon
 		//StateHasChanged();
+		TextMessage = "";
 	}
 
 	protected override void OnParametersSet()
