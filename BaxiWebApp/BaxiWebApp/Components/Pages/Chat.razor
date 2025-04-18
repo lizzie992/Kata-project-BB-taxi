@@ -5,6 +5,10 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
+@using System.Net.Mail
+@using System.Net
+@using System.IO
+@using System.Text;
 @inject Data.BaxiWebAppContext context;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
@@ -96,7 +100,7 @@
 						<br>
 						<br>
 						<button class="btn btn-primary" @onclick="() => deleteConversation(CurrentConversation)">Delete conversation</button>
-						<button class="btn btn-primary" @onclick="reportConversation">Report conversation</button>
+						<button class="btn btn-primary" @onclick="() => reportConversation(CurrentConversation)">Report conversation</button>
 					}
 					else
 					{
@@ -203,9 +207,31 @@
 		NavigationManager.NavigateTo("Ads");
 	}
 
-	public void reportConversation()
+	public void reportConversation(Conversation C)
 	{
+		IEnumerable<Message> messagesToReport = context.Messages.ToList<Message>().AsEnumerable();
+		messagesToReport = messagesToReport.Where(m => m.ConversationID == C.ID);
+		StringBuilder message = new StringBuilder($"Messages: \r\n\r\n");
+		foreach (Message m in messagesToReport)
+		{
+			message.Append($"From: {m.fromUser.ToString()}\r\n");
+			message.Append($"To: {m.toUser.ToString()}\r\n");
+			message.Append($"Message: {m.messageText.ToString()}\r\n");
+			message.Append($"Timestamp: {m.timeStamp.ToString()}\r\n\r\n");
+		}
+		string output = message.ToString();
 
+		SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+		client.EnableSsl = true;
+		client.UseDefaultCredentials = false;
+		string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
+		client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
+		MailMessage mailMessage = new MailMessage();
+		mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
+		mailMessage.To.Add("gulyaskata99@gmail.com");
+		mailMessage.Body = $"Please check out the following conversation below that {currentlyLoggedInUser} reported to you: \r\n{message}";
+		mailMessage.Subject = "A conversation was just reported to you";
+		client.Send(mailMessage);
 	}
 
 }
