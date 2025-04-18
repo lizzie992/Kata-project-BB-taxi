@@ -107,7 +107,10 @@
 					<PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
 					<PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
 					<TemplateColumn Title="Contact" Context="Ad">
-						<button @onclick="() => createChat(Ad)">Contact me!</button> @* button not working yet, it should open the chat *@
+						@if (currentlyLoggedInUser != Ad.AdOwner)
+						{
+							<button @onclick="() => createChat(Ad)">Contact me!</button> 
+						}
 					</TemplateColumn>
 				</QuickGrid>
 			</div>
