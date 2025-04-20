@@ -18,13 +18,19 @@ namespace BB
             set { _id = value; }
         }
 
-
-
-        private List<Message>? _conversation;
-        public List<Message>? conversation //TODO reanme to messages
+        private int _AdID;
+        public int AdID
         {
-            get { return _conversation; }
-            set { _conversation = value; }
+
+            get { return _AdID; }
+            set { _AdID = value; }
+        }
+
+        private List<Message>? _messages;
+        public List<Message>? messages 
+        {
+            get { return _messages; }
+            set { _messages = value; }
         }
 
 

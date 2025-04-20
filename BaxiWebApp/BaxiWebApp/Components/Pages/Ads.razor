@@ -219,7 +219,7 @@
 			Conversation conversation = new();
 			conversation.adOwnerUser = ad.AdOwner;
 			conversation.contactingUser = currentlyLoggedInUser;
-			conversation.conversation = new List<Message>();
+			conversation.messages = new List<Message>();
 			//in service
 			//add new conversation boject to context
 			ad.adConversations.Add(conversation);

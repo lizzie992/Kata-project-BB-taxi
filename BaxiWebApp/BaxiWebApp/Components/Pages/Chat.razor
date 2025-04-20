@@ -21,40 +21,40 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
 		* {
-		box-sizing: border-box;
+			box-sizing: border-box;
 		}
 
 		column {
-		float: left;
-		padding: 10px;
+			float: left;
+			padding: 10px;
 		}
 
 		.left {
-		width: 25%;
+			width: 25%;
 		}
 
 		.right {
-		width: 75%;
+			width: 75%;
 		}
 
 
 		.clickable-div {
-		width: 100%;
-		height: 150px;
-		background-color: lightblue;
-		cursor: pointer;
-		text-align: center;
-		line-height: 150px;
-		border-width: 1px;
-		border-style: solid;
-		border-color: #E70000;
+			width: 100%;
+			height: 150px;
+			background-color: lightblue;
+			cursor: pointer;
+			text-align: center;
+			line-height: 150px;
+			border-width: 1px;
+			border-style: solid;
+			border-color: #E70000;
 		}
 
 		a {
-		text-decoration: none;
-		display: block;
-		width: 100%;
-		height: 100%;
+			text-decoration: none;
+			display: block;
+			width: 100%;
+			height: 100%;
 		}
 
 	</style>
@@ -69,7 +69,14 @@
 				@foreach (Conversation C in convoList)
 				{
 					<div class="clickable-div">
-						<a href="Chat/@C.ID">@C.adOwnerUser</a>
+						@if (C.messages is null)
+						{
+							<a href="Chat/@C.ID">New conversation</a>
+						}
+						else
+						{
+							<a href="Chat/@C.ID">@C.messages.LastOrDefault().ToString()</a>
+						}
 					</div>
 				}
 			</p>
@@ -79,32 +86,44 @@
 			<p>
 				@if (CurrentConversation is null)
 				{
-					<p>Click on a chat!</p>
+				<p>Click on a chat!</p>
 				}
 				else
 				{
 					@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
 					{
-						@foreach (Message M in messages)
+					Ad ad = GetAd(CurrentConversation);
+					<div class="Ad">
+						<p>Ad owner: @ad.AdOwner</p>
+						<p>Ad type: @ad.AdType</p>
+						<p>Route: @ad.Route</p>
+						<p>Pick up Date and Time: @ad.pickUpDateAndTime</p>
+						<p>Number of seats: @ad.NumberOfSeats</p>
+						<p>Specific requests: @ad.SpecificRequests</p>
+						<br>
+						<br>
+						<br>
+					</div>
+						@foreach (Message M in currentMessages)
 						{
-							<div class="Message">
-								<p>From: @M.fromUser</p>
-								<p>To: @M.toUser</p>
-								<p>Message: @M.messageText</p>
-								<p>Timestamp: @M.timeStamp</p>
-							</div>
-							<br>
+						<div class="Message">
+							<p>From: @M.fromUser</p>
+							<p>To: @M.toUser</p>
+							<p>Message: @M.messageText</p>
+							<p>Timestamp: @M.timeStamp</p>
+						</div>
+						<br>
 						}
-						<InputText @bind-Value="TextMessage"></InputText>
-						<button class="btn btn-primary" @onclick="sendMessage">Send</button>
-						<br>
-						<br>
-						<button class="btn btn-primary" @onclick="() => deleteConversation(CurrentConversation)">Delete conversation</button>
-						<button class="btn btn-primary" @onclick="() => reportConversation(CurrentConversation)">Report conversation</button>
+					<InputText @bind-Value="TextMessage"></InputText>
+					<button class="btn btn-primary" @onclick="sendMessage">Send</button>
+					<br>
+					<br>
+					<button class="btn btn-primary" @onclick="() => deleteConversation(CurrentConversation)">Delete conversation</button>
+					<button class="btn btn-primary" @onclick="() => reportConversation(CurrentConversation)">Report conversation</button>
 					}
 					else
 					{
-						<p>Looks like you are lost :) Please navigate back to the chat using the navigation menu on the left!</p>
+					<p>Looks like you are lost :) Please navigate back to the chat using the navigation menu on the left!</p>
 					}
 				}
 			</p>
@@ -131,7 +150,18 @@
 		}
 	}
 
-	public List<Message> messages
+
+	public Ad? currentAd
+	{
+		get
+		{
+			var result = context.Ads.FirstOrDefault(ad => ad.ID == CurrentConversation.AdID);
+			return result;
+		}
+	}
+
+
+	public List<Message> currentMessages
 	{
 		get
 		{
@@ -142,7 +172,7 @@
 	}
 
 
-	public IQueryable<Conversation> convoList
+	public IQueryable<Conversation>? convoList
 	{
 		get
 		{
@@ -170,7 +200,7 @@
 		}
 		message.messageText = TextMessage;
 		message.timeStamp = DateTime.Now;
-		CurrentConversation.conversation.Add(message);
+		CurrentConversation.messages.Add(message);
 		context.SaveChanges();
 
 		//you dont need it here but youll need it soon
@@ -232,6 +262,13 @@
 		mailMessage.Body = $"Please check out the following conversation below that {currentlyLoggedInUser} reported to you: \r\n{message}";
 		mailMessage.Subject = "A conversation was just reported to you";
 		client.Send(mailMessage);
+	}
+
+
+	public Ad GetAd(Conversation C)
+	{
+		Ad ad = context.Ads.ToList<Ad>().FirstOrDefault(a => a.ID == C.AdID);
+		return ad;
 	}
 
 }
