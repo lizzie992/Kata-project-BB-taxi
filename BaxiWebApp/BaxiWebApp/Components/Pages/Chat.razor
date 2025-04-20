@@ -65,21 +65,21 @@
 	<div class="row">
 		<div class="column left" style="background-color:#aaa;">
 			<h2>All chat conversations</h2>
-			<p>
-				@foreach (Conversation C in convoList)
-				{
-					<div class="clickable-div">
-						@if (C.messages is null)
-						{
-							<a href="Chat/@C.ID">New conversation</a>
-						}
-						else
-						{
-							<a href="Chat/@C.ID">@C.messages.LastOrDefault().ToString()</a>
-						}
-					</div>
-				}
-			</p>
+			@foreach (Conversation C in convoList)
+			{
+				C.messages = getMessages(C);
+				Message? lastMessage = C.messages.LastOrDefault();
+				<div class="clickable-div">
+					@if (C.messages is null)
+					{
+						<a href="Chat/@C.ID">New conversation</a>
+					}
+					else
+					{
+						<a href="Chat/@C.ID">@lastMessage.messageText.ToString() @lastMessage.timeStamp.ToString("yyyy-MM-dd HH:mm")</a>
+					}
+				</div>
+			}
 		</div>
 		<div class="column right" style="background-color:#bbb;">
 			<h2>Chat</h2>
@@ -92,7 +92,7 @@
 				{
 					@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
 					{
-					Ad ad = GetAd(CurrentConversation);
+						Ad ad = GetAd(CurrentConversation);
 					<div class="Ad">
 						<p>Ad owner: @ad.AdOwner</p>
 						<p>Ad type: @ad.AdType</p>
@@ -269,6 +269,14 @@
 	{
 		Ad ad = context.Ads.ToList<Ad>().FirstOrDefault(a => a.ID == C.AdID);
 		return ad;
+	}
+
+
+	public List<Message> getMessages(Conversation C)
+	{
+		List<Message> list = context.Messages.ToList<Message>();
+		list = list.FindAll(m => m.ConversationID == C.ID);
+		return list;
 	}
 
 }
