@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace BB
@@ -26,15 +27,14 @@ namespace BB
             set { _AdID = value; }
         }
 
-        private List<Message>? _messages;
-        public List<Message>? messages 
+
+        public List<Message>? messages
         {
-            get { return _messages; }
-            set { _messages = value; }
+            get;set;
         }
 
 
-        public User _adOwnerUser;
+        private User _adOwnerUser;
         public User adOwnerUser
         {
             get { return _adOwnerUser; }
@@ -42,11 +42,20 @@ namespace BB
         }
 
 
-        public User _contactingUser;
+        private User _contactingUser;
         public User contactingUser
         {
             get { return _contactingUser; }
             set { _contactingUser = value; }
+        }
+
+
+        public Message MostRecentMessage
+        {
+            get
+            {
+                return messages.OrderByDescending(m => m.timeStamp).First();
+            }
         }
 
 

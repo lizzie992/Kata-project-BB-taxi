@@ -21,40 +21,40 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
 		* {
-			box-sizing: border-box;
+		box-sizing: border-box;
 		}
 
 		column {
-			float: left;
-			padding: 10px;
+		float: left;
+		padding: 10px;
 		}
 
 		.left {
-			width: 25%;
+		width: 25%;
 		}
 
 		.right {
-			width: 75%;
+		width: 75%;
 		}
 
 
 		.clickable-div {
-			width: 100%;
-			height: 150px;
-			background-color: lightblue;
-			cursor: pointer;
-			text-align: center;
-			line-height: 150px;
-			border-width: 1px;
-			border-style: solid;
-			border-color: #E70000;
+		width: 100%;
+		height: 150px;
+		background-color: lightblue;
+		cursor: pointer;
+		text-align: center;
+		line-height: 150px;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #E70000;
 		}
 
 		a {
-			text-decoration: none;
-			display: block;
-			width: 100%;
-			height: 100%;
+		text-decoration: none;
+		display: block;
+		width: 100%;
+		height: 100%;
 		}
 
 	</style>
@@ -67,16 +67,14 @@
 			<h2>All chat conversations</h2>
 			@foreach (Conversation C in convoList)
 			{
-				C.messages = getMessages(C);
-				Message? lastMessage = C.messages.LastOrDefault();
 				<div class="clickable-div">
-					@if (C.messages is null)
+					@if (C.messages is not null)
 					{
-						<a href="Chat/@C.ID">New conversation</a>
+						<a href="Chat/@C.ID">@C.MostRecentMessage.messageText.ToString() @C.MostRecentMessage.timeStamp.ToString("yyyy-MM-dd HH:mm")</a>
 					}
 					else
 					{
-						<a href="Chat/@C.ID">@lastMessage.messageText.ToString() @lastMessage.timeStamp.ToString("yyyy-MM-dd HH:mm")</a>
+						<a href="Chat/@C.ID">New conversation</a>
 					}
 				</div>
 			}
@@ -86,44 +84,44 @@
 			<p>
 				@if (CurrentConversation is null)
 				{
-				<p>Click on a chat!</p>
+					<p>Click on a chat!</p>
 				}
 				else
 				{
 					@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
 					{
 						Ad ad = GetAd(CurrentConversation);
-					<div class="Ad">
-						<p>Ad owner: @ad.AdOwner</p>
-						<p>Ad type: @ad.AdType</p>
-						<p>Route: @ad.Route</p>
-						<p>Pick up Date and Time: @ad.pickUpDateAndTime</p>
-						<p>Number of seats: @ad.NumberOfSeats</p>
-						<p>Specific requests: @ad.SpecificRequests</p>
-						<br>
-						<br>
-						<br>
-					</div>
+						<div class="Ad">
+							<p>Ad owner: @ad.AdOwner</p>
+							<p>Ad type: @ad.AdType</p>
+							<p>Route: @ad.Route</p>
+							<p>Pick up Date and Time: @ad.pickUpDateAndTime</p>
+							<p>Number of seats: @ad.NumberOfSeats</p>
+							<p>Specific requests: @ad.SpecificRequests</p>
+							<br>
+							<br>
+							<br>
+						</div>
 						@foreach (Message M in currentMessages)
 						{
-						<div class="Message">
-							<p>From: @M.fromUser</p>
-							<p>To: @M.toUser</p>
-							<p>Message: @M.messageText</p>
-							<p>Timestamp: @M.timeStamp</p>
-						</div>
-						<br>
+							<div class="Message">
+								<p>From: @M.fromUser</p>
+								<p>To: @M.toUser</p>
+								<p>Message: @M.messageText</p>
+								<p>Timestamp: @M.timeStamp</p>
+							</div>
+							<br>
 						}
-					<InputText @bind-Value="TextMessage"></InputText>
-					<button class="btn btn-primary" @onclick="sendMessage">Send</button>
-					<br>
-					<br>
-					<button class="btn btn-primary" @onclick="() => deleteConversation(CurrentConversation)">Delete conversation</button>
-					<button class="btn btn-primary" @onclick="() => reportConversation(CurrentConversation)">Report conversation</button>
+						<InputText @bind-Value="TextMessage"></InputText>
+						<button class="btn btn-primary" @onclick="sendMessage">Send</button>
+						<br>
+						<br>
+						<button class="btn btn-primary" @onclick="() => deleteConversation(CurrentConversation)">Delete conversation</button>
+						<button class="btn btn-primary" @onclick="() => reportConversation(CurrentConversation)">Report conversation</button>
 					}
 					else
 					{
-					<p>Looks like you are lost :) Please navigate back to the chat using the navigation menu on the left!</p>
+						<p>Looks like you are lost :) Please navigate back to the chat using the navigation menu on the left!</p>
 					}
 				}
 			</p>
@@ -176,8 +174,9 @@
 	{
 		get
 		{
-			var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).ToList<Conversation>().AsQueryable();
+			var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).ToList<Conversation>().AsQueryable();
 			result = result.Where(c => c.adOwnerUser == currentlyLoggedInUser || c.contactingUser == currentlyLoggedInUser);
+			result = result.OrderByDescending(c => c.MostRecentMessage.timeStamp);
 			return result;
 		}
 	}
@@ -190,13 +189,13 @@
 	{
 		Message message = new Message();
 		message.fromUser = currentlyLoggedInUser;
-		if (currentlyLoggedInUser == CurrentConversation._contactingUser)
+		if (currentlyLoggedInUser == CurrentConversation.contactingUser)
 		{
-			message.toUser = CurrentConversation._adOwnerUser;
+			message.toUser = CurrentConversation.adOwnerUser;
 		}
-		if (currentlyLoggedInUser == CurrentConversation._adOwnerUser)
+		if (currentlyLoggedInUser == CurrentConversation.adOwnerUser)
 		{
-			message.toUser = CurrentConversation._contactingUser;
+			message.toUser = CurrentConversation.contactingUser;
 		}
 		message.messageText = TextMessage;
 		message.timeStamp = DateTime.Now;
@@ -234,7 +233,7 @@
 		//once the messages are removed I can delete the conversation
 		context.Conversations.Remove(C);
 		context.SaveChanges();
-		NavigationManager.NavigateTo("Ads");
+		NavigationManager.NavigateTo("Chat");
 	}
 
 	public void reportConversation(Conversation C)
@@ -271,12 +270,5 @@
 		return ad;
 	}
 
-
-	public List<Message> getMessages(Conversation C)
-	{
-		List<Message> list = context.Messages.ToList<Message>();
-		list = list.FindAll(m => m.ConversationID == C.ID);
-		return list;
-	}
 
 }
