@@ -14,6 +14,7 @@
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
 @inject NavigationManager NavigationManager
+@inject Data.DataService DataService
 
 @* <h3>Chat</h3> *@
 
@@ -185,23 +186,12 @@
 
 	private string TextMessage { get; set; }
 
+
+
 	public void sendMessage()
 	{
-		Message message = new Message();
-		message.fromUser = currentlyLoggedInUser;
-		if (currentlyLoggedInUser == CurrentConversation.contactingUser)
-		{
-			message.toUser = CurrentConversation.adOwnerUser;
-		}
-		if (currentlyLoggedInUser == CurrentConversation.adOwnerUser)
-		{
-			message.toUser = CurrentConversation.contactingUser;
-		}
-		message.messageText = TextMessage;
-		message.timeStamp = DateTime.Now;
-		CurrentConversation.messages.Add(message);
+		DataService.sendMessage(currentlyLoggedInUser, CurrentConversation, TextMessage);
 		context.SaveChanges();
-
 		//you dont need it here but youll need it soon
 		//StateHasChanged();
 		TextMessage = "";
