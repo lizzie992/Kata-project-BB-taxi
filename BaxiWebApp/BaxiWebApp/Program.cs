@@ -15,7 +15,7 @@ namespace BaxiWebApp
             var builder = WebApplication.CreateBuilder(args);
             var connectionString = builder.Configuration.GetConnectionString("BaxiWebAppContext") ?? throw new InvalidOperationException("Connection string 'BaxiWebAppContextConnection' not found."); ;
 
-            builder.Services.AddDbContext<BaxiWebAppContext>(options => options.UseSqlite(connectionString));
+            builder.Services.AddDbContextFactory<BaxiWebAppContext>(options => options.UseSqlite(connectionString));
 
             builder.Services.AddSingleton<DataService>();
 

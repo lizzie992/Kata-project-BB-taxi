@@ -191,10 +191,10 @@
 	public void sendMessage()
 	{
 		DataService.sendMessage(currentlyLoggedInUser, CurrentConversation, TextMessage);
-		context.SaveChanges();
+		// context.SaveChanges();
 		//you dont need it here but youll need it soon
 		//StateHasChanged();
-		TextMessage = "";
+		// TextMessage = "";
 	}
 
 	protected override void OnParametersSet()
