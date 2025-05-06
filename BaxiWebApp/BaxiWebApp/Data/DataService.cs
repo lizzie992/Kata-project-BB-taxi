@@ -1,5 +1,7 @@
 ﻿using BB;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace BaxiWebApp.Data
 {
@@ -12,10 +14,11 @@ namespace BaxiWebApp.Data
             _dbcFactory = dbcFactory;
         }
 
-        public void sendMessage(User currentlyLoggedInUser, Conversation CurrentConversation, string TextMessage)
+        public void SendMessage(Conversation C, User currentlyLoggedInUser, string TextMessage)
         {
             using (var context = _dbcFactory.CreateDbContext())
             {
+                Conversation CurrentConversation = getCurrentConversation(C.ID);
                 Message message = new Message();
                 message.fromUser = currentlyLoggedInUser;
                 if (currentlyLoggedInUser == CurrentConversation.contactingUser)
@@ -29,14 +32,21 @@ namespace BaxiWebApp.Data
                 message.messageText = TextMessage;
                 message.timeStamp = DateTime.Now;
                 CurrentConversation.messages.Add(message);
+                context.Update(getCurrentConversation(C.ID));
                 context.SaveChanges();
                 TextMessage = "";
-            }    
+            }
 
         }
 
-
-
+        public Conversation? getCurrentConversation(int ID)
+        {
+            using (var context = _dbcFactory.CreateDbContext())
+            {
+                var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).FirstOrDefault(conversation => conversation.ID == ID);
+                return result;
+            }
+        }
 
     }
 }

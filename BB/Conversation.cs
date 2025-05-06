@@ -19,15 +19,6 @@ namespace BB
             set { _id = value; }
         }
 
-        private int _AdID;
-        public int AdID
-        {
-
-            get { return _AdID; }
-            set { _AdID = value; }
-        }
-
-
         public List<Message>? messages
         {
             get;set;

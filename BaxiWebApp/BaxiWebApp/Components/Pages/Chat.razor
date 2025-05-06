@@ -103,7 +103,7 @@
 							<br>
 							<br>
 						</div>
-						@foreach (Message M in currentMessages)
+						@foreach (Message M in CurrentConversation.messages)
 						{
 							<div class="Message">
 								<p>From: @M.fromUser</p>
@@ -150,25 +150,17 @@
 	}
 
 
-	public Ad? currentAd
-	{
-		get
-		{
-			var result = context.Ads.FirstOrDefault(ad => ad.ID == CurrentConversation.AdID);
-			return result;
-		}
-	}
 
 
-	public List<Message> currentMessages
-	{
-		get
-		{
-			var result = context.Messages.ToList<Message>();
-			result = result.FindAll(message => message.ConversationID == CurrentConversation.ID);
-			return result;
-		}
-	}
+	// public List<Message> currentMessages
+	// {
+	// 	get
+	// 	{
+	// 		var result = context.Messages.ToList<Message>();
+	// 		result = result.FindAll(message => message.ConversationID == CurrentConversation.ID);
+	// 		return result;
+	// 	}
+	// }
 
 
 	public IQueryable<Conversation>? convoList
@@ -190,11 +182,7 @@
 
 	public void sendMessage()
 	{
-		DataService.sendMessage(currentlyLoggedInUser, CurrentConversation, TextMessage);
-		// context.SaveChanges();
-		//you dont need it here but youll need it soon
-		//StateHasChanged();
-		// TextMessage = "";
+		DataService.SendMessage(CurrentConversation, currentlyLoggedInUser, TextMessage);
 	}
 
 	protected override void OnParametersSet()
@@ -256,7 +244,7 @@
 
 	public Ad GetAd(Conversation C)
 	{
-		Ad ad = context.Ads.ToList<Ad>().FirstOrDefault(a => a.ID == C.AdID);
+		Ad ad = context.Ads.Where(a => a.adConversations.Contains(C)).First();
 		return ad;
 	}
 
