@@ -66,7 +66,7 @@
 	<div class="row">
 		<div class="column left" style="background-color:#aaa;">
 			<h2>All chat conversations</h2>
-			@foreach (Conversation C in convoList)
+			@foreach (Conversation C in ConvoList)
 			{
 				<div class="clickable-div">
 					@if (C.messages is not null)
@@ -114,11 +114,11 @@
 							<br>
 						}
 						<InputText @bind-Value="TextMessage"></InputText>
-						<button class="btn btn-primary" @onclick="sendMessage">Send</button>
+						<button class="btn btn-primary" @onclick="SendMessage">Send</button>
 						<br>
 						<br>
-						<button class="btn btn-primary" @onclick="() => deleteConversation(CurrentConversation)">Delete conversation</button>
-						<button class="btn btn-primary" @onclick="() => reportConversation(CurrentConversation)">Report conversation</button>
+						<button class="btn btn-primary" @onclick="() => DeleteConversation(CurrentConversation)">Delete conversation</button>
+						<button class="btn btn-primary" @onclick="() => ReportConversation(CurrentConversation)">Report conversation</button>
 					}
 					else
 					{
@@ -163,7 +163,7 @@
 	// }
 
 
-	public IQueryable<Conversation>? convoList
+	public IQueryable<Conversation>? ConvoList
 	{
 		get
 		{
@@ -180,19 +180,19 @@
 
 
 
-	public void sendMessage()
+	public void SendMessage()
 	{
 		DataService.SendMessage(CurrentConversation, currentlyLoggedInUser, TextMessage);
 	}
 
 	protected override void OnParametersSet()
 	{
-		identifyLoggedInUser().GetAwaiter().GetResult();
+		IdentifyLoggedInUser().GetAwaiter().GetResult();
 		base.OnParametersSet();
 	}
 
 	public User currentlyLoggedInUser;
-	public async Task identifyLoggedInUser()
+	public async Task IdentifyLoggedInUser()
 	{
 		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
@@ -202,7 +202,7 @@
 	}
 
 
-	public void deleteConversation(Conversation C)
+	public void DeleteConversation(Conversation C)
 	{
 		//first delete the messages that have the ID of this current conversation as long as the current conversation exists
 		IEnumerable<Message> messagesToDelete = context.Messages.ToList<Message>().AsEnumerable();
@@ -214,7 +214,7 @@
 		NavigationManager.NavigateTo("Chat");
 	}
 
-	public void reportConversation(Conversation C)
+	public void ReportConversation(Conversation C)
 	{
 		IEnumerable<Message> messagesToReport = context.Messages.ToList<Message>().AsEnumerable();
 		messagesToReport = messagesToReport.Where(m => m.ConversationID == C.ID);

@@ -18,28 +18,28 @@ namespace BaxiWebApp.Data
         {
             using (var context = _dbcFactory.CreateDbContext())
             {
-                Conversation CurrentConversation = getCurrentConversation(C.ID);
+                Conversation CurrentConversation = GetCurrentConversation(C.ID);
                 Message message = new Message();
                 message.fromUser = currentlyLoggedInUser;
                 if (currentlyLoggedInUser == CurrentConversation.contactingUser)
                 {
                     message.toUser = CurrentConversation.adOwnerUser;
                 }
-                if (currentlyLoggedInUser == CurrentConversation.adOwnerUser)
+                else if (currentlyLoggedInUser == CurrentConversation.adOwnerUser)
                 {
                     message.toUser = CurrentConversation.contactingUser;
                 }
                 message.messageText = TextMessage;
                 message.timeStamp = DateTime.Now;
                 CurrentConversation.messages.Add(message);
-                context.Update(getCurrentConversation(C.ID));
+                context.Update(GetCurrentConversation(C.ID));
                 context.SaveChanges();
                 TextMessage = "";
             }
 
         }
 
-        public Conversation? getCurrentConversation(int ID)
+        public Conversation? GetCurrentConversation(int ID)
         {
             using (var context = _dbcFactory.CreateDbContext())
             {
