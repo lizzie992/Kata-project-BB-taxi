@@ -14,25 +14,27 @@ namespace BaxiWebApp.Data
             _dbcFactory = dbcFactory;
         }
 
-        public void SendMessage(Conversation C, User currentlyLoggedInUser, string TextMessage)
+        public void SendMessage(Conversation C, User currentlyLoggedInUser, string TextMessage, int ID)
         {
             using (var context = _dbcFactory.CreateDbContext())
             {
-                Conversation CurrentConversation = GetCurrentConversation(C.ID);
+                Conversation CurrentConversation = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).FirstOrDefault(conversation => conversation.ID == ID);
                 Message message = new Message();
                 message.fromUser = currentlyLoggedInUser;
-                if (currentlyLoggedInUser == CurrentConversation.contactingUser)
+                if (currentlyLoggedInUser.Id == CurrentConversation.contactingUser.Id)
                 {
                     message.toUser = CurrentConversation.adOwnerUser;
                 }
-                else if (currentlyLoggedInUser == CurrentConversation.adOwnerUser)
+                else if (currentlyLoggedInUser.Id == CurrentConversation.adOwnerUser.Id)
                 {
                     message.toUser = CurrentConversation.contactingUser;
                 }
                 message.messageText = TextMessage;
                 message.timeStamp = DateTime.Now;
+                //  context.Entry(message.toUser).State = EntityState.Unchanged;
+                //    context.Entry(message.fromUser).State = EntityState.Unchanged;
                 CurrentConversation.messages.Add(message);
-                context.Update(GetCurrentConversation(C.ID));
+                //        context.Update(CurrentConversation);
                 context.SaveChanges();
                 TextMessage = "";
             }
