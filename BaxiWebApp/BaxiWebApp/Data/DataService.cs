@@ -20,7 +20,7 @@ namespace BaxiWebApp.Data
             {
                 Conversation CurrentConversation = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).FirstOrDefault(conversation => conversation.ID == ID);
                 Message message = new Message();
-                message.fromUser = currentlyLoggedInUser;
+                message.fromUser = context.Users.Find(currentlyLoggedInUser.Id);
                 if (currentlyLoggedInUser.Id == CurrentConversation.contactingUser.Id)
                 {
                     message.toUser = CurrentConversation.adOwnerUser;
@@ -36,7 +36,6 @@ namespace BaxiWebApp.Data
                 CurrentConversation.messages.Add(message);
                 //        context.Update(CurrentConversation);
                 context.SaveChanges();
-                TextMessage = "";
             }
 
         }
