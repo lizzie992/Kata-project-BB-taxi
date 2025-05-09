@@ -49,5 +49,20 @@ namespace BaxiWebApp.Data
             }
         }
 
+
+
+        public void DeleteConversation(Conversation C)
+        {
+            using (var context = _dbcFactory.CreateDbContext())
+            {
+                //first delete the messages that have the ID of this current conversation as long as the current conversation exists
+                IEnumerable<Message> messagesToDelete = context.Messages.ToList<Message>().AsEnumerable();
+                messagesToDelete = messagesToDelete.Where(m => m.ConversationID == C.ID);
+                context.Messages.RemoveRange(messagesToDelete);
+                //once the messages are removed I can delete the conversation
+                context.Conversations.Remove(C);
+                context.SaveChanges();
+            }    
+        }
     }
 }

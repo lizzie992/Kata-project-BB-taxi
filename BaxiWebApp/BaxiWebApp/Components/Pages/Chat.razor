@@ -152,17 +152,6 @@
 
 
 
-	// public List<Message> currentMessages
-	// {
-	// 	get
-	// 	{
-	// 		var result = context.Messages.ToList<Message>();
-	// 		result = result.FindAll(message => message.ConversationID == CurrentConversation.ID);
-	// 		return result;
-	// 	}
-	// }
-
-
 	public IQueryable<Conversation>? ConvoList
 	{
 		get
@@ -205,13 +194,7 @@
 
 	public void DeleteConversation(Conversation C)
 	{
-		//first delete the messages that have the ID of this current conversation as long as the current conversation exists
-		IEnumerable<Message> messagesToDelete = context.Messages.ToList<Message>().AsEnumerable();
-		messagesToDelete = messagesToDelete.Where(m => m.ConversationID == C.ID);
-		context.Messages.RemoveRange(messagesToDelete);
-		//once the messages are removed I can delete the conversation
-		context.Conversations.Remove(C);
-		context.SaveChanges();
+		DataService.DeleteConversation(C);
 		NavigationManager.NavigateTo("Chat");
 	}
 
