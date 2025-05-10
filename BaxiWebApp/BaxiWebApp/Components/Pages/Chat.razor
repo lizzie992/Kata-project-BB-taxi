@@ -140,40 +140,7 @@
 	[Parameter]
 	public int? ID { get; set; }
 
-	public Conversation? CurrentConversation
-	{
-		get
-		{
-			var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).FirstOrDefault(conversation => conversation.ID == ID);
-			return result;
-		}
-	}
-
-
-
-
-	public IQueryable<Conversation>? ConvoList
-	{
-		get
-		{
-			var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).ToList<Conversation>().AsQueryable();
-			result = result.Where(c => c.adOwnerUser == currentlyLoggedInUser || c.contactingUser == currentlyLoggedInUser);
-			result = result.OrderByDescending(c => c.MostRecentMessage.timeStamp);
-			return result;
-		}
-	}
-
-
-
 	private string TextMessage { get; set; }
-
-
-
-	public void SendMessage()
-	{
-		DataService.SendMessage(CurrentConversation, currentlyLoggedInUser, TextMessage, CurrentConversation.ID);
-		TextMessage = "";
-	}
 
 	protected override void OnParametersSet()
 	{
@@ -191,6 +158,31 @@
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
+	public Conversation? CurrentConversation
+	{
+		get
+		{
+			var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).FirstOrDefault(conversation => conversation.ID == ID);
+			return result;
+		}
+	}
+
+	public IQueryable<Conversation>? ConvoList
+	{
+		get
+		{
+			var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).ToList<Conversation>().AsQueryable();
+			result = result.Where(c => c.adOwnerUser == currentlyLoggedInUser || c.contactingUser == currentlyLoggedInUser);
+			result = result.OrderByDescending(c => c.MostRecentMessage.timeStamp);
+			return result;
+		}
+	}
+
+	public void SendMessage()
+	{
+		DataService.SendMessage(CurrentConversation, currentlyLoggedInUser, TextMessage, CurrentConversation.ID);
+		TextMessage = "";
+	}
 
 	public void DeleteConversation(Conversation C)
 	{
@@ -202,7 +194,6 @@
 	{
 		DataService.ReportConversation(C, currentlyLoggedInUser);
 	}
-
 
 	public Ad GetAd(Conversation C)
 	{

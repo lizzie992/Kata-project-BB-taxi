@@ -10,6 +10,7 @@
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
 @inject NavigationManager NavigationManager
+@inject Data.DataService DataService
 
 <AuthorizeView Context="authContext">
 	<Authorized>
@@ -97,22 +98,9 @@
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
-	public void sendEmailAboutRoute()
+	public void sendEmailAboutRoute(Ad ad)
 	{
-		if (ad.Route.Contains("Sendling"))
-		{
-			SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
-			client.EnableSsl = true;
-			client.UseDefaultCredentials = false;
-			string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
-			client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
-			MailMessage mailMessage = new MailMessage();
-			mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
-			mailMessage.To.Add("gulyaskata99@gmail.com");
-			mailMessage.Body = "Check out this new ad: ";
-			mailMessage.Subject = "You might be interested in this new Ad!";
-			client.Send(mailMessage);
-		}
+		DataService.sendEmailNewAd(ad);
 	}
 
 
@@ -121,16 +109,9 @@
 	{
 		context.Ads.Add(ad);
 		context.SaveChanges();
-		sendEmailAboutRoute();
+		sendEmailAboutRoute(ad);
 		NavigationManager.NavigateTo("Ads");
 	}
-
-	// private void Save()
-	// {
-	//     List<Ad> adList = BB.LogicalCode.LoadAdListFromFile();
-	//     adList.Add(ad);
-	//     BB.LogicalCode.SaveAdToFile(adList);
-	// }
 
 
 	

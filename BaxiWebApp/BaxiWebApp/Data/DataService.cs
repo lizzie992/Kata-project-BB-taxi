@@ -99,5 +99,25 @@ namespace BaxiWebApp.Data
 
             }
         }
+
+        public void sendEmailNewAd(Ad ad)
+        {
+            string message = $"You might be interested in this new Ad:\r\n Ad type: {ad.AdType}\r\n In the following route: {ad.Route}\r\n On {ad.pickUpDateAndTime}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n";
+            if (ad.Route.Contains("Sendling"))
+            {
+                SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
+                client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
+                mailMessage.To.Add("gulyaskata99@gmail.com");
+                mailMessage.Body = message;
+                mailMessage.Subject = "Check out this new ad: ";
+                client.Send(mailMessage);
+            }
+        }
+
     }
 }
