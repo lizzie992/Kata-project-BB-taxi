@@ -123,6 +123,7 @@
         user.Location = Input.Location;
         user.Contact = Input.Contact;
         user.NotificationForRoute = new List<string>();
+        user.isActive = true;
         if (user.Email.Contains("admin"))
         {
             UserManager.AddToRoleAsync(user, "Admin");

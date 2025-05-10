@@ -66,7 +66,7 @@ namespace BaxiWebApp.Data
                 //once the messages are removed I can delete the conversation
                 context.Conversations.Remove(C);
                 context.SaveChanges();
-            }    
+            }
         }
 
         public void ReportConversation(Conversation C, User currentlyLoggedInUser)
@@ -138,6 +138,34 @@ namespace BaxiWebApp.Data
                 client.Send(mailMessage);
             }
         }
+
+        public void giveUserAWarning(User user)
+        {
+            int maxNumberOfWarnings = 3;
+            using (var context = _dbcFactory.CreateDbContext())
+            {
+                user.NumberOfWarnings++;
+                if (user.NumberOfWarnings == maxNumberOfWarnings)
+                {
+                    inactivateUser(user);
+                    context.SaveChanges();
+                }
+                context.Update(user);
+                context.SaveChanges();
+            }
+        }
+
+        public void inactivateUser(User user)
+        {
+            using (var context = _dbcFactory.CreateDbContext())
+            {
+                user.isActive = false;
+                context.Update(user);
+                context.SaveChanges();
+            }
+        }
+
+
 
     }
 }

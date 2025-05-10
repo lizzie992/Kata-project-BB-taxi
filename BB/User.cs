@@ -19,6 +19,12 @@ namespace BB
         }
 
 
+        public bool isActive
+        {
+            get; set;
+        }
+
+
         private string? _emailAddress;
 
         public string? EmailAddress
