@@ -139,29 +139,88 @@ namespace BaxiWebApp.Data
             }
         }
 
+        int maxNumberOfWarnings = 3;
         public void giveUserAWarning(User user)
         {
-            int maxNumberOfWarnings = 3;
+            
             using (var context = _dbcFactory.CreateDbContext())
             {
                 user.NumberOfWarnings++;
-                if (user.NumberOfWarnings == maxNumberOfWarnings)
-                {
-                    inactivateUser(user);
-                    context.SaveChanges();
-                }
                 context.Update(user);
                 context.SaveChanges();
+                sendEmailAboutWarning(user);
+                if (user.NumberOfWarnings == maxNumberOfWarnings)
+                {
+                    deactivateUser(user);
+                    context.SaveChanges();
+                }
             }
         }
 
-        public void inactivateUser(User user)
+
+        public void sendEmailAboutWarning(User user)
+        {
+            string message = $"Dear {showUserNameWithStatus(user)}\r\nYou have received a warning from one of our admins.\r\nYour current number of warnings is: {user.NumberOfWarnings}\r\nPlease be aware that as soon as you reach {maxNumberOfWarnings} warnings your account will be automatically inactivated!";
+
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
+            string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
+            client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
+            mailMessage.To.Add("gulyaskata99@gmail.com");
+            mailMessage.Body = message;
+            mailMessage.Subject = "You received a warning on the Baxi app!";
+            client.Send(mailMessage);
+
+        }
+
+        public void sendEmailAboutDeactivation(User user)
+        {
+            string message = $"Dear {showUserNameWithStatus(user)}\r\nYour account has been deactivated!\r\nPlease contact the admin team about the reasons behind it and the possible reactivation!";
+
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
+            string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
+            client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
+            mailMessage.To.Add("gulyaskata99@gmail.com");
+            mailMessage.Body = message;
+            mailMessage.Subject = "Your Baxi accout has been inactivated!";
+            client.Send(mailMessage);
+
+        }
+
+        public void sendEmailAboutReactivation(User user)
+        {
+            string message = $"Dear {showUserNameWithStatus(user)}\r\nYour account has been reactivated!\r\nYou can now use all functions again.\r\nPlease bring some flowers/chocolate to the admin team to show your gratitude ;)";
+
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
+            string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
+            client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
+            mailMessage.To.Add("gulyaskata99@gmail.com");
+            mailMessage.Body = message;
+            mailMessage.Subject = "Your Baxi accout has been reactivated!";
+            client.Send(mailMessage);
+
+        }
+
+
+        public void deactivateUser(User user)
         {
             using (var context = _dbcFactory.CreateDbContext())
             {
                 user.isActive = false;
                 context.Update(user);
                 context.SaveChanges();
+                sendEmailAboutDeactivation(user);
             }
         }
 
@@ -170,8 +229,10 @@ namespace BaxiWebApp.Data
             using (var context = _dbcFactory.CreateDbContext())
             {
                 user.isActive = true;
+                user.NumberOfWarnings = 0;
                 context.Update(user);
                 context.SaveChanges();
+                sendEmailAboutReactivation(user);
             }
         }
 
@@ -183,7 +244,7 @@ namespace BaxiWebApp.Data
             {
                 name = $"{user.FirstName} {user.LastName}";
             }
-            if (user.isActive  == false)
+            if (user.isActive == false)
             {
                 name = $"{user.FirstName} {user.LastName} - INACTIVATED";
             }
