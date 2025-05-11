@@ -156,20 +156,33 @@
 				</PropertyColumn>
 				<PropertyColumn Title="Contact:" Property="@(User => User.Contact)" Sortable="true">
 				</PropertyColumn>
-				<TemplateColumn Title="Message:">
-					<button>Send a message!</button>
+				<TemplateColumn Title="Message:" Context="User">
+					@if (User.isActive == true)
+					{
+						<button>Send a message!</button>
+					}
 				</TemplateColumn>
 				<TemplateColumn Title="Make User an Admin:" Context="User">
-					@if (UserManager.GetRolesAsync(User).Result.First() == "Regular")
+					@if (User.isActive == true && UserManager.GetRolesAsync(User).Result.First() == "Regular")
 					{
 						<button @onclick="() => makeUserAdmin(User)">Give this user admin rights!</button>
 					}
 				</TemplateColumn>
 				<TemplateColumn Title="Warning:" Context="User">
-					<button @onclick="() => giveUserAWarning(User)">Give a warning!</button>
+					@if (User.isActive == true)
+					{
+						<button @onclick="() => giveUserAWarning(User)">Give a warning!</button>
+					}
 				</TemplateColumn>
-				<TemplateColumn Title="Inactivate user:" Context="User">
-					<button @onclick="() => inactivateUser(User)">Inactivate user!</button>
+				<TemplateColumn Title="Change status:" Context="User">
+					@if (User.isActive == true)
+					{
+						<button @onclick="() => inactivateUser(User)">Inactivate user!</button>
+					}
+					@if (User.isActive == false)
+					{
+						<button @onclick="() => reactivateUser(User)">Reactivate user!</button>
+					}
 				</TemplateColumn>
 			</QuickGrid>
 		</div>
@@ -270,6 +283,12 @@
 	public void inactivateUser(User user)
 	{
 		DataService.inactivateUser(user);
+		grid.RefreshDataAsync();
+	}
+
+	public void reactivateUser(User user)
+	{
+		DataService.reactivateUser(user);
 		grid.RefreshDataAsync();
 	}
 

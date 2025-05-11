@@ -165,6 +165,17 @@ namespace BaxiWebApp.Data
             }
         }
 
+        public void reactivateUser(User user)
+        {
+            using (var context = _dbcFactory.CreateDbContext())
+            {
+                user.isActive = true;
+                context.Update(user);
+                context.SaveChanges();
+            }
+        }
+
+
         public string showUserNameWithStatus(User user)
         {
             string name = "";
