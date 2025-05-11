@@ -172,7 +172,7 @@
 			<TemplateColumn Title="Warning:" Context="User">
 				@if (User.isActive == true)
 				{
-					<button @onclick="() => giveUserAWarning(User)">Give a warning!</button>
+					<button @onclick="() => showPopUpForWarning(User)">Give a warning!</button>
 				}
 			</TemplateColumn>
 			<TemplateColumn Title="Change status:" Context="User">
@@ -186,7 +186,34 @@
 				}
 			</TemplateColumn>
 		</QuickGrid>
-	</div>
+	</div
+
+
+	@if (ShowPopUpForWarning)
+	{
+		<div class="modal" tabindex="-1" style="display:block" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title">Warning</h3>
+						<button type="button" class="close" @onclick="closePopUpForWarning"> <span area-hidden="true">X</span></button>
+					</div>
+					<div class="modal-body">
+						<p>Please write here the reason for the warning:</p>
+						<InputText @bind-Value="reasonForWarning"></InputText>
+						<br>
+						<button type="button" class="close" @onclick="giveUserAWarning(selectedUser, reasonForWarning)">Send warning</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+	}
+
+
+
 </AuthorizeView>
 
 
@@ -194,6 +221,10 @@
 
 
 @code {
+
+
+
+
 	BB.UserType _userType = UserType.SelectAll;
 	string _searchEmail = "";
 	string _searchFirstName = "";
@@ -206,6 +237,9 @@
 	string _contact = "";
 	string _role = "allRoles";
 	string _status = "All!";
+
+	string reasonForWarning = "";
+	User selectedUser;
 
 	protected override void OnParametersSet()
 	{
@@ -273,9 +307,10 @@
 
 
 
-	public void giveUserAWarning(User user)
+	public void giveUserAWarning(User user, string reasonForWarning)
 	{
-		DataService.giveUserAWarning(user);
+		DataService.giveUserAWarning(user, reasonForWarning);
+		reasonForWarning = "";
 		grid.RefreshDataAsync();
 	}
 
@@ -331,4 +366,18 @@
 		return status;
 	}
 
+
+
+
+	bool ShowPopUpForWarning = false;
+	
+	public void closePopUpForWarning()
+	{
+		ShowPopUpForWarning = false;
+	}
+	public void showPopUpForWarning(User user)
+	{
+		selectedUser = user;
+		ShowPopUpForWarning = true;
+	}
 }

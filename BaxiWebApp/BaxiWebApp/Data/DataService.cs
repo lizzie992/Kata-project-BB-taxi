@@ -140,7 +140,7 @@ namespace BaxiWebApp.Data
         }
 
         int maxNumberOfWarnings = 3;
-        public void giveUserAWarning(User user)
+        public void giveUserAWarning(User user, string reasonForWarning)
         {
             
             using (var context = _dbcFactory.CreateDbContext())
@@ -148,7 +148,7 @@ namespace BaxiWebApp.Data
                 user.NumberOfWarnings++;
                 context.Update(user);
                 context.SaveChanges();
-                sendEmailAboutWarning(user);
+                sendEmailAboutWarning(user, reasonForWarning);
                 if (user.NumberOfWarnings == maxNumberOfWarnings)
                 {
                     deactivateUser(user);
@@ -158,9 +158,9 @@ namespace BaxiWebApp.Data
         }
 
 
-        public void sendEmailAboutWarning(User user)
+        public void sendEmailAboutWarning(User user, string reasonForWarning)
         {
-            string message = $"Dear {showUserNameWithStatus(user)}\r\nYou have received a warning from one of our admins.\r\nYour current number of warnings is: {user.NumberOfWarnings}\r\nPlease be aware that as soon as you reach {maxNumberOfWarnings} warnings your account will be automatically inactivated!";
+            string message = $"Dear {showUserNameWithStatus(user)}\r\nYou have received a warning from one of our admins.\r\nReason for the warning is: {reasonForWarning}\r\nYour current number of warnings is: {user.NumberOfWarnings}\r\nPlease be aware that as soon as you reach {maxNumberOfWarnings} warnings your account will be automatically inactivated!";
 
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;
@@ -189,7 +189,7 @@ namespace BaxiWebApp.Data
             mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
             mailMessage.To.Add("gulyaskata99@gmail.com");
             mailMessage.Body = message;
-            mailMessage.Subject = "Your Baxi accout has been inactivated!";
+            mailMessage.Subject = "Your Baxi accout has been deactivated!";
             client.Send(mailMessage);
 
         }
