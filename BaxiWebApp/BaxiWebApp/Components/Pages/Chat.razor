@@ -22,40 +22,40 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
 		* {
-			box-sizing: border-box;
+		box-sizing: border-box;
 		}
 
 		column {
-			float: left;
-			padding: 10px;
+		float: left;
+		padding: 10px;
 		}
 
 		.left {
-			width: 25%;
+		width: 25%;
 		}
 
 		.right {
-			width: 75%;
+		width: 75%;
 		}
 
 
 		.clickable-div {
-			width: 100%;
-			height: 150px;
-			background-color: lightblue;
-			cursor: pointer;
-			text-align: center;
-			line-height: 150px;
-			border-width: 1px;
-			border-style: solid;
-			border-color: #E70000;
+		width: 100%;
+		height: 150px;
+		background-color: lightblue;
+		cursor: pointer;
+		text-align: center;
+		line-height: 150px;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #E70000;
 		}
 
 		a {
-			text-decoration: none;
-			display: block;
-			width: 100%;
-			height: 100%;
+		text-decoration: none;
+		display: block;
+		width: 100%;
+		height: 100%;
 		}
 
 	</style>
@@ -92,36 +92,39 @@
 			<p>
 				@if (CurrentConversation is null)
 				{
-				<p>Click on a chat!</p>
+					<p>Click on a chat!</p>
 				}
 				else
 				{
 					@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
 					{
 						Ad ad = GetAd(CurrentConversation);
-					<div class="Ad">
-						<p>Ad owner: @DataService.showUserNameWithStatus(ad.AdOwner)</p>
-						<p>Ad type: @ad.AdType</p>
-						<p>Route: @ad.Route</p>
-						<p>Pick up Date and Time: @ad.pickUpDateAndTime</p>
-						<p>Number of seats: @ad.NumberOfSeats</p>
-						<p>Specific requests: @ad.SpecificRequests</p>
-						<br>
-						<br>
-						<br>
-					</div>
+						<div class="Ad">
+							<p>Ad owner: @DataService.showUserNameWithStatus(ad.AdOwner)</p>
+							<p>Ad type: @ad.AdType</p>
+							<p>Route: @ad.Route</p>
+							<p>Pick up Date and Time: @ad.pickUpDateAndTime</p>
+							<p>Number of seats: @ad.NumberOfSeats</p>
+							<p>Specific requests: @ad.SpecificRequests</p>
+							<br>
+							<br>
+							<br>
+						</div>
 						@foreach (Message M in CurrentConversation.messages)
 						{
-						<div class="Message">
-							<p>From: @DataService.showUserNameWithStatus(M.fromUser)</p>
-							<p>To: @DataService.showUserNameWithStatus(M.toUser)</p>
-							<p>Message: @M.messageText</p>
-							<p>Timestamp: @M.timeStamp</p>
-						</div>
-						<br>
+							<div class="Message">
+								<p>From: @DataService.showUserNameWithStatus(M.fromUser)</p>
+								<p>To: @DataService.showUserNameWithStatus(M.toUser)</p>
+								<p>Message: @M.messageText</p>
+								<p>Timestamp: @M.timeStamp</p>
+							</div>
+							<br>
 						}
-					<InputText @bind-Value="TextMessage"></InputText>
-					<button class="btn btn-primary" @onclick="SendMessage">Send</button>
+						@if (currentlyLoggedInUser.isActive == true)
+						{
+						<InputText @bind-Value="TextMessage"></InputText>
+						<button class="btn btn-primary" @onclick="SendMessage">Send</button>
+						}
 					<br>
 					<br>
 					<button class="btn btn-primary" @onclick="() => DeleteConversation(CurrentConversation)">Delete conversation</button>

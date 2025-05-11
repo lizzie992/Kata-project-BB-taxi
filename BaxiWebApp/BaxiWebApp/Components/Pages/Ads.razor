@@ -44,16 +44,15 @@
 
 		</style>
 
-		<h1 style="text-align:center;">Ads</h1>
-		<p style="text-align:center; font-size:150%;">This page shows you the list of ads</p>
 
-		@if (false)
+		@if (currentlyLoggedInUser.isActive == false)
 		{
-			<p><em>Loading...</em></p>
+			<p style="text-align:center; font-size:150%;">You are inactivated, this page is not available for you</p>
 		}
 		else
 		{
-			@*  @deleteOldAds(AdList) *@
+			<h1 style="text-align:center;">Ads</h1>
+			<p style="text-align:center; font-size:150%;">This page shows you the list of ads</p>
 
 			<p>I am looking for a:</p>
 			<InputSelect @bind-Value="_adType" id="adType">

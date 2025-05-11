@@ -15,6 +15,13 @@
 <AuthorizeView Context="authContext">
 	<Authorized>
 
+		@if (currentlyLoggedInUser.isActive == false)
+		{
+			<p style="text-align:center; font-size:150%;">You are inactivated, this page is not available for you</p>
+		}
+		else
+		{
+			
 		<PageTitle>Create A New Ad</PageTitle>
 
 		<EditForm Model="@ad">
@@ -60,6 +67,7 @@
 			<br>
 
 		</EditForm>
+		}
 
 	</Authorized>
 </AuthorizeView>

@@ -16,14 +16,18 @@
 @inject Data.DataService DataService
 
 
-<h3>Ad</h3>
-
 @if (CurrentAd is null)
 {
 	<p>This ad must have been deleted!</p>
 }
+
+@if (currentlyLoggedInUser.isActive == false)
+{
+	<p style="text-align:center; font-size:150%;">You are inactivated, this page is not available for you</p>
+}
 else
 {
+	<h3>Ad</h3>
 
 	<div>Ad type: @CurrentAd.AdType</div>
 	<div>Ad owner: @DataService.showUserNameWithStatus(CurrentAd.AdOwner)</div>

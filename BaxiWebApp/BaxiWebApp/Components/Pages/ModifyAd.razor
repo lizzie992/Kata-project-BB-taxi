@@ -1,88 +1,119 @@
 ﻿@page "/ModifyAd/{ID:int}"
 
 @using BB
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
 @inject Data.BaxiWebAppContext context;
 @inject NavigationManager NavigationManager
-
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject SignInManager<User> signInManger
+@inject UserManager<User> UserManager
 
 <AuthorizeView Context="authContext">
-    <Authorized>
-        <h3>ModifyAd</h3>
+	<Authorized>
+
+		@if (currentlyLoggedInUser.isActive == false)
+		{
+			<p style="text-align:center; font-size:150%;">You are inactivated, this page is not available for you</p>
+		}
+		else
+		{
 
 
-        @if (ad != null)
-        {
+			<h3>ModifyAd</h3>
 
 
-            <EditForm Model="@ad">
-                I am a: <br>
-                <InputSelect @bind-Value="ad.AdType" id="adType">
-                    @foreach (var value in Enum.GetValues<AdType>())
-                    {
-                        if (value == AdType.SelectAll)
-                        {
-                            continue;
-                        }
-                        <option value="@value">@value.ToString()</option>
-                    }
-                </InputSelect>
-                <br>
+			@if (ad != null)
+			{
 
-                Route: <br>
-                <InputText @bind-Value="ad.Route"></InputText><br>
-                <br>
 
-                Pick up date: <br>
-                <InputDate Type="InputDateType.DateTimeLocal"
-                           min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.pickUpDateAndTime">
-                </InputDate>
-                <br>
+				<EditForm Model="@ad">
+					I am a: <br>
+					<InputSelect @bind-Value="ad.AdType" id="adType">
+						@foreach (var value in Enum.GetValues<AdType>())
+						{
+							if (value == AdType.SelectAll)
+							{
+								continue;
+							}
+							<option value="@value">@value.ToString()</option>
+						}
+					</InputSelect>
+					<br>
 
-                Number of seats: <br>
-                <InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                </InputSelect>
-                <br>
+					Route: <br>
+					<InputText @bind-Value="ad.Route"></InputText><br>
+					<br>
 
-                Specific requests: <br>
-                <InputText @bind-Value="ad.SpecificRequests"></InputText><br>
-                <br>
+					Pick up date: <br>
+					<InputDate Type="InputDateType.DateTimeLocal"
+							   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.pickUpDateAndTime">
+					</InputDate>
+					<br>
 
-                <button class="btn btn-primary" @onclick="WriteData">Save</button>
-                <br>
+					Number of seats: <br>
+					<InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+					</InputSelect>
+					<br>
 
-            </EditForm>
+					Specific requests: <br>
+					<InputText @bind-Value="ad.SpecificRequests"></InputText><br>
+					<br>
 
-        }
-        else
-        {
-            <p>Ad not Found</p>
-        }
+					<button class="btn btn-primary" @onclick="WriteData">Save</button>
+					<br>
 
-    </Authorized>
+				</EditForm>
+
+			}
+			else
+			{
+				<p>Ad not Found</p>
+			}
+		}
+
+	</Authorized>
 </AuthorizeView>
 
 @code {
-    [Parameter]
-    public int ID { get; set; }
-    Ad ad
-    {
-        get
-        {
-            var result = context.Ads.FirstOrDefault(Ad => Ad.ID == ID);
-            return result;
-        }
-    }
+	[Parameter]
+	public int ID { get; set; }
+	Ad ad
+	{
+		get
+		{
+			var result = context.Ads.FirstOrDefault(Ad => Ad.ID == ID);
+			return result;
+		}
+	}
 
-    async Task WriteData()
-    {
-        context.SaveChanges();
-        NavigationManager.NavigateTo("MyAds");
-    }
+	async Task WriteData()
+	{
+		context.SaveChanges();
+		NavigationManager.NavigateTo("MyAds");
+	}
+
+	private User currentlyLoggedInUser;
+	public async Task identifyLoggedInUser()
+	{
+		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+		var claims = authState.User;
+
+		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+	}
+
+
+	protected override void OnParametersSet()
+	{
+		identifyLoggedInUser();
+		base.OnParametersSet();
+	}
 
 }

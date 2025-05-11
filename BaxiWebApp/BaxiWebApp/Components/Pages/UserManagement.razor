@@ -11,164 +11,164 @@
 @inject Data.BaxiWebAppContext context;
 @inject Data.DataService DataService
 
-<h3>User Management Page</h3>
+
 
 <style>
 
 	.UserList {
-	display: grid;
-	grid-template-columns: 33% 33% 33%;
+		display: grid;
+		grid-template-columns: 33% 33% 33%;
 	}
 
 	.User {
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-	max-width: 400px;
-	margin: auto;
-	text-align: center;
-	font-family: arial;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+		max-width: 400px;
+		margin: auto;
+		text-align: center;
+		font-family: arial;
 	}
 
-	.User button {
-	border: none;
-	outline: 0;
-	padding: 12px;
-	color: white;
-	background-color: #000;
-	text-align: center;
-	cursor: pointer;
-	width: 100%;
-	font-size: 18px;
-	}
+		.User button {
+			border: none;
+			outline: 0;
+			padding: 12px;
+			color: white;
+			background-color: #000;
+			text-align: center;
+			cursor: pointer;
+			width: 100%;
+			font-size: 18px;
+		}
 
 </style>
 
 <AuthorizeView Roles="Admin" Context="authContext">
 
-	@* <p>Show me the following users:</p>
-	<br>
-	<p>Role:</p>
-	<InputSelect @bind-Value="_userType" id="_userType">
-		@foreach (var value in Enum.GetValues<UserType>())
-		{
-			<option value="@value">@value.ToString()</option>
-		}
-	</InputSelect>
-	<br> *@
+	@if (currentlyLoggedInUser.isActive == false)
+	{
+		<p style="text-align:center; font-size:150%;">You are inactivated, this page is not available for you</p>
+	}
+	else
+	{
+		<h3>User Management Page</h3>
 
-	<p>Show me the following users:</p>
-	<br>
-	<p>Role:</p>
-	<InputSelect @bind-Value="_role" id="_role">
-		<option value="allRoles">Select all!</option>
-		@foreach (var value in context.Roles)
-		{
-			<option value="@value">@value.ToString()</option>
-		}
-	</InputSelect>
+
+		<p>Show me the following users:</p>
+		<br>
+		<p>Role:</p>
+		<InputSelect @bind-Value="_role" id="_role">
+			<option value="allRoles">Select all!</option>
+			@foreach (var value in context.Roles)
+			{
+				<option value="@value">@value.ToString()</option>
+			}
+		</InputSelect>
 
 
 
-	<p>Email address contains:</p>
-	<div class="search-box">
-		<input type="search" autofocus @bind="_searchEmail" @bind:event="oninput" placeholder="Email..." />
-	</div>
-	<br>
-	<p>First name contains:</p>
-	<div class="search-box">
-		<input type="search" autofocus @bind="_searchFirstName" @bind:event="oninput" placeholder="First name..." />
-	</div>
-	<br>
-	<p>Last name contains:</p>
-	<div class="search-box">
-		<input type="search" autofocus @bind="_searchLastName" @bind:event="oninput" placeholder="Last name..." />
-	</div>
-	<br>
-	<p>Location contains:</p>
-	<div class="search-box">
-		<input type="search" autofocus @bind="_location" @bind:event="oninput" placeholder="Location..." />
-	</div>
-	<br>
-	<p>Contact contains:</p>
-	<div class="search-box">
-		<input type="search" autofocus @bind="_contact" @bind:event="oninput" placeholder="Contact..." />
-	</div>
-	<p>Department:</p>
-	<InputSelect @bind-Value="_department" id="_department">
-		@foreach (var value in Enum.GetValues<Department>())
-		{
-			<option value="@value">@value.ToString()</option>
-		}
-	</InputSelect>
-	<br>
-	<p>Preferred language:</p>
-	<InputSelect @bind-Value="_preferredLanguage" id="_preferredLanguage">
-		@foreach (var value in Enum.GetValues<PreferredLanguage>())
-		{
-			<option value="@value">@value.ToString()</option>
-		}
-	</InputSelect>
-	<p>Rating:</p>
-	<InputSelect @bind-Value="_rating" id="_rating">
-		<option value="-1">Show all</option>
-		<option value="0">No rating yet</option>
-		<option value="1">1</option>
-		<option value="2">2</option>
-		<option value="3">3</option>
-		<option value="4">4</option>
-		<option value="5">5</option>
-	</InputSelect>
-	<br>
-	<p>Number of warnings:</p>
-	<InputSelect @bind-Value="_numberOfWarnings" id="_numberOfWarnings">
-		<option value="-1">Show all</option>
-		<option value="0">No warning yet</option>
-		<option value="1">1</option>
-		<option value="2">2</option>
-	</InputSelect>
-	<br>
-	<br>
-	<p>Click on the title of the column to sort it!</p>
-	<div>
-		<QuickGrid Items="UserList" @ref="grid">
-			<PropertyColumn Title="Role:" Property="@(User => getRole(User).ToString())" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title="Status:" Property="@(User => getStatus(User))" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title="Email address:" Property="@(User => User.Email)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title="First name:" Property="@(User => User.FirstName)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title="Last name:" Property="@(User => User.LastName)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title="Department:" Property="@(User => User.Department)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title="Preferred language:" Property="@(User => User.PreferredLanguage)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title="Location:" Property="@(User => User.Location)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title="Rating:" Property="@(User => User.Rating)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title="Number of warnings:" Property="@(User => User.NumberOfWarnings)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title="Contact:" Property="@(User => User.Contact)" Sortable="true">
-			</PropertyColumn>
-			<TemplateColumn Title="Message:">
-				<button>Send a message!</button>
-			</TemplateColumn>
-			<TemplateColumn Title="Make User an Admin:" Context="User">
-				@if (UserManager.GetRolesAsync(User).Result.First() == "Regular")
-				{
-					<button @onclick="() => makeUserAdmin(User)">Give this user admin rights!</button>
-				}
-			</TemplateColumn>
-			<TemplateColumn Title="Warning:" Context="User">
-				<button @onclick="() => giveUserAWarning(User)">Give a warning!</button>
-			</TemplateColumn>
-			<TemplateColumn Title="Inactivate user:" Context="User">
-				<button @onclick="() => inactivateUser(User)">Inactivate user!</button>
-			</TemplateColumn>
-		</QuickGrid>
-	</div>
+		<p>Email address contains:</p>
+		<div class="search-box">
+			<input type="search" autofocus @bind="_searchEmail" @bind:event="oninput" placeholder="Email..." />
+		</div>
+		<br>
+		<p>First name contains:</p>
+		<div class="search-box">
+			<input type="search" autofocus @bind="_searchFirstName" @bind:event="oninput" placeholder="First name..." />
+		</div>
+		<br>
+		<p>Last name contains:</p>
+		<div class="search-box">
+			<input type="search" autofocus @bind="_searchLastName" @bind:event="oninput" placeholder="Last name..." />
+		</div>
+		<br>
+		<p>Location contains:</p>
+		<div class="search-box">
+			<input type="search" autofocus @bind="_location" @bind:event="oninput" placeholder="Location..." />
+		</div>
+		<br>
+		<p>Contact contains:</p>
+		<div class="search-box">
+			<input type="search" autofocus @bind="_contact" @bind:event="oninput" placeholder="Contact..." />
+		</div>
+		<p>Department:</p>
+		<InputSelect @bind-Value="_department" id="_department">
+			@foreach (var value in Enum.GetValues<Department>())
+			{
+				<option value="@value">@value.ToString()</option>
+			}
+		</InputSelect>
+		<br>
+		<p>Preferred language:</p>
+		<InputSelect @bind-Value="_preferredLanguage" id="_preferredLanguage">
+			@foreach (var value in Enum.GetValues<PreferredLanguage>())
+			{
+				<option value="@value">@value.ToString()</option>
+			}
+		</InputSelect>
+		<p>Rating:</p>
+		<InputSelect @bind-Value="_rating" id="_rating">
+			<option value="-1">Show all</option>
+			<option value="0">No rating yet</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</InputSelect>
+		<br>
+		<p>Number of warnings:</p>
+		<InputSelect @bind-Value="_numberOfWarnings" id="_numberOfWarnings">
+			<option value="-1">Show all</option>
+			<option value="0">No warning yet</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+		</InputSelect>
+		<br>
+		<br>
+		<p>Click on the title of the column to sort it!</p>
+		<div>
+			<QuickGrid Items="UserList" @ref="grid">
+				<PropertyColumn Title="Role:" Property="@(User => getRole(User).ToString())" Sortable="true">
+				</PropertyColumn>
+				<PropertyColumn Title="Status:" Property="@(User => getStatus(User))" Sortable="true">
+				</PropertyColumn>
+				<PropertyColumn Title="Email address:" Property="@(User => User.Email)" Sortable="true">
+				</PropertyColumn>
+				<PropertyColumn Title="First name:" Property="@(User => User.FirstName)" Sortable="true">
+				</PropertyColumn>
+				<PropertyColumn Title="Last name:" Property="@(User => User.LastName)" Sortable="true">
+				</PropertyColumn>
+				<PropertyColumn Title="Department:" Property="@(User => User.Department)" Sortable="true">
+				</PropertyColumn>
+				<PropertyColumn Title="Preferred language:" Property="@(User => User.PreferredLanguage)" Sortable="true">
+				</PropertyColumn>
+				<PropertyColumn Title="Location:" Property="@(User => User.Location)" Sortable="true">
+				</PropertyColumn>
+				<PropertyColumn Title="Rating:" Property="@(User => User.Rating)" Sortable="true">
+				</PropertyColumn>
+				<PropertyColumn Title="Number of warnings:" Property="@(User => User.NumberOfWarnings)" Sortable="true">
+				</PropertyColumn>
+				<PropertyColumn Title="Contact:" Property="@(User => User.Contact)" Sortable="true">
+				</PropertyColumn>
+				<TemplateColumn Title="Message:">
+					<button>Send a message!</button>
+				</TemplateColumn>
+				<TemplateColumn Title="Make User an Admin:" Context="User">
+					@if (UserManager.GetRolesAsync(User).Result.First() == "Regular")
+					{
+						<button @onclick="() => makeUserAdmin(User)">Give this user admin rights!</button>
+					}
+				</TemplateColumn>
+				<TemplateColumn Title="Warning:" Context="User">
+					<button @onclick="() => giveUserAWarning(User)">Give a warning!</button>
+				</TemplateColumn>
+				<TemplateColumn Title="Inactivate user:" Context="User">
+					<button @onclick="() => inactivateUser(User)">Inactivate user!</button>
+				</TemplateColumn>
+			</QuickGrid>
+		</div>
+	}
+
 </AuthorizeView>
 
 
