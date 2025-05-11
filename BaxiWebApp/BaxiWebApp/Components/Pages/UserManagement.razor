@@ -16,29 +16,29 @@
 <style>
 
 	.UserList {
-		display: grid;
-		grid-template-columns: 33% 33% 33%;
+	display: grid;
+	grid-template-columns: 33% 33% 33%;
 	}
 
 	.User {
-		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-		max-width: 400px;
-		margin: auto;
-		text-align: center;
-		font-family: arial;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	max-width: 400px;
+	margin: auto;
+	text-align: center;
+	font-family: arial;
 	}
 
-		.User button {
-			border: none;
-			outline: 0;
-			padding: 12px;
-			color: white;
-			background-color: #000;
-			text-align: center;
-			cursor: pointer;
-			width: 100%;
-			font-size: 18px;
-		}
+	.User button {
+	border: none;
+	outline: 0;
+	padding: 12px;
+	color: white;
+	background-color: #000;
+	text-align: center;
+	cursor: pointer;
+	width: 100%;
+	font-size: 18px;
+	}
 
 </style>
 
@@ -64,6 +64,12 @@
 			}
 		</InputSelect>
 
+		<p>Status:</p>
+		<InputSelect @bind-Value="_status" id="_status">
+			<option value="All!">All!</option>
+			<option value="Active">Active</option>
+			<option value="Inactive">Inactive</option>
+		</InputSelect>
 
 
 		<p>Email address contains:</p>
@@ -187,6 +193,7 @@
 	int _numberOfWarnings = -1;
 	string _contact = "";
 	string _role = "allRoles";
+	string _status = "All!";
 
 	protected override void OnParametersSet()
 	{
@@ -214,6 +221,19 @@
 			{
 				result = result.Where(User => _role == getRole(User));
 			}
+
+			if (_status != "All")
+			{
+				if (_status == "Active")
+				{
+					result = result.Where(User => User.isActive == true);
+				}
+				if (_status == "Inactive")
+				{
+					result = result.Where(User => User.isActive == false);
+				}
+			}
+
 
 			if (_rating != -1)
 			{
