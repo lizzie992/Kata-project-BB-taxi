@@ -5,6 +5,7 @@
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
+@inject Data.DataService DataService
 
 <AuthorizeView>
     <Authorized>
@@ -18,7 +19,7 @@
 
         <div class="profileData">
             <p>Email address: @user.Email</p>
-            <p>Name: @user.FirstName @user.LastName</p>
+            <p>Name: @DataService.showUserNameWithStatus(user)</p>
             <p>Department: @user.Department</p>
             <p>Location: @user.Location</p>
             <p>Preferred language: @user.PreferredLanguage</p>

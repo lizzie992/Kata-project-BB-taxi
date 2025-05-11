@@ -78,8 +78,8 @@ namespace BaxiWebApp.Data
                 StringBuilder message = new StringBuilder($"Messages: \r\n\r\n");
                 foreach (Message m in messagesToReport)
                 {
-                    message.Append($"From: {m.fromUser.ToString()}\r\n");
-                    message.Append($"To: {m.toUser.ToString()}\r\n");
+                    message.Append($"From: {showUserNameWithStatus(m.fromUser)}\r\n");
+                    message.Append($"To: {showUserNameWithStatus(m.toUser)}\r\n");
                     message.Append($"Message: {m.messageText.ToString()}\r\n");
                     message.Append($"Timestamp: {m.timeStamp.ToString()}\r\n\r\n");
                 }
@@ -102,7 +102,7 @@ namespace BaxiWebApp.Data
 
         public void reportAd(Ad ad, User currentlyLoggedInUser)
         {
-            string adDetails = $"Ad owner: {ad.AdOwner}\r\nAd type: {ad.AdType}\r\nRoute: {ad.Route}\r\nPick up date and time: {ad.pickUpDateAndTime}\r\nNumber of seats: {ad.NumberOfSeats}\r\nSpecific requests: {ad.SpecificRequests}\r\n";
+            string adDetails = $"Ad owner: {showUserNameWithStatus(ad.AdOwner)}\r\nAd type: {ad.AdType}\r\nRoute: {ad.Route}\r\nPick up date and time: {ad.pickUpDateAndTime}\r\nNumber of seats: {ad.NumberOfSeats}\r\nSpecific requests: {ad.SpecificRequests}\r\n";
 
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;
@@ -112,7 +112,7 @@ namespace BaxiWebApp.Data
             MailMessage mailMessage = new MailMessage();
             mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
             mailMessage.To.Add("gulyaskata99@gmail.com");
-            mailMessage.Body = $"Please check out the following ad below that {currentlyLoggedInUser} reported to you: \r\n{adDetails}\r\nOpen the ad here: LINK";
+            mailMessage.Body = $"Please check out the following ad below that {showUserNameWithStatus(currentlyLoggedInUser)} reported to you: \r\n{adDetails}\r\nOpen the ad here: LINK";
             mailMessage.Subject = "An ad was just reported to you";
             client.Send(mailMessage);
         }
@@ -165,6 +165,19 @@ namespace BaxiWebApp.Data
             }
         }
 
+        public string showUserNameWithStatus(User user)
+        {
+            string name = "";
+            if (user.isActive == true)
+            {
+                name = $"{user.FirstName} {user.LastName}";
+            }
+            if (user.isActive  == false)
+            {
+                name = $"{user.FirstName} {user.LastName} - INACTIVATED";
+            }
+            return name;
+        }
 
 
     }

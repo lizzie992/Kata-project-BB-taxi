@@ -21,7 +21,7 @@ namespace BB
 
         public List<Message>? messages
         {
-            get;set;
+            get; set;
         }
 
 
@@ -41,11 +41,19 @@ namespace BB
         }
 
 
-        public Message MostRecentMessage
+        public Message? MostRecentMessage
         {
             get
             {
-                return messages.OrderByDescending(m => m.timeStamp).First();
+                if (messages.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return messages.OrderByDescending(m => m.timeStamp).First();
+                }
+
             }
         }
 
