@@ -202,7 +202,7 @@
 						<p>Please write here the reason for the warning:</p>
 						<InputText @bind-Value="reasonForWarning"></InputText>
 						<br>
-						<button type="button" class="close" @onclick="giveUserAWarning(selectedUser, reasonForWarning)">Send warning</button>
+						<button type="button" class="close" @onclick="() => giveUserAWarning(selectedUser, reasonForWarning)">Send warning</button>
 					</div>
 				</div>
 			</div>
@@ -311,6 +311,7 @@
 	{
 		DataService.giveUserAWarning(user, reasonForWarning);
 		reasonForWarning = "";
+		closePopUpForWarning();
 		grid.RefreshDataAsync();
 	}
 
@@ -373,6 +374,7 @@
 	
 	public void closePopUpForWarning()
 	{
+		reasonForWarning = "";
 		ShowPopUpForWarning = false;
 	}
 	public void showPopUpForWarning(User user)
