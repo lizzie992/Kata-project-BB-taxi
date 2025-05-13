@@ -213,6 +213,25 @@ namespace BaxiWebApp.Data
 
         }
 
+        public void sendEmailAboutDeletingAdByAdmin(Ad ad, string reasonForDeleting)
+        {
+            string message = $"Dear {showUserNameWithStatus(ad.AdOwner)}\r\nYour ad has been removed by the admins for reasons: {reasonForDeleting}\r\n\r\nAd:\r\nAd type: {ad.AdType}\r\n In the following route: {ad.Route}\r\n On {ad.pickUpDateAndTime}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n)";
+
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
+            string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
+            client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
+            mailMessage.To.Add("gulyaskata99@gmail.com");
+            mailMessage.Body = message;
+            mailMessage.Subject = "Your Baxi ad is deleted!";
+            client.Send(mailMessage);
+
+        }
+
+
 
         public void deactivateUser(User user, string reasonForDeactivating)
         {

@@ -9,6 +9,8 @@
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
 @inject NavigationManager NavigationManager
+@inject Data.DataService DataService
+
 
 <AuthorizeView Context="authContext">
 	<Authorized>
@@ -106,34 +108,42 @@
 					<PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
 					<PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
 					<TemplateColumn Title="Show me the ad" Context="Ad">
-							<button @onclick="() => showAd(Ad)">Show me the ad!</button>
+						<button @onclick="() => showAd(Ad)">Show me the ad!</button>
 					</TemplateColumn>
 					<TemplateColumn Title="Contact" Context="Ad">
-						@if (Ad.pickUpDateAndTime >= DateTime.Now && currentlyLoggedInUser != Ad.AdOwner)
+						@if (Ad.pickUpDateAndTime >= currentTime && currentlyLoggedInUser != Ad.AdOwner)
 						{
 							<button @onclick="() => createChat(Ad)">Contact me!</button>
 						}
 					</TemplateColumn>
+					@if (UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
+					{
+						<TemplateColumn Title="Delete ad" Context="Ad">
+							<button @onclick="() => showPopUpForDeletingAd(Ad)">Delete this ad!</button>
+						</TemplateColumn>
+					}
 				</QuickGrid>
 			</div>
 
-			<br>
-			<br>
-			<br>
-			@*  <div class="adList">
-        @foreach (var Ad in AdList)
-        {
-        <div class="ad">
-        <p>Ad type: @Ad.AdType</p>
-        <p>Route: @Ad.Route</p>
-        <p>Date and Time: @Ad.pickUpDateAndTime</p>
-        <p>Number of seats: @Ad.NumberOfSeats</p>
-        <p>Specific requests: @Ad.SpecificRequests</p>
-        <p><button>Contact me!</button></p>
-        </div>
-        }
-        </div> *@
+			@if (popUpForDeletingAd)
+			{
+				<div class="modal" tabindex="-1" style="display:block" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h3 class="modal-title">Delete this ad!</h3>
+								<button type="button" class="close" @onclick="closePopUpForDeletingAd"> <span area-hidden="true">X</span></button>
+							</div>
+							<div class="modal-body">
+								<p>Please write here the reason for the report:</p>
+								<InputText @bind-Value="reasonForDeleting"></InputText>
+								<button type="button" class="close" @onclick="() => deleteAd(selectedAd, reasonForDeleting)">Delete this ad!</button>
+							</div>
+						</div>
+					</div>
+				</div>
 
+			}
 		}
 	</Authorized>
 </AuthorizeView>
@@ -143,6 +153,7 @@
 
 	public static List<Ad> AdList = new List<Ad>();
 
+	DateTime currentTime = DateTime.Now.AddMinutes(-30);
 
 	protected override void OnParametersSet()
 	{
@@ -211,7 +222,7 @@
 		previousConversations = previousConversations.Where(Conversation => Conversation.contactingUser == currentlyLoggedInUser);
 		if (previousConversations.ToList().Count != 0)
 		{
-			Conversation conversation = previousConversations.FirstOrDefault(); 
+			Conversation conversation = previousConversations.FirstOrDefault();
 			NavigationManager.NavigateTo("Chat/" + conversation.ID);  //find id of conversation    //navigate to chat page with conversation id
 		}
 		else        //if not found, create new conversasion (+id)
@@ -249,6 +260,31 @@
 	}
 
 
+
+	Ad selectedAd;
+	bool popUpForDeletingAd = false;
+	string reasonForDeleting = "";
+
+	public void deleteAd(Ad ad, string reasonForDeleting)
+	{
+		DataService.sendEmailAboutDeletingAdByAdmin(ad, reasonForDeleting);
+		context.Remove(ad);
+		context.SaveChanges();
+		reasonForDeleting = "";
+		closePopUpForDeletingAd();
+		grid.RefreshDataAsync();
+	}
+
+	public void closePopUpForDeletingAd()
+	{
+		popUpForDeletingAd = false;
+	}
+
+	public void showPopUpForDeletingAd(Ad ad)
+	{
+		selectedAd = ad;
+		popUpForDeletingAd = true;
+	}
 
 
 }
