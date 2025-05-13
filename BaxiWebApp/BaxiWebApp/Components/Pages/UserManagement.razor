@@ -166,7 +166,7 @@
 			<TemplateColumn Title="Make User an Admin:" Context="User">
 				@if (User.isActive == true && UserManager.GetRolesAsync(User).Result.First() == "Regular")
 				{
-					<button @onclick="() => makeUserAdmin(User)">Give this user admin rights!</button>
+					<button @onclick="() => showPopUpForMakeUserAdmin(User)">Give this user admin rights!</button>
 				}
 			</TemplateColumn>
 			<TemplateColumn Title="Warning:" Context="User">
@@ -189,7 +189,7 @@
 	</div
 
 
-	@if (ShowPopUpForWarning)
+	@if (popUpForWarning)
 	{
 		<div class="modal" tabindex="-1" style="display:block" role="dialog">
 			<div class="modal-dialog">
@@ -209,6 +209,27 @@
 		</div>
 
 
+	}
+
+
+
+	@if (popUpForMakeUserAdmin)
+	{
+		<div class="modal" tabindex="-1" style="display:block" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title">Make this user an admin</h3>
+						<button type="button" class="close" @onclick="closePopUpForMakeUserAdmin"> <span area-hidden="true">X</span></button>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to make this user an admin? It cannot be revoked anymore!</p>
+						<br>
+						<button type="button" class="close" @onclick="() => makeUserAdmin(selectedUser)">Make them an admin!</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 	}
 
@@ -334,6 +355,7 @@
 			UserManager.RemoveFromRoleAsync(user, "Regular");
 			UserManager.AddToRoleAsync(user, "Admin");
 			context.SaveChanges();
+			closePopUpForMakeUserAdmin();
 			grid.RefreshDataAsync();
 		}
 	}
@@ -370,16 +392,34 @@
 
 
 
-	bool ShowPopUpForWarning = false;
-	
+	bool popUpForWarning = false;
+
 	public void closePopUpForWarning()
 	{
 		reasonForWarning = "";
-		ShowPopUpForWarning = false;
+		popUpForWarning = false;
 	}
 	public void showPopUpForWarning(User user)
 	{
 		selectedUser = user;
-		ShowPopUpForWarning = true;
+		popUpForWarning = true;
 	}
+
+
+
+
+	bool popUpForMakeUserAdmin = false;
+
+	public void closePopUpForMakeUserAdmin()
+	{
+		popUpForMakeUserAdmin = false;
+	}
+
+	public void showPopUpForMakeUserAdmin(User user)
+	{
+		selectedUser = user;
+		popUpForMakeUserAdmin = true;
+	}
+
+
 }
