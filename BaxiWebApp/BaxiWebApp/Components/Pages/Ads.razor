@@ -109,7 +109,7 @@
 							<button @onclick="() => showAd(Ad)">Show me the ad!</button>
 					</TemplateColumn>
 					<TemplateColumn Title="Contact" Context="Ad">
-						@if (currentlyLoggedInUser != Ad.AdOwner)
+						@if (Ad.pickUpDateAndTime >= DateTime.Now && currentlyLoggedInUser != Ad.AdOwner)
 						{
 							<button @onclick="() => createChat(Ad)">Contact me!</button>
 						}
@@ -158,11 +158,11 @@
 	// }
 
 
-	public static List<Ad> deleteOldAds(List<Ad> AdList)
-	{
-		AdList.RemoveAll(ad => ad.pickUpDateAndTime < DateTime.Now);
-		return AdList;
-	}
+	// public static List<Ad> deleteOldAds(List<Ad> AdList)
+	// {
+	// 	AdList.RemoveAll(ad => ad.pickUpDateAndTime < DateTime.Now);
+	// 	return AdList;
+	// }
 
 	string? _searchRoute = "";
 	int _requestedSeats = 1;
