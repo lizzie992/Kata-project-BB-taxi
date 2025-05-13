@@ -38,12 +38,32 @@
                         <button class="btn btn-primary btn-sm mx-1" @onclick="() => ModifyAd(Ad)">Edit me!</button>
                     </TemplateColumn>
                     <TemplateColumn Title="Delete Ads" Context="Ad">
-                        <button class="btn btn-primary btn-sm mx-1" @onclick="() => DeleteAd(Ad)">Delete me!</button>
+                        <button class="btn btn-primary btn-sm mx-1" @onclick="() => showPopUpForDeletingAd(Ad)">Delete me!</button>
                     </TemplateColumn>
                 </QuickGrid>
 
             </div>
         }
+
+        @if (popUpForDeletingAd)
+        {
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Delete this ad!</h3>
+                            <button type="button" class="close" @onclick="closePopUpForDeletingAd"> <span area-hidden="true">X</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete it?</p>
+                            <button type="button" class="close" @onclick="() => DeleteAd(selectedAd)">Delete it!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+
     </Authorized>
 </AuthorizeView>
 
@@ -90,7 +110,22 @@
     {
         context.Ads.Remove(ad);
         context.SaveChanges();
+        closePopUpForDeletingAd();
         grid.RefreshDataAsync();
+    }
+
+    Ad selectedAd;
+    bool popUpForDeletingAd = false;
+
+    public void closePopUpForDeletingAd()
+    {
+        popUpForDeletingAd = false;
+    }
+
+    public void showPopUpForDeletingAd(Ad ad)
+    {
+        selectedAd = ad;
+        popUpForDeletingAd = true;
     }
 
 }

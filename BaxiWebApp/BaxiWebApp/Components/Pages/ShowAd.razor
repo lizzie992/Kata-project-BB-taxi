@@ -41,7 +41,27 @@ else
 		<button @onclick="() => createChat(CurrentAd)">Contact me!</button>
 	}
 
-	<button @onclick="() => reportAd(CurrentAd)">Report ad!</button>
+	<button @onclick="() => showPopUpForReportAd(CurrentAd)">Report ad!</button>
+
+	@if (popUpForReportAd)
+	{
+		<div class="modal" tabindex="-1" style="display:block" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title">Report this ad</h3>
+						<button type="button" class="close" @onclick="closePopUpForReportAd"> <span area-hidden="true">X</span></button>
+					</div>
+					<div class="modal-body">
+						<p>Please write here the reason for the reporting this ad:</p>
+						<InputText @bind-Value="reasonForReporting"></InputText>
+						<button type="button" class="close" @onclick="() => reportAd(selectedAd, reasonForReporting)">Report this ad!</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	}
 
 }
 
@@ -53,6 +73,7 @@ else
 
 	[Parameter]
 	public int? ID { get; set; }
+	public string reasonForReporting = "";
 
 	public Ad? CurrentAd
 	{
@@ -106,9 +127,25 @@ else
 	}
 
 
-	public void reportAd(Ad ad)
+	public void reportAd(Ad ad, string reasonForReporting)
 	{
-		DataService.reportAd(ad, currentlyLoggedInUser);
+		DataService.reportAd(ad, currentlyLoggedInUser, reasonForReporting);
+		closePopUpForReportAd();
 	}
 	
+
+	Ad selectedAd;
+
+	bool popUpForReportAd = false;
+
+	public void closePopUpForReportAd()
+	{
+		popUpForReportAd = false;
+	}
+
+	public void showPopUpForReportAd(Ad ad)
+	{
+		selectedAd = ad;
+		popUpForReportAd = true;
+	}
 }

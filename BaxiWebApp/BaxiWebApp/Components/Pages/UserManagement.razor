@@ -380,6 +380,7 @@
 	public void deactivateUser(User user, string reasonForDeactivating)
 	{
 		DataService.deactivateUser(user, reasonForDeactivating);
+		reasonForDeactivating = "";
 		closePopUpForDeactivatingUser();
 		grid.RefreshDataAsync();
 	}

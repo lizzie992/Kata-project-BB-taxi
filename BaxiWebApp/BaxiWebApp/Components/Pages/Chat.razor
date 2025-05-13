@@ -122,17 +122,17 @@
 						}
 						@if (currentlyLoggedInUser.isActive == true)
 						{
-						<InputText @bind-Value="TextMessage"></InputText>
-						<button class="btn btn-primary" @onclick="SendMessage">Send</button>
+							<InputText @bind-Value="TextMessage"></InputText>
+							<button class="btn btn-primary" @onclick="SendMessage">Send</button>
 						}
-					<br>
-					<br>
-					<button class="btn btn-primary" @onclick="() => DeleteConversation(CurrentConversation)">Delete conversation</button>
-					<button class="btn btn-primary" @onclick="() => ReportConversation(CurrentConversation, currentlyLoggedInUser)">Report conversation</button>
+						<br>
+						<br>
+						<button class="btn btn-primary" @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">Delete conversation</button>
+						<button class="btn btn-primary" @onclick="() => showPopUpForReportConversation(CurrentConversation)">Report conversation</button>
 					}
 					else
 					{
-					<p>Looks like you are lost :) Please navigate back to the chat using the navigation menu on the left!</p>
+						<p>Looks like you are lost :) Please navigate back to the chat using the navigation menu on the left!</p>
 					}
 				}
 			</p>
@@ -140,6 +140,46 @@
 	</div>
 </body>
 
+
+@if (popUpForDeletingConversation)
+{
+	<div class="modal" tabindex="-1" style="display:block" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title">Delete this conversation!</h3>
+					<button type="button" class="close" @onclick="closePopUpForDeletingConversation"> <span area-hidden="true">X</span></button>
+				</div>
+				<div class="modal-body">
+					<p>Are you sure you want to delete it?</p>
+					<button type="button" class="close" @onclick="() => DeleteConversation(CurrentConversation)">Delete it!</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+}
+
+
+@if (popUpForReportConversation)
+{
+	<div class="modal" tabindex="-1" style="display:block" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title">Report this conversations to the admins!</h3>
+					<button type="button" class="close" @onclick="closePopUpForReportConversation"> <span area-hidden="true">X</span></button>
+				</div>
+				<div class="modal-body">
+					<p>Please write here the reason for the report:</p>
+					<InputText @bind-Value="reasonForReporting"></InputText>
+					<button type="button" class="close" @onclick="() => ReportConversation(CurrentConversation, currentlyLoggedInUser, reasonForReporting)">Report this conversation!</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+}
 
 
 
@@ -149,8 +189,9 @@
 
 	[Parameter]
 	public int? ID { get; set; }
-
+	Conversation selectedConvo;
 	private string TextMessage { get; set; }
+	string reasonForReporting = "";
 
 	protected override void OnParametersSet()
 	{
@@ -197,18 +238,51 @@
 	public void DeleteConversation(Conversation C)
 	{
 		DataService.DeleteConversation(C);
+		closePopUpForDeletingConversation();
 		NavigationManager.NavigateTo("Chat");
 	}
 
-	public void ReportConversation(Conversation C, User currentlyLoggedInUser)
+	public void ReportConversation(Conversation C, User currentlyLoggedInUser, string reasonForReporting)
 	{
-		DataService.ReportConversation(C, currentlyLoggedInUser);
+		DataService.ReportConversation(C, currentlyLoggedInUser, reasonForReporting);
+		reasonForReporting = "";
+		closePopUpForReportConversation();
 	}
 
 	public Ad GetAd(Conversation C)
 	{
 		Ad ad = context.Ads.Where(a => a.adConversations.Contains(C)).First();
 		return ad;
+	}
+
+
+
+	bool popUpForDeletingConversation = false;
+
+	public void closePopUpForDeletingConversation()
+	{
+		popUpForDeletingConversation = false;
+	}
+
+	public void showPopUpForDeletingConversation(Conversation C)
+	{
+		selectedConvo = C;
+		popUpForDeletingConversation = true;
+	}
+
+
+
+	bool popUpForReportConversation = false;
+
+	public void closePopUpForReportConversation()
+	{
+		popUpForReportConversation = false;
+	}
+
+	public void showPopUpForReportConversation(Conversation C)
+	{
+		selectedConvo = C;
+		popUpForReportConversation = true;
 	}
 
 

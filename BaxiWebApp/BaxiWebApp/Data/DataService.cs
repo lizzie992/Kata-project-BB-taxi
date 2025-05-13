@@ -69,7 +69,7 @@ namespace BaxiWebApp.Data
             }
         }
 
-        public void ReportConversation(Conversation C, User currentlyLoggedInUser)
+        public void ReportConversation(Conversation C, User currentlyLoggedInUser, string reasonForReporting)
         {
             using (var context = _dbcFactory.CreateDbContext())
             {
@@ -93,14 +93,14 @@ namespace BaxiWebApp.Data
                 MailMessage mailMessage = new MailMessage();
                 mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
                 mailMessage.To.Add("gulyaskata99@gmail.com");
-                mailMessage.Body = $"Please check out the following conversation below that {currentlyLoggedInUser} reported to you: \r\n{message}";
+                mailMessage.Body = $"Please check out the following conversation below that {currentlyLoggedInUser} reported to you, with the following reason: {reasonForReporting}\r\n{message}";
                 mailMessage.Subject = "A conversation was just reported to you";
                 client.Send(mailMessage);
 
             }
         }
 
-        public void reportAd(Ad ad, User currentlyLoggedInUser)
+        public void reportAd(Ad ad, User currentlyLoggedInUser, string reasonForReporting)
         {
             string adDetails = $"Ad owner: {showUserNameWithStatus(ad.AdOwner)}\r\nAd type: {ad.AdType}\r\nRoute: {ad.Route}\r\nPick up date and time: {ad.pickUpDateAndTime}\r\nNumber of seats: {ad.NumberOfSeats}\r\nSpecific requests: {ad.SpecificRequests}\r\n";
 
@@ -112,7 +112,7 @@ namespace BaxiWebApp.Data
             MailMessage mailMessage = new MailMessage();
             mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
             mailMessage.To.Add("gulyaskata99@gmail.com");
-            mailMessage.Body = $"Please check out the following ad below that {showUserNameWithStatus(currentlyLoggedInUser)} reported to you: \r\n{adDetails}\r\nOpen the ad here: LINK";
+            mailMessage.Body = $"Please check out the following ad below that {showUserNameWithStatus(currentlyLoggedInUser)} reported to you: \r\n{adDetails}\r\nThe reason for reporting is: {reasonForReporting}\r\nOpen the ad here: LINK";
             mailMessage.Subject = "An ad was just reported to you";
             client.Send(mailMessage);
         }
