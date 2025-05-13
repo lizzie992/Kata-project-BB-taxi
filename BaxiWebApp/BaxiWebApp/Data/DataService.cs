@@ -151,7 +151,8 @@ namespace BaxiWebApp.Data
                 sendEmailAboutWarning(user, reasonForWarning);
                 if (user.NumberOfWarnings == maxNumberOfWarnings)
                 {
-                    deactivateUser(user);
+                    string reason = "You have reached 3 warnings!";
+                    deactivateUser(user, reason);
                     context.SaveChanges();
                 }
             }
@@ -176,9 +177,9 @@ namespace BaxiWebApp.Data
 
         }
 
-        public void sendEmailAboutDeactivation(User user)
+        public void sendEmailAboutDeactivation(User user, string reasonForDeactivating)
         {
-            string message = $"Dear {showUserNameWithStatus(user)}\r\nYour account has been deactivated!\r\nPlease contact the admin team about the reasons behind it and the possible reactivation!";
+            string message = $"Dear {showUserNameWithStatus(user)}\r\nYour account has been deactivated!\r\nThe reason is: {reasonForDeactivating}\r\nPlease contact the admin team about the reasons behind it and the possible reactivation!";
 
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;
@@ -213,14 +214,14 @@ namespace BaxiWebApp.Data
         }
 
 
-        public void deactivateUser(User user)
+        public void deactivateUser(User user, string reasonForDeactivating)
         {
             using (var context = _dbcFactory.CreateDbContext())
             {
                 user.isActive = false;
                 context.Update(user);
                 context.SaveChanges();
-                sendEmailAboutDeactivation(user);
+                sendEmailAboutDeactivation(user, reasonForDeactivating);
             }
         }
 

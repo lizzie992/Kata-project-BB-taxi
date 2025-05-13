@@ -157,12 +157,12 @@
 			</PropertyColumn>
 			<PropertyColumn Title="Contact:" Property="@(User => User.Contact)" Sortable="true">
 			</PropertyColumn>
-			<TemplateColumn Title="Message:" Context="User">
+			@* <TemplateColumn Title="Message:" Context="User">
 				@if (User.isActive == true)
 				{
 					<button>Send a message!</button>
 				}
-			</TemplateColumn>
+			</TemplateColumn> *@
 			<TemplateColumn Title="Make User an Admin:" Context="User">
 				@if (User.isActive == true && UserManager.GetRolesAsync(User).Result.First() == "Regular")
 				{
@@ -178,11 +178,11 @@
 			<TemplateColumn Title="Change status:" Context="User">
 				@if (User.isActive == true)
 				{
-					<button @onclick="() => deactivateUser(User)">Deactivate user!</button>
+					<button @onclick="() => showPopUpForDeactivatingUser(User)">Deactivate user!</button>
 				}
 				@if (User.isActive == false)
 				{
-					<button @onclick="() => reactivateUser(User)">Reactivate user!</button>
+					<button @onclick="() => showPopUpForReactivatingUser(User)">Reactivate user!</button>
 				}
 			</TemplateColumn>
 		</QuickGrid>
@@ -233,6 +233,46 @@
 
 	}
 
+	@if (popUpForDeactivatingUser)
+	{
+		<div class="modal" tabindex="-1" style="display:block" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title">Deactivate this user</h3>
+						<button type="button" class="close" @onclick="closePopUpForDeactivatingUser"> <span area-hidden="true">X</span></button>
+					</div>
+					<div class="modal-body">
+						<p>Please write here the reason for the deactivation:</p>
+						<InputText @bind-Value="reasonForDeactivating"></InputText>
+						<button type="button" class="close" @onclick="() => deactivateUser(selectedUser, reasonForDeactivating)">Deactivate User!</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	}
+
+	@if (popUpForReactivatingUser)
+	{
+		<div class="modal" tabindex="-1" style="display:block" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title">Reactivate this user</h3>
+						<button type="button" class="close" @onclick="closePopUpForReactivatingUser"> <span area-hidden="true">X</span></button>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to reactivate this user?</p>
+						<br>
+						<button type="button" class="close" @onclick="() => reactivateUser(selectedUser)">Reactivate User!</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	}
+
 
 
 </AuthorizeView>
@@ -260,6 +300,7 @@
 	string _status = "All!";
 
 	string reasonForWarning = "";
+	string reasonForDeactivating = "";
 	User selectedUser;
 
 	protected override void OnParametersSet()
@@ -336,15 +377,17 @@
 		grid.RefreshDataAsync();
 	}
 
-	public void deactivateUser(User user)
+	public void deactivateUser(User user, string reasonForDeactivating)
 	{
-		DataService.deactivateUser(user);
+		DataService.deactivateUser(user, reasonForDeactivating);
+		closePopUpForDeactivatingUser();
 		grid.RefreshDataAsync();
 	}
 
 	public void reactivateUser(User user)
 	{
 		DataService.reactivateUser(user);
+		closePopUpForReactivatingUser();
 		grid.RefreshDataAsync();
 	}
 
@@ -422,4 +465,31 @@
 	}
 
 
+
+	bool popUpForDeactivatingUser = false;
+
+	public void closePopUpForDeactivatingUser()
+	{
+		popUpForDeactivatingUser = false;
+	}
+
+	public void showPopUpForDeactivatingUser(User user)
+	{
+		selectedUser = user;
+		popUpForDeactivatingUser = true;
+	}
+
+
+	bool popUpForReactivatingUser = false;
+
+	public void closePopUpForReactivatingUser()
+	{
+		popUpForReactivatingUser = false;
+	}
+
+	public void showPopUpForReactivatingUser(User user)
+	{
+		selectedUser = user;
+		popUpForReactivatingUser = true;
+	}
 }
