@@ -24,6 +24,11 @@ namespace BB
             get; set;
         }
 
+        public bool isDeleted
+        {
+            get; set;
+        }
+
 
         private string? _emailAddress;
 

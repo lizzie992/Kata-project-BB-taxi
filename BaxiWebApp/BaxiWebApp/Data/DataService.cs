@@ -260,6 +260,10 @@ namespace BaxiWebApp.Data
         public string showUserNameWithStatus(User user)
         {
             string name = "";
+            if (user.isDeleted == true)
+            {
+                name = "Deleted user";
+            }
             if (user.isActive == true)
             {
                 name = $"{user.FirstName} {user.LastName}";
@@ -270,6 +274,24 @@ namespace BaxiWebApp.Data
             }
             return name;
         }
+
+
+        public void deleteUser(User user)
+        {
+            using (var context = _dbcFactory.CreateDbContext())
+            {
+                user.isDeleted = true;
+                user.isActive = false;
+                user.Email = "Deleted user";
+                user.FirstName = "Deleted user";
+                user.LastName = "Deleted user";
+                user.Location = "Deleted user";
+                user.Contact = "Deleted user";
+                context.Update(user);
+                context.SaveChanges();
+            }
+        }
+
 
 
     }

@@ -6,6 +6,7 @@
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
 @inject Data.DataService DataService
+@inject NavigationManager NavigationManager
 
 <AuthorizeView>
     <Authorized>
@@ -42,15 +43,37 @@
                 <button>Click here to change your password!</button>
             </a>
 
-            
+            <button @onclick="() => showPopUpForDeletingUser(user)">Delete my profile!</button>
 
         </div>
+
+
+        @if (popUpForDeletingUser)
+        {
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Delete your profile</h3>
+                            <button type="button" class="close" @onclick="closePopUpForDeletingUser"> <span area-hidden="true">X</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete our profile? If you delete it, you cannot reactivate it again!</p>
+                            <br>
+                            <button type="button" class="close" @onclick="() => deleteUser(user)">Delete my profile!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+
 
     </Authorized>
 </AuthorizeView>
 
 @code {
-    
+
     private User user;
     public async Task identifyLoggedInUser()
     {
@@ -65,5 +88,26 @@
     {
         identifyLoggedInUser().GetAwaiter().GetResult();
         base.OnParametersSet();
+    }
+
+
+    bool popUpForDeletingUser = false;
+
+    public void closePopUpForDeletingUser()
+    {
+        popUpForDeletingUser = false;
+    }
+
+    public void showPopUpForDeletingUser(User user)
+    {
+        popUpForDeletingUser = true;
+    }
+
+
+    public void deleteUser(User user)
+    {
+        DataService.deleteUser(user);
+
+        NavigationManager.NavigateTo("Account/Login");
     }
 }

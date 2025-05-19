@@ -318,6 +318,7 @@
 		{
 			var result = UserManager.Users.ToList<User>().AsQueryable();
 
+			result = result.Where(User => User.isDeleted == false);
 
 			result = result.Where(User => User.Email.Contains(_searchEmail, StringComparison.CurrentCultureIgnoreCase) &&
 			User.FirstName.Contains(_searchFirstName, StringComparison.CurrentCultureIgnoreCase) &&

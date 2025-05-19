@@ -124,6 +124,7 @@
         user.Contact = Input.Contact;
         user.NotificationForRoute = new List<string>();
         user.isActive = true;
+        user.isDeleted = false;
         if (user.Email.Contains("admin"))
         {
             UserManager.AddToRoleAsync(user, "Admin");
