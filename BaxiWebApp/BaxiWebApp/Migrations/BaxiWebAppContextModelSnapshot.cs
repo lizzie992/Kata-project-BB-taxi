@@ -249,15 +249,15 @@ namespace BaxiWebApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3dbfe283-6f5e-4564-84da-b9837f79ae14",
-                            ConcurrencyStamp = "a2bd4d6c-7463-4c19-87a6-1252abe1ceef",
+                            Id = "37939894-095e-4c4a-9617-77ed04e24fa4",
+                            ConcurrencyStamp = "d723176f-9ab2-44b7-ba74-7c54affca8a1",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         },
                         new
                         {
-                            Id = "f3d47fe3-1cbd-4f3b-82cc-eb01e6969c75",
-                            ConcurrencyStamp = "af2030b6-0a4d-40a9-b13b-a73008d4de70",
+                            Id = "c8cc4953-c395-4b92-a6df-040020d28caf",
+                            ConcurrencyStamp = "0b41ca2b-be9f-4904-be27-a067c8fde9b9",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

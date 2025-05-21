@@ -142,7 +142,7 @@ namespace BaxiWebApp.Data
         int maxNumberOfWarnings = 3;
         public void giveUserAWarning(User user, string reasonForWarning)
         {
-            
+
             using (var context = _dbcFactory.CreateDbContext())
             {
                 user.NumberOfWarnings++;
@@ -282,16 +282,33 @@ namespace BaxiWebApp.Data
             {
                 user.isDeleted = true;
                 user.isActive = false;
-                user.Email = "Deleted user";
                 user.FirstName = "Deleted user";
                 user.LastName = "Deleted user";
                 user.Location = "Deleted user";
                 user.Contact = "Deleted user";
+                user.Department = Department.SelectAll;
+                user.PreferredLanguage = PreferredLanguage.SelectAll;
+                user.Rating = 0;
+                user.NumberOfWarnings = 0;
                 context.Update(user);
                 context.SaveChanges();
             }
         }
 
+        public bool isUserDeleted(string emailAddress)
+        {
+            using (var context = _dbcFactory.CreateDbContext())
+            {
+                foreach (User u in context.Users.ToList<User>())
+                {
+                    if (u.Email == emailAddress && u.isDeleted == true)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
 
 
     }

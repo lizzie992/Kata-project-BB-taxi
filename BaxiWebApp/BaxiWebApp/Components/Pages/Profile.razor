@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @inject AuthenticationStateProvider AuthStateProvider;
-@inject SignInManager<User> signInManger;
+@inject SignInManager<User> signInManager;
 @inject UserManager<User> UserManager;
 @inject Data.DataService DataService
 @inject NavigationManager NavigationManager
@@ -60,7 +60,7 @@
                         <div class="modal-body">
                             <p>Are you sure you want to delete our profile? If you delete it, you cannot reactivate it again!</p>
                             <br>
-                            <button type="button" class="close" @onclick="() => deleteUser(user)">Delete my profile!</button>
+                            <button type="button" class="close" @onclick="() => deleteUser()">Delete my profile!</button>
                         </div>
                     </div>
                 </div>
@@ -104,10 +104,12 @@
     }
 
 
-    public void deleteUser(User user)
+    public async Task deleteUser()
     {
         DataService.deleteUser(user);
-
-        NavigationManager.NavigateTo("Account/Login");
+        // await signInManager.SignOutAsync();
+        NavigationManager.NavigateTo("Account/Login", forceLoad: true);
     }
+
+
 }

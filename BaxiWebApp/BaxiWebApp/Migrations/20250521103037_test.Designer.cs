@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaxiWebApp.Migrations
 {
     [DbContext(typeof(BaxiWebAppContext))]
-    [Migration("20250415134004_init")]
-    partial class init
+    [Migration("20250521103037_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,11 +90,10 @@ namespace BaxiWebApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ConversationID")
+                    b.Property<int>("ConversationID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("fromUserId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("messageText")
@@ -105,7 +104,6 @@ namespace BaxiWebApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("toUserId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -116,7 +114,7 @@ namespace BaxiWebApp.Migrations
 
                     b.HasIndex("toUserId");
 
-                    b.ToTable("Message");
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("BB.User", b =>
@@ -208,6 +206,12 @@ namespace BaxiWebApp.Migrations
                     b.Property<int>("UserType")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("isActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -248,15 +252,15 @@ namespace BaxiWebApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "dbfc9ad6-2c07-440c-9eb0-b4b5bf26e34b",
-                            ConcurrencyStamp = "e1813126-cc81-47ea-a05e-766c471a7ed6",
+                            Id = "37939894-095e-4c4a-9617-77ed04e24fa4",
+                            ConcurrencyStamp = "d723176f-9ab2-44b7-ba74-7c54affca8a1",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         },
                         new
                         {
-                            Id = "4ecd4988-714a-44e6-a5c8-f19f801989a3",
-                            ConcurrencyStamp = "8e32c30a-31f7-488b-97b5-a14bdd261535",
+                            Id = "c8cc4953-c395-4b92-a6df-040020d28caf",
+                            ConcurrencyStamp = "0b41ca2b-be9f-4904-be27-a067c8fde9b9",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -399,20 +403,18 @@ namespace BaxiWebApp.Migrations
             modelBuilder.Entity("BB.Message", b =>
                 {
                     b.HasOne("BB.Conversation", null)
-                        .WithMany("conversation")
-                        .HasForeignKey("ConversationID");
+                        .WithMany("messages")
+                        .HasForeignKey("ConversationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BB.User", "fromUser")
                         .WithMany()
-                        .HasForeignKey("fromUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("fromUserId");
 
                     b.HasOne("BB.User", "toUser")
                         .WithMany()
-                        .HasForeignKey("toUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("toUserId");
 
                     b.Navigation("fromUser");
 
@@ -479,7 +481,7 @@ namespace BaxiWebApp.Migrations
 
             modelBuilder.Entity("BB.Conversation", b =>
                 {
-                    b.Navigation("conversation");
+                    b.Navigation("messages");
                 });
 #pragma warning restore 612, 618
         }

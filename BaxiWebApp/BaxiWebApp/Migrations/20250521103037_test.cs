@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BaxiWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +33,8 @@ namespace BaxiWebApp.Migrations
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     UserType = table.Column<int>(type: "INTEGER", nullable: false),
+                    isActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    isDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
                     EmailAddress = table.Column<string>(type: "TEXT", nullable: true),
                     FirstName = table.Column<string>(type: "TEXT", nullable: true),
                     LastName = table.Column<string>(type: "TEXT", nullable: true),
@@ -230,37 +232,36 @@ namespace BaxiWebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Message",
+                name: "Messages",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    fromUserId = table.Column<string>(type: "TEXT", nullable: false),
-                    toUserId = table.Column<string>(type: "TEXT", nullable: false),
+                    ConversationID = table.Column<int>(type: "INTEGER", nullable: false),
+                    fromUserId = table.Column<string>(type: "TEXT", nullable: true),
+                    toUserId = table.Column<string>(type: "TEXT", nullable: true),
                     messageText = table.Column<string>(type: "TEXT", nullable: false),
-                    timeStamp = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ConversationID = table.Column<int>(type: "INTEGER", nullable: true)
+                    timeStamp = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Message", x => x.Id);
+                    table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Message_AspNetUsers_fromUserId",
+                        name: "FK_Messages_AspNetUsers_fromUserId",
                         column: x => x.fromUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Message_AspNetUsers_toUserId",
+                        name: "FK_Messages_AspNetUsers_toUserId",
                         column: x => x.toUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Message_Conversations_ConversationID",
+                        name: "FK_Messages_Conversations_ConversationID",
                         column: x => x.ConversationID,
                         principalTable: "Conversations",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -268,8 +269,8 @@ namespace BaxiWebApp.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4ecd4988-714a-44e6-a5c8-f19f801989a3", "8e32c30a-31f7-488b-97b5-a14bdd261535", "Admin", "ADMIN" },
-                    { "dbfc9ad6-2c07-440c-9eb0-b4b5bf26e34b", "e1813126-cc81-47ea-a05e-766c471a7ed6", "Regular", "REGULAR" }
+                    { "37939894-095e-4c4a-9617-77ed04e24fa4", "d723176f-9ab2-44b7-ba74-7c54affca8a1", "Regular", "REGULAR" },
+                    { "c8cc4953-c395-4b92-a6df-040020d28caf", "0b41ca2b-be9f-4904-be27-a067c8fde9b9", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -335,18 +336,18 @@ namespace BaxiWebApp.Migrations
                 column: "contactingUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_ConversationID",
-                table: "Message",
+                name: "IX_Messages_ConversationID",
+                table: "Messages",
                 column: "ConversationID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_fromUserId",
-                table: "Message",
+                name: "IX_Messages_fromUserId",
+                table: "Messages",
                 column: "fromUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_toUserId",
-                table: "Message",
+                name: "IX_Messages_toUserId",
+                table: "Messages",
                 column: "toUserId");
         }
 
@@ -369,7 +370,7 @@ namespace BaxiWebApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Message");
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
