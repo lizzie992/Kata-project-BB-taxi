@@ -107,8 +107,7 @@
     public async Task deleteUser()
     {
         DataService.deleteUser(user);
-        // await signInManager.SignOutAsync();
-        NavigationManager.NavigateTo("Account/Login", forceLoad: true);
+        NavigationManager.NavigateTo("/Logout", forceLoad: true);
     }
 
 

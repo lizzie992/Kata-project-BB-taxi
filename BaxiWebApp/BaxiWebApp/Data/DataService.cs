@@ -290,6 +290,7 @@ namespace BaxiWebApp.Data
                 user.PreferredLanguage = PreferredLanguage.SelectAll;
                 user.Rating = 0;
                 user.NumberOfWarnings = 0;
+                user.LockoutEnd = DateTime.MaxValue;
                 context.Update(user);
                 context.SaveChanges();
             }

@@ -67,7 +67,7 @@
 	</div>
 </div>
 
-@if (popUpForDeletedUser)
+@* @if (popUpForDeletedUser)
 {
 	<div class="modal" tabindex="-1" style="display:block" role="dialog">
 		<div class="modal-dialog">
@@ -83,7 +83,7 @@
 		</div>
 	</div>
 
-}
+} *@
 
 @code {
 	private string? errorMessage;
@@ -109,59 +109,54 @@
 
 	public async Task LoginUser()
 	{
-		if (isUserDeleted(Input.Email))
+
+		// This doesn't count login failures towards account lockout
+		// To enable password failures to trigger account lockout, set lockoutOnFailure: true
+		var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+		if (result.Succeeded)
 		{
-			showPopUpForDeletedUser();
+			Logger.LogInformation("User logged in.");
+			RedirectManager.RedirectTo(ReturnUrl);
+		}
+		else if (result.RequiresTwoFactor)
+		{
+			RedirectManager.RedirectTo(
+				"Account/LoginWith2fa",
+				new() { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
+		}
+		else if (result.IsLockedOut)
+		{
+			Logger.LogWarning("User account locked out.");
+			RedirectManager.RedirectTo("Account/Lockout");
 		}
 		else
 		{
-			// This doesn't count login failures towards account lockout
-			// To enable password failures to trigger account lockout, set lockoutOnFailure: true
-			var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-
-			if (result.Succeeded)
-			{
-				Logger.LogInformation("User logged in.");
-				RedirectManager.RedirectTo(ReturnUrl);
-			}
-			else if (result.RequiresTwoFactor)
-			{
-				RedirectManager.RedirectTo(
-					"Account/LoginWith2fa",
-					new() { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
-			}
-			else if (result.IsLockedOut)
-			{
-				Logger.LogWarning("User account locked out.");
-				RedirectManager.RedirectTo("Account/Lockout");
-			}
-			else
-			{
-				errorMessage = "Error: Invalid login attempt.";
-			}
+			errorMessage = "Error: Invalid login attempt.";
 		}
 
+
 	}
 
 
-	public bool isUserDeleted(string email)
-	{
-		return DataService.isUserDeleted(email);
-	}
+	// public bool isUserDeleted(string email)
+	// {
+	// 	return DataService.isUserDeleted(email);
+	// }
 
 
 
-	bool popUpForDeletedUser = false;
+	// bool popUpForDeletedUser = false;
 
-	public void closePopUpForDeletedUser()
-	{
-		popUpForDeletedUser = false;
-	}
+	// public void closePopUpForDeletedUser()
+	// {
+	// 	popUpForDeletedUser = false;
+	// }
 
-	public void showPopUpForDeletedUser()
-	{
-		popUpForDeletedUser = true;
-	}
+	// public void showPopUpForDeletedUser()
+	// {
+	// 	popUpForDeletedUser = true;
+	// }
 
 
 

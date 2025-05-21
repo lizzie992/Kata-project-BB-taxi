@@ -1,0 +1,24 @@
+﻿@page "/Logout"
+@using BB
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject SignInManager<User> signInManager;
+@inject UserManager<User> UserManager;
+@inject Data.DataService DataService
+@inject NavigationManager NavigationManager
+
+
+<h3>Logout</h3>
+
+<p>You are logged out now!</p>
+
+@code {
+
+	protected override void OnInitialized()
+	{
+		signInManager.SignOutAsync();
+		base.OnInitialized();
+	}
+
+}
