@@ -36,7 +36,7 @@ else
 	<div>Number of seats: @CurrentAd.NumberOfSeats</div>
 	<div>Specific requests: @CurrentAd.SpecificRequests</div>
 
-	@if (currentlyLoggedInUser != CurrentAd.AdOwner)
+	@if (CurrentAd.pickUpDateAndTime >= DateTime.Now.AddMinutes(-30) && currentlyLoggedInUser != CurrentAd.AdOwner)
 	{
 		<button @onclick="() => createChat(CurrentAd)">Contact me!</button>
 	}

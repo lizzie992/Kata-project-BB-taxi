@@ -3,21 +3,37 @@
 @using Microsoft.AspNetCore.Identity
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject UserManager<User> UserManager;
+
+
+
+
 <PageTitle>Home</PageTitle>
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
     img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     }
 </style>
 
 <h1 style="text-align:center;">Welcome to Baierbrunn!</h1>
 
 <img src="https://www.bayregio.de/baierbrunn/oben.jpg" alt="Beautiful Baierbrunn" class="center" style="width:90%;">
+
+<gmp-map center="48.02051251896241, 11.482662196604283"
+zoom="12"
+map-id="DEMO_MAP_ID"
+style="height: 400px">
+</gmp-map>
+
+
+
+<script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk&loading=async&libraries=maps&v=beta" defer>
+</script>
 
 
 @code{
@@ -39,6 +55,9 @@
         // await UserManager.UpdateAsync(user);
 
     }
+
+    public static string APIKey = Environment.GetEnvironmentVariable("Google_Maps_API_Key");
+
 
 
 }
