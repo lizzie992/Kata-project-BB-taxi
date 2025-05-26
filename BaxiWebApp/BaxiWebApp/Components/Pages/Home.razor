@@ -1,6 +1,16 @@
 ﻿@page "/"
 @using BB
 @using Microsoft.AspNetCore.Identity
+@using GoogleMapsApi;
+@using GoogleMapsApi.Entities.Common;
+@using GoogleMapsApi.Entities.Directions.Request;
+@using GoogleMapsApi.Entities.Directions.Response;
+@using GoogleMapsApi.Entities.Geocoding.Request;
+@using GoogleMapsApi.Entities.Geocoding.Response;
+@using GoogleMapsApi.StaticMaps;
+@using GoogleMapsApi.StaticMaps.Entities;
+
+
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject UserManager<User> UserManager;
 
@@ -12,52 +22,75 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-    img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    }
+	img {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
 </style>
 
 <h1 style="text-align:center;">Welcome to Baierbrunn!</h1>
 
 <img src="https://www.bayregio.de/baierbrunn/oben.jpg" alt="Beautiful Baierbrunn" class="center" style="width:90%;">
 
-<gmp-map center="48.02051251896241, 11.482662196604283"
+@* <gmp-map center="48.02051251896241, 11.482662196604283"
 zoom="12"
 map-id="DEMO_MAP_ID"
 style="height: 400px">
 </gmp-map>
 
-
-
 <script 
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk&loading=async&libraries=maps&v=beta" defer>
-</script>
+</script> *@
 
 
-@code{
+<p align="center">
+	<iframe width="600"
+			height="450"
+			loading="lazy"
+			allowfullscreen
+			src="https://www.google.com/maps/embed/v1/place?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
+    &q=Givaudan,Baierbrunn+Germany&zoom=9">
+	</iframe>
+</p>
 
 
-    public static User? user;
-    public async Task identifyLoggedInUser()
-    {
-        //example
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+<p align="center">
+	<iframe width="600"
+			height="450"
+			loading="lazy"
+			allowfullscreen
+			src="https://www.google.com/maps/embed/v1/directions
+			?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
+			&origin=Oslo+Norway
+			&destination=48.02051251896241, 11.482662196604283
+			&avoid=tolls"
+	</iframe>
+</p>
 
-        var claims = authState.User;
 
-        user = await UserManager.GetUserAsync(claims);
 
-        // //changes to uiser ob:
-        // user.Contact = "bla";
+@code {
 
-        // await UserManager.UpdateAsync(user);
 
-    }
+	public static User? user;
+	public async Task identifyLoggedInUser()
+	{
+		//example
+		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-    public static string APIKey = Environment.GetEnvironmentVariable("Google_Maps_API_Key");
+		var claims = authState.User;
 
+		user = await UserManager.GetUserAsync(claims);
+
+		// //changes to uiser ob:
+		// user.Contact = "bla";
+
+		// await UserManager.UpdateAsync(user);
+
+	}
+
+	public static string APIKey = Environment.GetEnvironmentVariable("Google_Maps_API_Key");
 
 
 }

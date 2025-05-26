@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BB
 {
-    public class Location
+    public class Address
     {
         public string latitude;
         public string longitude;
