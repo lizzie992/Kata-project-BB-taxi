@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BaxiWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class updates : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -95,6 +95,7 @@ namespace BaxiWebApp.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     AdOwnerId = table.Column<string>(type: "TEXT", nullable: true),
                     AdType = table.Column<int>(type: "INTEGER", nullable: false),
+                    AdDirection = table.Column<int>(type: "INTEGER", nullable: false),
                     Route = table.Column<string>(type: "TEXT", nullable: false),
                     pickUpDateAndTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     NumberOfSeats = table.Column<int>(type: "INTEGER", nullable: false),
@@ -269,8 +270,8 @@ namespace BaxiWebApp.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "37939894-095e-4c4a-9617-77ed04e24fa4", "d723176f-9ab2-44b7-ba74-7c54affca8a1", "Regular", "REGULAR" },
-                    { "c8cc4953-c395-4b92-a6df-040020d28caf", "0b41ca2b-be9f-4904-be27-a067c8fde9b9", "Admin", "ADMIN" }
+                    { "4cb89708-404a-4ae1-89e8-c5abedc09d27", "62d1c42b-d909-4ddb-a881-78fb5fdfdc05", "Regular", "REGULAR" },
+                    { "e9571516-6e6e-4549-bf2d-916929144fe1", "fa4c1bab-cd9d-442e-8bd9-f1aa34044260", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

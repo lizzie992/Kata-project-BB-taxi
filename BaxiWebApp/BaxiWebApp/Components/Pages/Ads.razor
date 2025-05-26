@@ -66,6 +66,17 @@
 			<br>
 			<br>
 
+			<p>Direction:</p>
+			<InputSelect @bind-Value="_adDirection" id="adDirection">
+				@foreach (var value in Enum.GetValues<AdDirection>())
+				{
+					<option value="@value">@value.ToString()</option>
+				}
+			</InputSelect>
+			<br>
+			<br>
+
+
 			<p>On a route:</p>
 			<div class="search-box">
 				<input type="search" autofocus @bind="_searchRoute" @bind:event="oninput" placeholder="Route..." />
@@ -101,6 +112,8 @@
 			<div>
 				<QuickGrid Items="FilteredAds" @ref="grid">
 					<PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
+					</PropertyColumn>
+					<PropertyColumn Title="Ad Direction:" Property="@(Ad => Ad.AdDirection)" Sortable="true">
 					</PropertyColumn>
 					<PropertyColumn Title="Route:" Property="@(Ad => Ad.Route)" Sortable="true">
 					</PropertyColumn>
@@ -179,6 +192,7 @@
 	int _requestedSeats = 1;
 
 	BB.AdType _adType = AdType.SelectAll;
+	BB.AdDirection _adDirection = AdDirection.SelectAll;
 
 	public static string allAdTypes;
 
@@ -208,7 +222,10 @@
 			{
 				result = result.Where(Ad => Ad.AdType == _adType);
 			}
-
+			if (_adDirection != AdDirection.SelectAll)
+			{
+				result = result.Where(Ad => Ad.AdDirection == _adDirection);
+			}
 
 			return result;
 		}

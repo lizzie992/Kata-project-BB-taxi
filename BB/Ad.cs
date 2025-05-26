@@ -42,6 +42,14 @@ namespace BB
         }
 
 
+        private AdDirection _adDirection;
+        public AdDirection AdDirection
+        {
+            get { return _adDirection; }
+            set { _adDirection = value; }
+        }
+
+
         private string _route; //no map yet just a simple text :)
 
         public string Route
