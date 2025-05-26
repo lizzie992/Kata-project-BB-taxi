@@ -31,9 +31,9 @@
                     </PropertyColumn>
                     <PropertyColumn Title="Ad Direction:" Property="@(Ad => Ad.AdDirection)" Sortable="true">
                     </PropertyColumn>
-                    <PropertyColumn Title="Route:" Property="@(Ad => Ad.Route)" Sortable="true">
+                    <PropertyColumn Title="From/To address:" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
                     </PropertyColumn>
-                    <PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.pickUpDateAndTime)" Sortable="true" />
+                    <PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
                     <PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
                     <PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
                     <TemplateColumn Title="Modify Ads" Context="Ad">

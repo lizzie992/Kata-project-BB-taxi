@@ -65,9 +65,9 @@ namespace BB
                     UserInterface.PrintListOfEnums(typeof(AdType));
                     Ad.AdType = UserInterface.GetAdType();
 
-                    Ad.Route = UserInterface.GetRoute();
+                    //Ad.Route = UserInterface.GetRoute();
 
-                    Ad.pickUpDateAndTime = UserInterface.GetPickUpDateAndTime();
+                    Ad.PickUpDateAndTime = UserInterface.GetPickUpDateAndTime();
 
                     Ad.NumberOfSeats = UserInterface.GetNumberOfSeats();
 
@@ -169,12 +169,12 @@ namespace BB
 
                                 if (answer == Constants.CHANGE_ROUTE)
                                 {
-                                    ad.Route = UserInterface.GetRoute();
+                                    ad.PickUpDropOffLocation = UserInterface.GetRoute();
                                 }
 
                                 if (answer == Constants.CHANGE_DATE_TIME)
                                 {
-                                    ad.pickUpDateAndTime = UserInterface.GetPickUpDateAndTime();
+                                    ad.PickUpDateAndTime = UserInterface.GetPickUpDateAndTime();
                                 }
 
                                 if (answer == Constants.CHANGE_NUMBER_OF_SEATS)

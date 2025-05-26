@@ -102,7 +102,7 @@ namespace BaxiWebApp.Data
 
         public void reportAd(Ad ad, User currentlyLoggedInUser, string reasonForReporting)
         {
-            string adDetails = $"Ad owner: {showUserNameWithStatus(ad.AdOwner)}\r\nAd type: {ad.AdType}\r\nRoute: {ad.Route}\r\nPick up date and time: {ad.pickUpDateAndTime}\r\nNumber of seats: {ad.NumberOfSeats}\r\nSpecific requests: {ad.SpecificRequests}\r\n";
+            string adDetails = $"Ad owner: {showUserNameWithStatus(ad.AdOwner)}\r\nAd type: {ad.AdType}\r\nAd Direction: {ad.AdDirection}\r\nAddress: {ad.PickUpDropOffLocation}\r\nPick up date and time: {ad.PickUpDateAndTime}\r\nNumber of seats: {ad.NumberOfSeats}\r\nSpecific requests: {ad.SpecificRequests}\r\n";
 
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;
@@ -122,8 +122,8 @@ namespace BaxiWebApp.Data
 
         public void sendEmailNewAd(Ad ad)
         {
-            string message = $"You might be interested in this new Ad:\r\n Ad type: {ad.AdType}\r\n In the following route: {ad.Route}\r\n On {ad.pickUpDateAndTime}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n";
-            if (ad.Route.Contains("Sendling"))
+            string message = $"You might be interested in this new Ad:\r\n Ad type: {ad.AdType}\r\nAd Direction: {ad.AdDirection}\r\nAddress: {ad.PickUpDropOffLocation}\r\n On {ad.PickUpDateAndTime}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n";
+            if (ad.PickUpDropOffLocation.Contains("Sendling"))
             {
                 SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
                 client.EnableSsl = true;
@@ -215,7 +215,7 @@ namespace BaxiWebApp.Data
 
         public void sendEmailAboutDeletingAdByAdmin(Ad ad, string reasonForDeleting)
         {
-            string message = $"Dear {showUserNameWithStatus(ad.AdOwner)}\r\nYour ad has been removed by the admins for reasons: {reasonForDeleting}\r\n\r\nAd:\r\nAd type: {ad.AdType}\r\n In the following route: {ad.Route}\r\n On {ad.pickUpDateAndTime}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n)";
+            string message = $"Dear {showUserNameWithStatus(ad.AdOwner)}\r\nYour ad has been removed by the admins for reasons: {reasonForDeleting}\r\n\r\nAd:\r\nAd type: {ad.AdType}\r\nAd Direction: {ad.AdDirection}\r\nAddress: {ad.PickUpDropOffLocation}\r\n On {ad.PickUpDateAndTime}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n)";
 
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;

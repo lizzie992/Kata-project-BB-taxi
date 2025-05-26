@@ -6,6 +6,14 @@
 @using System.Net.Mail
 @using System.Net
 @using System.IO
+@using GoogleMapsApi;
+@using GoogleMapsApi.Entities.Common;
+@using GoogleMapsApi.Entities.Directions.Request;
+@using GoogleMapsApi.Entities.Directions.Response;
+@using GoogleMapsApi.Entities.Geocoding.Request;
+@using GoogleMapsApi.Entities.Geocoding.Response;
+@using GoogleMapsApi.StaticMaps;
+@using GoogleMapsApi.StaticMaps.Entities;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
@@ -52,13 +60,13 @@
 				<br>
 
 
-				Route: <br>
-				<InputText @bind-Value="ad.Route"></InputText><br>
+				Pick up / drop off location (outside of Baierbrunn) <br>
+				<InputText @bind-Value="ad.PickUpDropOffLocation"></InputText><br>
 				<br>
 
 				Pick up date: <br>
 				<InputDate Type="InputDateType.DateTimeLocal"
-				min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.pickUpDateAndTime">
+				min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
 				</InputDate>
 				<br>
 
@@ -102,9 +110,9 @@
 		ad.AdOwner = currentlyLoggedInUser;
 		ad.AdType = CreateAd.ad.AdType;
 		ad.AdDirection = CreateAd.ad.AdDirection;
-		ad.Route = CreateAd.ad.Route;
-		ad.pickUpDateAndTime = DateTime.Today;
-		ad.pickUpDateAndTime = CreateAd.ad.pickUpDateAndTime;
+		ad.PickUpDropOffLocation = CreateAd.ad.PickUpDropOffLocation;
+		ad.PickUpDateAndTime = DateTime.Today;
+		ad.PickUpDateAndTime = CreateAd.ad.PickUpDateAndTime;
 		ad.NumberOfSeats = CreateAd.ad.NumberOfSeats;
 		ad.SpecificRequests = CreateAd.ad.SpecificRequests;
 
@@ -135,6 +143,9 @@
 		sendEmailAboutRoute(ad);
 		NavigationManager.NavigateTo("Ads");
 	}
+
+
+
 
 
 	

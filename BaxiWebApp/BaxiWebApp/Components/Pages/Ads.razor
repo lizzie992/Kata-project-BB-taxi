@@ -77,9 +77,9 @@
 			<br>
 
 
-			<p>On a route:</p>
+			<p>From / to this address:</p>
 			<div class="search-box">
-				<input type="search" autofocus @bind="_searchRoute" @bind:event="oninput" placeholder="Route..." />
+				<input type="search" autofocus @bind="_searchAddress" @bind:event="oninput" placeholder="Route..." />
 			</div>
 			<br>
 			<br>
@@ -115,16 +115,16 @@
 					</PropertyColumn>
 					<PropertyColumn Title="Ad Direction:" Property="@(Ad => Ad.AdDirection)" Sortable="true">
 					</PropertyColumn>
-					<PropertyColumn Title="Route:" Property="@(Ad => Ad.Route)" Sortable="true">
+					<PropertyColumn Title="From/to this address:" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
 					</PropertyColumn>
-					<PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.pickUpDateAndTime)" Sortable="true" />
+					<PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
 					<PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
 					<PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
 					<TemplateColumn Title="Show me the ad" Context="Ad">
 						<button @onclick="() => showAd(Ad)">Show me the ad!</button>
 					</TemplateColumn>
 					<TemplateColumn Title="Contact" Context="Ad">
-						@if (Ad.pickUpDateAndTime >= currentTime && currentlyLoggedInUser != Ad.AdOwner)
+						@if (Ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser != Ad.AdOwner)
 						{
 							<button @onclick="() => createChat(Ad)">Contact me!</button>
 						}
@@ -188,7 +188,7 @@
 	// 	return AdList;
 	// }
 
-	string? _searchRoute = "";
+	string? _searchAddress = "";
 	int _requestedSeats = 1;
 
 	BB.AdType _adType = AdType.SelectAll;
@@ -213,10 +213,10 @@
 			var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
 
 			result = result.Where(Ad =>
-							Ad.Route.Contains(_searchRoute, StringComparison.CurrentCultureIgnoreCase)
+							Ad.PickUpDropOffLocation.Contains(_searchAddress, StringComparison.CurrentCultureIgnoreCase)
 				&& Ad.NumberOfSeats >= _requestedSeats
-				&& _datetime1 <= Ad.pickUpDateAndTime
-				&& Ad.pickUpDateAndTime <= _datetime2);
+				&& _datetime1 <= Ad.PickUpDateAndTime
+				&& Ad.PickUpDateAndTime <= _datetime2);
 
 			if (_adType != AdType.SelectAll)
 			{

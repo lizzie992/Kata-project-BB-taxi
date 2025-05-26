@@ -41,13 +41,26 @@
 					</InputSelect>
 					<br>
 
-					Route: <br>
-					<InputText @bind-Value="ad.Route"></InputText><br>
+					Direction: <br>
+					<InputSelect @bind-Value="ad.AdDirection" id="adDirection">
+						@foreach (var value in Enum.GetValues<AdDirection>())
+						{
+							if (value == AdDirection.SelectAll)
+							{
+								continue;
+							}
+							<option value="@value">@value.ToString()</option>
+						}
+					</InputSelect>
+					<br>
+
+					From/to address: <br>
+					<InputText @bind-Value="ad.PickUpDropOffLocation"></InputText><br>
 					<br>
 
 					Pick up date: <br>
 					<InputDate Type="InputDateType.DateTimeLocal"
-							   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.pickUpDateAndTime">
+							   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
 					</InputDate>
 					<br>
 

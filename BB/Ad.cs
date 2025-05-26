@@ -50,17 +50,36 @@ namespace BB
         }
 
 
-        private string _route; //no map yet just a simple text :)
+        private string _pickUpDropOffLocation; 
 
-        public string Route
+        public string PickUpDropOffLocation
         {
-            get { return _route; }
-            set { _route = value; }
+            get { return _pickUpDropOffLocation; }
+            set { _pickUpDropOffLocation = value; }
         }
+
+
+        private float? _latitude;
+
+        public float? Latitude
+        {
+            get { return _latitude; }
+            set { _latitude = value; }
+        }
+
+
+        private float? _longitude;
+
+        public float? Longitude
+        {
+            get { return _longitude; }
+            set { _longitude = value; }
+        }
+
 
         private DateTime _pickUpDateAndTime;
 
-        public DateTime pickUpDateAndTime
+        public DateTime PickUpDateAndTime
         {
             get { return _pickUpDateAndTime; }
             set { _pickUpDateAndTime = value; }
@@ -86,8 +105,9 @@ namespace BB
         public override string ToString()
         {
             return $"Ad type: {AdType}\r\n" +
-                $"In the following route: {Route}\r\n" +
-                $"On {pickUpDateAndTime}\r\n" +
+                $"Direction: {AdDirection}\r\n" +
+                $"From/to the following address: {PickUpDropOffLocation}\r\n" +
+                $"On {PickUpDateAndTime}\r\n" +
                 $"Available seats: {NumberOfSeats}\r\n" +
                 $"Any speicifc requests: {SpecificRequests}\r\n";
         }

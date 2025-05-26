@@ -8,6 +8,14 @@
 @using System.Net
 @using System.IO
 @using System.Text;
+@using GoogleMapsApi;
+@using GoogleMapsApi.Entities.Common;
+@using GoogleMapsApi.Entities.Directions.Request;
+@using GoogleMapsApi.Entities.Directions.Response;
+@using GoogleMapsApi.Entities.Geocoding.Request;
+@using GoogleMapsApi.Entities.Geocoding.Response;
+@using GoogleMapsApi.StaticMaps;
+@using GoogleMapsApi.StaticMaps.Entities;
 @inject Data.BaxiWebAppContext context;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
@@ -29,15 +37,51 @@ else
 {
 	<h3>Ad</h3>
 
+	@if (CurrentAd.AdDirection == AdDirection.ToBaierbrunn)
+	{
+		<p align="center">
+			<iframe width="600"
+					height="450"
+					loading="lazy"
+					allowfullscreen
+					src="https://www.google.com/maps/embed/v1/directions
+			?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
+			&origin=@CurrentAd.PickUpDropOffLocation
+			&destination=Givaudan,Baierbrunn+Germany
+			&avoid=tolls">
+			</iframe>
+		</p>
+
+	}
+
+	@if (CurrentAd.AdDirection == AdDirection.FromBaierbrunn)
+	{
+		<p align="center">
+			<iframe width="600"
+					height="450"
+					loading="lazy"
+					allowfullscreen
+					src="https://www.google.com/maps/embed/v1/directions
+			?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
+			&origin=Givaudan,Baierbrunn+Germany
+			&destination=@CurrentAd.PickUpDropOffLocation
+			&avoid=tolls">
+			</iframe>
+		</p>
+
+	}
+
+	
+
 	<div>Ad type: @CurrentAd.AdType</div>
-	<div>Ad Direction: @CurrentAd.AdDirection</div>
 	<div>Ad owner: @DataService.showUserNameWithStatus(CurrentAd.AdOwner)</div>
-	<div>Route: @CurrentAd.Route</div>
-	<div>Pick up Date and Time: @CurrentAd.pickUpDateAndTime</div>
+	<div>Ad Direction: @CurrentAd.AdDirection</div>
+	<div>Pick up or drop off location: @CurrentAd.PickUpDropOffLocation</div>
+	<div>Pick up Date and Time: @CurrentAd.PickUpDateAndTime</div>
 	<div>Number of seats: @CurrentAd.NumberOfSeats</div>
 	<div>Specific requests: @CurrentAd.SpecificRequests</div>
 
-	@if (CurrentAd.pickUpDateAndTime >= DateTime.Now.AddMinutes(-30) && currentlyLoggedInUser != CurrentAd.AdOwner)
+	@if (CurrentAd.PickUpDateAndTime >= DateTime.Now.AddMinutes(-30) && currentlyLoggedInUser != CurrentAd.AdOwner)
 	{
 		<button @onclick="() => createChat(CurrentAd)">Contact me!</button>
 	}
@@ -133,7 +177,7 @@ else
 		DataService.reportAd(ad, currentlyLoggedInUser, reasonForReporting);
 		closePopUpForReportAd();
 	}
-	
+
 
 	Ad selectedAd;
 

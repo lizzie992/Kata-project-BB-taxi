@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaxiWebApp.Migrations
 {
     [DbContext(typeof(BaxiWebAppContext))]
-    [Migration("20250526201309_updates")]
-    partial class updates
+    [Migration("20250526205430_pleasewoknow")]
+    partial class pleasewoknow
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,7 +41,13 @@ namespace BaxiWebApp.Migrations
                     b.Property<int>("NumberOfSeats")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Route")
+                    b.Property<DateTime>("PickUpDateAndTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PickUpDropOffCoordinatesID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PickUpDropOffLocation")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -49,14 +55,13 @@ namespace BaxiWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("pickUpDateAndTime")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("ID");
 
                     b.HasIndex("AdID");
 
                     b.HasIndex("AdOwnerId");
+
+                    b.HasIndex("PickUpDropOffCoordinatesID");
 
                     b.ToTable("Ads");
                 });
@@ -85,6 +90,23 @@ namespace BaxiWebApp.Migrations
                     b.HasIndex("contactingUserId");
 
                     b.ToTable("Conversations");
+                });
+
+            modelBuilder.Entity("BB.Coordinates", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float>("Latitude")
+                        .HasColumnType("REAL");
+
+                    b.Property<float>("Longitude")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Coordinates");
                 });
 
             modelBuilder.Entity("BB.Message", b =>
@@ -255,15 +277,15 @@ namespace BaxiWebApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4cb89708-404a-4ae1-89e8-c5abedc09d27",
-                            ConcurrencyStamp = "62d1c42b-d909-4ddb-a881-78fb5fdfdc05",
+                            Id = "4dbb8752-0438-4a15-82ae-28ed302b8595",
+                            ConcurrencyStamp = "f2bbddd0-6303-4853-bce7-bdf0761279ca",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         },
                         new
                         {
-                            Id = "e9571516-6e6e-4549-bf2d-916929144fe1",
-                            ConcurrencyStamp = "fa4c1bab-cd9d-442e-8bd9-f1aa34044260",
+                            Id = "1ad2322b-87b6-4b21-85a5-bf88c86e3f12",
+                            ConcurrencyStamp = "4c90696e-ae66-42d6-bbee-3ef0b937f304",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -381,7 +403,15 @@ namespace BaxiWebApp.Migrations
                         .WithMany()
                         .HasForeignKey("AdOwnerId");
 
+                    b.HasOne("BB.Coordinates", "PickUpDropOffCoordinates")
+                        .WithMany()
+                        .HasForeignKey("PickUpDropOffCoordinatesID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("AdOwner");
+
+                    b.Navigation("PickUpDropOffCoordinates");
                 });
 
             modelBuilder.Entity("BB.Conversation", b =>
