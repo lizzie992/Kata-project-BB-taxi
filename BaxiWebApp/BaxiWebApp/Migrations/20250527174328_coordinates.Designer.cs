@@ -3,6 +3,7 @@ using System;
 using BaxiWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaxiWebApp.Migrations
 {
     [DbContext(typeof(BaxiWebAppContext))]
-    partial class BaxiWebAppContextModelSnapshot : ModelSnapshot
+    [Migration("20250527174328_coordinates")]
+    partial class coordinates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -35,11 +38,11 @@ namespace BaxiWebApp.Migrations
                     b.Property<int>("AdType")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double?>("Latitude")
-                        .HasColumnType("REAL");
+                    b.Property<string>("Latitude")
+                        .HasColumnType("TEXT");
 
-                    b.Property<double?>("Longitude")
-                        .HasColumnType("REAL");
+                    b.Property<string>("Longitude")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("NumberOfSeats")
                         .HasColumnType("INTEGER");
@@ -257,15 +260,15 @@ namespace BaxiWebApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b486b659-fd62-49d5-bac5-6f1b32ac21db",
-                            ConcurrencyStamp = "84c97971-5119-464b-848e-88eaf33592b6",
+                            Id = "f48bf690-e496-472f-b86f-cca82dcce46e",
+                            ConcurrencyStamp = "a9c48983-19c9-4001-945e-7b93425e601d",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         },
                         new
                         {
-                            Id = "465dc2d4-ea98-45cd-a8f7-25bc2899bf57",
-                            ConcurrencyStamp = "fc32b820-9f87-4da4-9bce-dbfabae179cd",
+                            Id = "abd7dc76-4bbe-48b8-981b-d0ece16aa393",
+                            ConcurrencyStamp = "00797871-71ac-4c87-9fba-930135781364",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

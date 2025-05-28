@@ -14,6 +14,7 @@
 @using GoogleMapsApi.Entities.Geocoding.Response;
 @using GoogleMapsApi.StaticMaps;
 @using GoogleMapsApi.StaticMaps.Entities;
+@using System.Globalization
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
@@ -29,66 +30,128 @@
 		}
 		else
 		{
+			<style>
+				column {
+					float: left;
+					padding: 10px;
+				}
+
+				.left {
+					width: 25%;
+				}
+
+				.right {
+					width: 75%;
+				}
+			</style>
+
 
 			<PageTitle>Create A New Ad</PageTitle>
 
-			<EditForm Model="@ad">
-				I am a: <br>
-				<InputSelect @bind-Value="ad.AdType" id="adType">
-					@foreach (var value in Enum.GetValues<AdType>())
-					{
-						if (value == AdType.SelectAll)
+			<div class="row">
+				<div class="column left">
+					<EditForm Model="@ad">
+						I am a: <br>
+						<InputSelect @bind-Value="ad.AdType" id="adType">
+							@foreach (var value in Enum.GetValues<AdType>())
+							{
+								if (value == AdType.SelectAll)
+								{
+									continue;
+								}
+								<option value="@value">@value.ToString()</option>
+							}
+						</InputSelect>
+						<br>
+
+						Direction: <br>
+						<InputSelect @bind-Value="ad.AdDirection" id="adDirection">
+							@foreach (var value in Enum.GetValues<AdDirection>())
+							{
+								if (value == AdDirection.SelectAll)
+								{
+									continue;
+								}
+								<option value="@value">@value.ToString()</option>
+							}
+						</InputSelect>
+						<br>
+
+						Pick up date: <br>
+						<InputDate Type="InputDateType.DateTimeLocal"
+								   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
+						</InputDate>
+						<br>
+
+						Number of seats: <br>
+						<InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+						</InputSelect>
+						<br>
+
+						Specific requests: <br>
+						<InputText @bind-Value="ad.SpecificRequests"></InputText><br>
+						<br>
+
+						Pick up / drop off location (outside of Baierbrunn) <br>
+						<InputText @bind-Value="ad.PickUpDropOffLocation"></InputText><br>
+						<br>
+
+						Please check if the address is correct, otherwise the ad will not be saved:
+						<button class="btn btn-primary" @onclick="ValidateAdress">Check address</button>
+						<br>
+
+						@if (ad.Longitude != null)
 						{
-							continue;
-						}
-						<option value="@value">@value.ToString()</option>
-					}
-				</InputSelect>
-				<br>
+							@if (ad.AdDirection == AdDirection.ToBaierbrunn)
+							{
+								<p align="center">
+									<iframe width="600"
+											height="450"
+											loading="lazy"
+											allowfullscreen
+											src="https://www.google.com/maps/embed/v1/directions
+			?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
+			&origin=@ad.Latitude?.ToString("F8",CultureInfo.InvariantCulture), @ad.Longitude?.ToString("F8",CultureInfo.InvariantCulture)
+			&destination=Givaudan,Baierbrunn+Germany
+			&avoid=tolls">
+									</iframe>
+								</p>
+							}
+							@if (ad.AdDirection == AdDirection.FromBaierbrunn)
+							{
+								<p align="center">
+									<iframe width="600"
+											height="450"
+											loading="lazy"
+											allowfullscreen
+											src="https://www.google.com/maps/embed/v1/directions
+			?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
+			&origin=Givaudan,Baierbrunn+Germany
+			&destination=@ad.Latitude?.ToString("F8",CultureInfo.InvariantCulture), @ad.Longitude?.ToString("F8",CultureInfo.InvariantCulture)
+			&avoid=tolls">
+									</iframe>
+								</p>
+							}
 
-				Direction: <br>
-				<InputSelect @bind-Value="ad.AdDirection" id="adDirection">
-					@foreach (var value in Enum.GetValues<AdDirection>())
-					{
-						if (value == AdDirection.SelectAll)
+							<div>If this is the correct route, please, save the ad:</div>
+							<button class="btn btn-primary" @onclick="WriteData">Save</button>
+							<br>
+
+						}
+						else
 						{
-							continue;
+							<div>Please enter a valid address!</div>
 						}
-						<option value="@value">@value.ToString()</option>
-					}
-				</InputSelect>
-				<br>
 
-
-				Pick up / drop off location (outside of Baierbrunn) <br>
-				<InputText @bind-Value="ad.PickUpDropOffLocation"></InputText><br>
-				<br>
-
-				Pick up date: <br>
-				<InputDate Type="InputDateType.DateTimeLocal"
-				min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
-				</InputDate>
-				<br>
-
-				Number of seats: <br>
-				<InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-					<option value="6">6</option>
-				</InputSelect>
-				<br>
-
-				Specific requests: <br>
-				<InputText @bind-Value="ad.SpecificRequests"></InputText><br>
-				<br>
-
-				<button class="btn btn-primary" @onclick="WriteData">Save</button>
-				<br>
-
-			</EditForm>
+					</EditForm>
+				</div>
+			</div>
 		}
 
 	</Authorized>
@@ -101,6 +164,9 @@
 	private string anything = string.Empty;
 
 
+
+	public string latitude = "48.137414650801595";
+	public string longitude = "11.575459225447347";
 
 
 	protected override void OnParametersSet()
@@ -115,7 +181,6 @@
 		ad.PickUpDateAndTime = CreateAd.ad.PickUpDateAndTime;
 		ad.NumberOfSeats = CreateAd.ad.NumberOfSeats;
 		ad.SpecificRequests = CreateAd.ad.SpecificRequests;
-
 		base.OnParametersSet();
 	}
 
@@ -135,6 +200,25 @@
 	}
 
 
+	public async Task ValidateAdress()
+	{
+		(ad.Latitude, ad.Longitude) = await GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
+	}
+
+
+	public async Task<bool> isAddressValid(string address)
+	{
+		if (address == null)
+			return false;
+
+		(ad.Latitude, ad.Longitude) = await GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
+		if (ad.Latitude == null)
+		{
+			return false;
+		}
+		return true;
+	}
+
 
 	async Task WriteData()
 	{
@@ -145,10 +229,33 @@
 	}
 
 
+	/// <summary>
+	///
+	/// </summary>
+	/// <param name="address"></param>
+	/// <returns>tuple with lat and long</returns>
+	public async Task<(double?, double?)> GetCoordinatesFromAddress(string address)
+	{
 
+		var request = new GeocodingRequest
+			{
+				ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk",
+				Address = address
+			};
 
+		var result = await GoogleMaps.Geocode.QueryAsync(request);
 
-	
+		Location location = result.Results.FirstOrDefault()?.Geometry?.Location;
+
+		if (location == null)
+		{
+			return (null, null);
+		}
+
+		string coordinates = $"{location.Latitude}, {location.Longitude}";
+
+		return (location.Latitude, location.Longitude);
+	}
 
 
 

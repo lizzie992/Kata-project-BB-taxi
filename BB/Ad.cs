@@ -50,27 +50,27 @@ namespace BB
         }
 
 
-        private string _pickUpDropOffLocation; 
+        private string? _pickUpDropOffLocation; 
 
-        public string PickUpDropOffLocation
+        public string? PickUpDropOffLocation
         {
             get { return _pickUpDropOffLocation; }
             set { _pickUpDropOffLocation = value; }
         }
 
 
-        private float? _latitude;
+        private double? _latitude;
 
-        public float? Latitude
+        public double? Latitude
         {
             get { return _latitude; }
             set { _latitude = value; }
         }
 
 
-        private float? _longitude;
+        private double? _longitude;
 
-        public float? Longitude
+        public double? Longitude
         {
             get { return _longitude; }
             set { _longitude = value; }
