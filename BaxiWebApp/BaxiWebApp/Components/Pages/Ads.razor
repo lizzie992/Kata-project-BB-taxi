@@ -79,7 +79,7 @@
 
 			<p>From / to this address:</p>
 			<div class="search-box">
-				<input type="search" autofocus @bind="_searchAddress" @bind:event="oninput" placeholder="Route..." />
+				<input type="search" autofocus @bind="_searchAddress" @bind:event="oninput" placeholder="Address..." />
 			</div>
 			<br>
 			<br>
@@ -96,6 +96,7 @@
 
 			<p>Requested number of seats:</p>
 			<InputSelect @bind-Value="_requestedSeats" id="numberOfSeats">
+				<option value="-1">All</option>
 				<option value="1">1</option>
 				<option value="2">2</option>
 				<option value="3">3</option>
@@ -189,7 +190,7 @@
 	// }
 
 	string? _searchAddress = "";
-	int _requestedSeats = 1;
+	int _requestedSeats = -1;
 
 	BB.AdType _adType = AdType.SelectAll;
 	BB.AdDirection _adDirection = AdDirection.SelectAll;

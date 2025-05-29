@@ -120,7 +120,7 @@ namespace BaxiWebApp.Data
 
 
 
-        public void sendEmailNewAd(Ad ad, string toEmailAddress)
+        public void sendEmailNewAd(Ad ad)
         {
             string message = $"You might be interested in this new Ad:\r\n Ad type: {ad.AdType}\r\nAd Direction: {ad.AdDirection}\r\nAddress: {ad.PickUpDropOffLocation}\r\n On {ad.PickUpDateAndTime}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n";
             if (ad.PickUpDropOffLocation.Contains("Sendling"))

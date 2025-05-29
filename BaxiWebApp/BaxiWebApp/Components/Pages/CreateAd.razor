@@ -195,23 +195,29 @@
 
 
 
-	public void sendNotificationAboutAd(Ad newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
+	public async void sendNotificationAboutAd(Ad newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
 	{
-		int distanceLimit = 5000; //this is the limit of how many meters we calculate the notificaions for, PAY ATTENTION METERS, NOT KILOMETERS
+		//parameters to be defined:
+		int distanceLimit = 5000; //PAY ATTENTION: METERS, NOT KILOMETERS, this is the limit of how many meters we calculate the notificaions for
+		int timeLimit = 1; //this is to define what is the max difference in time between the 2 ads so that they can be relevant to each other
+
 		var adList = context.Ads.ToList<Ad>().AsEnumerable();
 
 		//TO Baierbrunn, passenger looking for drivers
 		if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Passenger)
 		{
-
-			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver);
+			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats);
 			foreach (Ad oldAd in adList)
 			{
-				int distance = getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude).Result;
-				if (distance <= distanceLimit)
+				int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
+				if (timeDifference <= timeLimit)
 				{
-					DataService.sendEmailNewAd(oldAd, newAd.AdOwner.Email);
-					DataService.sendEmailNewAd(newAd, oldAd.AdOwner.Email);
+					int distance = await getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
+					if (distance <= distanceLimit)
+					{
+						DataService.sendEmailNewAd(oldAd);
+						DataService.sendEmailNewAd(newAd);
+					}
 				}
 			}
 		}
@@ -219,14 +225,18 @@
 		//TO Baierbrunn, driver looking for passengers
 		if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Driver)
 		{
-			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger);
+			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats);
 			foreach (Ad oldAd in adList)
 			{
-				int distance = getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude).Result;
-				if (distance <= distanceLimit)
+				int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
+				if (timeDifference <= timeLimit)
 				{
-					DataService.sendEmailNewAd(oldAd, newAd.AdOwner.Email);
-					DataService.sendEmailNewAd(newAd, oldAd.AdOwner.Email);
+					int distance = await getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
+					if (distance <= distanceLimit)
+					{
+						DataService.sendEmailNewAd(oldAd);
+						DataService.sendEmailNewAd(newAd);
+					}
 				}
 			}
 		}
@@ -235,14 +245,18 @@
 		//FROM Baierbrunn, passenger looking for drivers
 		if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Passenger)
 		{
-			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver);
+			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats);
 			foreach (Ad oldAd in adList)
 			{
-				int distance = getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude).Result;
-				if (distance <= distanceLimit)
+				int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
+				if (timeDifference <= timeLimit)
 				{
-					DataService.sendEmailNewAd(oldAd, newAd.AdOwner.Email);
-					DataService.sendEmailNewAd(newAd, oldAd.AdOwner.Email);
+					int distance = await getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
+					if (distance <= distanceLimit)
+					{
+						DataService.sendEmailNewAd(oldAd);
+						DataService.sendEmailNewAd(newAd);
+					}
 				}
 			}
 		}
@@ -250,14 +264,18 @@
 		//FROM Baierbrunn, driver looking for passengers
 		if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Driver)
 		{
-			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger);
+			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats);
 			foreach (Ad oldAd in adList)
 			{
-				int distance = getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude).Result;
-				if (distance <= distanceLimit)
+				int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
+				if (timeDifference <= timeLimit)
 				{
-					DataService.sendEmailNewAd(oldAd, newAd.AdOwner.Email);
-					DataService.sendEmailNewAd(newAd, oldAd.AdOwner.Email);
+					int distance = await getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
+					if (distance <= distanceLimit)
+					{
+						DataService.sendEmailNewAd(oldAd);
+						DataService.sendEmailNewAd(newAd);
+					}
 				}
 			}
 		}
@@ -290,8 +308,7 @@
 	{
 		context.Ads.Add(ad);
 		context.SaveChanges();
-		getDistance(ad.Latitude, ad.Longitude, 48.020562751900634, 11.482608552423985);
-		// sendNotificationAboutAd(ad);
+		sendNotificationAboutAd(ad);
 		NavigationManager.NavigateTo("Ads");
 	}
 
@@ -338,7 +355,7 @@
 		var result = await GoogleMaps.Directions.QueryAsync(request);
 		var legs = result.Routes.First().Legs;
 		int totalDistanceInMeters = legs.Sum(leg => leg.Distance.Value);
-		return totalDistanceInMeters;
+		return totalDistanceInMeters; //output is in METERS!!!
 	}
 
 
