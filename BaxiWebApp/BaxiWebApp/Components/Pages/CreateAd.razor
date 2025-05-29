@@ -8,13 +8,16 @@
 @using System.IO
 @using GoogleMapsApi;
 @using GoogleMapsApi.Entities.Common;
-@using GoogleMapsApi.Entities.Directions.Request;
-@using GoogleMapsApi.Entities.Directions.Response;
-@using GoogleMapsApi.Entities.Geocoding.Request;
-@using GoogleMapsApi.Entities.Geocoding.Response;
+@using GoogleMapsApi.Entities.Directions.Request
+@using GoogleMapsApi.Entities.Directions.Response
+@using GoogleMapsApi.Entities.Geocoding.Request
+@using GoogleMapsApi.Entities.Geocoding.Response
 @using GoogleMapsApi.StaticMaps;
 @using GoogleMapsApi.StaticMaps.Entities;
-@using System.Globalization
+@using System.Globalization;
+@using System.Threading.Tasks;
+@* @using GoogleMapsApi.Entities.DistanceMatrix.Request;
+@using GoogleMapsApi.Entities.DistanceMatrix.Response; *@
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
@@ -165,10 +168,6 @@
 
 
 
-	public string latitude = "48.137414650801595";
-	public string longitude = "11.575459225447347";
-
-
 	protected override void OnParametersSet()
 	{
 		identifyLoggedInUser().GetAwaiter().GetResult();
@@ -194,9 +193,76 @@
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
-	public void sendEmailAboutRoute(Ad ad)
+
+
+	public void sendNotificationAboutAd(Ad newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
 	{
-		DataService.sendEmailNewAd(ad);
+		int distanceLimit = 5000; //this is the limit of how many meters we calculate the notificaions for, PAY ATTENTION METERS, NOT KILOMETERS
+		var adList = context.Ads.ToList<Ad>().AsEnumerable();
+
+		//TO Baierbrunn, passenger looking for drivers
+		if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Passenger)
+		{
+
+			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver);
+			foreach (Ad oldAd in adList)
+			{
+				int distance = getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude).Result;
+				if (distance <= distanceLimit)
+				{
+					DataService.sendEmailNewAd(oldAd, newAd.AdOwner.Email);
+					DataService.sendEmailNewAd(newAd, oldAd.AdOwner.Email);
+				}
+			}
+		}
+
+		//TO Baierbrunn, driver looking for passengers
+		if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Driver)
+		{
+			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger);
+			foreach (Ad oldAd in adList)
+			{
+				int distance = getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude).Result;
+				if (distance <= distanceLimit)
+				{
+					DataService.sendEmailNewAd(oldAd, newAd.AdOwner.Email);
+					DataService.sendEmailNewAd(newAd, oldAd.AdOwner.Email);
+				}
+			}
+		}
+
+
+		//FROM Baierbrunn, passenger looking for drivers
+		if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Passenger)
+		{
+			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver);
+			foreach (Ad oldAd in adList)
+			{
+				int distance = getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude).Result;
+				if (distance <= distanceLimit)
+				{
+					DataService.sendEmailNewAd(oldAd, newAd.AdOwner.Email);
+					DataService.sendEmailNewAd(newAd, oldAd.AdOwner.Email);
+				}
+			}
+		}
+
+		//FROM Baierbrunn, driver looking for passengers
+		if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Driver)
+		{
+			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger);
+			foreach (Ad oldAd in adList)
+			{
+				int distance = getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude).Result;
+				if (distance <= distanceLimit)
+				{
+					DataService.sendEmailNewAd(oldAd, newAd.AdOwner.Email);
+					DataService.sendEmailNewAd(newAd, oldAd.AdOwner.Email);
+				}
+			}
+		}
+
+
 	}
 
 
@@ -224,7 +290,8 @@
 	{
 		context.Ads.Add(ad);
 		context.SaveChanges();
-		sendEmailAboutRoute(ad);
+		getDistance(ad.Latitude, ad.Longitude, 48.020562751900634, 11.482608552423985);
+		// sendNotificationAboutAd(ad);
 		NavigationManager.NavigateTo("Ads");
 	}
 
@@ -255,6 +322,23 @@
 		string coordinates = $"{location.Latitude}, {location.Longitude}";
 
 		return (location.Latitude, location.Longitude);
+	}
+
+
+
+	public async Task<int> getDistance(double? coordinate1, double? coordinate2, double? coordinate3, double? coordinate4)
+	{
+		if (coordinate1 == null || coordinate2 == null || coordinate3 == null || coordinate4 == null)
+		{
+			return 0;
+		}
+
+		var request = new DirectionsRequest { Origin = $"{coordinate1?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate2?.ToString("F8", CultureInfo.InvariantCulture)}", Destination = $"{coordinate3?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate4?.ToString("F8", CultureInfo.InvariantCulture)}", TravelMode = TravelMode.Driving };
+		request.ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk";
+		var result = await GoogleMaps.Directions.QueryAsync(request);
+		var legs = result.Routes.First().Legs;
+		int totalDistanceInMeters = legs.Sum(leg => leg.Distance.Value);
+		return totalDistanceInMeters;
 	}
 
 

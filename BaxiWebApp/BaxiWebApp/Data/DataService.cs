@@ -120,7 +120,7 @@ namespace BaxiWebApp.Data
 
 
 
-        public void sendEmailNewAd(Ad ad)
+        public void sendEmailNewAd(Ad ad, string toEmailAddress)
         {
             string message = $"You might be interested in this new Ad:\r\n Ad type: {ad.AdType}\r\nAd Direction: {ad.AdDirection}\r\nAddress: {ad.PickUpDropOffLocation}\r\n On {ad.PickUpDateAndTime}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n";
             if (ad.PickUpDropOffLocation.Contains("Sendling"))
@@ -132,7 +132,7 @@ namespace BaxiWebApp.Data
                 client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
                 MailMessage mailMessage = new MailMessage();
                 mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
-                mailMessage.To.Add("gulyaskata99@gmail.com");
+                mailMessage.To.Add("gulyaskata99@gmail.com"); //this will be changed to parameter string toEmailAddress
                 mailMessage.Body = message;
                 mailMessage.Subject = "Check out this new ad: ";
                 client.Send(mailMessage);
