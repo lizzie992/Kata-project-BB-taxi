@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
+@using System.Globalization;
 @inject Data.BaxiWebAppContext context;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
@@ -20,29 +21,29 @@
 		<style>
 
 			.adList {
-			display: grid;
-			grid-template-columns: 33% 33% 33%;
+				display: grid;
+				grid-template-columns: 33% 33% 33%;
 			}
 
 			.ad {
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-			max-width: 400px;
-			margin: auto;
-			text-align: center;
-			font-family: arial;
+				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+				max-width: 400px;
+				margin: auto;
+				text-align: center;
+				font-family: arial;
 			}
 
-			.ad button {
-			border: none;
-			outline: 0;
-			padding: 12px;
-			color: white;
-			background-color: #000;
-			text-align: center;
-			cursor: pointer;
-			width: 100%;
-			font-size: 18px;
-			}
+				.ad button {
+					border: none;
+					outline: 0;
+					padding: 12px;
+					color: white;
+					background-color: #000;
+					text-align: center;
+					cursor: pointer;
+					width: 100%;
+					font-size: 18px;
+				}
 
 		</style>
 
@@ -86,10 +87,10 @@
 
 			<p>Between the following date and time:</p>
 			<InputDate Type="InputDateType.DateTimeLocal"
-			min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
+					   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
 			</InputDate>
 			<InputDate Type="InputDateType.DateTimeLocal"
-			min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime2">
+					   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime2">
 			</InputDate>
 			<br>
 			<br>
@@ -105,6 +106,33 @@
 				<option value="6">6</option>
 			</InputSelect>
 			<br>
+			<br>
+			<br>
+
+			<p>
+				<gmp-map center="48.02051251896241, 11.482662196604283"
+						 zoom="12"
+						 map-id="DEMO_MAP_ID"
+						 style="height: 400px">
+					<gmp-advanced-marker position="48.02051251896241, 11.482662196604283"
+										 title="Our favourite place on the planet"></gmp-advanced-marker>
+					@foreach (Ad ad in AdList)
+					{
+						<gmp-advanced-marker position="@ad.Latitude?.ToString("F8",CultureInfo.InvariantCulture), @ad.Longitude?.ToString("F8",CultureInfo.InvariantCulture)"
+											 title="Ad type: @ad.AdType
+Direction: @ad.AdDirection
+Pick up time: @ad.PickUpDateAndTime
+Number of seats: @ad.NumberOfSeats"></gmp-advanced-marker>
+					}
+
+				</gmp-map>
+
+				<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk&libraries=maps,marker&v=beta"
+						defer></script>
+			</p>
+			<br>
+			<br>
+
 
 
 			<br>
@@ -164,6 +192,12 @@
 
 
 @code {
+
+	public Ad GetAd()
+	{
+		Ad ad = AdList.FirstOrDefault(ad => ad.ID == 9);
+		return ad;
+	}
 
 	public static List<Ad> AdList = new List<Ad>();
 
