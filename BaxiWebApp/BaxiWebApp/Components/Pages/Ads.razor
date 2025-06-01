@@ -4,13 +4,15 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
-@using System.Globalization;
+@using System.Globalization
+@using System.Text.Json
 @inject Data.BaxiWebAppContext context;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
 @inject NavigationManager NavigationManager
 @inject Data.DataService DataService
+@inject IJSRuntime JS
 
 
 <AuthorizeView Context="authContext">
@@ -18,117 +20,127 @@
 
 		<PageTitle>Ads</PageTitle>
 
+		<head>
+			<title>Advanced Marker Accessibility</title>
+			<link rel="stylesheet" type="text/css" href="./style.css" />
+			<script type="module" src="./index.js"></script>
+		</head>
+
 		<style>
 
+			#map {
+			height: 100%;
+			}
+
 			.adList {
-				display: grid;
-				grid-template-columns: 33% 33% 33%;
+			display: grid;
+			grid-template-columns: 33% 33% 33%;
 			}
 
 			.ad {
-				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-				max-width: 400px;
-				margin: auto;
-				text-align: center;
-				font-family: arial;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+			max-width: 400px;
+			margin: auto;
+			text-align: center;
+			font-family: arial;
 			}
 
-				.ad button {
-					border: none;
-					outline: 0;
-					padding: 12px;
-					color: white;
-					background-color: #000;
-					text-align: center;
-					cursor: pointer;
-					width: 100%;
-					font-size: 18px;
-				}
+			.ad button {
+			border: none;
+			outline: 0;
+			padding: 12px;
+			color: white;
+			background-color: #000;
+			text-align: center;
+			cursor: pointer;
+			width: 100%;
+			font-size: 18px;
+			}
 
 
 			column {
-				float: left;
-				padding: 10px;
+			float: left;
+			padding: 10px;
 			}
 
 			.left {
-				width: 50%;
+			width: 50%;
 			}
 
 			.right {
-				width: 50%;
+			width: 50%;
 			}
 
 		</style>
 
+		<body>
+			@if (currentlyLoggedInUser.isActive == false)
+			{
+				<p style="text-align:center; font-size:150%;">You are inactivated, this page is not available for you</p>
+			}
+			else
+			{
+				<h1 style="text-align:center;">Ads</h1>
+				<p style="text-align:center; font-size:150%;">This page shows you the list of ads</p>
 
-		@if (currentlyLoggedInUser.isActive == false)
-		{
-			<p style="text-align:center; font-size:150%;">You are inactivated, this page is not available for you</p>
-		}
-		else
-		{
-			<h1 style="text-align:center;">Ads</h1>
-			<p style="text-align:center; font-size:150%;">This page shows you the list of ads</p>
+				<div class="row">
+					<div class="column left">
+						<p>I am looking for a:</p>
+						<InputSelect @bind-Value="_adType" id="adType">
+							@foreach (var value in Enum.GetValues<AdType>())
+							{
+								<option value="@value">@value.ToString()</option>
+							}
+						</InputSelect>
+						<br>
+						<br>
 
-			<div class="row">
-				<div class="column left">
-					<p>I am looking for a:</p>
-					<InputSelect @bind-Value="_adType" id="adType">
-						@foreach (var value in Enum.GetValues<AdType>())
-						{
-							<option value="@value">@value.ToString()</option>
-						}
-					</InputSelect>
-					<br>
-					<br>
-
-					<p>Direction:</p>
-					<InputSelect @bind-Value="_adDirection" id="adDirection">
-						@foreach (var value in Enum.GetValues<AdDirection>())
-						{
-							<option value="@value">@value.ToString()</option>
-						}
-					</InputSelect>
-					<br>
-					<br>
+						<p>Direction:</p>
+						<InputSelect @bind-Value="_adDirection" id="adDirection">
+							@foreach (var value in Enum.GetValues<AdDirection>())
+							{
+								<option value="@value">@value.ToString()</option>
+							}
+						</InputSelect>
+						<br>
+						<br>
 
 
-					<p>From / to this address:</p>
-					<div class="search-box">
-						<input type="search" autofocus @bind="_searchAddress" @bind:event="oninput" placeholder="Address..." />
+						<p>From / to this address:</p>
+						<div class="search-box">
+							<input type="search" autofocus @bind="_searchAddress" @bind:event="oninput" placeholder="Address..." />
+						</div>
+						<br>
+						<br>
+
+						<p>Between the following date and time:</p>
+						<InputDate Type="InputDateType.DateTimeLocal"
+						min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
+						</InputDate>
+						<InputDate Type="InputDateType.DateTimeLocal"
+						min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime2">
+						</InputDate>
+						<br>
+						<br>
+
+						<p>Requested number of seats:</p>
+						<InputSelect @bind-Value="_requestedSeats" id="numberOfSeats">
+							<option value="-1">All</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+						</InputSelect>
+						<br>
+						<br>
+						<br>
 					</div>
-					<br>
-					<br>
-
-					<p>Between the following date and time:</p>
-					<InputDate Type="InputDateType.DateTimeLocal"
-							   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
-					</InputDate>
-					<InputDate Type="InputDateType.DateTimeLocal"
-							   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime2">
-					</InputDate>
-					<br>
-					<br>
-
-					<p>Requested number of seats:</p>
-					<InputSelect @bind-Value="_requestedSeats" id="numberOfSeats">
-						<option value="-1">All</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-					</InputSelect>
-					<br>
-					<br>
-					<br>
-				</div>
 
 
-				<div class="column right">
-					<p align="center">
+					<div class="column right">
+						@* <p align="center">
 						<gmp-map center="48.02051251896241, 11.482662196604283"
 								 zoom="10"
 								 map-id="DEMO_MAP_ID"
@@ -142,84 +154,90 @@
 													 title="Ad type: @ad.AdType
 Direction: @ad.AdDirection
 Pick up time: @ad.PickUpDateAndTime
-Number of seats: @ad.NumberOfSeats"
-													 gmpClickable: true></gmp-advanced-marker>
+Number of seats: @ad.NumberOfSeats
+		"></gmp-advanced-marker>
 							}
 
 						</gmp-map>
 
 						<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk&libraries=maps,marker&v=beta"
 								defer></script>
-					</p>
-					<br>
-					<br>
-				</div>
-			</div>
+					</p> *@
+						<br>
+						<br>
 
 
-
-			<p>Click on the title of the column to sort it!</p>
-			<div>
-				<QuickGrid Items="FilteredAds" @ref="grid">
-					<PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
-					</PropertyColumn>
-					<PropertyColumn Title="Ad Direction:" Property="@(Ad => Ad.AdDirection)" Sortable="true">
-					</PropertyColumn>
-					<PropertyColumn Title="From/to this address:" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
-					</PropertyColumn>
-					<PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
-					<PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
-					<PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
-					<TemplateColumn Title="Show me the ad" Context="Ad">
-						<button @onclick="() => showAd(Ad)">Show me the ad!</button>
-					</TemplateColumn>
-					<TemplateColumn Title="Contact" Context="Ad">
-						@if (Ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser != Ad.AdOwner)
-						{
-							<button @onclick="() => createChat(Ad)">Contact me!</button>
-						}
-					</TemplateColumn>
-					@if (UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
-					{
-						<TemplateColumn Title="Delete ad" Context="Ad">
-							<button @onclick="() => showPopUpForDeletingAd(Ad)">Delete this ad!</button>
-						</TemplateColumn>
-					}
-				</QuickGrid>
-			</div>
-
-
-			@if (popUpForDeletingAd)
-			{
-				<div class="modal" tabindex="-1" style="display:block" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h3 class="modal-title">Delete this ad!</h3>
-								<button type="button" class="close" @onclick="closePopUpForDeletingAd"> <span area-hidden="true">X</span></button>
-							</div>
-							<div class="modal-body">
-								<p>Please write here the reason for the report:</p>
-								<InputText @bind-Value="reasonForDeleting"></InputText>
-								<button type="button" class="close" @onclick="() => deleteAd(selectedAd, reasonForDeleting)">Delete this ad!</button>
-							</div>
+						<div id="map">
 						</div>
+						<script>
+							(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+							({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
 					</div>
 				</div>
 
+
+
+				<p>Click on the title of the column to sort it!</p>
+				<div>
+					<QuickGrid Items="FilteredAds" @ref="grid">
+						<PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title="Ad Direction:" Property="@(Ad => Ad.AdDirection)" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title="From/to this address:" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
+						<PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
+						<PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+						<TemplateColumn Title="Show me the ad" Context="Ad">
+							<button @onclick="() => showAd(Ad)">Show me the ad!</button>
+						</TemplateColumn>
+						<TemplateColumn Title="Contact" Context="Ad">
+							@if (Ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser != Ad.AdOwner)
+							{
+								<button @onclick="() => createChat(Ad)">Contact me!</button>
+							}
+						</TemplateColumn>
+						@if (UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
+						{
+							<TemplateColumn Title="Delete ad" Context="Ad">
+								<button @onclick="() => showPopUpForDeletingAd(Ad)">Delete this ad!</button>
+							</TemplateColumn>
+						}
+					</QuickGrid>
+				</div>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+
+				@if (popUpForDeletingAd)
+				{
+					<div class="modal" tabindex="-1" style="display:block" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3 class="modal-title">Delete this ad!</h3>
+									<button type="button" class="close" @onclick="closePopUpForDeletingAd"> <span area-hidden="true">X</span></button>
+								</div>
+								<div class="modal-body">
+									<p>Please write here the reason for the report:</p>
+									<InputText @bind-Value="reasonForDeleting"></InputText>
+									<button type="button" class="close" @onclick="() => deleteAd(selectedAd, reasonForDeleting)">Delete this ad!</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				}
 			}
-		}
+		</body>
 	</Authorized>
 </AuthorizeView>
 
 
 @code {
-
-	public Ad GetAd()
-	{
-		Ad ad = AdList.FirstOrDefault(ad => ad.ID == 9);
-		return ad;
-	}
 
 	public static List<Ad> AdList = new List<Ad>();
 
@@ -258,6 +276,8 @@ Number of seats: @ad.NumberOfSeats"
 		identifyLoggedInUser().GetAwaiter().GetResult();
 		base.OnParametersSet();
 	}
+
+
 
 
 	// public static List<Ad> deleteOldAds(List<Ad> AdList)
