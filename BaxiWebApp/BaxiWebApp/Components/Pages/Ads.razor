@@ -12,7 +12,7 @@
 @inject UserManager<User> UserManager;
 @inject NavigationManager NavigationManager
 @inject Data.DataService DataService
-@inject IJSRuntime JS
+@inject IJSRuntime JSRuntime
 
 
 <AuthorizeView Context="authContext">
@@ -165,8 +165,6 @@ Number of seats: @ad.NumberOfSeats
 					</p> *@
 						<br>
 						<br>
-
-
 						<div id="map">
 						</div>
 						<script>
@@ -232,6 +230,7 @@ Number of seats: @ad.NumberOfSeats
 
 				}
 			}
+			<script src="index.js"></script>
 		</body>
 	</Authorized>
 </AuthorizeView>
@@ -242,26 +241,37 @@ Number of seats: @ad.NumberOfSeats
 	public static List<Ad> AdList = new List<Ad>();
 
 
+	public Ad ad9
+	{
+		get
+		{
+			var result = context.Ads.ToList<Ad>().AsQueryable();
+			Ad ad = result.FirstOrDefault(ad => ad.ID == 9);
+			return ad;
+		}
+	}
+
+
 	public List<Ad> adListForMap
 	{
 		get
 		{
 			var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
 
-			result = result.Where(Ad =>
-							Ad.PickUpDropOffLocation.Contains(_searchAddress, StringComparison.CurrentCultureIgnoreCase)
-				&& Ad.NumberOfSeats >= _requestedSeats
-				&& _datetime1 <= Ad.PickUpDateAndTime
-				&& Ad.PickUpDateAndTime <= _datetime2);
+			// result = result.Where(Ad =>
+			// 				Ad.PickUpDropOffLocation.Contains(_searchAddress, StringComparison.CurrentCultureIgnoreCase)
+			// 	&& Ad.NumberOfSeats >= _requestedSeats
+			// 	&& _datetime1 <= Ad.PickUpDateAndTime
+			// 	&& Ad.PickUpDateAndTime <= _datetime2);
 
-			if (_adType != AdType.SelectAll)
-			{
-				result = result.Where(Ad => Ad.AdType == _adType);
-			}
-			if (_adDirection != AdDirection.SelectAll)
-			{
-				result = result.Where(Ad => Ad.AdDirection == _adDirection);
-			}
+			// if (_adType != AdType.SelectAll)
+			// {
+			// 	result = result.Where(Ad => Ad.AdType == _adType);
+			// }
+			// if (_adDirection != AdDirection.SelectAll)
+			// {
+			// 	result = result.Where(Ad => Ad.AdDirection == _adDirection);
+			// }
 
 			return result.ToList();
 		}
@@ -277,6 +287,11 @@ Number of seats: @ad.NumberOfSeats
 		base.OnParametersSet();
 	}
 
+
+	protected async Task OnAfterRenderAsync()
+	{
+		await JSRuntime.InvokeVoidAsync("initMap", ad9);
+	}
 
 
 

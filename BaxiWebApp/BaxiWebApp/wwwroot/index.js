@@ -1,4 +1,4 @@
-﻿async function initMap() {
+﻿async function initMap(ad9) {
     // Request needed libraries.
     const { Map, InfoWindow } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
@@ -15,6 +15,10 @@
         {
             position: { lat: 48.0206345131560, lng: 11.482919688669709 },
             title: "Beautiful Baierbrunn",
+        },
+        {
+            position: { lat: ad9.latitude, lng: ad9.longitude },
+            title: ad9.adDirection,
         },
     ];
     // Create an info window to share between markers.
