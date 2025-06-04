@@ -229,7 +229,7 @@ Number of seats: @ad.NumberOfSeats
 
 				}
 			}
-			<script src="index.js"></script>
+
 		</body>
 	</Authorized>
 </AuthorizeView>
@@ -261,20 +261,20 @@ Number of seats: @ad.NumberOfSeats
 		{
 			var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
 
-			// result = result.Where(Ad =>
-			// 				Ad.PickUpDropOffLocation.Contains(_searchAddress, StringComparison.CurrentCultureIgnoreCase)
-			// 	&& Ad.NumberOfSeats >= _requestedSeats
-			// 	&& _datetime1 <= Ad.PickUpDateAndTime
-			// 	&& Ad.PickUpDateAndTime <= _datetime2);
+			result = result.Where(Ad =>
+							Ad.PickUpDropOffLocation.Contains(_searchAddress, StringComparison.CurrentCultureIgnoreCase)
+				&& Ad.NumberOfSeats >= _requestedSeats
+				&& _datetime1 <= Ad.PickUpDateAndTime
+				&& Ad.PickUpDateAndTime <= _datetime2);
 
-			// if (_adType != AdType.SelectAll)
-			// {
-			// 	result = result.Where(Ad => Ad.AdType == _adType);
-			// }
-			// if (_adDirection != AdDirection.SelectAll)
-			// {
-			// 	result = result.Where(Ad => Ad.AdDirection == _adDirection);
-			// }
+			if (_adType != AdType.SelectAll)
+			{
+				result = result.Where(Ad => Ad.AdType == _adType);
+			}
+			if (_adDirection != AdDirection.SelectAll)
+			{
+				result = result.Where(Ad => Ad.AdDirection == _adDirection);
+			}
 
 			return result.ToList();
 		}
@@ -293,7 +293,7 @@ Number of seats: @ad.NumberOfSeats
 
 	protected override async Task OnAfterRenderAsync(bool firstrender)
 	{
-		await JSRuntime.InvokeVoidAsync("initMap", ad9);
+		await JSRuntime.InvokeVoidAsync("initMap", adListForMap);
 	}
 
 

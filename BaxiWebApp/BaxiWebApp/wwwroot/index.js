@@ -1,7 +1,4 @@
-﻿async function initMap(ad9) {
-
-    console.log(JSON.stringify(ad9));
-    console.log("hello");
+﻿async function initMap(adListForMap) {
 
     // Request needed libraries.
     const { Map, InfoWindow } = await google.maps.importLibrary("maps");
@@ -9,22 +6,30 @@
         "marker",
     );
     const map = new Map(document.getElementById("map"), {
-        zoom: 12,
+        zoom: 9,
         center: { lat: 48.0206345131560, lng: 11.482919688669709 },
         mapId: "4504f8b37365c3d0",
     });
 
 
-    const BBMarker = [
-        {
-            position: { lat: 48.0206345131560, lng: 11.482919688669709 },
-            title: "Beautiful Baierbrunn",
-        },
-        {
-            position: { lat: Number(ad9.latitude), lng: Number(ad9.longitude) },
-            title: ad9.adDirection,
-        },
-    ];
+
+
+    const BBMarker =
+        [
+            {
+                position: { lat: 48.0206345131560, lng: 11.482919688669709 },
+                title: "Beautiful Baierbrunn",
+            },
+        ];
+
+    adListForMap.forEach(
+        ad => BBMarker.push(
+            {
+                position: { lat: Number(ad.latitude), lng: Number(ad.longitude) },
+                title: ad.pickUpDropOffLocation,
+            }
+        )
+    );
 
     // Create an info window to share between markers.
     const infoWindow = new InfoWindow();
