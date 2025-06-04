@@ -26,7 +26,7 @@
         ad => BBMarker.push(
             {
                 position: { lat: Number(ad.latitude), lng: Number(ad.longitude) },
-                title: ad.pickUpDropOffLocation,
+                title: ad.pickUpDropOffLocation, ad.adType, 
             }
         )
     );
