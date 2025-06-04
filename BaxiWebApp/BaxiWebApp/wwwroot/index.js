@@ -1,4 +1,8 @@
 ﻿async function initMap(ad9) {
+
+    console.log(JSON.stringify(ad9));
+    console.log("hello");
+
     // Request needed libraries.
     const { Map, InfoWindow } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
@@ -17,10 +21,11 @@
             title: "Beautiful Baierbrunn",
         },
         {
-            position: { lat: ad9.latitude, lng: ad9.longitude },
+            position: { lat: Number(ad9.latitude), lng: Number(ad9.longitude) },
             title: ad9.adDirection,
         },
     ];
+
     // Create an info window to share between markers.
     const infoWindow = new InfoWindow();
 
@@ -56,6 +61,6 @@
 
 }
 
-
-initMap();
 // [END maps_advanced_markers_accessibility]
+
+

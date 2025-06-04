@@ -22,7 +22,6 @@
 
 		<head>
 			<title>Advanced Marker Accessibility</title>
-			<link rel="stylesheet" type="text/css" href="./style.css" />
 			<script type="module" src="./index.js"></script>
 		</head>
 
@@ -241,6 +240,8 @@ Number of seats: @ad.NumberOfSeats
 	public static List<Ad> AdList = new List<Ad>();
 
 
+
+
 	public Ad ad9
 	{
 		get
@@ -250,6 +251,8 @@ Number of seats: @ad.NumberOfSeats
 			return ad;
 		}
 	}
+
+
 
 
 	public List<Ad> adListForMap
@@ -288,7 +291,7 @@ Number of seats: @ad.NumberOfSeats
 	}
 
 
-	protected async Task OnAfterRenderAsync()
+	protected override async Task OnAfterRenderAsync(bool firstrender)
 	{
 		await JSRuntime.InvokeVoidAsync("initMap", ad9);
 	}
