@@ -22,14 +22,31 @@
             },
         ];
 
-    adListForMap.forEach(
-        ad => BBMarker.push(
+    adListForMap.forEach(ad => {
+
+        let direction = "";
+        if (ad.adDirection === 0) {
+            direction = "To Baierbrunn";
+        }
+        if (ad.adDirection === 1) {
+            direction = "From Baierbrunn";
+        }
+
+        let type = "";
+        if (ad.adType === 0) {
+            type = "Driver";
+        }
+        if (ad.adType === 1) {
+            type = "Passenger";
+        }
+
+        BBMarker.push(
             {
                 position: { lat: Number(ad.latitude), lng: Number(ad.longitude) },
-                title: ad.pickUpDropOffLocation, 
+                title: `Ad direction: ${direction}, Ad type: ${type}, Pick up time: ${ad.pickUpDateAndTime}, Ad pick up location: ${ad.pickUpDropOffLocation}, Number of seats available: ${ad.numberOfSeats}`,
             }
         )
-    );
+    });
 
     // Create an info window to share between markers.
     const infoWindow = new InfoWindow();
