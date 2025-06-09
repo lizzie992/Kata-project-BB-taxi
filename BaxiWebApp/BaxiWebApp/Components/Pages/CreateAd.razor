@@ -16,8 +16,8 @@
 @using GoogleMapsApi.StaticMaps.Entities;
 @using System.Globalization;
 @using System.Threading.Tasks;
-@* @using GoogleMapsApi.Entities.DistanceMatrix.Request;
-@using GoogleMapsApi.Entities.DistanceMatrix.Response; *@
+@using System.Text.Json
+@inject IJSRuntime JSRuntime
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
@@ -48,113 +48,134 @@
 				}
 			</style>
 
+			<head>
+				<script type="module" src="./googleMaps.js"></script>
+			</head>
 
-			<PageTitle>Create A New Ad</PageTitle>
+			<body>
+				<PageTitle>Create A New Ad</PageTitle>
 
-			<div class="row">
-				<div class="column left">
-					<EditForm Model="@ad">
-						I am a: <br>
-						<InputSelect @bind-Value="ad.AdType" id="adType">
-							@foreach (var value in Enum.GetValues<AdType>())
-							{
-								if (value == AdType.SelectAll)
+				<div class="row">
+					<div class="column left">
+						<EditForm Model="@ad">
+							I am a: <br>
+							<InputSelect @bind-Value="ad.AdType" id="adType">
+								@foreach (var value in Enum.GetValues<AdType>())
 								{
-									continue;
+									if (value == AdType.SelectAll)
+									{
+										continue;
+									}
+									<option value="@value">@value.ToString()</option>
 								}
-								<option value="@value">@value.ToString()</option>
-							}
-						</InputSelect>
-						<br>
+							</InputSelect>
+							<br>
 
-						Direction: <br>
-						<InputSelect @bind-Value="ad.AdDirection" id="adDirection">
-							@foreach (var value in Enum.GetValues<AdDirection>())
-							{
-								if (value == AdDirection.SelectAll)
+							Direction: <br>
+							<InputSelect @bind-Value="ad.AdDirection" id="adDirection">
+								@foreach (var value in Enum.GetValues<AdDirection>())
 								{
-									continue;
+									if (value == AdDirection.SelectAll)
+									{
+										continue;
+									}
+									<option value="@value">@value.ToString()</option>
 								}
-								<option value="@value">@value.ToString()</option>
-							}
-						</InputSelect>
-						<br>
+							</InputSelect>
+							<br>
 
-						Pick up date: <br>
-						<InputDate Type="InputDateType.DateTimeLocal"
-								   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
-						</InputDate>
-						<br>
+							Pick up date: <br>
+							<InputDate Type="InputDateType.DateTimeLocal"
+									   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
+							</InputDate>
+							<br>
 
-						Number of seats: <br>
-						<InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-						</InputSelect>
-						<br>
+							Number of seats: <br>
+							<InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+							</InputSelect>
+							<br>
 
-						Specific requests: <br>
-						<InputText @bind-Value="ad.SpecificRequests"></InputText><br>
-						<br>
+							Specific requests: <br>
+							<InputText @bind-Value="ad.SpecificRequests"></InputText><br>
+							<br>
 
-						Pick up / drop off location (outside of Baierbrunn) <br>
-						<InputText @bind-Value="ad.PickUpDropOffLocation"></InputText><br>
-						<br>
 
-						Please check if the address is correct, otherwise the ad will not be saved:
-						<button class="btn btn-primary" @onclick="ValidateAdress">Check address</button>
-						<br>
 
-						@if (ad.Longitude != null)
-						{
-							@if (ad.AdDirection == AdDirection.ToBaierbrunn)
+							Pick up / drop off location (outside of Baierbrunn) <br>
+							<InputText @bind-Value="ad.PickUpDropOffLocation"></InputText><br>
+							<br>
+
+							Please check if the address is correct, otherwise the ad will not be saved:
+							<button class="btn btn-primary" @onclick="ValidateAdress">Check address</button>
+							<br>
+
+							@if (ad.Longitude != null)
 							{
-								<p align="center">
-									<iframe width="600"
-											height="450"
-											loading="lazy"
-											allowfullscreen
-											src="https://www.google.com/maps/embed/v1/directions
+								@* @if (ad.AdDirection == AdDirection.ToBaierbrunn)
+								{
+									<p align="center">
+										<iframe width="600"
+												height="450"
+												loading="lazy"
+												allowfullscreen
+												src="https://www.google.com/maps/embed/v1/directions
 			?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
 			&origin=@ad.Latitude?.ToString("F8",CultureInfo.InvariantCulture), @ad.Longitude?.ToString("F8",CultureInfo.InvariantCulture)
 			&destination=Givaudan,Baierbrunn+Germany
 			&avoid=tolls">
-									</iframe>
-								</p>
-							}
-							@if (ad.AdDirection == AdDirection.FromBaierbrunn)
-							{
-								<p align="center">
-									<iframe width="600"
-											height="450"
-											loading="lazy"
-											allowfullscreen
-											src="https://www.google.com/maps/embed/v1/directions
+										</iframe>
+									</p>
+								}
+								@if (ad.AdDirection == AdDirection.FromBaierbrunn)
+								{
+									<p align="center">
+										<iframe width="600"
+												height="450"
+												loading="lazy"
+												allowfullscreen
+												src="https://www.google.com/maps/embed/v1/directions
 			?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
 			&origin=Givaudan,Baierbrunn+Germany
 			&destination=@ad.Latitude?.ToString("F8",CultureInfo.InvariantCulture), @ad.Longitude?.ToString("F8",CultureInfo.InvariantCulture)
 			&avoid=tolls">
-									</iframe>
-								</p>
+										</iframe>
+									</p>
+								} *@
+
+								<div>If this is the correct route, please, save the ad:</div>
+								<button class="btn btn-primary" @onclick="WriteData">Save</button>
+								<br>
+
+							}
+							else
+							{
+								<div>Please enter a valid address!</div>
 							}
 
-							<div>If this is the correct route, please, save the ad:</div>
-							<button class="btn btn-primary" @onclick="WriteData">Save</button>
-							<br>
+						</EditForm>
 
-						}
-						else
-						{
-							<div>Please enter a valid address!</div>
-						}
 
-					</EditForm>
+
+					</div>
+					<div class="column right">
+						<br>
+						<br>
+							<div id="map">
+							</div>
+							<script>
+								(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+								({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+						<br>
+						<br>
+					</div>
 				</div>
-			</div>
+			</body>
 		}
 
 	</Authorized>
@@ -165,6 +186,7 @@
 	private static Ad ad { get; set; } = new();
 
 	private string anything = string.Empty;
+
 
 
 
@@ -182,6 +204,12 @@
 		ad.SpecificRequests = CreateAd.ad.SpecificRequests;
 		base.OnParametersSet();
 	}
+
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		await JSRuntime.InvokeVoidAsync("initMapForCreatingAd");
+	}
+
 
 	private User currentlyLoggedInUser;
 	public async Task identifyLoggedInUser()

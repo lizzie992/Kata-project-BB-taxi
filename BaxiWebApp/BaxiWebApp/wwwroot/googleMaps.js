@@ -1,4 +1,4 @@
-﻿async function initMap(adListForMap) {
+﻿async function initMapForAdList(adListForMap) {
 
     // Request needed libraries.
     const { Map, InfoWindow } = await google.maps.importLibrary("maps");
@@ -10,9 +10,6 @@
         center: { lat: 48.0206345131560, lng: 11.482919688669709 },
         mapId: "4504f8b37365c3d0",
     });
-
-
-
 
     const BBMarker =
         [
@@ -96,6 +93,31 @@
 
 }
 
-// [END maps_advanced_markers_accessibility]
+
+async function initMapForCreatingAd() {
+    // Request needed libraries.
+    const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    const map = new Map(document.getElementById("map"), {
+        center: { lat: 48.0206345131560, lng: 11.482919688669709 },
+        zoom: 9,
+        mapId: "4504f8b37365c3d0",
+    });
+    const infoWindow = new InfoWindow();
+    const draggableMarker = new AdvancedMarkerElement({
+        map,
+        position: { lat: 48.0206345131560, lng: 11.482919688669709 },
+        gmpDraggable: true,
+        title: "Please move this marker to the pick up / drop off location",
+    });
+
+    draggableMarker.addListener("dragend", (event) => {
+        const position = draggableMarker.position;
+
+        infoWindow.close();
+        infoWindow.setContent(`Pin dropped at: ${position.lat}, ${position.lng}`);
+        infoWindow.open(draggableMarker.map, draggableMarker);
+    });
+}
 
 

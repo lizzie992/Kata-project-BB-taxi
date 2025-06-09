@@ -293,7 +293,7 @@ Number of seats: @ad.NumberOfSeats
 
 	protected override async Task OnAfterRenderAsync(bool firstrender)
 	{
-		await JSRuntime.InvokeVoidAsync("initMap", adListForMap);
+		await JSRuntime.InvokeVoidAsync("initMapForAdList", adListForMap);
 	}
 
 
