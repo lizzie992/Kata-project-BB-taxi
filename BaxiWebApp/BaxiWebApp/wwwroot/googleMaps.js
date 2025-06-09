@@ -40,10 +40,23 @@
             type = "Passenger";
         }
 
+        const html = `
+  <div>
+    <h3>Ad Overview</h3>
+    <ul>
+      <li>Direction: ${direction}</li>
+      <li>Type: ${type}</li>
+      <li>Pickup: ${ad.pickUpDateAndTime}</li>
+      <li>Location: ${ad.pickUpDropOffLocation}</li>
+      <li>Seats: ${ad.numberOfSeats}</li>
+      <li><a href="http://localhost:5049/ShowAd/${ad.id}" target="_blank">Click here...</a></li>
+    </ul>
+  </div>
+`;
         BBMarker.push(
             {
                 position: { lat: Number(ad.latitude), lng: Number(ad.longitude) },
-                title: `Ad direction: ${direction}, Ad type: ${type}, Pick up time: ${ad.pickUpDateAndTime}, Ad pick up location: ${ad.pickUpDropOffLocation}, Number of seats available: ${ad.numberOfSeats}`,
+                title: html,
             }
         )
     });
