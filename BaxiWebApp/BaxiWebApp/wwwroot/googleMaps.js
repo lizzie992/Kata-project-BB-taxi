@@ -94,6 +94,10 @@
 }
 
 
+
+let latitude = 0;
+let longitude = 0;
+
 async function initMapForCreatingAd() {
     // Request needed libraries.
     const { Map, InfoWindow } = await google.maps.importLibrary("maps");
@@ -117,7 +121,16 @@ async function initMapForCreatingAd() {
         infoWindow.close();
         infoWindow.setContent(`Pin dropped at: ${position.lat}, ${position.lng}`);
         infoWindow.open(draggableMarker.map, draggableMarker);
+        latitude = position.lat;
+        longitude = position.lng;
     });
 }
 
+function getLatitude() {
+    return latitude;
+}
+
+function getLongitude() {
+    return longitude;
+}
 

@@ -35,20 +35,20 @@
 		{
 			<style>
 				#map {
-					height: 100%;
+				height: 100%;
 				}
 
 				column {
-					float: left;
-					padding: 10px;
+				float: left;
+				padding: 10px;
 				}
 
 				.left {
-					width: 25%;
+				width: 25%;
 				}
 
 				.right {
-					width: 75%;
+				width: 75%;
 				}
 			</style>
 
@@ -90,7 +90,7 @@
 
 							Pick up date: <br>
 							<InputDate Type="InputDateType.DateTimeLocal"
-									   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
+							min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
 							</InputDate>
 							<br>
 
@@ -115,8 +115,8 @@
 							<InputText @bind-Value="ad.PickUpDropOffLocation"></InputText><br>
 							<br>
 
-							Please check if the address is correct, otherwise the ad will not be saved:
-							<button class="btn btn-primary" @onclick="ValidateAdress">Check address</button>
+							Save the ad:
+							<button class="btn btn-primary" @onclick="WriteData">Save</button>
 							<br>
 
 							@if (ad.Longitude != null)
@@ -152,14 +152,10 @@
 									</p>
 								} *@
 
-								<div>If this is the correct route, please, save the ad:</div>
-								<button class="btn btn-primary" @onclick="WriteData">Save</button>
-								<br>
-
 							}
 							else
 							{
-								<div>Please enter a valid address!</div>
+								@* <div>Please enter a valid address!</div> *@
 							}
 
 						</EditForm>
@@ -169,12 +165,13 @@
 					</div>
 					<div class="column right">
 						<br>
+						<div>Please move the marker to the requested pick up / drop off location!</div>
 						<br>
-							<div id="map">
-							</div>
-							<script>
-								(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-								({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+						<div id="map">
+						</div>
+						<script>
+							(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+							({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
 						<br>
 						<br>
 					</div>
@@ -211,7 +208,23 @@
 
 	protected override async Task OnAfterRenderAsync(bool firstrender)
 	{
-		await JSRuntime.InvokeVoidAsync("initMapForCreatingAd");
+		if (firstrender)
+		{
+			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd");
+		}
+	}
+
+
+	public async Task<double> getLatitude()
+	{
+		double latitude = await JSRuntime.InvokeAsync<double>("getLatitude");
+		return latitude;
+	}
+
+	public async Task<double> getLongitude()
+	{
+		double longitude = await JSRuntime.InvokeAsync<double>("getLongitude");
+		return longitude;
 	}
 
 
@@ -338,6 +351,8 @@
 
 	async Task WriteData()
 	{
+		ad.Latitude = await getLatitude();
+		ad.Longitude = await getLongitude();
 		context.Ads.Add(ad);
 		context.SaveChanges();
 		sendNotificationAboutAd(ad);
