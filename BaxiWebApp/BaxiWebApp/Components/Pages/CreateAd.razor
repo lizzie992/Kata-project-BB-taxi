@@ -52,76 +52,77 @@
 				}
 			</style>
 
-			<head>
-				<script type="module" src="./googleMaps.js"></script>
-			</head>
-
-			<body>
-				<PageTitle>Create A New Ad</PageTitle>
-
-				<div class="row">
-					<div class="column left">
-						<EditForm Model="@ad">
-							I am a: <br>
-							<InputSelect @bind-Value="ad.AdType" id="adType">
-								@foreach (var value in Enum.GetValues<AdType>())
-								{
-									if (value == AdType.SelectAll)
-									{
-										continue;
-									}
-									<option value="@value">@value.ToString()</option>
-								}
-							</InputSelect>
-							<br>
-
-							Direction: <br>
-							<InputSelect @bind-Value="ad.AdDirection" id="adDirection">
-								@foreach (var value in Enum.GetValues<AdDirection>())
-								{
-									if (value == AdDirection.SelectAll)
-									{
-										continue;
-									}
-									<option value="@value">@value.ToString()</option>
-								}
-							</InputSelect>
-							<br>
-
-							Pick up date: <br>
-							<InputDate Type="InputDateType.DateTimeLocal"
-							min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
-							</InputDate>
-							<br>
-
-							Number of seats: <br>
-							<InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
-								<option value="6">6</option>
-							</InputSelect>
-							<br>
-
-							Specific requests: <br>
-							<InputText @bind-Value="ad.SpecificRequests"></InputText><br>
-							<br>
 
 
 
-							Pick up / drop off location (outside of Baierbrunn) <br>
-							<InputText @bind-Value="ad.PickUpDropOffLocation"></InputText><br>
-							<br>
+			<PageTitle>Create A New Ad</PageTitle>
 
-							Save the ad:
-							<button class="btn btn-primary" @onclick="WriteData">Save</button>
-							<br>
 
-							@if (ad.Longitude != null)
+
+
+			<div class="row">
+				<div class="column left">
+					<EditForm Model="@ad">
+						I am a: <br>
+						<InputSelect @bind-Value="ad.AdType" id="adType">
+							@foreach (var value in Enum.GetValues<AdType>())
 							{
-								@* @if (ad.AdDirection == AdDirection.ToBaierbrunn)
+								if (value == AdType.SelectAll)
+								{
+									continue;
+								}
+								<option value="@value">@value.ToString()</option>
+							}
+						</InputSelect>
+						<br>
+
+						Direction: <br>
+						<InputSelect @bind-Value="ad.AdDirection" id="adDirection">
+							@foreach (var value in Enum.GetValues<AdDirection>())
+							{
+								if (value == AdDirection.SelectAll)
+								{
+									continue;
+								}
+								<option value="@value">@value.ToString()</option>
+							}
+						</InputSelect>
+						<br>
+
+						Pick up date: <br>
+						<InputDate Type="InputDateType.DateTimeLocal"
+						min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
+						</InputDate>
+						<br>
+
+						Number of seats: <br>
+						<InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+						</InputSelect>
+						<br>
+
+						Specific requests: <br>
+						<InputText @bind-Value="ad.SpecificRequests"></InputText><br>
+						<br>
+
+
+
+						Pick up / drop off location (outside of Baierbrunn) <br>
+						<InputText @bind-Value="ad.PickUpDropOffLocation"></InputText><br>
+						<br>
+
+						Save the ad:
+						<button class="btn btn-primary" @onclick="checkAd">Save</button>
+						<br>
+
+						@if (ad.Longitude != null)
+						{
+							@* @if (ad.AdDirection == AdDirection.ToBaierbrunn)
 								{
 									<p align="center">
 										<iframe width="600"
@@ -152,31 +153,105 @@
 									</p>
 								} *@
 
-							}
-							else
-							{
-								@* <div>Please enter a valid address!</div> *@
-							}
+						}
+						else
+						{
+							@* <div>Please enter a valid address!</div> *@
+						}
 
-						</EditForm>
+					</EditForm>
 
 
 
+				</div>
+				<div class="column right">
+					<br>
+					<div>Please move the marker to the requested pick up / drop off location!</div>
+					<br>
+					<div id="map">
 					</div>
-					<div class="column right">
-						<br>
-						<div>Please move the marker to the requested pick up / drop off location!</div>
-						<br>
-						<div id="map">
+					<script>
+						(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+						({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+					<br>
+					<br>
+				</div>
+			</div>
+
+			@if (popUpForTooClose)
+			{
+				<div class="modal" tabindex="-1" style="display:block" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h3 class="modal-title">Are you already in Baierbrunn?</h3>
+								<button type="button" class="close" @onclick="closepopUpForTooClose"> <span area-hidden="true">X</span></button>
+							</div>
+							<div class="modal-body">
+								<p>Looks like your ad is very close to Baierbrunn. Are you sure you want to continue?</p>
+								<button type="button" class="close" @onclick="closepopUpForTooClose">Go back to edit the location!</button>
+								<button type="button" class="close" @onclick="() => WriteData()">Save ad anyways!</button>
+							</div>
 						</div>
-						<script>
-							(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-							({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
-						<br>
-						<br>
 					</div>
 				</div>
-			</body>
+			}
+
+			@if (popUpForTooFar)
+			{
+				<div class="modal" tabindex="-1" style="display:block" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h3 class="modal-title">Are you trying to reach Baierbrunn from the moon?</h3>
+								<button type="button" class="close" @onclick="closepopUpForTooFar"> <span area-hidden="true">X</span></button>
+							</div>
+							<div class="modal-body">
+								<p>Looks like your ad is very far away from Baierbrunn. Are you sure you want to continue?</p>
+								<button type="button" class="close" @onclick="closepopUpForTooFar">Go back to edit the location!</button>
+								<button type="button" class="close" @onclick="() => WriteData()">Save ad anyways!</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+
+			@if (popUpForTimeIsInPast)
+			{
+				<div class="modal" tabindex="-1" style="display:block" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h3 class="modal-title">Your pick up time is in the past!</h3>
+								<button type="button" class="close" @onclick="closepopUpForTimeIsInPast"> <span area-hidden="true">X</span></button>
+							</div>
+							<div class="modal-body">
+								<p>The pick up time you added is in the past! Please go back and correct it</p>
+								<button type="button" class="close" @onclick="closepopUpForTimeIsInPast">I will correct it!</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+
+			@if (popUpForNoSeats)
+			{
+				<div class="modal" tabindex="-1" style="display:block" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h3 class="modal-title">No seats required?</h3>
+								<button type="button" class="close" @onclick="closepopUpForNoSeats"> <span area-hidden="true">X</span></button>
+							</div>
+							<div class="modal-body">
+								<p>You forgot to add seats in your ad! Please go back and correct it</p>
+								<button type="button" class="close" @onclick="closepopUpForNoSeats">I will correct it!</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+
 		}
 
 	</Authorized>
@@ -329,6 +404,33 @@
 	}
 
 
+	public bool isItTooCloseToBB()
+	{
+		double latitudeBB = 48.0206345131560;
+		double longitudeBB = 11.482919688669709;
+		int distanceLimit = 3000;
+		int distance = getDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude).Result;
+		if (distance <= distanceLimit)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	public bool isItTooFarFromBB()
+	{
+		double latitudeBB = 48.0206345131560;
+		double longitudeBB = 11.482919688669709;
+		int distanceLimit = 200000;
+		int distance = getDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude).Result;
+		if (distance >= distanceLimit)
+		{
+			return true;
+		}
+		return false;
+	}
+
+
 	public async Task ValidateAdress()
 	{
 		(ad.Latitude, ad.Longitude) = await GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
@@ -349,10 +451,79 @@
 	}
 
 
-	async Task WriteData()
+	bool popUpForTooClose = false;
+	public void closepopUpForTooClose()
+	{
+		popUpForTooClose = false;
+	}
+	public void showpopUpForTooClose()
+	{
+		popUpForTooClose = true;
+	}
+
+	bool popUpForTooFar = false;
+	public void closepopUpForTooFar()
+	{
+		popUpForTooFar = false;
+	}
+	public void showpopUpForTooFar()
+	{
+		popUpForTooFar = true;
+	}
+
+
+	bool popUpForTimeIsInPast = false;
+	public void closepopUpForTimeIsInPast()
+	{
+		popUpForTimeIsInPast = false;
+	}
+	public void showpopUpForTimeIsInPast()
+	{
+		popUpForTimeIsInPast = true;
+	}
+
+	bool popUpForNoSeats = false;
+	public void closepopUpForNoSeats()
+	{
+		popUpForNoSeats = false;
+	}
+	public void showpopUpForNoSeats()
+	{
+		popUpForNoSeats = true;
+	}
+
+	async void checkAd()
 	{
 		ad.Latitude = await getLatitude();
 		ad.Longitude = await getLongitude();
+		if (ad.PickUpDateAndTime <= DateTime.Now)
+		{
+			showpopUpForTimeIsInPast();
+			StateHasChanged();
+		}
+		else if (ad.NumberOfSeats == 0)
+		{
+			showpopUpForNoSeats();
+			StateHasChanged();
+		}
+		else if (isItTooCloseToBB())
+		{
+			showpopUpForTooClose();
+			StateHasChanged();
+		}
+		else if (isItTooFarFromBB())
+		{
+			showpopUpForTooFar();
+			StateHasChanged();
+		}
+		else
+		{
+			WriteData();
+		}
+	}
+
+	async Task WriteData()
+	{
 		context.Ads.Add(ad);
 		context.SaveChanges();
 		sendNotificationAboutAd(ad);
@@ -397,8 +568,7 @@
 			return 0;
 		}
 
-		var request = new DirectionsRequest { Origin = $"{coordinate1?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate2?.ToString("F8", CultureInfo.InvariantCulture)}", Destination = $"{coordinate3?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate4?.ToString("F8", CultureInfo.InvariantCulture)}", TravelMode = TravelMode.Driving };
-		request.ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk";
+		var request = new DirectionsRequest { Origin = $"{coordinate1?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate2?.ToString("F8", CultureInfo.InvariantCulture)}", Destination = $"{coordinate3?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate4?.ToString("F8", CultureInfo.InvariantCulture)}", TravelMode = TravelMode.Driving, ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk" };
 		var result = await GoogleMaps.Directions.QueryAsync(request);
 		var legs = result.Routes.First().Legs;
 		int totalDistanceInMeters = legs.Sum(leg => leg.Distance.Value);
