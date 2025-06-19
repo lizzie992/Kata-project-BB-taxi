@@ -408,7 +408,7 @@
 
 
 
-	public bool isItTooCloseToBB()
+	public async Task<bool> isItTooCloseToBB()
 	{
 		int distanceLimit = 3000;
 		int distance = getDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude).Result;
@@ -419,7 +419,7 @@
 		return false;
 	}
 
-	public bool isItTooFarFromBB()
+	public async Task<bool> isItTooFarFromBB()
 	{
 		int distanceLimit = 200000;
 		int distance = getDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude).Result;
@@ -513,12 +513,12 @@
 			showpopUpForNoSeats();
 			StateHasChanged();
 		}
-		else if (isItTooCloseToBB())
+		else if (await isItTooCloseToBB())
 		{
 			showpopUpForTooClose();
 			StateHasChanged();
 		}
-		else if (isItTooFarFromBB())
+		else if (await isItTooFarFromBB())
 		{
 			showpopUpForTooFar();
 			StateHasChanged();
