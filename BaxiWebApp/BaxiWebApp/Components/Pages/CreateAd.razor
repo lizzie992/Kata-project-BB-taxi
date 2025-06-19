@@ -263,7 +263,9 @@
 
 	private string anything = string.Empty;
 
-
+	//coordinates of Baierbrunn
+	public double latitudeBB = 48.0206345131560;
+	public double longitudeBB = 11.482919688669709;
 
 
 	protected override void OnParametersSet()
@@ -404,10 +406,10 @@
 	}
 
 
+
+
 	public bool isItTooCloseToBB()
 	{
-		double latitudeBB = 48.0206345131560;
-		double longitudeBB = 11.482919688669709;
 		int distanceLimit = 3000;
 		int distance = getDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude).Result;
 		if (distance <= distanceLimit)
@@ -419,8 +421,6 @@
 
 	public bool isItTooFarFromBB()
 	{
-		double latitudeBB = 48.0206345131560;
-		double longitudeBB = 11.482919688669709;
 		int distanceLimit = 200000;
 		int distance = getDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude).Result;
 		if (distance >= distanceLimit)
@@ -496,6 +496,13 @@
 	{
 		ad.Latitude = await getLatitude();
 		ad.Longitude = await getLongitude();
+
+		if (ad.Longitude == 0 || ad.Latitude == 0)
+		{
+			ad.Latitude = latitudeBB;
+			ad.Longitude = longitudeBB;
+		}
+
 		if (ad.PickUpDateAndTime <= DateTime.Now)
 		{
 			showpopUpForTimeIsInPast();
