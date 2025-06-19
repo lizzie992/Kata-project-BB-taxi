@@ -27,7 +27,7 @@
 <AuthorizeView Context="authContext">
 	<Authorized>
 
-		@if (currentlyLoggedInUser.isActive == false)
+		@if (_currentlyLoggedInUser.isActive == false)
 		{
 			<p style="text-align:center; font-size:150%;">You are inactivated, this page is not available for you</p>
 		}
@@ -117,7 +117,7 @@
 						<br>
 
 						Save the ad:
-						<button class="btn btn-primary" @onclick="checkAd">Save</button>
+						<button class="btn btn-primary" @onclick="CheckAd">Save</button>
 						<br>
 
 						@if (ad.Longitude != null)
@@ -185,11 +185,11 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<h3 class="modal-title">Are you already in Baierbrunn?</h3>
-								<button type="button" class="close" @onclick="closepopUpForTooClose"> <span area-hidden="true">X</span></button>
+								<button type="button" class="close" @onclick="ClosePopUpForTooClose"> <span area-hidden="true">X</span></button>
 							</div>
 							<div class="modal-body">
 								<p>Looks like your ad is very close to Baierbrunn. Are you sure you want to continue?</p>
-								<button type="button" class="close" @onclick="closepopUpForTooClose">Go back to edit the location!</button>
+								<button type="button" class="close" @onclick="ClosePopUpForTooClose">Go back to edit the location!</button>
 								<button type="button" class="close" @onclick="() => WriteData()">Save ad anyways!</button>
 							</div>
 						</div>
@@ -204,11 +204,11 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<h3 class="modal-title">Are you trying to reach Baierbrunn from the moon?</h3>
-								<button type="button" class="close" @onclick="closepopUpForTooFar"> <span area-hidden="true">X</span></button>
+								<button type="button" class="close" @onclick="ClosePopUpForTooFar"> <span area-hidden="true">X</span></button>
 							</div>
 							<div class="modal-body">
 								<p>Looks like your ad is very far away from Baierbrunn. Are you sure you want to continue?</p>
-								<button type="button" class="close" @onclick="closepopUpForTooFar">Go back to edit the location!</button>
+								<button type="button" class="close" @onclick="ClosePopUpForTooFar">Go back to edit the location!</button>
 								<button type="button" class="close" @onclick="() => WriteData()">Save ad anyways!</button>
 							</div>
 						</div>
@@ -223,11 +223,11 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<h3 class="modal-title">Your pick up time is in the past!</h3>
-								<button type="button" class="close" @onclick="closepopUpForTimeIsInPast"> <span area-hidden="true">X</span></button>
+								<button type="button" class="close" @onclick="ClosePopUpForTimeIsInPast"> <span area-hidden="true">X</span></button>
 							</div>
 							<div class="modal-body">
 								<p>The pick up time you added is in the past! Please go back and correct it</p>
-								<button type="button" class="close" @onclick="closepopUpForTimeIsInPast">I will correct it!</button>
+								<button type="button" class="close" @onclick="ClosePopUpForTimeIsInPast">I will correct it!</button>
 							</div>
 						</div>
 					</div>
@@ -241,11 +241,11 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<h3 class="modal-title">No seats required?</h3>
-								<button type="button" class="close" @onclick="closepopUpForNoSeats"> <span area-hidden="true">X</span></button>
+								<button type="button" class="close" @onclick="ClosePopUpForNoSeats"> <span area-hidden="true">X</span></button>
 							</div>
 							<div class="modal-body">
 								<p>You forgot to add seats in your ad! Please go back and correct it</p>
-								<button type="button" class="close" @onclick="closepopUpForNoSeats">I will correct it!</button>
+								<button type="button" class="close" @onclick="ClosePopUpForNoSeats">I will correct it!</button>
 							</div>
 						</div>
 					</div>
@@ -270,9 +270,9 @@
 
 	protected override void OnParametersSet()
 	{
-		identifyLoggedInUser().GetAwaiter().GetResult();
+		IdentifyLoggedInUser().GetAwaiter().GetResult();
 		ad = new Ad();
-		ad.AdOwner = currentlyLoggedInUser;
+		ad.AdOwner = _currentlyLoggedInUser;
 		ad.AdType = CreateAd.ad.AdType;
 		ad.AdDirection = CreateAd.ad.AdDirection;
 		ad.PickUpDropOffLocation = CreateAd.ad.PickUpDropOffLocation;
@@ -292,32 +292,32 @@
 	}
 
 
-	public async Task<double> getLatitude()
+	public async Task<double> GetLatitude()
 	{
 		double latitude = await JSRuntime.InvokeAsync<double>("getLatitude");
 		return latitude;
 	}
 
-	public async Task<double> getLongitude()
+	public async Task<double> GetLongitude()
 	{
 		double longitude = await JSRuntime.InvokeAsync<double>("getLongitude");
 		return longitude;
 	}
 
 
-	private User currentlyLoggedInUser;
-	public async Task identifyLoggedInUser()
+	private User _currentlyLoggedInUser;
+	public async Task IdentifyLoggedInUser()
 	{
 		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
 		var claims = authState.User;
 
-		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+		_currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
 
 
-	public async void sendNotificationAboutAd(Ad newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
+	public async void SendNotificationAboutAd(Ad newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
 	{
 		//parameters to be defined:
 		int distanceLimit = 5000; //PAY ATTENTION: METERS, NOT KILOMETERS, this is the limit of how many meters we calculate the notificaions for
@@ -334,7 +334,7 @@
 				int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
 				if (timeDifference <= timeLimit)
 				{
-					int distance = await getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
+					int distance = await GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
 					if (distance <= distanceLimit)
 					{
 						DataService.sendEmailNewAd(oldAd);
@@ -353,7 +353,7 @@
 				int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
 				if (timeDifference <= timeLimit)
 				{
-					int distance = await getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
+					int distance = await GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
 					if (distance <= distanceLimit)
 					{
 						DataService.sendEmailNewAd(oldAd);
@@ -373,7 +373,7 @@
 				int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
 				if (timeDifference <= timeLimit)
 				{
-					int distance = await getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
+					int distance = await GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
 					if (distance <= distanceLimit)
 					{
 						DataService.sendEmailNewAd(oldAd);
@@ -392,7 +392,7 @@
 				int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
 				if (timeDifference <= timeLimit)
 				{
-					int distance = await getDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
+					int distance = await GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
 					if (distance <= distanceLimit)
 					{
 						DataService.sendEmailNewAd(oldAd);
@@ -407,23 +407,24 @@
 
 
 
+	int minDistanceLimit = 3000;
+	int maxDistanceLimit = 200000;
 
-	public async Task<bool> isItTooCloseToBB()
+	public async Task<bool> IsItTooCloseToBB()
 	{
-		int distanceLimit = 3000;
-		int distance = getDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude).Result;
-		if (distance <= distanceLimit)
+		
+		int distance = GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude).Result;
+		if (distance <= minDistanceLimit)
 		{
 			return true;
 		}
 		return false;
 	}
 
-	public async Task<bool> isItTooFarFromBB()
+	public async Task<bool> IsItTooFarFromBB()
 	{
-		int distanceLimit = 200000;
-		int distance = getDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude).Result;
-		if (distance >= distanceLimit)
+		int distance = GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude).Result;
+		if (distance >= maxDistanceLimit)
 		{
 			return true;
 		}
@@ -437,7 +438,7 @@
 	}
 
 
-	public async Task<bool> isAddressValid(string address)
+	public async Task<bool> IsAddressValid(string address)
 	{
 		if (address == null)
 			return false;
@@ -452,50 +453,50 @@
 
 
 	bool popUpForTooClose = false;
-	public void closepopUpForTooClose()
+	public void ClosePopUpForTooClose()
 	{
 		popUpForTooClose = false;
 	}
-	public void showpopUpForTooClose()
+	public void ShowPopUpForTooClose()
 	{
 		popUpForTooClose = true;
 	}
 
 	bool popUpForTooFar = false;
-	public void closepopUpForTooFar()
+	public void ClosePopUpForTooFar()
 	{
 		popUpForTooFar = false;
 	}
-	public void showpopUpForTooFar()
+	public void ShowPopUpForTooFar()
 	{
 		popUpForTooFar = true;
 	}
 
 
 	bool popUpForTimeIsInPast = false;
-	public void closepopUpForTimeIsInPast()
+	public void ClosePopUpForTimeIsInPast()
 	{
 		popUpForTimeIsInPast = false;
 	}
-	public void showpopUpForTimeIsInPast()
+	public void ShowPopUpForTimeIsInPast()
 	{
 		popUpForTimeIsInPast = true;
 	}
 
 	bool popUpForNoSeats = false;
-	public void closepopUpForNoSeats()
+	public void ClosePopUpForNoSeats()
 	{
 		popUpForNoSeats = false;
 	}
-	public void showpopUpForNoSeats()
+	public void ShowPopUpForNoSeats()
 	{
 		popUpForNoSeats = true;
 	}
 
-	async void checkAd()
+	async void CheckAd()
 	{
-		ad.Latitude = await getLatitude();
-		ad.Longitude = await getLongitude();
+		ad.Latitude = await GetLatitude();
+		ad.Longitude = await GetLongitude();
 
 		if (ad.Longitude == 0 || ad.Latitude == 0)
 		{
@@ -505,22 +506,22 @@
 
 		if (ad.PickUpDateAndTime <= DateTime.Now)
 		{
-			showpopUpForTimeIsInPast();
+			ShowPopUpForTimeIsInPast();
 			StateHasChanged();
 		}
 		else if (ad.NumberOfSeats == 0)
 		{
-			showpopUpForNoSeats();
+			ShowPopUpForNoSeats();
 			StateHasChanged();
 		}
-		else if (await isItTooCloseToBB())
+		else if (await IsItTooCloseToBB())
 		{
-			showpopUpForTooClose();
+			ShowPopUpForTooClose();
 			StateHasChanged();
 		}
-		else if (await isItTooFarFromBB())
+		else if (await IsItTooFarFromBB())
 		{
-			showpopUpForTooFar();
+			ShowPopUpForTooFar();
 			StateHasChanged();
 		}
 		else
@@ -533,7 +534,7 @@
 	{
 		context.Ads.Add(ad);
 		context.SaveChanges();
-		sendNotificationAboutAd(ad);
+		SendNotificationAboutAd(ad);
 		NavigationManager.NavigateTo("Ads");
 	}
 
@@ -568,7 +569,7 @@
 
 
 
-	public async Task<int> getDistance(double? coordinate1, double? coordinate2, double? coordinate3, double? coordinate4)
+	public async Task<int> GetDistance(double? coordinate1, double? coordinate2, double? coordinate3, double? coordinate4)
 	{
 		if (coordinate1 == null || coordinate2 == null || coordinate3 == null || coordinate4 == null)
 		{
