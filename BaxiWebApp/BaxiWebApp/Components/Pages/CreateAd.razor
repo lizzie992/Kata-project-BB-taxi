@@ -35,20 +35,20 @@
 		{
 			<style>
 				#map {
-				height: 100%;
+					height: 100%;
 				}
 
 				column {
-				float: left;
-				padding: 10px;
+					float: left;
+					padding: 10px;
 				}
 
 				.left {
-				width: 25%;
+					width: 25%;
 				}
 
 				.right {
-				width: 75%;
+					width: 75%;
 				}
 			</style>
 
@@ -91,7 +91,7 @@
 
 						Pick up date: <br>
 						<InputDate Type="InputDateType.DateTimeLocal"
-						min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
+								   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
 						</InputDate>
 						<br>
 
@@ -315,13 +315,29 @@
 		_currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
-
-
-	public async void SendNotificationAboutAd(Ad newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
+	public async void CheckDistanceForNotification(Ad newAd, List<Ad> adList)
 	{
 		//parameters to be defined:
 		int distanceLimit = 5000; //PAY ATTENTION: METERS, NOT KILOMETERS, this is the limit of how many meters we calculate the notificaions for
 		int timeLimit = 1; //this is to define what is the max difference in time between the 2 ads so that they can be relevant to each other
+
+		foreach (Ad oldAd in adList)
+		{
+			int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
+			if (timeDifference <= timeLimit)
+			{
+				int distance = await GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
+				if (distance <= distanceLimit)
+				{
+					DataService.sendEmailNewAd(oldAd);
+					DataService.sendEmailNewAd(newAd);
+				}
+			}
+		}
+	}
+
+	public async void SendNotificationAboutAd(Ad newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
+	{
 
 		var adList = context.Ads.ToList<Ad>().AsEnumerable();
 
@@ -329,38 +345,14 @@
 		if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Passenger)
 		{
 			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats);
-			foreach (Ad oldAd in adList)
-			{
-				int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
-				if (timeDifference <= timeLimit)
-				{
-					int distance = await GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
-					if (distance <= distanceLimit)
-					{
-						DataService.sendEmailNewAd(oldAd);
-						DataService.sendEmailNewAd(newAd);
-					}
-				}
-			}
+			CheckDistanceForNotification(newAd, adList.ToList());
 		}
 
 		//TO Baierbrunn, driver looking for passengers
 		if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Driver)
 		{
 			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats);
-			foreach (Ad oldAd in adList)
-			{
-				int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
-				if (timeDifference <= timeLimit)
-				{
-					int distance = await GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
-					if (distance <= distanceLimit)
-					{
-						DataService.sendEmailNewAd(oldAd);
-						DataService.sendEmailNewAd(newAd);
-					}
-				}
-			}
+			CheckDistanceForNotification(newAd, adList.ToList());
 		}
 
 
@@ -368,38 +360,14 @@
 		if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Passenger)
 		{
 			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats);
-			foreach (Ad oldAd in adList)
-			{
-				int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
-				if (timeDifference <= timeLimit)
-				{
-					int distance = await GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
-					if (distance <= distanceLimit)
-					{
-						DataService.sendEmailNewAd(oldAd);
-						DataService.sendEmailNewAd(newAd);
-					}
-				}
-			}
+			CheckDistanceForNotification(newAd, adList.ToList());
 		}
 
 		//FROM Baierbrunn, driver looking for passengers
 		if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Driver)
 		{
 			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats);
-			foreach (Ad oldAd in adList)
-			{
-				int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
-				if (timeDifference <= timeLimit)
-				{
-					int distance = await GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
-					if (distance <= distanceLimit)
-					{
-						DataService.sendEmailNewAd(oldAd);
-						DataService.sendEmailNewAd(newAd);
-					}
-				}
-			}
+			CheckDistanceForNotification(newAd, adList.ToList());
 		}
 
 
@@ -412,7 +380,7 @@
 
 	public async Task<bool> IsItTooCloseToBB()
 	{
-		
+
 		int distance = GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude).Result;
 		if (distance <= minDistanceLimit)
 		{
@@ -548,10 +516,10 @@
 	{
 
 		var request = new GeocodingRequest
-			{
-				ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk",
-				Address = address
-			};
+		{
+			ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk",
+			Address = address
+		};
 
 		var result = await GoogleMaps.Geocode.QueryAsync(request);
 
