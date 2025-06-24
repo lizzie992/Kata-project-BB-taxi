@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,17 +51,20 @@ namespace BB
         }
 
 
-        private string? _pickUpDropOffLocation; 
+        
+        private string? _pickUpDropOffLocation;
 
+        [Required]
         public string? PickUpDropOffLocation
         {
             get { return _pickUpDropOffLocation; }
             set { _pickUpDropOffLocation = value; }
         }
 
-
+        
         private double? _latitude;
 
+        [Range(00.0000000000001, 99.9999999999999, ErrorMessage = "Coordinates cannot be empty, please, move the marker to a valid location")]
         public double? Latitude
         {
             get { return _latitude; }
@@ -68,13 +72,16 @@ namespace BB
         }
 
 
+        
         private double? _longitude;
 
+        [Range(00.0000000000001, 99.9999999999999, ErrorMessage = "Coordinates cannot be empty, please, move the marker to a valid location")]
         public double? Longitude
         {
             get { return _longitude; }
             set { _longitude = value; }
         }
+
 
 
         private DateTime _pickUpDateAndTime;
@@ -86,8 +93,10 @@ namespace BB
         }
 
 
+        
         private int _numberOfSeats;
 
+        [Range(1, 6, ErrorMessage = "You need to select the number of seats!")]
         public int NumberOfSeats
         {
             get { return _numberOfSeats; }
