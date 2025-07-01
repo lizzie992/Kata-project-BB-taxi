@@ -98,21 +98,21 @@
 let latitude = 0;
 let longitude = 0;
 
-async function initMapForCreatingAd() {
+async function initMapForCreatingAd(lat, long) {
     // Request needed libraries.
     const { Map, InfoWindow } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
     const map = new Map(document.getElementById("map"), {
-        center: { lat: 48.0206345131560, lng: 11.482919688669709 },
-        zoom: 9,
+        center: { lat: lat, lng: long },
+        zoom: 12,
         mapId: "4504f8b37365c3d0",
     });
     const infoWindow = new InfoWindow();
     const draggableMarker = new AdvancedMarkerElement({
         map,
-        position: { lat: 48.0206345131560, lng: 11.482919688669709 },
+        position: { lat: lat, lng: long },
         gmpDraggable: true,
-        title: "Please move this marker to the pick up / drop off location",
+        title: "Please move this marker to the exact pick up / drop off location",
     });
 
     draggableMarker.addListener("dragend", (event) => {

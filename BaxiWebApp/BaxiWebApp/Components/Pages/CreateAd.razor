@@ -16,7 +16,8 @@
 @using GoogleMapsApi.StaticMaps.Entities;
 @using System.Globalization;
 @using System.Threading.Tasks;
-@using System.Text.Json
+@using System.Text.Json;
+@using System.Timers
 @inject IJSRuntime JSRuntime
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
@@ -119,7 +120,7 @@
 
 						<div class="form-group">
 							<label for="PickUpDropOffLocation">Pick up / drop off location (outside of Baierbrunn)</label>
-							<InputText @bind-Value="ad.PickUpDropOffLocation" class="form-control" id="PickUpDropOffLocation"></InputText><br>
+							<InputText @bind-Value="ad.PickUpDropOffLocation" class="form-control" id="PickUpDropOffLocation" @oninput="showMapWithAddress"></InputText><br>
 							<ValidationMessage For="() => ad.PickUpDropOffLocation" />
 							<br>
 						</div>
@@ -295,8 +296,15 @@
 	{
 		if (firstrender)
 		{
-			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd");
+			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", latitudeBB, longitudeBB);
 		}
+	}
+
+
+	public async Task showMapWithAddress()
+	{
+		(ad.Latitude, ad.Longitude) = await GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
+		await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad.Latitude, ad.Longitude);
 	}
 
 
