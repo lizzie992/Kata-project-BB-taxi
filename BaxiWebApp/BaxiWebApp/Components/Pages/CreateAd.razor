@@ -386,10 +386,8 @@
 	int minDistanceLimit = 3000;
 	int maxDistanceLimit = 200000;
 
-	public async Task<bool> IsItTooCloseToBB()
+	public async Task<bool> IsItTooCloseToBB(int distance)
 	{
-
-		int distance = await GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
 		if (distance <= minDistanceLimit)
 		{
 			return true;
@@ -397,9 +395,8 @@
 		return false;
 	}
 
-	public async Task<bool> IsItTooFarFromBB()
+	public async Task<bool> IsItTooFarFromBB(int distance)
 	{
-		int distance = await GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
 		if (distance >= maxDistanceLimit)
 		{
 			return true;
@@ -480,8 +477,7 @@
 			ad.Longitude = longitudeBB;
 		}
 
-
-		//get the distance
+		int distance = await GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
 
 		if (ad.PickUpDateAndTime <= DateTime.Now)
 		{
@@ -493,16 +489,18 @@
 			ShowPopUpForNoSeats();
 			StateHasChanged();
 		}
-		else if (await IsItTooCloseToBB())
+
+		else if (await IsItTooCloseToBB(distance))
 		{
 			ShowPopUpForTooClose();
 			StateHasChanged();
 		}
-		else if (await IsItTooFarFromBB())
+		else if (await IsItTooFarFromBB(distance))
 		{
 			ShowPopUpForTooFar();
 			StateHasChanged();
 		}
+
 		else
 		{
 			WriteData();
