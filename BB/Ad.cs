@@ -85,7 +85,7 @@ namespace BB
 
 
         private DateTime _pickUpDateAndTime;
-
+        
         public DateTime PickUpDateAndTime
         {
             get { return _pickUpDateAndTime; }
@@ -105,7 +105,7 @@ namespace BB
 
         private string _specificRequests;
 
-        public string SpecificRequests
+        public string? SpecificRequests
         {
             get { return _specificRequests; }
             set { _specificRequests = value; }

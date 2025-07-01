@@ -272,7 +272,7 @@
 	private string anything = string.Empty;
 
 	//coordinates of Baierbrunn
-	public double latitudeBB = 48.0206345131560;
+	public double latitudeBB =  48.0206345131560;
 	public double longitudeBB = 11.482919688669709;
 
 
@@ -389,7 +389,7 @@
 	public async Task<bool> IsItTooCloseToBB()
 	{
 
-		int distance = GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude).Result;
+		int distance = await GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
 		if (distance <= minDistanceLimit)
 		{
 			return true;
@@ -399,7 +399,7 @@
 
 	public async Task<bool> IsItTooFarFromBB()
 	{
-		int distance = GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude).Result;
+		int distance = await GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
 		if (distance >= maxDistanceLimit)
 		{
 			return true;
@@ -480,6 +480,9 @@
 			ad.Longitude = longitudeBB;
 		}
 
+
+		//get the distance
+
 		if (ad.PickUpDateAndTime <= DateTime.Now)
 		{
 			ShowPopUpForTimeIsInPast();
@@ -552,7 +555,13 @@
 			return 0;
 		}
 
-		var request = new DirectionsRequest { Origin = $"{coordinate1?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate2?.ToString("F8", CultureInfo.InvariantCulture)}", Destination = $"{coordinate3?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate4?.ToString("F8", CultureInfo.InvariantCulture)}", TravelMode = TravelMode.Driving, ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk" };
+		var request = new DirectionsRequest
+		{
+			Origin = $"{coordinate1?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate2?.ToString("F8", CultureInfo.InvariantCulture)}",
+			Destination = $"{coordinate3?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate4?.ToString("F8", CultureInfo.InvariantCulture)}",
+			TravelMode = TravelMode.Driving,
+			ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk"
+		};
 		var result = await GoogleMaps.Directions.QueryAsync(request);
 		var legs = result.Routes.First().Legs;
 		int totalDistanceInMeters = legs.Sum(leg => leg.Distance.Value);

@@ -9,6 +9,7 @@
 @using GoogleMapsApi.Entities.Geocoding.Response;
 @using GoogleMapsApi.StaticMaps;
 @using GoogleMapsApi.StaticMaps.Entities;
+@using System.Globalization
 
 
 
@@ -62,8 +63,6 @@ style="height: 400px">
 
 
 
-
-
 @code {
 
 
@@ -85,7 +84,6 @@ style="height: 400px">
 	}
 
 	public static string APIKey = Environment.GetEnvironmentVariable("Google_Maps_API_Key");
-
 
 }
 
