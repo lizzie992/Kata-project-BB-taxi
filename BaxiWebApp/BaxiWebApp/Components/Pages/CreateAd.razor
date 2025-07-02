@@ -120,7 +120,8 @@
 
 						<div class="form-group">
 							<label for="PickUpDropOffLocation">Pick up / drop off location (outside of Baierbrunn)</label>
-							<InputText @bind-Value="ad.PickUpDropOffLocation" class="form-control" id="PickUpDropOffLocation" @oninput="showMapWithAddress"></InputText><br>
+							<input @bind="ad.PickUpDropOffLocation" class="form-control" id="PickUpDropOffLocation"
+								   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
 							<ValidationMessage For="() => ad.PickUpDropOffLocation" />
 							<br>
 						</div>
@@ -273,9 +274,10 @@
 	private string anything = string.Empty;
 
 	//coordinates of Baierbrunn
-	public double latitudeBB =  48.0206345131560;
+	public double latitudeBB = 48.0206345131560;
 	public double longitudeBB = 11.482919688669709;
 
+	Timer timerObj = new();
 
 	protected override void OnParametersSet()
 	{
@@ -285,10 +287,16 @@
 		ad.AdType = CreateAd.ad.AdType;
 		ad.AdDirection = CreateAd.ad.AdDirection;
 		ad.PickUpDropOffLocation = CreateAd.ad.PickUpDropOffLocation;
-		ad.PickUpDateAndTime = DateTime.Today;
+		ad.PickUpDateAndTime = DateTime.Today.AddDays(1);
 		ad.PickUpDateAndTime = CreateAd.ad.PickUpDateAndTime;
 		ad.NumberOfSeats = CreateAd.ad.NumberOfSeats;
 		ad.SpecificRequests = CreateAd.ad.SpecificRequests;
+
+
+		timerObj = new Timer(1500);
+		timerObj.Elapsed += onTimer;
+		timerObj.AutoReset = false;
+
 		base.OnParametersSet();
 	}
 
@@ -299,11 +307,22 @@
 			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", latitudeBB, longitudeBB);
 		}
 	}
+	private void OnValueChange(KeyboardEventArgs e)
+	{
+		// remove previous one
+		timerObj.Stop();
+		// new timer
+		timerObj.Start();
+	}
 
+	public void onTimer(object? sender, ElapsedEventArgs e)
+	{
+		showMapWithAddress();
+	}
 
 	public async Task showMapWithAddress()
 	{
-		(ad.Latitude, ad.Longitude) = await GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
+		(ad.Latitude, ad.Longitude) = await GetCoordinatesFromAddress(ad.PickUpDropOffLocation);  //TODO: error / eception handling :P
 		await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad.Latitude, ad.Longitude);
 	}
 
