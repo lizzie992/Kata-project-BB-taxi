@@ -262,6 +262,24 @@
 				</div>
 			}
 
+			@if (popUpForWrongCoordinates)
+			{
+				<div class="modal" tabindex="-1" style="display:block" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h3 class="modal-title">Please give me a correct address</h3>
+								<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates"> <span area-hidden="true">X</span></button>
+							</div>
+							<div class="modal-body">
+								<p>Looks like the location you wrote is not corect, please, give me a valid address!</p>
+								<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates">I will correct it!</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+
 		}
 
 	</Authorized>
@@ -320,10 +338,33 @@
 		showMapWithAddress();
 	}
 
+
+	bool popUpForWrongCoordinates = false;
+	public void ClosePopUpForWrongCoordinates()
+	{
+		popUpForWrongCoordinates = false;
+	}
+	public void ShowPopUpForWrongCoordinates()
+	{
+		popUpForWrongCoordinates = true;
+	}
+
 	public async Task showMapWithAddress()
 	{
-		(ad.Latitude, ad.Longitude) = await GetCoordinatesFromAddress(ad.PickUpDropOffLocation);  //TODO: error / eception handling :P
-		await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad.Latitude, ad.Longitude);
+		(ad.Latitude, ad.Longitude) = await GetCoordinatesFromAddress(ad.PickUpDropOffLocation);  
+
+		if (ad.Latitude == null || ad.Longitude == null)
+		{
+			ShowPopUpForWrongCoordinates();
+			await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+		}
+		else
+		{
+			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad.Latitude, ad.Longitude);
+		}
 	}
 
 
