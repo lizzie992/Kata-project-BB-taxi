@@ -103,7 +103,7 @@ namespace BB
             set { _numberOfSeats = value; }
         }
 
-        private string _specificRequests;
+        private string? _specificRequests;
 
         public string? SpecificRequests
         {

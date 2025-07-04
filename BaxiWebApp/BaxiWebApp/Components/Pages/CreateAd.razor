@@ -176,15 +176,19 @@
 				</div>
 				<div class="column right">
 					<br>
-					<div>Please move the marker to the requested pick up / drop off location!</div>
-					<br>
-					<div id="map">
-					</div>
-					<script>
-						(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-						({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
-					<br>
-					<br>
+					@if (showMap)
+					{
+						<div>Here you can specify the exact pick up / drop off location!</div>
+						<div>Please move the marker to the place where you can stop with your car / wait for your pick up!</div>
+						<br>
+						<div id="map">
+						</div>
+						<script>
+							(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+							({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+						<br>
+						<br>
+					}
 				</div>
 			</div>
 
@@ -198,9 +202,8 @@
 								<button type="button" class="close" @onclick="ClosePopUpForTooClose"> <span area-hidden="true">X</span></button>
 							</div>
 							<div class="modal-body">
-								<p>Looks like your ad is very close to Baierbrunn. Are you sure you want to continue?</p>
+								<p>Looks like your ad is very close to Baierbrunn.</p>
 								<button type="button" class="close" @onclick="ClosePopUpForTooClose">Go back to edit the location!</button>
-								<button type="button" class="close" @onclick="() => WriteData()">Save ad anyways!</button>
 							</div>
 						</div>
 					</div>
@@ -217,9 +220,8 @@
 								<button type="button" class="close" @onclick="ClosePopUpForTooFar"> <span area-hidden="true">X</span></button>
 							</div>
 							<div class="modal-body">
-								<p>Looks like your ad is very far away from Baierbrunn. Are you sure you want to continue?</p>
+								<p>Looks like your ad is very far away from Baierbrunn.</p>
 								<button type="button" class="close" @onclick="ClosePopUpForTooFar">Go back to edit the location!</button>
-								<button type="button" class="close" @onclick="() => WriteData()">Save ad anyways!</button>
 							</div>
 						</div>
 					</div>
@@ -244,23 +246,6 @@
 				</div>
 			}
 
-			@if (popUpForNoSeats)
-			{
-				<div class="modal" tabindex="-1" style="display:block" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h3 class="modal-title">No seats required?</h3>
-								<button type="button" class="close" @onclick="ClosePopUpForNoSeats"> <span area-hidden="true">X</span></button>
-							</div>
-							<div class="modal-body">
-								<p>You forgot to add seats in your ad! Please go back and correct it</p>
-								<button type="button" class="close" @onclick="ClosePopUpForNoSeats">I will correct it!</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			}
 
 			@if (popUpForWrongCoordinates)
 			{
@@ -318,13 +303,13 @@
 		base.OnParametersSet();
 	}
 
-	protected override async Task OnAfterRenderAsync(bool firstrender)
-	{
-		if (firstrender)
-		{
-			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", latitudeBB, longitudeBB);
-		}
-	}
+	// protected override async Task OnAfterRenderAsync(bool firstrender)
+	// {
+	// 	if (firstrender)
+	// 	{
+	// 		await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", latitudeBB, longitudeBB);
+	// 	}
+	// }
 	private void OnValueChange(KeyboardEventArgs e)
 	{
 		// remove previous one
@@ -349,13 +334,36 @@
 		popUpForWrongCoordinates = true;
 	}
 
+
+	bool showMap = false;
+
+
 	public async Task showMapWithAddress()
 	{
 		(ad.Latitude, ad.Longitude) = await GetCoordinatesFromAddress(ad.PickUpDropOffLocation);  
-
+		int distance = await GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
 		if (ad.Latitude == null || ad.Longitude == null)
 		{
+			showMap = false;
 			ShowPopUpForWrongCoordinates();
+			await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+		}
+		else if (await IsItTooCloseToBB(distance))
+		{
+			showMap = false;
+			ShowPopUpForTooClose();
+			await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+		}
+		else if (await IsItTooFarFromBB(distance))
+		{
+			showMap = false;
+			ShowPopUpForTooFar();
 			await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -363,6 +371,11 @@
 		}
 		else
 		{
+			showMap = true;
+			await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
 			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad.Latitude, ad.Longitude);
 		}
 	}
@@ -524,40 +537,23 @@
 		popUpForTimeIsInPast = true;
 	}
 
-	bool popUpForNoSeats = false;
-	public void ClosePopUpForNoSeats()
-	{
-		popUpForNoSeats = false;
-	}
-	public void ShowPopUpForNoSeats()
-	{
-		popUpForNoSeats = true;
-	}
+
 
 	async void CheckAd()
 	{
 		ad.Latitude = await GetLatitude();
 		ad.Longitude = await GetLongitude();
-
 		if (ad.Longitude == 0 || ad.Latitude == 0)
 		{
 			ad.Latitude = latitudeBB;
 			ad.Longitude = longitudeBB;
 		}
-
 		int distance = await GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
-
 		if (ad.PickUpDateAndTime <= DateTime.Now)
 		{
 			ShowPopUpForTimeIsInPast();
 			StateHasChanged();
 		}
-		else if (ad.NumberOfSeats == 0)
-		{
-			ShowPopUpForNoSeats();
-			StateHasChanged();
-		}
-
 		else if (await IsItTooCloseToBB(distance))
 		{
 			ShowPopUpForTooClose();
@@ -568,7 +564,6 @@
 			ShowPopUpForTooFar();
 			StateHasChanged();
 		}
-
 		else
 		{
 			WriteData();
@@ -578,6 +573,10 @@
 	async Task WriteData()
 	{
 		context.Ads.Add(ad);
+		if (ad.SpecificRequests is null)
+		{
+			ad.SpecificRequests = "No Specific requests";
+		}
 		context.SaveChanges();
 		SendNotificationAboutAd(ad);
 		NavigationManager.NavigateTo("Ads");
@@ -591,6 +590,11 @@
 	/// <returns>tuple with lat and long</returns>
 	public async Task<(double?, double?)> GetCoordinatesFromAddress(string address)
 	{
+
+		if (address == "")
+		{
+			return (null, null);
+		}
 
 		var request = new GeocodingRequest
 		{
@@ -629,6 +633,10 @@
 			ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk"
 		};
 		var result = await GoogleMaps.Directions.QueryAsync(request);
+		if (result.Routes.Count() == 0)
+		{
+			return 100000000;
+		}
 		var legs = result.Routes.First().Legs;
 		int totalDistanceInMeters = legs.Sum(leg => leg.Distance.Value);
 		return totalDistanceInMeters; //output is in METERS!!!
