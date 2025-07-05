@@ -344,7 +344,7 @@
 
 	public async Task showMapWithAddress()
 	{
-		(ad.Latitude, ad.Longitude) = await GetCoordinatesFromAddress(ad.PickUpDropOffLocation);  
+		(ad.Latitude, ad.Longitude) = await DataService.GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
 		int distance = await GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
 		if (ad.Latitude == null || ad.Longitude == null)
 		{
@@ -492,7 +492,7 @@
 
 	public async Task ValidateAdress()
 	{
-		(ad.Latitude, ad.Longitude) = await GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
+		(ad.Latitude, ad.Longitude) = await DataService.GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
 	}
 
 
@@ -501,7 +501,7 @@
 		if (address == null)
 			return false;
 
-		(ad.Latitude, ad.Longitude) = await GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
+		(ad.Latitude, ad.Longitude) = await DataService.GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
 		if (ad.Latitude == null)
 		{
 			return false;
@@ -587,38 +587,7 @@
 	}
 
 
-	/// <summary>
-	///
-	/// </summary>
-	/// <param name="address"></param>
-	/// <returns>tuple with lat and long</returns>
-	public async Task<(double?, double?)> GetCoordinatesFromAddress(string address)
-	{
-
-		if (address == "")
-		{
-			return (null, null);
-		}
-
-		var request = new GeocodingRequest
-		{
-			ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk",
-			Address = address
-		};
-
-		var result = await GoogleMaps.Geocode.QueryAsync(request);
-
-		Location location = result.Results.FirstOrDefault()?.Geometry?.Location;
-
-		if (location == null)
-		{
-			return (null, null);
-		}
-
-		string coordinates = $"{location.Latitude}, {location.Longitude}";
-
-		return (location.Latitude, location.Longitude);
-	}
+	
 
 
 

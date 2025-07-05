@@ -9,8 +9,8 @@ namespace BB
 {
     public enum AdType
     {
+        SelectAll, 
         Driver,
         Passenger,
-        SelectAll,
     }
 }

@@ -88,11 +88,6 @@
 		<input type="search" autofocus @bind="_searchLastName" @bind:event="oninput" placeholder="Last name..." />
 	</div>
 	<br>
-	<p>Location contains:</p>
-	<div class="search-box">
-		<input type="search" autofocus @bind="_location" @bind:event="oninput" placeholder="Location..." />
-	</div>
-	<br>
 	<p>Contact contains:</p>
 	<div class="search-box">
 		<input type="search" autofocus @bind="_contact" @bind:event="oninput" placeholder="Contact..." />
@@ -148,8 +143,6 @@
 			<PropertyColumn Title="Department:" Property="@(User => User.Department)" Sortable="true">
 			</PropertyColumn>
 			<PropertyColumn Title="Preferred language:" Property="@(User => User.PreferredLanguage)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title="Location:" Property="@(User => User.Location)" Sortable="true">
 			</PropertyColumn>
 			<PropertyColumn Title="Rating:" Property="@(User => User.Rating)" Sortable="true">
 			</PropertyColumn>
@@ -323,7 +316,6 @@
 			result = result.Where(User => User.Email.Contains(_searchEmail, StringComparison.CurrentCultureIgnoreCase) &&
 			User.FirstName.Contains(_searchFirstName, StringComparison.CurrentCultureIgnoreCase) &&
 			User.LastName.Contains(_searchLastName, StringComparison.CurrentCultureIgnoreCase) &&
-			User.Location.Contains(_location, StringComparison.CurrentCultureIgnoreCase) &&
 			User.Contact.Contains(_contact, StringComparison.CurrentCultureIgnoreCase));
 
 			if (_role != "allRoles")

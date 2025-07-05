@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaxiWebApp.Migrations
 {
     [DbContext(typeof(BaxiWebAppContext))]
-    [Migration("20250528183835_test")]
-    partial class test
+    [Migration("20250705093607_UserData")]
+    partial class UserData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,10 +51,10 @@ namespace BaxiWebApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PickUpDropOffLocation")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SpecificRequests")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -140,6 +140,24 @@ namespace BaxiWebApp.Migrations
                     b.Property<string>("Contact")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("DefaultAdType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double?>("DefaultLatitude")
+                        .HasColumnType("REAL");
+
+                    b.Property<double?>("DefaultLongitude")
+                        .HasColumnType("REAL");
+
+                    b.Property<int?>("DefaultNumberOfSeats")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DefaultPickUpAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DefaultSpecificRequests")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Department")
                         .HasColumnType("INTEGER");
 
@@ -162,9 +180,6 @@ namespace BaxiWebApp.Migrations
                     b.Property<string>("ListOfRatings")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("TEXT");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
@@ -177,10 +192,6 @@ namespace BaxiWebApp.Migrations
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NotificationForRoute")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("NumberOfWarnings")
@@ -260,15 +271,15 @@ namespace BaxiWebApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b486b659-fd62-49d5-bac5-6f1b32ac21db",
-                            ConcurrencyStamp = "84c97971-5119-464b-848e-88eaf33592b6",
+                            Id = "4d0569ff-c775-4cac-8dbf-000a7da12685",
+                            ConcurrencyStamp = "549f2c87-9b0b-4053-876b-07117e36515a",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         },
                         new
                         {
-                            Id = "465dc2d4-ea98-45cd-a8f7-25bc2899bf57",
-                            ConcurrencyStamp = "fc32b820-9f87-4da4-9bce-dbfabae179cd",
+                            Id = "dd7ff2d2-9d4a-4b64-b134-6d3940494446",
+                            ConcurrencyStamp = "9efacb09-45a6-4483-9b8e-ebf22d31115b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

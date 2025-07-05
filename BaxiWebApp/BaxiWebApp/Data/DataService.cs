@@ -1,16 +1,62 @@
 ﻿using BB;
+using GoogleMapsApi.Entities.Geocoding.Request;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Mail;
 using System.Net;
-using System.Text;
+using System.Net.Mail;
 using System.Runtime.InteropServices.Marshalling;
+using System.Text;
+using static System.Net.Mime.MediaTypeNames;
+using GoogleMapsApi;
+using GoogleMapsApi.Entities.Common;
+using GoogleMapsApi.Entities.Directions.Request;
+using GoogleMapsApi.Entities.Directions.Response;
+using GoogleMapsApi.Entities.Geocoding.Request;
+using GoogleMapsApi.Entities.Geocoding.Response;
+using GoogleMapsApi.StaticMaps;
+using GoogleMapsApi.StaticMaps.Entities;
+using System.Globalization;
+using System.Threading.Tasks;
+using System.Text.Json;
+using System.Timers;
 
 
 namespace BaxiWebApp.Data
 {
     public class DataService
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns>tuple with lat and long</returns>
+        public async Task<(double?, double?)> GetCoordinatesFromAddress(string address)
+        {
+
+            if (address == "")
+            {
+                return (null, null);
+            }
+
+            var request = new GeocodingRequest
+            {
+                ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk",
+                Address = address
+            };
+
+            var result = await GoogleMaps.Geocode.QueryAsync(request);
+
+            Location location = result.Results.FirstOrDefault()?.Geometry?.Location;
+
+            if (location == null)
+            {
+                return (null, null);
+            }
+
+            string coordinates = $"{location.Latitude}, {location.Longitude}";
+
+            return (location.Latitude, location.Longitude);
+        }
 
         IDbContextFactory<BaxiWebAppContext> _dbcFactory;
         public DataService(IDbContextFactory<BaxiWebAppContext> dbcFactory) //dependency injection of the DbContextFactory
@@ -284,7 +330,6 @@ namespace BaxiWebApp.Data
                 user.isActive = false;
                 user.FirstName = "Deleted user";
                 user.LastName = "Deleted user";
-                user.Location = "Deleted user";
                 user.Contact = "Deleted user";
                 user.Department = Department.SelectAll;
                 user.PreferredLanguage = PreferredLanguage.SelectAll;

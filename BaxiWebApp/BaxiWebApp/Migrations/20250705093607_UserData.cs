@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BaxiWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class pleasewoknow : Migration
+    public partial class UserData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,12 +40,16 @@ namespace BaxiWebApp.Migrations
                     LastName = table.Column<string>(type: "TEXT", nullable: true),
                     Department = table.Column<int>(type: "INTEGER", nullable: false),
                     PreferredLanguage = table.Column<int>(type: "INTEGER", nullable: false),
-                    Location = table.Column<string>(type: "TEXT", nullable: true),
                     Rating = table.Column<int>(type: "INTEGER", nullable: false),
                     ListOfRatings = table.Column<string>(type: "TEXT", nullable: true),
                     NumberOfWarnings = table.Column<int>(type: "INTEGER", nullable: false),
                     Contact = table.Column<string>(type: "TEXT", nullable: true),
-                    NotificationForRoute = table.Column<string>(type: "TEXT", nullable: false),
+                    DefaultAdType = table.Column<int>(type: "INTEGER", nullable: false),
+                    DefaultPickUpAddress = table.Column<string>(type: "TEXT", nullable: true),
+                    DefaultLatitude = table.Column<double>(type: "REAL", nullable: true),
+                    DefaultLongitude = table.Column<double>(type: "REAL", nullable: true),
+                    DefaultNumberOfSeats = table.Column<int>(type: "INTEGER", nullable: true),
+                    DefaultSpecificRequests = table.Column<string>(type: "TEXT", nullable: true),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -67,20 +71,6 @@ namespace BaxiWebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Coordinates",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Latitude = table.Column<float>(type: "REAL", nullable: false),
-                    Longitude = table.Column<float>(type: "REAL", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Coordinates", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -99,6 +89,38 @@ namespace BaxiWebApp.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ads",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    AdOwnerId = table.Column<string>(type: "TEXT", nullable: true),
+                    AdType = table.Column<int>(type: "INTEGER", nullable: false),
+                    AdDirection = table.Column<int>(type: "INTEGER", nullable: false),
+                    PickUpDropOffLocation = table.Column<string>(type: "TEXT", nullable: false),
+                    Latitude = table.Column<double>(type: "REAL", nullable: true),
+                    Longitude = table.Column<double>(type: "REAL", nullable: true),
+                    PickUpDateAndTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    NumberOfSeats = table.Column<int>(type: "INTEGER", nullable: false),
+                    SpecificRequests = table.Column<string>(type: "TEXT", nullable: true),
+                    AdID = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ads", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Ads_Ads_AdID",
+                        column: x => x.AdID,
+                        principalTable: "Ads",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Ads_AspNetUsers_AdOwnerId",
+                        column: x => x.AdOwnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -187,43 +209,6 @@ namespace BaxiWebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ads",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    AdOwnerId = table.Column<string>(type: "TEXT", nullable: true),
-                    AdType = table.Column<int>(type: "INTEGER", nullable: false),
-                    AdDirection = table.Column<int>(type: "INTEGER", nullable: false),
-                    PickUpDropOffLocation = table.Column<string>(type: "TEXT", nullable: false),
-                    PickUpDropOffCoordinatesID = table.Column<int>(type: "INTEGER", nullable: false),
-                    PickUpDateAndTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    NumberOfSeats = table.Column<int>(type: "INTEGER", nullable: false),
-                    SpecificRequests = table.Column<string>(type: "TEXT", nullable: false),
-                    AdID = table.Column<int>(type: "INTEGER", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ads", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Ads_Ads_AdID",
-                        column: x => x.AdID,
-                        principalTable: "Ads",
-                        principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_Ads_AspNetUsers_AdOwnerId",
-                        column: x => x.AdOwnerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Ads_Coordinates_PickUpDropOffCoordinatesID",
-                        column: x => x.PickUpDropOffCoordinatesID,
-                        principalTable: "Coordinates",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Conversations",
                 columns: table => new
                 {
@@ -291,8 +276,8 @@ namespace BaxiWebApp.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1ad2322b-87b6-4b21-85a5-bf88c86e3f12", "4c90696e-ae66-42d6-bbee-3ef0b937f304", "Admin", "ADMIN" },
-                    { "4dbb8752-0438-4a15-82ae-28ed302b8595", "f2bbddd0-6303-4853-bce7-bdf0761279ca", "Regular", "REGULAR" }
+                    { "4d0569ff-c775-4cac-8dbf-000a7da12685", "549f2c87-9b0b-4053-876b-07117e36515a", "Regular", "REGULAR" },
+                    { "dd7ff2d2-9d4a-4b64-b134-6d3940494446", "9efacb09-45a6-4483-9b8e-ebf22d31115b", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -304,11 +289,6 @@ namespace BaxiWebApp.Migrations
                 name: "IX_Ads_AdOwnerId",
                 table: "Ads",
                 column: "AdOwnerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ads_PickUpDropOffCoordinatesID",
-                table: "Ads",
-                column: "PickUpDropOffCoordinatesID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -410,9 +390,6 @@ namespace BaxiWebApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Coordinates");
         }
     }
 }

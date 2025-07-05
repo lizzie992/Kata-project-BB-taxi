@@ -16,6 +16,7 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 @inject Data.BaxiWebAppContext context;
+@inject Data.DataService DataService
 
 <PageTitle>Register</PageTitle>
 
@@ -75,12 +76,61 @@
                 <label for="preferredLanguage"></label>
             </div>
             <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.Location" class="form-control" autocomplete="location" aria-required="true" placeholder="location" />
-                <label for="Location">Location</label>
+                Contact (not mandatory)
+                <br>
+                <InputText @bind-Value="Input.Contact" class="form-control" autocomplete="contact" aria-required="true" placeholder="contact" />
+                <label for="Contact"></label>
+            </div>
+
+
+            <div class="form-floating mb-3">
+                Below you can add some additional data that will make your life easier when creating Ads in the application.
+                This is not mandatory and can be always changed / deleted in your profile!
+                <br>
+                <br>
+                I am usually a:
+                <br>
+                <InputSelect @bind-Value="Input.DefaultAdType" id="DefaultAdType">
+                    @foreach (var value in Enum.GetValues<AdType>())
+                    {
+                        if (value == AdType.SelectAll)
+                        {
+                            <option value="@value">No selection</option>
+                        }
+                        else
+                        {
+                            <option value="@value">@value.ToString()</option>
+                        }
+                    }
+                </InputSelect>
+                <label for="Ad Type"></label>
             </div>
             <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.Contact" class="form-control" autocomplete="contact" aria-required="true" placeholder="contact" />
-                <label for="Contact">Contact</label>
+                Default pick up / drop off location
+                You can add an address or location where you can usually pick up / drop off passengers // where you want to be picked up!
+                <br>
+                <InputText @bind-Value="Input.DefaultPickUpAddress" class="form-control" autocomplete="Default Address" aria-required="true" placeholder="Default Address" />
+                <label for="DefaultPickUpAddress"></label>
+            </div>
+            <div class="form-group">
+                <br>
+                <label for="NumberOfSeats">Number of seats:</label>
+                <InputSelect @bind-Value="Input.DefaultNumberOfSeats" class="form-control" id="DefaultNumberOfSeats">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </InputSelect>
+                <br>
+            </div>
+            <div class="form-floating mb-3">
+                Default Requests
+                If you have the same requests regarding the ride (such as "No smokers Please" or "No loud music" etc...) please write them here:
+                <br>
+                <InputText @bind-Value="Input.DefaultSpecificRequests" class="form-control" autocomplete="Default Requests" aria-required="true" placeholder="Default Requests" />
+                <label for="DefaultSpecificRequests"></label>
             </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </EditForm>
@@ -120,9 +170,12 @@
         user.LastName = Input.LastName;
         user.Department = Input.Department;
         user.PreferredLanguage = Input.PreferredLanguage;
-        user.Location = Input.Location;
         user.Contact = Input.Contact;
-        user.NotificationForRoute = new List<string>();
+        user.DefaultAdType = Input.DefaultAdType;
+        user.DefaultPickUpAddress = Input.DefaultPickUpAddress;
+        user.DefaultNumberOfSeats = Input.DefaultNumberOfSeats;
+        user.DefaultSpecificRequests = Input.DefaultSpecificRequests;
+        (user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
         user.isActive = true;
         user.isDeleted = false;
         if (user.Email.Contains("admin"))
@@ -228,10 +281,6 @@
         public PreferredLanguage PreferredLanguage { get; set; }
 
         [Required]
-        [Display(Name = "Location")]
-        public string Location { get; set; } = "";
-
-        [Required]
         [Display(Name = "Rating")]
         public int? Rating;
 
@@ -245,6 +294,18 @@
 
         [Display(Name = "Contact")]
         public string? Contact { get; set; } = ""; //not mandatory so it can stay null if someone does not want to give contact info
+
+        [Display(Name = "Type")]
+        public AdType DefaultAdType;
+
+        [Display(Name = "Default address")]
+        public string? DefaultPickUpAddress { get; set; } = "";
+
+        [Display(Name = "Number of Seats")]
+        public int DefaultNumberOfSeats = 1;
+
+        [Display(Name = "Default specific request")]
+        public string? DefaultSpecificRequests { get; set; } = "";
 
     }
 

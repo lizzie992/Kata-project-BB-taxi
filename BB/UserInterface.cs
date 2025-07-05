@@ -210,7 +210,6 @@
             Console.WriteLine($"Name: {User.FirstName} {User.LastName}");
             Console.WriteLine($"Department: {User.Department}");
             Console.WriteLine($"Preferred Language: {User.PreferredLanguage}");
-            Console.WriteLine($"Location: {User.Location}");
             Console.WriteLine($"Contact: {User.Contact}");
             Console.WriteLine($"Rating: {User.Rating}");
             Console.WriteLine($"Number of warnings: {User.NumberOfWarnings}");

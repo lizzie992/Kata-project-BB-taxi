@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 
 namespace BB
 {
@@ -71,13 +72,6 @@ namespace BB
             set { _preferredLanguage = value; }
         }
 
-        private string? _location;
-
-        public string? Location
-        {
-            get { return _location; }
-            set { _location = value; }
-        }
 
         private int _rating;
 
@@ -112,13 +106,47 @@ namespace BB
             set { _contact = value; }
         }
 
-
-        private List<string>? _notificationForRoute;
-
-        public List<string> NotificationForRoute
+        private AdType _defaultAdType;
+        public AdType DefaultAdType
         {
-            get { return _notificationForRoute; }
-            set { _notificationForRoute = value; }
+            get { return _defaultAdType; }
+            set { _defaultAdType = value; }
         }
+
+        private string? _defaultPickUpAddress;
+        public string? DefaultPickUpAddress
+        {
+            get { return _defaultPickUpAddress; }
+            set { _defaultPickUpAddress = value; }
+        }
+
+        private double? _defaultLatitude;
+        public double? DefaultLatitude
+        {
+            get { return _defaultLatitude; }
+            set { _defaultLatitude = value; }
+        }
+
+        private double? _defaultLongitude;
+        public double? DefaultLongitude
+        {
+            get { return _defaultLongitude; }
+            set { _defaultLongitude = value; }
+        }
+
+        private int? _defaultNumberOfSeats;
+        public int? DefaultNumberOfSeats
+        {
+            get { return _defaultNumberOfSeats; }
+            set { _defaultNumberOfSeats = value; }
+        }
+
+        private string? _defaultSpecificRequests;
+        public string? DefaultSpecificRequests
+        {
+            get { return _defaultSpecificRequests; }
+            set { _defaultSpecificRequests = value; }
+        }
+
     }
 }

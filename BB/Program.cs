@@ -46,8 +46,6 @@ namespace BB
                     UserInterface.PrintListOfEnums(typeof(PreferredLanguage));
                     newUser.PreferredLanguage = UserInterface.GetPreferrefLanguage();
 
-                    newUser.Location = UserInterface.GetLocation();
-
                     newUser.Contact = UserInterface.GetContact();
 
                     newUser.Rating = 0;
@@ -123,11 +121,6 @@ namespace BB
                             {
                                 UserInterface.PrintListOfEnums(typeof(PreferredLanguage));
                                 User.PreferredLanguage = UserInterface.GetPreferrefLanguage();
-                            }
-
-                            if (changeAnswer == Constants.CHANGE_LOCATION.ToString())
-                            {
-                                User.Location = UserInterface.GetLocation();
                             }
 
                             if (changeAnswer == Constants.CHANGE_CONTACT.ToString())
