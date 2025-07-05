@@ -31,9 +31,12 @@
 
         let type = "";
         if (ad.adType === 0) {
-            type = "Driver";
+            type = "No";
         }
         if (ad.adType === 1) {
+            type = "Driver";
+        }
+        if (ad.adType === 2) {
             type = "Passenger";
         }
 

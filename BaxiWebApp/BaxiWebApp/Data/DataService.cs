@@ -25,6 +25,56 @@ namespace BaxiWebApp.Data
 {
     public class DataService
     {
+
+        int minDistanceLimit = 3000;
+        int maxDistanceLimit = 200000;
+        public async Task<bool> IsItTooCloseToBB(int distance)
+        {
+            if (distance <= minDistanceLimit)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> IsItTooFarFromBB(int distance)
+        {
+            if (distance >= maxDistanceLimit)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+
+        public async Task<int> GetDistance(double? coordinate1, double? coordinate2, double? coordinate3, double? coordinate4)
+        {
+            if (coordinate1 == null || coordinate2 == null || coordinate3 == null || coordinate4 == null)
+            {
+                return 0;
+            }
+
+            var request = new DirectionsRequest
+            {
+                Origin = $"{coordinate1?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate2?.ToString("F8", CultureInfo.InvariantCulture)}",
+                Destination = $"{coordinate3?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate4?.ToString("F8", CultureInfo.InvariantCulture)}",
+                TravelMode = TravelMode.Driving,
+                ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk"
+            };
+            var result = await GoogleMaps.Directions.QueryAsync(request);
+            if (result.Routes.Count() == 0)
+            {
+                return 100000000;
+            }
+            var legs = result.Routes.First().Legs;
+            int totalDistanceInMeters = legs.Sum(leg => leg.Distance.Value);
+            return totalDistanceInMeters; //output is in METERS!!!
+        }
+
+
+
+
         /// <summary>
         ///
         /// </summary>

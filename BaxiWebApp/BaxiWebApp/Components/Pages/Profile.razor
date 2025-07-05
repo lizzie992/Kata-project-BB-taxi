@@ -2,6 +2,18 @@
 @using BB
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
+@using GoogleMapsApi;
+@using GoogleMapsApi.Entities.Common;
+@using GoogleMapsApi.Entities.Directions.Request
+@using GoogleMapsApi.Entities.Directions.Response
+@using GoogleMapsApi.Entities.Geocoding.Request
+@using GoogleMapsApi.Entities.Geocoding.Response
+@using GoogleMapsApi.StaticMaps;
+@using GoogleMapsApi.StaticMaps.Entities;
+@using System.Globalization;
+@using System.Threading.Tasks;
+@using System.Text.Json;
+@inject IJSRuntime JSRuntime
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManager;
 @inject UserManager<User> UserManager;
@@ -9,113 +21,163 @@
 @inject NavigationManager NavigationManager
 
 <AuthorizeView>
-    <Authorized>
+	<Authorized>
+		<style>
+			#map {
+				height: 100%;
+			}
 
-        <PageTitle>Profile</PageTitle>
+			column {
+				float: left;
+				padding: 10px;
+			}
 
-        <h1 style="text-align:center;">Profile data</h1>
+			.left {
+				width: 25%;
+			}
 
+			.right {
+				width: 75%;
+			}
+		</style>
 
-
-
-        <div class="profileData">
-            <p>Email address: @user.Email</p>
-            <p>Name: @DataService.showUserNameWithStatus(user)</p>
-            <p>Department: @user.Department</p>
-            <p>Preferred language: @user.PreferredLanguage</p>
-            <p>Contact: @user.Contact</p>
-            <p>Rating: @user.Rating</p>
-            <p>Number of warnings: @user.NumberOfWarnings</p>
-            <br>
-            <p>Default data for creating ads:</p>
-            <p>Ad type: @if (user.DefaultAdType == AdType.SelectAll)
-                {
-                    <p>No default type</p>
-                }
-                else
-                {
-                    @user.DefaultAdType
-                }
-                </p>
-            <p>Address / location for pick up / drop off: @user.DefaultPickUpAddress</p>
-            <p>Number of seats: @user.DefaultNumberOfSeats</p>
-            <p>Speficic requests: @user.DefaultSpecificRequests</p>
-            <br>
-
-            <a href="ProfileDataChange">
-                <button>Click here to change your profile data!</button>
-            </a>
-
-            <a href="/Account/Manage/ChangePassword">
-                <button>Click here to change your password!</button>
-            </a>
-
-            <button @onclick="() => showPopUpForDeletingUser(user)">Delete my profile!</button>
-
-        </div>
+		<PageTitle>Profile</PageTitle>
 
 
-        @if (popUpForDeletingUser)
-        {
-            <div class="modal" tabindex="-1" style="display:block" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title">Delete your profile</h3>
-                            <button type="button" class="close" @onclick="closePopUpForDeletingUser"> <span area-hidden="true">X</span></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Are you sure you want to delete our profile? If you delete it, you cannot reactivate it again!</p>
-                            <br>
-                            <button type="button" class="close" @onclick="() => deleteUser()">Delete my profile!</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+		<div class="row">
+			<div class="column left">
+				<div class="profileData">
+					<p>Email address: @user.Email</p>
+					<p>Name: @DataService.showUserNameWithStatus(user)</p>
+					<p>Department: @user.Department</p>
+					<p>Preferred language: @user.PreferredLanguage</p>
+					<p>Contact: @user.Contact</p>
+					<p>Rating: @user.Rating</p>
+					<p>Number of warnings: @user.NumberOfWarnings</p>
+					<br>
+					<p>Default data for creating ads:</p>
+					<p>
+						Ad type: @if (user.DefaultAdType == AdType.SelectAll)
+						{
+						<p>No default type</p>
+					}
+										else
+					{
+						@user.DefaultAdType
+					}
+					</p>
+					<p>Address / location for pick up / drop off: @user.DefaultPickUpAddress</p>
+					<p>Number of seats: @user.DefaultNumberOfSeats</p>
+					<p>Speficic requests: @user.DefaultSpecificRequests</p>
+					<br>
+				</div>
+				<a href="ProfileDataChange">
+					<button>Click here to change your profile data!</button>
+				</a>
 
-        }
+				<a href="/Account/Manage/ChangePassword">
+					<button>Click here to change your password!</button>
+				</a>
+
+				<button @onclick="() => showPopUpForDeletingUser(user)">Delete my profile!</button>
+			</div>
+
+			<div class="column right">
+				@if (user.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
+				{
+					<p>Your default pick up / drop off location on the map:</p>
+					<br>
+					<p align="center">
+						<iframe width="600"
+								height="450"
+								loading="lazy"
+								allowfullscreen
+								src="https://www.google.com/maps/embed/v1/directions
+				?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
+				&origin=@user.DefaultLatitude?.ToString("F8", CultureInfo.InvariantCulture), @user.DefaultLongitude?.ToString("F8", CultureInfo.InvariantCulture)
+				&destination=Givaudan,Baierbrunn+Germany
+				&avoid=tolls">
+						</iframe>
+					</p>
+				}
+				else
+				{
+					<img src="/images/bb.jpeg" alt="Baierbrunn" style="width:600px;height:337px;">
+				}
+			</div>
 
 
-    </Authorized>
+			@if (popUpForDeletingUser)
+			{
+				<div class="modal" tabindex="-1" style="display:block" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h3 class="modal-title">Delete your profile</h3>
+								<button type="button" class="close" @onclick="closePopUpForDeletingUser"> <span area-hidden="true">X</span></button>
+							</div>
+							<div class="modal-body">
+								<p>Are you sure you want to delete our profile? If you delete it, you cannot reactivate it again!</p>
+								<br>
+								<button type="button" class="close" @onclick="() => deleteUser()">Delete my profile!</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			}
+		</div>
+
+	</Authorized>
 </AuthorizeView>
 
 @code {
 
-    private User user;
-    public async Task identifyLoggedInUser()
-    {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+	private User user;
+	public async Task identifyLoggedInUser()
+	{
+		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-        var claims = authState.User;
+		var claims = authState.User;
 
-        user = await UserManager.GetUserAsync(claims);
-    }
+		user = await UserManager.GetUserAsync(claims);
+	}
 
-    protected override void OnParametersSet()
-    {
-        identifyLoggedInUser().GetAwaiter().GetResult();
-        base.OnParametersSet();
-    }
+	protected override void OnParametersSet()
+	{
+		identifyLoggedInUser().GetAwaiter().GetResult();
+		base.OnParametersSet();
+	}
+
+	// protected override async Task OnAfterRenderAsync(bool firstrender)
+	// {
+	// 	if (firstrender)
+	// 	{
+	// 		if (user.DefaultLatitude is not null || user.DefaultLongitude is not null)
+	// 		{
+	// 			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", user.DefaultLatitude, user.DefaultLongitude);
+	// 		}
+	// 	}
+	// }
+
+	bool popUpForDeletingUser = false;
+
+	public void closePopUpForDeletingUser()
+	{
+		popUpForDeletingUser = false;
+	}
+
+	public void showPopUpForDeletingUser(User user)
+	{
+		popUpForDeletingUser = true;
+	}
 
 
-    bool popUpForDeletingUser = false;
-
-    public void closePopUpForDeletingUser()
-    {
-        popUpForDeletingUser = false;
-    }
-
-    public void showPopUpForDeletingUser(User user)
-    {
-        popUpForDeletingUser = true;
-    }
-
-
-    public async Task deleteUser()
-    {
-        DataService.deleteUser(user);
-        NavigationManager.NavigateTo("/Logout", forceLoad: true);
-    }
+	public async Task deleteUser()
+	{
+		DataService.deleteUser(user);
+		NavigationManager.NavigateTo("/Logout", forceLoad: true);
+	}
 
 
 }

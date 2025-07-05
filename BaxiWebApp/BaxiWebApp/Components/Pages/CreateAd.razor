@@ -345,7 +345,7 @@
 	public async Task showMapWithAddress()
 	{
 		(ad.Latitude, ad.Longitude) = await DataService.GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
-		int distance = await GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
+		int distance = await DataService.GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
 		if (ad.Latitude == null || ad.Longitude == null)
 		{
 			showMap = false;
@@ -355,7 +355,7 @@
 				StateHasChanged();
 			});
 		}
-		else if (await IsItTooCloseToBB(distance))
+		else if (await DataService.IsItTooCloseToBB(distance))
 		{
 			showMap = false;
 			ShowPopUpForTooClose();
@@ -364,7 +364,7 @@
 				StateHasChanged();
 			});
 		}
-		else if (await IsItTooFarFromBB(distance))
+		else if (await DataService.IsItTooFarFromBB(distance))
 		{
 			showMap = false;
 			ShowPopUpForTooFar();
@@ -419,7 +419,7 @@
 			int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
 			if (timeDifference <= timeLimit)
 			{
-				int distance = await GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
+				int distance = await DataService.GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
 				if (distance <= distanceLimit)
 				{
 					DataService.sendEmailNewAd(oldAd);
@@ -468,26 +468,9 @@
 
 
 
-	int minDistanceLimit = 3000;
-	int maxDistanceLimit = 200000;
 
-	public async Task<bool> IsItTooCloseToBB(int distance)
-	{
-		if (distance <= minDistanceLimit)
-		{
-			return true;
-		}
-		return false;
-	}
 
-	public async Task<bool> IsItTooFarFromBB(int distance)
-	{
-		if (distance >= maxDistanceLimit)
-		{
-			return true;
-		}
-		return false;
-	}
+	
 
 
 	public async Task ValidateAdress()
@@ -552,18 +535,18 @@
 			ad.Latitude = latitudeBB;
 			ad.Longitude = longitudeBB;
 		}
-		int distance = await GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
+		int distance = await DataService.GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
 		if (ad.PickUpDateAndTime <= DateTime.Now)
 		{
 			ShowPopUpForTimeIsInPast();
 			StateHasChanged();
 		}
-		else if (await IsItTooCloseToBB(distance))
+		else if (await DataService.IsItTooCloseToBB(distance))
 		{
 			ShowPopUpForTooClose();
 			StateHasChanged();
 		}
-		else if (await IsItTooFarFromBB(distance))
+		else if (await DataService.IsItTooFarFromBB(distance))
 		{
 			ShowPopUpForTooFar();
 			StateHasChanged();
@@ -591,29 +574,7 @@
 
 
 
-	public async Task<int> GetDistance(double? coordinate1, double? coordinate2, double? coordinate3, double? coordinate4)
-	{
-		if (coordinate1 == null || coordinate2 == null || coordinate3 == null || coordinate4 == null)
-		{
-			return 0;
-		}
-
-		var request = new DirectionsRequest
-		{
-			Origin = $"{coordinate1?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate2?.ToString("F8", CultureInfo.InvariantCulture)}",
-			Destination = $"{coordinate3?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate4?.ToString("F8", CultureInfo.InvariantCulture)}",
-			TravelMode = TravelMode.Driving,
-			ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk"
-		};
-		var result = await GoogleMaps.Directions.QueryAsync(request);
-		if (result.Routes.Count() == 0)
-		{
-			return 100000000;
-		}
-		var legs = result.Routes.First().Legs;
-		int totalDistanceInMeters = legs.Sum(leg => leg.Distance.Value);
-		return totalDistanceInMeters; //output is in METERS!!!
-	}
+	
 
 
 

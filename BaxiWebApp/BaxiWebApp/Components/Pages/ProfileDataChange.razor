@@ -2,122 +2,396 @@
 @using BB
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
+@using GoogleMapsApi;
+@using GoogleMapsApi.Entities.Common;
+@using GoogleMapsApi.Entities.Directions.Request
+@using GoogleMapsApi.Entities.Directions.Response
+@using GoogleMapsApi.Entities.Geocoding.Request
+@using GoogleMapsApi.Entities.Geocoding.Response
+@using GoogleMapsApi.StaticMaps;
+@using GoogleMapsApi.StaticMaps.Entities;
+@using System.Globalization;
+@using System.Threading.Tasks;
+@using System.Text.Json;
+@using System.Timers
+@inject IJSRuntime JSRuntime
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject UserManager<User> UserManager;
 @inject Data.DataService DataService;
 
 <AuthorizeView Context="authContext">
-    <Authorized>
-        <PageTitle>ProfileDataChange</PageTitle>
+	<Authorized>
+		<style>
+			#map {
+				height: 100%;
+			}
 
-        <h1 style="text-align:center;">Change your profile data!</h1>
+			column {
+				float: left;
+				padding: 10px;
+			}
 
+			.left {
+				width: 25%;
+			}
 
-        <EditForm Model="@user" OnValidSubmit="Save">
-
-            First name:
-            <InputText @bind-Value="user.FirstName"></InputText><br>
-            <br>
-
-            Last name:
-            <InputText @bind-Value="user.LastName"></InputText><br>
-            <br>
-
-            Department:
-            <InputSelect @bind-Value="user.Department" id="department">
-                @foreach (var value in Enum.GetValues<Department>())
-                {
-                    <option value="@value">@value.ToString()</option>
-                }
-            </InputSelect>
-            <br>
-
-            Preferred language:
-            <InputSelect @bind-Value="user.PreferredLanguage" id="preferredLanguage">
-                @foreach (var value in Enum.GetValues<PreferredLanguage>())
-                {
-                    <option value="@value">@value.ToString()</option>
-                }
-            </InputSelect>
-            <br>
+			.right {
+				width: 75%;
+			}
+		</style>
 
 
-            Contact:
-            <InputText @bind-Value="user.Contact"></InputText><br>
-            <br>
+		<PageTitle>ProfileDataChange</PageTitle>
 
-            Default ad type:
-            <InputSelect @bind-Value="user.DefaultAdType" id="DefaultAdType">
-                @foreach (var value in Enum.GetValues<AdType>())
-                {
-                    if (value == AdType.SelectAll)
-                    {
-                        <option value="@value">No selection</option>
-                    }
-                    else
-                    {
-                        <option value="@value">@value.ToString()</option>
-                    }
-                }
-            </InputSelect>
-            <br>
+		<h1 style="text-align:center;">Change your profile data!</h1>
 
-            Default pick up address:
-            <InputText @bind-Value="user.DefaultPickUpAddress"></InputText><br>
-            <br>
+		<div class="row">
+			<div class="column left">
+				<EditForm Model="@user" OnValidSubmit="Save">
 
-             Default number of seats:
-            <InputSelect @bind-Value="user.DefaultNumberOfSeats" class="form-control" id="DefaultNumberOfSeats">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-            </InputSelect>
-            <br>
+					First name:
+					<InputText @bind-Value="user.FirstName"></InputText><br>
+					<br>
 
-            Default requests:
-            <InputText @bind-Value="user.DefaultSpecificRequests"></InputText><br>
-            <br>
+					Last name:
+					<InputText @bind-Value="user.LastName"></InputText><br>
+					<br>
 
-            <a href="Profile">
-                <button @onclick="Save">Save</button>
-            </a>
+					Department:
+					<InputSelect @bind-Value="user.Department" id="department">
+						@foreach (var value in Enum.GetValues<Department>())
+						{
+							<option value="@value">@value.ToString()</option>
+						}
+					</InputSelect>
+					<br>
 
-        </EditForm>
-    </Authorized>
+					Preferred language:
+					<InputSelect @bind-Value="user.PreferredLanguage" id="preferredLanguage">
+						@foreach (var value in Enum.GetValues<PreferredLanguage>())
+						{
+							<option value="@value">@value.ToString()</option>
+						}
+					</InputSelect>
+					<br>
+
+
+					Contact:
+					<InputText @bind-Value="user.Contact"></InputText><br>
+					<br>
+
+					Default ad type:
+					<InputSelect @bind-Value="user.DefaultAdType" id="DefaultAdType">
+						@foreach (var value in Enum.GetValues<AdType>())
+						{
+							if (value == AdType.SelectAll)
+							{
+								<option value="@value">No selection</option>
+							}
+							else
+							{
+								<option value="@value">@value.ToString()</option>
+							}
+						}
+					</InputSelect>
+					<br>
+
+					Default pick up address:
+					<div class="form-group">
+						<label for="PickUpDropOffLocation">Pick up / drop off location (outside of Baierbrunn)</label>
+						<input @bind="user.DefaultPickUpAddress" class="form-control" id="DefaultPickUpAddress"
+							   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
+						<br>
+					</div>
+					<br>
+
+					Default number of seats:
+					<InputSelect @bind-Value="user.DefaultNumberOfSeats" class="form-control" id="DefaultNumberOfSeats">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+					</InputSelect>
+					<br>
+
+					Default requests:
+					<InputText @bind-Value="user.DefaultSpecificRequests"></InputText><br>
+					<br>
+
+					<a href="Profile">
+						<button @onclick="Save">Save</button>
+					</a>
+				</EditForm>
+			</div>
+
+			<div class="column right">
+				@if (showMap)
+				{
+					<div>
+						Here you can specify the exact pick up / drop off location!
+					</div>
+					<div>Please move the marker to the place where you can stop with your car / wait for your pick up!</div>
+					<br>
+					<div id="map">
+					</div>
+					<script>
+						(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+						({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+					<br>
+					<br>
+				}
+				else
+				{
+					<img src="/images/bb.jpeg" alt="Baierbrunn" style="width:600px;height:337px;">
+				}
+
+			</div>
+		</div>
+
+		@if (popUpForTooClose)
+		{
+			<div class="modal" tabindex="-1" style="display:block" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title">Are you already in Baierbrunn?</h3>
+							<button type="button" class="close" @onclick="ClosePopUpForTooClose"> <span area-hidden="true">X</span></button>
+						</div>
+						<div class="modal-body">
+							<p>Looks like your ad is very close to Baierbrunn.</p>
+							<button type="button" class="close" @onclick="ClosePopUpForTooClose">Go back to edit the location!</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+
+		@if (popUpForTooFar)
+		{
+			<div class="modal" tabindex="-1" style="display:block" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title">Are you trying to reach Baierbrunn from the moon?</h3>
+							<button type="button" class="close" @onclick="ClosePopUpForTooFar"> <span area-hidden="true">X</span></button>
+						</div>
+						<div class="modal-body">
+							<p>Looks like your ad is very far away from Baierbrunn.</p>
+							<button type="button" class="close" @onclick="ClosePopUpForTooFar">Go back to edit the location!</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+
+		@if (popUpForWrongCoordinates)
+		{
+			<div class="modal" tabindex="-1" style="display:block" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title">Please give me a correct address</h3>
+							<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates"> <span area-hidden="true">X</span></button>
+						</div>
+						<div class="modal-body">
+							<p>Looks like the location you wrote is not corect, please, give me a valid address!</p>
+							<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates">I will correct it!</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+
+
+	</Authorized>
 </AuthorizeView>
 
 @code {
-    public static User user;
-    public async Task identifyLoggedInUser()
-    {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+	public static User user;
 
-        var claims = authState.User;
+	//coordinates of Baierbrunn
+	public double latitudeBB = 48.0206345131560;
+	public double longitudeBB = 11.482919688669709;
 
-        user = await UserManager.GetUserAsync(claims);
-    }
 
-    protected override void OnParametersSet()
-    {
-        identifyLoggedInUser();
-        base.OnParametersSet();
-    }
+	public async Task identifyLoggedInUser()
+	{
+		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-    public async Task Save()
-    {
-        (user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
-        if (user.DefaultPickUpAddress == "")
-        {
-            user.DefaultPickUpAddress = "No default address";
-        }
-        if (user.DefaultSpecificRequests == "")
-        {
-            user.DefaultSpecificRequests = "No default requests";
-        }
-        await UserManager.UpdateAsync(user);
-    }
+		var claims = authState.User;
+
+		user = await UserManager.GetUserAsync(claims);
+	}
+
+	Timer timerObj = new();
+
+	protected override void OnParametersSet()
+	{
+		identifyLoggedInUser();
+		timerObj = new Timer(1500);
+		timerObj.Elapsed += onTimer;
+		timerObj.AutoReset = false;
+		base.OnParametersSet();
+	}
+
+
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		if (firstrender)
+		{
+			if (user.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
+			{
+				showMap = true;
+				await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+				await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", user.DefaultLatitude, user.DefaultLongitude);
+			}
+			else
+			{
+				showMap = false;
+			}
+		}
+	}
+
+
+	public async Task Save()
+	{
+		if (user.DefaultPickUpAddress == "")
+		{
+			user.DefaultPickUpAddress = "No default address";
+			user.DefaultLatitude = 0;
+			user.DefaultLongitude = 0;
+		}
+		else
+		{
+			user.DefaultLatitude = await GetLatitude();
+			user.DefaultLongitude = await GetLongitude();
+		}
+		if (user.DefaultSpecificRequests == "")
+		{
+			user.DefaultSpecificRequests = "No default requests";
+		}
+		await UserManager.UpdateAsync(user);
+	}
+
+
+
+
+	private void OnValueChange(KeyboardEventArgs e)
+	{
+		// remove previous one
+		timerObj.Stop();
+		// new timer
+		timerObj.Start();
+	}
+
+	public void onTimer(object? sender, ElapsedEventArgs e)
+	{
+		showMapWithAddress();
+	}
+
+
+	bool popUpForWrongCoordinates = false;
+	public void ClosePopUpForWrongCoordinates()
+	{
+		popUpForWrongCoordinates = false;
+	}
+	public void ShowPopUpForWrongCoordinates()
+	{
+		popUpForWrongCoordinates = true;
+	}
+
+
+	bool showMap = false;
+	public async Task showMapWithAddress()
+	{
+		if (user.DefaultPickUpAddress == "")
+		{
+			showMap = false;
+			await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+		}
+		else
+		{
+			(user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
+			int distance = await DataService.GetDistance(latitudeBB, longitudeBB, user.DefaultLatitude, user.DefaultLongitude);
+			if (user.DefaultLatitude == null || user.DefaultLongitude == null)
+			{
+				showMap = false;
+				ShowPopUpForWrongCoordinates();
+				await InvokeAsync(() =>
+				{
+					StateHasChanged();
+				});
+			}
+			else if (await DataService.IsItTooCloseToBB(distance))
+			{
+				showMap = false;
+				ShowPopUpForTooClose();
+				await InvokeAsync(() =>
+				{
+					StateHasChanged();
+				});
+			}
+			else if (await DataService.IsItTooFarFromBB(distance))
+			{
+				showMap = false;
+				ShowPopUpForTooFar();
+				await InvokeAsync(() =>
+				{
+					StateHasChanged();
+				});
+			}
+			else
+			{
+				showMap = true;
+				await InvokeAsync(() =>
+				{
+					StateHasChanged();
+				});
+				await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", user.DefaultLatitude, user.DefaultLongitude);
+			}
+		}
+	}
+
+
+	bool popUpForTooClose = false;
+	public void ClosePopUpForTooClose()
+	{
+		popUpForTooClose = false;
+	}
+	public void ShowPopUpForTooClose()
+	{
+		popUpForTooClose = true;
+	}
+
+	bool popUpForTooFar = false;
+	public void ClosePopUpForTooFar()
+	{
+		popUpForTooFar = false;
+	}
+	public void ShowPopUpForTooFar()
+	{
+		popUpForTooFar = true;
+	}
+
+	public async Task<double> GetLatitude()
+	{
+		double latitude = await JSRuntime.InvokeAsync<double>("getLatitude");
+		return latitude;
+	}
+
+	public async Task<double> GetLongitude()
+	{
+		double longitude = await JSRuntime.InvokeAsync<double>("getLongitude");
+		return longitude;
+	}
+
 
 }
