@@ -291,13 +291,21 @@
 		IdentifyLoggedInUser().GetAwaiter().GetResult();
 		ad = new Ad();
 		ad.AdOwner = _currentlyLoggedInUser;
-		ad.AdType = CreateAd.ad.AdType;
+		ad.AdType = _currentlyLoggedInUser.DefaultAdType;
 		ad.AdDirection = CreateAd.ad.AdDirection;
-		ad.PickUpDropOffLocation = CreateAd.ad.PickUpDropOffLocation;
+		ad.PickUpDropOffLocation = _currentlyLoggedInUser.DefaultPickUpAddress;
+		if (ad.PickUpDropOffLocation == "No default address")
+		{
+			ad.PickUpDropOffLocation = "";
+		}
 		ad.PickUpDateAndTime = DateTime.Today.AddDays(1);
 		ad.PickUpDateAndTime = CreateAd.ad.PickUpDateAndTime;
-		ad.NumberOfSeats = CreateAd.ad.NumberOfSeats;
-		ad.SpecificRequests = CreateAd.ad.SpecificRequests;
+		ad.NumberOfSeats = _currentlyLoggedInUser.DefaultNumberOfSeats;
+		ad.SpecificRequests = _currentlyLoggedInUser.DefaultSpecificRequests;
+		if (ad.SpecificRequests == "No default requests")
+		{
+			ad.SpecificRequests = "";
+		}
 
 
 		timerObj = new Timer(1500);
@@ -307,13 +315,23 @@
 		base.OnParametersSet();
 	}
 
-	// protected override async Task OnAfterRenderAsync(bool firstrender)
-	// {
-	// 	if (firstrender)
-	// 	{
-	// 		await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", latitudeBB, longitudeBB);
-	// 	}
-	// }
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		if (firstrender)
+		{
+			if (_currentlyLoggedInUser.DefaultLatitude >= 1 && _currentlyLoggedInUser.DefaultLongitude >= 1)
+			{
+				showMap = true;
+				await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+				await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", _currentlyLoggedInUser.DefaultLatitude, _currentlyLoggedInUser.DefaultLongitude);
+			}
+		}
+	}
+
+
 	private void OnValueChange(KeyboardEventArgs e)
 	{
 		// remove previous one

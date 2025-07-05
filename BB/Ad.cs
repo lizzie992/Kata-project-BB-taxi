@@ -94,10 +94,10 @@ namespace BB
 
 
         
-        private int _numberOfSeats;
+        private int? _numberOfSeats;
 
         [Range(1, 6, ErrorMessage = "You need to select the number of seats!")]
-        public int NumberOfSeats
+        public int? NumberOfSeats
         {
             get { return _numberOfSeats; }
             set { _numberOfSeats = value; }
