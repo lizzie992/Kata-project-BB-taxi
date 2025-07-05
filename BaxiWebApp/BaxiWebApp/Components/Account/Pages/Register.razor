@@ -176,6 +176,15 @@
         user.DefaultNumberOfSeats = Input.DefaultNumberOfSeats;
         user.DefaultSpecificRequests = Input.DefaultSpecificRequests;
         (user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
+        if (user.DefaultPickUpAddress == "")
+        {
+            user.DefaultPickUpAddress = "No default address";
+        }
+        if (user.DefaultSpecificRequests == "")
+        {
+            user.DefaultSpecificRequests = "No default requests";
+        }
+
         user.isActive = true;
         user.isDeleted = false;
         if (user.Email.Contains("admin"))

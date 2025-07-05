@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject UserManager<User> UserManager;
-
+@inject Data.DataService DataService;
 
 <AuthorizeView Context="authContext">
     <Authorized>
@@ -46,6 +46,41 @@
             <InputText @bind-Value="user.Contact"></InputText><br>
             <br>
 
+            Default ad type:
+            <InputSelect @bind-Value="user.DefaultAdType" id="DefaultAdType">
+                @foreach (var value in Enum.GetValues<AdType>())
+                {
+                    if (value == AdType.SelectAll)
+                    {
+                        <option value="@value">No selection</option>
+                    }
+                    else
+                    {
+                        <option value="@value">@value.ToString()</option>
+                    }
+                }
+            </InputSelect>
+            <br>
+
+            Default pick up address:
+            <InputText @bind-Value="user.DefaultPickUpAddress"></InputText><br>
+            <br>
+
+             Default number of seats:
+            <InputSelect @bind-Value="user.DefaultNumberOfSeats" class="form-control" id="DefaultNumberOfSeats">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            </InputSelect>
+            <br>
+
+            Default requests:
+            <InputText @bind-Value="user.DefaultSpecificRequests"></InputText><br>
+            <br>
+
             <a href="Profile">
                 <button @onclick="Save">Save</button>
             </a>
@@ -71,9 +106,18 @@
         base.OnParametersSet();
     }
 
-    private void Save()
+    public async Task Save()
     {
-        UserManager.UpdateAsync(user);
+        (user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
+        if (user.DefaultPickUpAddress == "")
+        {
+            user.DefaultPickUpAddress = "No default address";
+        }
+        if (user.DefaultSpecificRequests == "")
+        {
+            user.DefaultSpecificRequests = "No default requests";
+        }
+        await UserManager.UpdateAsync(user);
     }
 
 }

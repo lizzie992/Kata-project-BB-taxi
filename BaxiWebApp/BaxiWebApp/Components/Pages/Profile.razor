@@ -27,11 +27,19 @@
             <p>Rating: @user.Rating</p>
             <p>Number of warnings: @user.NumberOfWarnings</p>
             <br>
-
-            <p>Here you can set up some notifications if someone is posting an ad that is convenient for you!</p>
-            <a href="NotificationsForRoutes">
-                <button>Click here to set up some notifications!</button>
-            </a>
+            <p>Default data for creating ads:</p>
+            <p>Ad type: @if (user.DefaultAdType == AdType.SelectAll)
+                {
+                    <p>No default type</p>
+                }
+                else
+                {
+                    @user.DefaultAdType
+                }
+                </p>
+            <p>Address / location for pick up / drop off: @user.DefaultPickUpAddress</p>
+            <p>Number of seats: @user.DefaultNumberOfSeats</p>
+            <p>Speficic requests: @user.DefaultSpecificRequests</p>
             <br>
 
             <a href="ProfileDataChange">
