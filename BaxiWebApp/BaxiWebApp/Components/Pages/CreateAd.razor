@@ -269,6 +269,26 @@
 				</div>
 			}
 
+
+
+			@if (popUpForInvalidRoute)
+			{
+				<div class="modal" tabindex="-1" style="display:block" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h3 class="modal-title">Please give me a correct address</h3>
+								<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute"> <span area-hidden="true">X</span></button>
+							</div>
+							<div class="modal-body">
+								<p>Looks like there is no route between your location and Baierbrunn!</p>
+								<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute">I will correct it!</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+
 		}
 
 	</Authorized>
@@ -364,7 +384,16 @@
 	{
 		(ad.Latitude, ad.Longitude) = await DataService.GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
 		int distance = await DataService.GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
-		if (ad.Latitude == null || ad.Longitude == null)
+		if (distance == Constants.INVALID_ROUTE)
+		{
+			showMap = false;
+			ShowPopUpForInvalidRoute();
+			await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+		}
+		else if (ad.Latitude == null || ad.Longitude == null)
 		{
 			showMap = false;
 			ShowPopUpForWrongCoordinates();
@@ -438,7 +467,15 @@
 			if (timeDifference <= timeLimit)
 			{
 				int distance = await DataService.GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
-				if (distance <= distanceLimit)
+				if (distance == Constants.NULL_COORDINATES)
+				{
+					continue;
+				}
+				else if (distance == Constants.INVALID_ROUTE)
+				{
+					continue;
+				}
+				else if (distance <= distanceLimit)
 				{
 					DataService.sendEmailNewAd(oldAd);
 					DataService.sendEmailNewAd(newAd);
@@ -488,7 +525,7 @@
 
 
 
-	
+
 
 
 	public async Task ValidateAdress()
@@ -544,6 +581,16 @@
 
 
 
+	bool popUpForInvalidRoute = false;
+	public void ClosePopUpForInvalidRoute()
+	{
+		popUpForInvalidRoute = false;
+	}
+	public void ShowPopUpForInvalidRoute()
+	{
+		popUpForInvalidRoute = true;
+	}
+
 	async void CheckAd()
 	{
 		ad.Latitude = await GetLatitude();
@@ -557,6 +604,16 @@
 		if (ad.PickUpDateAndTime <= DateTime.Now)
 		{
 			ShowPopUpForTimeIsInPast();
+			StateHasChanged();
+		}
+		else if (distance == Constants.NULL_COORDINATES)
+		{
+			ShowPopUpForWrongCoordinates();
+			StateHasChanged();
+		}
+		else if (distance == Constants.INVALID_ROUTE)
+		{
+			ShowPopUpForInvalidRoute();
 			StateHasChanged();
 		}
 		else if (await DataService.IsItTooCloseToBB(distance))

@@ -52,7 +52,7 @@ namespace BaxiWebApp.Data
         {
             if (coordinate1 == null || coordinate2 == null || coordinate3 == null || coordinate4 == null)
             {
-                return 0;
+                return Constants.NULL_COORDINATES;
             }
 
             var request = new DirectionsRequest
@@ -65,7 +65,7 @@ namespace BaxiWebApp.Data
             var result = await GoogleMaps.Directions.QueryAsync(request);
             if (result.Routes.Count() == 0)
             {
-                return 100000000;
+                return Constants.INVALID_ROUTE;
             }
             var legs = result.Routes.First().Legs;
             int totalDistanceInMeters = legs.Sum(leg => leg.Distance.Value);

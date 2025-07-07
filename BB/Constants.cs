@@ -41,5 +41,8 @@ namespace BB
         public static string FILE_PATH_USERDATA = @"..\..\UserData.txt";
         public static string FILE_PATH_AD = @"..\..\Ads.txt";
         public static string COMPANY_NAME = "company";
+
+        public static int NULL_COORDINATES = -1;
+        public static int INVALID_ROUTE = -2;
     }
 }

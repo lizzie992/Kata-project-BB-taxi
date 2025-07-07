@@ -204,6 +204,23 @@
 			</div>
 		}
 
+		@if (popUpForInvalidRoute)
+		{
+			<div class="modal" tabindex="-1" style="display:block" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title">Please give me a correct address</h3>
+							<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute"> <span area-hidden="true">X</span></button>
+						</div>
+						<div class="modal-body">
+							<p>Looks like there is no route between your location and Baierbrunn!</p>
+							<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute">I will correct it!</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
 
 	</Authorized>
 </AuthorizeView>
@@ -305,6 +322,15 @@
 		popUpForWrongCoordinates = true;
 	}
 
+	bool popUpForInvalidRoute = false;
+	public void ClosePopUpForInvalidRoute()
+	{
+		popUpForInvalidRoute = false;
+	}
+	public void ShowPopUpForInvalidRoute()
+	{
+		popUpForInvalidRoute = true;
+	}
 
 	bool showMap = false;
 	public async Task showMapWithAddress()
@@ -325,6 +351,14 @@
 			{
 				showMap = false;
 				ShowPopUpForWrongCoordinates();
+				await InvokeAsync(() =>
+				{
+					StateHasChanged();
+				});
+			}
+			else if (distance == Constants.INVALID_ROUTE)
+			{
+				ShowPopUpForInvalidRoute();
 				await InvokeAsync(() =>
 				{
 					StateHasChanged();
