@@ -279,7 +279,6 @@
 	{
 		if (user.DefaultPickUpAddress == "")
 		{
-			user.DefaultPickUpAddress = "No default address";
 			user.DefaultLatitude = 0;
 			user.DefaultLongitude = 0;
 		}
@@ -287,10 +286,6 @@
 		{
 			user.DefaultLatitude = await GetLatitude();
 			user.DefaultLongitude = await GetLongitude();
-		}
-		if (user.DefaultSpecificRequests == "")
-		{
-			user.DefaultSpecificRequests = "No default requests";
 		}
 		await UserManager.UpdateAsync(user);
 	}

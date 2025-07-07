@@ -113,8 +113,8 @@ namespace BB
             set { _defaultAdType = value; }
         }
 
-        private string? _defaultPickUpAddress;
-        public string? DefaultPickUpAddress
+        private string _defaultPickUpAddress;
+        public string DefaultPickUpAddress
         {
             get { return _defaultPickUpAddress; }
             set { _defaultPickUpAddress = value; }
@@ -134,15 +134,15 @@ namespace BB
             set { _defaultLongitude = value; }
         }
 
-        private int? _defaultNumberOfSeats;
-        public int? DefaultNumberOfSeats
+        private int _defaultNumberOfSeats;
+        public int DefaultNumberOfSeats
         {
             get { return _defaultNumberOfSeats; }
             set { _defaultNumberOfSeats = value; }
         }
 
-        private string? _defaultSpecificRequests;
-        public string? DefaultSpecificRequests
+        private string _defaultSpecificRequests;
+        public string DefaultSpecificRequests
         {
             get { return _defaultSpecificRequests; }
             set { _defaultSpecificRequests = value; }
