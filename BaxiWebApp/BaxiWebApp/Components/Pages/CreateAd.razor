@@ -455,7 +455,7 @@
 		_currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
-	public async void CheckDistanceForNotification(Ad newAd, List<Ad> adList)
+	public async Task CheckDistanceAndSendNotification(Ad newAd, List<Ad> adList)
 	{
 		//parameters to be defined:
 		int distanceLimit = 5000; //PAY ATTENTION: METERS, NOT KILOMETERS, this is the limit of how many meters we calculate the notificaions for
@@ -477,14 +477,18 @@
 				}
 				else if (distance <= distanceLimit)
 				{
-					DataService.sendEmailNewAd(oldAd);
-					DataService.sendEmailNewAd(newAd);
+					string messageOldAd = $"You might be interested in this new Ad:\r\n Ad type: {oldAd.AdType}\r\nAd Direction: {oldAd.AdDirection}\r\nAddress: {oldAd.PickUpDropOffLocation}\r\n On {oldAd.PickUpDateAndTime}\r\n Available seats: {oldAd.NumberOfSeats}\r\n Any speicifc requests: {oldAd.SpecificRequests}\r\n";
+					string messageNewAd = $"You might be interested in this new Ad:\r\n Ad type: {newAd.AdType}\r\nAd Direction: {newAd.AdDirection}\r\nAddress: {newAd.PickUpDropOffLocation}\r\n On {newAd.PickUpDateAndTime}\r\n Available seats: {newAd.NumberOfSeats}\r\n Any speicifc requests: {newAd.SpecificRequests}\r\n";
+					string emailAddress = "gulyaskata99@gmail.com";
+					string subject = "Check out this new ad: ";
+					DataService.sendEmail(emailAddress, subject, messageOldAd);
+					DataService.sendEmail(emailAddress, subject, messageNewAd);
 				}
 			}
 		}
 	}
 
-	public async void SendNotificationAboutAd(Ad newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
+	public async Task CheckAdsForNotification(Ad newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
 	{
 
 		var adList = context.Ads.ToList<Ad>().AsEnumerable();
@@ -493,14 +497,14 @@
 		if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Passenger)
 		{
 			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats);
-			CheckDistanceForNotification(newAd, adList.ToList());
+			await CheckDistanceAndSendNotification(newAd, adList.ToList());
 		}
 
 		//TO Baierbrunn, driver looking for passengers
 		if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Driver)
 		{
 			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats);
-			CheckDistanceForNotification(newAd, adList.ToList());
+			await CheckDistanceAndSendNotification(newAd, adList.ToList());
 		}
 
 
@@ -508,14 +512,14 @@
 		if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Passenger)
 		{
 			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats);
-			CheckDistanceForNotification(newAd, adList.ToList());
+			await CheckDistanceAndSendNotification(newAd, adList.ToList());
 		}
 
 		//FROM Baierbrunn, driver looking for passengers
 		if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Driver)
 		{
 			adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats);
-			CheckDistanceForNotification(newAd, adList.ToList());
+			await CheckDistanceAndSendNotification(newAd, adList.ToList());
 		}
 
 
@@ -628,7 +632,7 @@
 		}
 		else
 		{
-			WriteData();
+			await WriteData();
 		}
 	}
 
@@ -640,7 +644,7 @@
 			ad.SpecificRequests = "No Specific requests";
 		}
 		context.SaveChanges();
-		SendNotificationAboutAd(ad);
+		await CheckAdsForNotification(ad);
 		NavigationManager.NavigateTo("Ads");
 	}
 

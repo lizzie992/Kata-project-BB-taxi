@@ -232,7 +232,7 @@
 
 	public void SendMessage()
 	{
-		DataService.SendMessage(CurrentConversation, currentlyLoggedInUser, TextMessage, CurrentConversation.ID);
+		DataService.SendChatMessage(CurrentConversation, currentlyLoggedInUser, TextMessage, CurrentConversation.ID);
 		TextMessage = "";
 	}
 

@@ -114,7 +114,7 @@ namespace BaxiWebApp.Data
             _dbcFactory = dbcFactory;
         }
 
-        public void SendMessage(Conversation C, User currentlyLoggedInUser, string TextMessage, int ID)
+        public void SendChatMessage(Conversation C, User currentlyLoggedInUser, string TextMessage, int ID)
         {
             using (var context = _dbcFactory.CreateDbContext())
             {
@@ -165,6 +165,22 @@ namespace BaxiWebApp.Data
             }
         }
 
+
+        public void sendEmail(string emailAddress, string subject, string message)
+        {
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
+            string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
+            client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
+            mailMessage.To.Add(emailAddress);
+            mailMessage.Subject = subject;
+            mailMessage.Body = message;
+            client.Send(mailMessage);
+        }
+
         public void ReportConversation(Conversation C, User currentlyLoggedInUser, string reasonForReporting)
         {
             using (var context = _dbcFactory.CreateDbContext())
@@ -181,17 +197,11 @@ namespace BaxiWebApp.Data
                 }
                 string output = message.ToString();
 
-                SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
-                client.EnableSsl = true;
-                client.UseDefaultCredentials = false;
-                string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
-                client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
-                mailMessage.To.Add("gulyaskata99@gmail.com");
-                mailMessage.Body = $"Please check out the following conversation below that {currentlyLoggedInUser} reported to you, with the following reason: {reasonForReporting}\r\n{message}";
-                mailMessage.Subject = "A conversation was just reported to you";
-                client.Send(mailMessage);
+                string emailAddress = "gulyaskata99@gmail.com";
+                string subject= "A conversation was just reported to you";
+                string text = $"Please check out the following conversation below that {currentlyLoggedInUser} reported to you, with the following reason: {reasonForReporting}\r\n{message}";
+
+                sendEmail(emailAddress, subject, text);
 
             }
         }
@@ -200,40 +210,13 @@ namespace BaxiWebApp.Data
         {
             string adDetails = $"Ad owner: {showUserNameWithStatus(ad.AdOwner)}\r\nAd type: {ad.AdType}\r\nAd Direction: {ad.AdDirection}\r\nAddress: {ad.PickUpDropOffLocation}\r\nPick up date and time: {ad.PickUpDateAndTime}\r\nNumber of seats: {ad.NumberOfSeats}\r\nSpecific requests: {ad.SpecificRequests}\r\n";
 
-            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
-            client.EnableSsl = true;
-            client.UseDefaultCredentials = false;
-            string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
-            client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
-            mailMessage.To.Add("gulyaskata99@gmail.com");
-            mailMessage.Body = $"Please check out the following ad below that {showUserNameWithStatus(currentlyLoggedInUser)} reported to you: \r\n{adDetails}\r\nThe reason for reporting is: {reasonForReporting}\r\nOpen the ad here: LINK";
-            mailMessage.Subject = "An ad was just reported to you";
-            client.Send(mailMessage);
+            string emailAddress = "gulyaskata99@gmail.com";
+            string subject = "An ad was just reported to you";
+            string text = $"Please check out the following ad below that {showUserNameWithStatus(currentlyLoggedInUser)} reported to you: \r\n{adDetails}\r\nThe reason for reporting is: {reasonForReporting}\r\nOpen the ad here: LINK";
+            sendEmail(emailAddress, subject, text);
+
         }
 
-
-
-
-        public void sendEmailNewAd(Ad ad)
-        {
-            string message = $"You might be interested in this new Ad:\r\n Ad type: {ad.AdType}\r\nAd Direction: {ad.AdDirection}\r\nAddress: {ad.PickUpDropOffLocation}\r\n On {ad.PickUpDateAndTime}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n";
-            if (ad.PickUpDropOffLocation.Contains("Sendling"))
-            {
-                SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
-                client.EnableSsl = true;
-                client.UseDefaultCredentials = false;
-                string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
-                client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
-                mailMessage.To.Add("gulyaskata99@gmail.com"); //this will be changed to parameter string toEmailAddress
-                mailMessage.Body = message;
-                mailMessage.Subject = "Check out this new ad: ";
-                client.Send(mailMessage);
-            }
-        }
 
         int maxNumberOfWarnings = 3;
         public void giveUserAWarning(User user, string reasonForWarning)
@@ -244,7 +227,10 @@ namespace BaxiWebApp.Data
                 user.NumberOfWarnings++;
                 context.Update(user);
                 context.SaveChanges();
-                sendEmailAboutWarning(user, reasonForWarning);
+                string emailAddress = "gulyaskata99@gmail.com";
+                string subject = "You received a warning on the Baxi app!";
+                string text = $"Dear {showUserNameWithStatus(user)}\r\nYou have received a warning from one of our admins.\r\nReason for the warning is: {reasonForWarning}\r\nYour current number of warnings is: {user.NumberOfWarnings}\r\nPlease be aware that as soon as you reach {maxNumberOfWarnings} warnings your account will be automatically inactivated!";
+                sendEmail(emailAddress, subject, text);
                 if (user.NumberOfWarnings == maxNumberOfWarnings)
                 {
                     string reason = "You have reached 3 warnings!";
@@ -255,78 +241,6 @@ namespace BaxiWebApp.Data
         }
 
 
-        public void sendEmailAboutWarning(User user, string reasonForWarning)
-        {
-            string message = $"Dear {showUserNameWithStatus(user)}\r\nYou have received a warning from one of our admins.\r\nReason for the warning is: {reasonForWarning}\r\nYour current number of warnings is: {user.NumberOfWarnings}\r\nPlease be aware that as soon as you reach {maxNumberOfWarnings} warnings your account will be automatically inactivated!";
-
-            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
-            client.EnableSsl = true;
-            client.UseDefaultCredentials = false;
-            string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
-            client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
-            mailMessage.To.Add("gulyaskata99@gmail.com");
-            mailMessage.Body = message;
-            mailMessage.Subject = "You received a warning on the Baxi app!";
-            client.Send(mailMessage);
-
-        }
-
-        public void sendEmailAboutDeactivation(User user, string reasonForDeactivating)
-        {
-            string message = $"Dear {showUserNameWithStatus(user)}\r\nYour account has been deactivated!\r\nThe reason is: {reasonForDeactivating}\r\nPlease contact the admin team about the reasons behind it and the possible reactivation!";
-
-            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
-            client.EnableSsl = true;
-            client.UseDefaultCredentials = false;
-            string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
-            client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
-            mailMessage.To.Add("gulyaskata99@gmail.com");
-            mailMessage.Body = message;
-            mailMessage.Subject = "Your Baxi accout has been deactivated!";
-            client.Send(mailMessage);
-
-        }
-
-        public void sendEmailAboutReactivation(User user)
-        {
-            string message = $"Dear {showUserNameWithStatus(user)}\r\nYour account has been reactivated!\r\nYou can now use all functions again.\r\nPlease bring some flowers/chocolate to the admin team to show your gratitude ;)";
-
-            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
-            client.EnableSsl = true;
-            client.UseDefaultCredentials = false;
-            string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
-            client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
-            mailMessage.To.Add("gulyaskata99@gmail.com");
-            mailMessage.Body = message;
-            mailMessage.Subject = "Your Baxi accout has been reactivated!";
-            client.Send(mailMessage);
-
-        }
-
-        public void sendEmailAboutDeletingAdByAdmin(Ad ad, string reasonForDeleting)
-        {
-            string message = $"Dear {showUserNameWithStatus(ad.AdOwner)}\r\nYour ad has been removed by the admins for reasons: {reasonForDeleting}\r\n\r\nAd:\r\nAd type: {ad.AdType}\r\nAd Direction: {ad.AdDirection}\r\nAddress: {ad.PickUpDropOffLocation}\r\n On {ad.PickUpDateAndTime}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n)";
-
-            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
-            client.EnableSsl = true;
-            client.UseDefaultCredentials = false;
-            string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
-            client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
-            mailMessage.To.Add("gulyaskata99@gmail.com");
-            mailMessage.Body = message;
-            mailMessage.Subject = "Your Baxi ad is deleted!";
-            client.Send(mailMessage);
-
-        }
-
 
 
         public void deactivateUser(User user, string reasonForDeactivating)
@@ -336,7 +250,10 @@ namespace BaxiWebApp.Data
                 user.isActive = false;
                 context.Update(user);
                 context.SaveChanges();
-                sendEmailAboutDeactivation(user, reasonForDeactivating);
+                string text = $"Dear {showUserNameWithStatus(user)}\r\nYour account has been deactivated!\r\nThe reason is: {reasonForDeactivating}\r\nPlease contact the admin team about the reasons behind it and the possible reactivation!";
+                string emailAddress = "gulyaskata99@gmail.com";
+                string subject = "Your Baxi accout has been deactivated!";
+                sendEmail(emailAddress, subject, text);
             }
         }
 
@@ -348,7 +265,10 @@ namespace BaxiWebApp.Data
                 user.NumberOfWarnings = 0;
                 context.Update(user);
                 context.SaveChanges();
-                sendEmailAboutReactivation(user);
+                string text = $"Dear {showUserNameWithStatus(user)}\r\nYour account has been reactivated!\r\nYou can now use all functions again.\r\nPlease bring some flowers/chocolate to the admin team to show your gratitude ;)";
+                string subject = "Your Baxi accout has been reactivated!";
+                string emailAddress = "gulyaskata99@gmail.com";
+                sendEmail(emailAddress, subject, text);
             }
         }
 
