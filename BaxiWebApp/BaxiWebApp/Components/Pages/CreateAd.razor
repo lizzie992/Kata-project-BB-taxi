@@ -68,6 +68,7 @@
 						<ValidationSummary />
 						I am a: <br>
 						<InputSelect @bind-Value="ad.AdType" id="adType">
+							<option value="@AdType.SelectAll">Please select!</option>
 							@foreach (var value in Enum.GetValues<AdType>())
 							{
 								if (value == AdType.SelectAll)
@@ -289,6 +290,24 @@
 				</div>
 			}
 
+			@if (popUpForInvalidAdType)
+			{
+				<div class="modal" tabindex="-1" style="display:block" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h3 class="modal-title">Please give me a correct Ad type</h3>
+								<button type="button" class="close" @onclick="ClosePopUpForInvalidAdType"> <span area-hidden="true">X</span></button>
+							</div>
+							<div class="modal-body">
+								<p>You have to select Driver or Passenger!</p>
+								<button type="button" class="close" @onclick="ClosePopUpForInvalidAdType">I will correct it!</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+
 		}
 
 	</Authorized>
@@ -314,19 +333,10 @@
 		ad.AdType = _currentlyLoggedInUser.DefaultAdType;
 		ad.AdDirection = CreateAd.ad.AdDirection;
 		ad.PickUpDropOffLocation = _currentlyLoggedInUser.DefaultPickUpAddress;
-		if (ad.PickUpDropOffLocation == "No default address")
-		{
-			ad.PickUpDropOffLocation = "";
-		}
 		ad.PickUpDateAndTime = DateTime.Today.AddDays(1);
 		ad.PickUpDateAndTime = CreateAd.ad.PickUpDateAndTime;
 		ad.NumberOfSeats = _currentlyLoggedInUser.DefaultNumberOfSeats;
 		ad.SpecificRequests = _currentlyLoggedInUser.DefaultSpecificRequests;
-		if (ad.SpecificRequests == "No default requests")
-		{
-			ad.SpecificRequests = "";
-		}
-
 
 		timerObj = new Timer(1500);
 		timerObj.Elapsed += onTimer;
@@ -595,14 +605,25 @@
 		popUpForInvalidRoute = true;
 	}
 
+	bool popUpForInvalidAdType = false;
+	public void ClosePopUpForInvalidAdType()
+	{
+		popUpForInvalidAdType = false;
+	}
+	public void ShowPopUpForInvalidAdType()
+	{
+		popUpForInvalidAdType = true;
+	}
+
+
+
 	async void CheckAd()
 	{
 		ad.Latitude = await GetLatitude();
 		ad.Longitude = await GetLongitude();
 		if (ad.Longitude == 0 || ad.Latitude == 0)
 		{
-			ad.Latitude = latitudeBB;
-			ad.Longitude = longitudeBB;
+			(ad.Latitude, ad.Longitude) = await DataService.GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
 		}
 		int distance = await DataService.GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
 		if (ad.PickUpDateAndTime <= DateTime.Now)
@@ -628,6 +649,11 @@
 		else if (await DataService.IsItTooFarFromBB(distance))
 		{
 			ShowPopUpForTooFar();
+			StateHasChanged();
+		}
+		else if (ad.AdType == AdType.SelectAll)
+		{
+			ShowPopUpForInvalidAdType();
 			StateHasChanged();
 		}
 		else

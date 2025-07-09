@@ -284,8 +284,7 @@
 		}
 		else
 		{
-			user.DefaultLatitude = await GetLatitude();
-			user.DefaultLongitude = await GetLongitude();
+			(user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
 		}
 		await UserManager.UpdateAsync(user);
 	}
