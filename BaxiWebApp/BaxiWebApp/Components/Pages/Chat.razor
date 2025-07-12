@@ -77,7 +77,8 @@
 					<div class="clickable-div">
 						@if (C.MostRecentMessage is not null)
 						{
-							<a href="Chat/@C.ID">@C.MostRecentMessage.messageText.ToString() @C.MostRecentMessage.timeStamp.ToString("yyyy-MM-dd HH:mm")</a>
+							string title = $"{C.MostRecentMessage.messageText.ToString()}, {C.MostRecentMessage.timeStamp.ToString("yyyy-MM-dd HH:mm")}";
+							<a href="Chat/@C.ID">@title</a>
 						}
 						else
 						{
@@ -93,12 +94,12 @@
 				@if (CurrentConversation is null)
 				{
 				<p>Click on a chat!</p>
-				}
-				else
+			}
+			else
+			{
+				@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
 				{
-					@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
-					{
-						Ad ad = GetAd(CurrentConversation);
+					Ad ad = GetAd(CurrentConversation);
 					<div class="Ad">
 						<p>Ad owner: @DataService.showUserNameWithStatus(ad.AdOwner)</p>
 						<p>Ad type: @ad.AdType</p>
@@ -111,8 +112,8 @@
 						<br>
 						<br>
 					</div>
-						@foreach (Message M in CurrentConversation.messages)
-						{
+					@foreach (Message M in CurrentConversation.messages)
+					{
 						<div class="Message">
 							<p>From: @DataService.showUserNameWithStatus(M.fromUser)</p>
 							<p>To: @DataService.showUserNameWithStatus(M.toUser)</p>
@@ -120,22 +121,22 @@
 							<p>Timestamp: @M.timeStamp</p>
 						</div>
 						<br>
-						}
-						@if (currentlyLoggedInUser.isActive == true)
-						{
+					}
+					@if (currentlyLoggedInUser.isActive == true)
+					{
 						<InputText @bind-Value="TextMessage"></InputText>
 						<button class="btn btn-primary" @onclick="SendMessage">Send</button>
-						}
+					}
 					<br>
 					<br>
 					<button class="btn btn-primary" @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">Delete conversation</button>
 					<button class="btn btn-primary" @onclick="() => showPopUpForReportConversation(CurrentConversation)">Report conversation</button>
-					}
-					else
-					{
-					<p>Looks like you are lost :) Please navigate back to the chat using the navigation menu on the left!</p>
-					}
 				}
+				else
+				{
+					<p>Looks like you are lost :) Please navigate back to the chat using the navigation menu on the left!</p>
+				}
+			}
 			</p>
 		</div>
 	</div>
@@ -194,6 +195,16 @@
 	private string TextMessage { get; set; }
 	string reasonForReporting = "";
 
+	protected override void OnInitialized() => DataService.ChatChanged += OnChatChanged;
+
+	public async void OnChatChanged(object sender, int contactID)
+	{
+		await InvokeAsync(() =>
+	{
+		StateHasChanged();
+	});
+	}
+
 	protected override void OnParametersSet()
 	{
 		IdentifyLoggedInUser().GetAwaiter().GetResult();
@@ -225,7 +236,7 @@
 		{
 			var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).ToList<Conversation>().AsQueryable();
 			result = result.Where(c => c.adOwnerUser == currentlyLoggedInUser || c.contactingUser == currentlyLoggedInUser);
-			// result = result.OrderByDescending(c => c.MostRecentMessage.timeStamp);
+			result = result.OrderByDescending(c => c.MostRecentMessage.timeStamp);
 			return result;
 		}
 	}

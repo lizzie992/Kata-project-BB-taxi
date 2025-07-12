@@ -114,6 +114,9 @@ namespace BaxiWebApp.Data
             _dbcFactory = dbcFactory;
         }
 
+
+        public event EventHandler<int> ChatChanged;
+
         public void SendChatMessage(Conversation C, User currentlyLoggedInUser, string TextMessage, int ID)
         {
             using (var context = _dbcFactory.CreateDbContext())
@@ -136,6 +139,7 @@ namespace BaxiWebApp.Data
                 CurrentConversation.messages.Add(message);
                 //        context.Update(CurrentConversation);
                 context.SaveChanges();
+                ChatChanged?.Invoke(this, CurrentConversation.ID);
             }
 
         }
