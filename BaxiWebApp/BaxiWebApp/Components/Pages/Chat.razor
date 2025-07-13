@@ -197,6 +197,11 @@
 
 	protected override void OnInitialized() => DataService.ChatChanged += OnChatChanged;
 
+	/// <summary>
+	/// In case of event ChatChanged, it triggers a Statehaschanged to re-render the component
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="contactID"></param>
 	public async void OnChatChanged(object sender, int contactID)
 	{
 		await InvokeAsync(() =>
@@ -211,6 +216,10 @@
 		base.OnParametersSet();
 	}
 
+	/// <summary>
+	/// Identifies the user who is currently logged in
+	/// </summary>
+	/// <returns>User</returns>
 	public User currentlyLoggedInUser;
 	public async Task IdentifyLoggedInUser()
 	{
@@ -241,12 +250,19 @@
 		}
 	}
 
+	/// <summary>
+	/// Adds the current string as a message to the current conversation and also resets the textmessage to an empty string for the next message
+	/// </summary>
 	public void SendMessage()
 	{
 		DataService.SendChatMessage(CurrentConversation, currentlyLoggedInUser, TextMessage, CurrentConversation.ID);
 		TextMessage = "";
 	}
 
+	/// <summary>
+	/// Triggers the dataservice method to delete the conversation object and redirects the user to the main chat page
+	/// </summary>
+	/// <param name="C"></param>
 	public void DeleteConversation(Conversation C)
 	{
 		DataService.DeleteConversation(C);
@@ -254,6 +270,12 @@
 		NavigationManager.NavigateTo("Chat");
 	}
 
+	/// <summary>
+	/// Triggers the dataservice method to report the given conversation to the admins
+	/// </summary>
+	/// <param name="C">Conversation object</param>
+	/// <param name="currentlyLoggedInUser">User object</param>
+	/// <param name="reasonForReporting">String</param>
 	public void ReportConversation(Conversation C, User currentlyLoggedInUser, string reasonForReporting)
 	{
 		DataService.ReportConversation(C, currentlyLoggedInUser, reasonForReporting);
@@ -261,6 +283,11 @@
 		closePopUpForReportConversation();
 	}
 
+	/// <summary>
+	/// Find the Ad which the given conversation belongs to in the database
+	/// </summary>
+	/// <param name="C">Conversation object</param>
+	/// <returns>Ad object</returns>
 	public Ad GetAd(Conversation C)
 	{
 		Ad ad = context.Ads.Where(a => a.adConversations.Contains(C)).First();
@@ -270,12 +297,17 @@
 
 
 	bool popUpForDeletingConversation = false;
-
+	/// <summary>
+	/// Closes pop up window about deleting a conversation
+	/// </summary>
 	public void closePopUpForDeletingConversation()
 	{
 		popUpForDeletingConversation = false;
 	}
-
+	/// <summary>
+	/// Opens pop up window about deleting a conversation
+	/// </summary>
+	/// <param name="C">Conversation object</param>
 	public void showPopUpForDeletingConversation(Conversation C)
 	{
 		selectedConvo = C;
@@ -285,12 +317,17 @@
 
 
 	bool popUpForReportConversation = false;
-
+	/// <summary>
+	/// Closes pop up window about reporting a conversation
+	/// </summary>
 	public void closePopUpForReportConversation()
 	{
 		popUpForReportConversation = false;
 	}
-
+	/// <summary>
+	/// Opens pop up window about reporting a conversation
+	/// </summary>
+	/// <param name="C">Conversation object</param>
 	public void showPopUpForReportConversation(Conversation C)
 	{
 		selectedConvo = C;

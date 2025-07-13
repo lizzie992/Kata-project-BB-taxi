@@ -72,6 +72,10 @@
 @code {
     int adId { get; set; }
     public User user;
+    /// <summary>
+    /// Identifies the user who is currently logged in
+    /// </summary>
+    /// <returns>User</returns>
     public async Task identifyLoggedInUser()
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
@@ -102,12 +106,20 @@
     }
 
     private int ID;
+    /// <summary>
+    /// Redirects the user to the Modify Ad page using the ID number of the selected ad that the user wants to modify
+    /// </summary>
+    /// <param name="ad">Ad</param>
     public void ModifyAd(Ad ad)
     {
         ID = ad.ID;
         NavigationManager.NavigateTo("ModifyAd/" + ID);
     }
 
+    /// <summary>
+    /// Removes the selected ad from the database
+    /// </summary>
+    /// <param name="ad">Ad</param>
     private void DeleteAd(Ad ad)
     {
         context.Ads.Remove(ad);
@@ -118,12 +130,17 @@
 
     Ad selectedAd;
     bool popUpForDeletingAd = false;
-
+    /// <summary>
+	/// Closes pop up window to confirm ad deletion
+	/// </summary>
     public void closePopUpForDeletingAd()
     {
         popUpForDeletingAd = false;
     }
 
+    /// <summary>
+	/// Opens pop up window to confirm ad deletion
+	/// </summary>
     public void showPopUpForDeletingAd(Ad ad)
     {
         selectedAd = ad;

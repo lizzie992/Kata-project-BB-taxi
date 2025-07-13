@@ -67,23 +67,20 @@ style="height: 400px">
 
 
 	public static User? user;
+	/// <summary>
+	/// Identifies the user who is currently logged in
+	/// </summary>
+	/// <returns>User</returns>
 	public async Task identifyLoggedInUser()
 	{
-		//example
 		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
 		var claims = authState.User;
 
 		user = await UserManager.GetUserAsync(claims);
 
-		// //changes to uiser ob:
-		// user.Contact = "bla";
-
-		// await UserManager.UpdateAsync(user);
-
 	}
 
-	public static string APIKey = Environment.GetEnvironmentVariable("Google_Maps_API_Key");
 
 }
 

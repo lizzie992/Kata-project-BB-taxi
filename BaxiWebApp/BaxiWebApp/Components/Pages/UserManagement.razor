@@ -361,7 +361,11 @@
 	}
 
 
-
+	/// <summary>
+	/// Triggers the database method to increase the number of warnings for selected user
+	/// </summary>
+	/// <param name="user">User</param>
+	/// <param name="reasonForWarning">String</param>
 	public void giveUserAWarning(User user, string reasonForWarning)
 	{
 		DataService.giveUserAWarning(user, reasonForWarning);
@@ -370,6 +374,11 @@
 		grid.RefreshDataAsync();
 	}
 
+	/// <summary>
+	/// Triggers the database method to deactivate selected user
+	/// </summary>
+	/// <param name="user">User</param>
+	/// <param name="reasonForDeactivating">String</param>
 	public void deactivateUser(User user, string reasonForDeactivating)
 	{
 		DataService.deactivateUser(user, reasonForDeactivating);
@@ -378,6 +387,10 @@
 		grid.RefreshDataAsync();
 	}
 
+	/// <summary>
+	/// Triggers the database method to reactivate selected user
+	/// </summary>
+	/// <param name="user">User</param>
 	public void reactivateUser(User user)
 	{
 		DataService.reactivateUser(user);
@@ -385,6 +398,10 @@
 		grid.RefreshDataAsync();
 	}
 
+	/// <summary>
+	/// Changes the user's role to Admin
+	/// </summary>
+	/// <param name="user">User</param>
 	public void makeUserAdmin(User user)
 	{
 		if (UserManager.GetRolesAsync(user).Result.First() == "Regular")
@@ -398,6 +415,10 @@
 	}
 
 	public User currentlyLoggedInUser;
+	/// <summary>
+	/// Identifies the user who is currently logged in
+	/// </summary>
+	/// <returns>User</returns>
 	public async Task identifyLoggedInUser()
 	{
 		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
@@ -405,13 +426,22 @@
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
-
+	/// <summary>
+	/// Finds the role of the selected user (Regular or Admin)
+	/// </summary>
+	/// <param name="user">User</param>
+	/// <returns>Regular or Admin</returns>
 	public string getRole(User user)
 	{
 		var list = UserManager.GetRolesAsync(user).Result;
 		return list.First();
 	}
 
+	/// <summary>
+	/// Checks the status of the given user (Active or Inactive)
+	/// </summary>
+	/// <param name="user">User</param>
+	/// <returns>Active or Inactive</returns>
 	public string getStatus(User user)
 	{
 		string status = "";
@@ -430,12 +460,18 @@
 
 
 	bool popUpForWarning = false;
-
+	/// <summary>
+	/// Closes pop up window to show confirmation message about giving a warning to a user
+	/// </summary>
 	public void closePopUpForWarning()
 	{
 		reasonForWarning = "";
 		popUpForWarning = false;
 	}
+	/// <summary>
+	/// Opens pop up window to show confirmation message about giving a warning to a user 
+	/// </summary>
+	/// <param name="user">User</param>
 	public void showPopUpForWarning(User user)
 	{
 		selectedUser = user;
@@ -446,12 +482,17 @@
 
 
 	bool popUpForMakeUserAdmin = false;
-
+	/// <summary>
+	/// Closes pop up window to show confirmation message about making a selected user an admin
+	/// </summary>
 	public void closePopUpForMakeUserAdmin()
 	{
 		popUpForMakeUserAdmin = false;
 	}
-
+	/// <summary>
+	/// Opens pop up window to show confirmation message about making a selected user an admin
+	/// </summary>
+	/// <param name="user">User</param>
 	public void showPopUpForMakeUserAdmin(User user)
 	{
 		selectedUser = user;
@@ -461,12 +502,17 @@
 
 
 	bool popUpForDeactivatingUser = false;
-
+	/// <summary>
+	/// Closes pop up window to show confirmation message about deacticvating a selected user
+	/// </summary>
 	public void closePopUpForDeactivatingUser()
 	{
 		popUpForDeactivatingUser = false;
 	}
-
+	/// <summary>
+	/// Opens pop up window to show confirmation message about deacticvating a selected user
+	/// </summary>
+	/// <param name="user">User</param>
 	public void showPopUpForDeactivatingUser(User user)
 	{
 		selectedUser = user;
@@ -475,12 +521,17 @@
 
 
 	bool popUpForReactivatingUser = false;
-
+	/// <summary>
+	/// Closes pop up window to show confirmation message about reacticvating a selected user
+	/// </summary>
 	public void closePopUpForReactivatingUser()
 	{
 		popUpForReactivatingUser = false;
 	}
-
+	/// <summary>
+	/// Opens pop up window to show confirmation message about reacticvating a selected user
+	/// </summary>
+	/// <param name="user">User</param>
 	public void showPopUpForReactivatingUser(User user)
 	{
 		selectedUser = user;

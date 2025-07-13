@@ -28,6 +28,12 @@ namespace BaxiWebApp.Data
 
         int minDistanceLimit = 3000;
         int maxDistanceLimit = 200000;
+
+        /// <summary>
+        /// check if a distance is under the limit
+        /// </summary>
+        /// <param name="distance">Distance</param>
+        /// <returns>bool</returns>
         public async Task<bool> IsItTooCloseToBB(int distance)
         {
             if (distance <= minDistanceLimit)
@@ -37,6 +43,11 @@ namespace BaxiWebApp.Data
             return false;
         }
 
+        /// <summary>
+        /// check if a distance is above the limit
+        /// </summary>
+        /// <param name="distance">Distance</param>
+        /// <returns>bool</returns>
         public async Task<bool> IsItTooFarFromBB(int distance)
         {
             if (distance >= maxDistanceLimit)
@@ -47,7 +58,14 @@ namespace BaxiWebApp.Data
         }
 
 
-
+        /// <summary>
+        /// Calculates the distance between 2 locations based on coordinates using Google API
+        /// </summary>
+        /// <param name="coordinate1">First location latitudes</param>
+        /// <param name="coordinate2">First location longitudes</param>
+        /// <param name="coordinate3">Second location latitudes</param>
+        /// <param name="coordinate4">Second location longitudes</param>
+        /// <returns>int -> in meters!!!</returns>
         public async Task<int> GetDistance(double? coordinate1, double? coordinate2, double? coordinate3, double? coordinate4)
         {
             if (coordinate1 == null || coordinate2 == null || coordinate3 == null || coordinate4 == null)
@@ -76,9 +94,9 @@ namespace BaxiWebApp.Data
 
 
         /// <summary>
-        ///
+        ///Calculates the coordinates from a given address using Google API
         /// </summary>
-        /// <param name="address"></param>
+        /// <param name="address">Address</param>
         /// <returns>tuple with lat and long</returns>
         public async Task<(double?, double?)> GetCoordinatesFromAddress(string address)
         {
@@ -117,6 +135,13 @@ namespace BaxiWebApp.Data
 
         public event EventHandler<int> ChatChanged;
 
+        /// <summary>
+        /// Sends a message in a given chat conversation and also fires a ChatChanged event
+        /// </summary>
+        /// <param name="C">Conversation</param>
+        /// <param name="currentlyLoggedInUser">User that is sending the message</param>
+        /// <param name="TextMessage">String</param>
+        /// <param name="ID">ID of the conversation</param>
         public void SendChatMessage(Conversation C, User currentlyLoggedInUser, string TextMessage, int ID)
         {
             using (var context = _dbcFactory.CreateDbContext())
@@ -144,6 +169,11 @@ namespace BaxiWebApp.Data
 
         }
 
+        /// <summary>
+        /// Finds the conversation from the database based on the ID
+        /// </summary>
+        /// <param name="ID">Int - ID number</param>
+        /// <returns>Conversation object</returns>
         public Conversation? GetCurrentConversation(int ID)
         {
             using (var context = _dbcFactory.CreateDbContext())
@@ -154,7 +184,10 @@ namespace BaxiWebApp.Data
         }
 
 
-
+        /// <summary>
+        /// Removes a conversation and all messages from the database
+        /// </summary>
+        /// <param name="C">Conversation object</param>
         public void DeleteConversation(Conversation C)
         {
             using (var context = _dbcFactory.CreateDbContext())
@@ -169,7 +202,12 @@ namespace BaxiWebApp.Data
             }
         }
 
-
+        /// <summary>
+        /// Sends email message from the BaierbrunnTaxi email account using gmail client
+        /// </summary>
+        /// <param name="emailAddress">String</param>
+        /// <param name="subject">String</param>
+        /// <param name="message">String</param>
         public void sendEmail(string emailAddress, string subject, string message)
         {
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
@@ -185,6 +223,12 @@ namespace BaxiWebApp.Data
             client.Send(mailMessage);
         }
 
+        /// <summary>
+        /// Sends the whole conversation including messages, users and timestamps to the email address of the admins
+        /// </summary>
+        /// <param name="C">Conversation object</param>
+        /// <param name="currentlyLoggedInUser">User who is reporting the conversation</param>
+        /// <param name="reasonForReporting">String</param>
         public void ReportConversation(Conversation C, User currentlyLoggedInUser, string reasonForReporting)
         {
             using (var context = _dbcFactory.CreateDbContext())
@@ -210,6 +254,12 @@ namespace BaxiWebApp.Data
             }
         }
 
+        /// <summary>
+        /// Sends the ad with all parameters in an email to the admins
+        /// </summary>
+        /// <param name="ad">Ad object</param>
+        /// <param name="currentlyLoggedInUser">User who is reporting the conversation</param>
+        /// <param name="reasonForReporting">String</param>
         public void reportAd(Ad ad, User currentlyLoggedInUser, string reasonForReporting)
         {
             string adDetails = $"Ad owner: {showUserNameWithStatus(ad.AdOwner)}\r\nAd type: {ad.AdType}\r\nAd Direction: {ad.AdDirection}\r\nAddress: {ad.PickUpDropOffLocation}\r\nPick up date and time: {ad.PickUpDateAndTime}\r\nNumber of seats: {ad.NumberOfSeats}\r\nSpecific requests: {ad.SpecificRequests}\r\n";
@@ -223,6 +273,11 @@ namespace BaxiWebApp.Data
 
 
         int maxNumberOfWarnings = 3;
+        /// <summary>
+        /// Increases the number of warnings for the given user, sends an email notification about the warning to the affected user - reason included - if max number of warnings reached, also triggers the user deletion method
+        /// </summary>
+        /// <param name="user">User object</param>
+        /// <param name="reasonForWarning">String</param>
         public void giveUserAWarning(User user, string reasonForWarning)
         {
 
@@ -246,7 +301,11 @@ namespace BaxiWebApp.Data
 
 
 
-
+        /// <summary>
+        /// Sets user's "isActive" parameter to false and sends an email notification (including reason) about it to the user who will not be able to use the app anymore
+        /// </summary>
+        /// <param name="user">User object</param>
+        /// <param name="reasonForDeactivating">String</param>
         public void deactivateUser(User user, string reasonForDeactivating)
         {
             using (var context = _dbcFactory.CreateDbContext())
@@ -261,6 +320,10 @@ namespace BaxiWebApp.Data
             }
         }
 
+        /// <summary>
+        /// Sets user's "isActive" parameter to true and sends an email notification about it to the user who will be able to use the app again
+        /// </summary>
+        /// <param name="user">User object</param>
         public void reactivateUser(User user)
         {
             using (var context = _dbcFactory.CreateDbContext())
@@ -276,7 +339,11 @@ namespace BaxiWebApp.Data
             }
         }
 
-
+        /// <summary>
+        /// Shows the user's full name with Inactive or Deleted status depennsing on the given parameters
+        /// </summary>
+        /// <param name="user">User object</param>
+        /// <returns>String</returns>
         public string showUserNameWithStatus(User user)
         {
             string name = "";
@@ -295,7 +362,10 @@ namespace BaxiWebApp.Data
             return name;
         }
 
-
+        /// <summary>
+        /// Sets name and other identifying parameters of the user to "Deleted user", sets the isDeleted parameter to true and inactivates the user as well so they cannot use the app anymore
+        /// </summary>
+        /// <param name="user">User object</param>
         public void deleteUser(User user)
         {
             using (var context = _dbcFactory.CreateDbContext())
@@ -315,6 +385,11 @@ namespace BaxiWebApp.Data
             }
         }
 
+        /// <summary>
+        /// Checks if the given user is deleted or not based on the isDeleted parameter
+        /// </summary>
+        /// <param name="emailAddress">string</param>
+        /// <returns>bool</returns>
         public bool isUserDeleted(string emailAddress)
         {
             using (var context = _dbcFactory.CreateDbContext())

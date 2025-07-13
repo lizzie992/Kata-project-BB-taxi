@@ -137,6 +137,10 @@ else
 	}
 
 	public User currentlyLoggedInUser;
+	/// <summary>
+	/// Identifies the user who is currently logged in
+	/// </summary>
+	/// <returns>User</returns>
 	public async Task identifyLoggedInUser()
 	{
 		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
@@ -146,6 +150,11 @@ else
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
+	/// <summary>
+	/// First checks if there is already an existing conversation between the 2 users (the currently logged in user and the ad owner) connected to this ad, if there is, it redirects the user to that chat conversation
+	/// If there is no such a conversation, then it creates one between the 2 users (the currently logged in user and the ad owner) connected to this ad, and redirects the user to the chat conversation
+	/// </summary>
+	/// <param name="ad">Ad</param>
 	public void createChat(Ad ad)
 	{
 		//check current ad if matching conversation exists:
@@ -172,7 +181,11 @@ else
 		}
 	}
 
-
+	/// <summary>
+	/// Triggers the dataservice method to report the selected ad to the admins
+	/// </summary>
+	/// <param name="ad">Ad</param>
+	/// <param name="reasonForReporting">string</param>
 	public void reportAd(Ad ad, string reasonForReporting)
 	{
 		DataService.reportAd(ad, currentlyLoggedInUser, reasonForReporting);
@@ -183,12 +196,16 @@ else
 	Ad selectedAd;
 
 	bool popUpForReportAd = false;
-
+	/// <summary>
+	/// Closes pop up window to show confirmation message about reporting the ad
+	/// </summary>
 	public void closePopUpForReportAd()
 	{
 		popUpForReportAd = false;
 	}
-
+	/// <summary>
+	/// Opens pop up window to show confirmation message about reporting the ad
+	/// </summary>
 	public void showPopUpForReportAd(Ad ad)
 	{
 		selectedAd = ad;

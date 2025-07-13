@@ -134,6 +134,10 @@
 @code {
 
 	private User user;
+	/// <summary>
+	/// Identifies the user who is currently logged in
+	/// </summary>
+	/// <returns>User</returns>
 	public async Task identifyLoggedInUser()
 	{
 		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
@@ -162,17 +166,25 @@
 
 	bool popUpForDeletingUser = false;
 
+	/// <summary>
+	/// Closes pop up window to confirm if user wants to delete their profile
+	/// </summary>
 	public void closePopUpForDeletingUser()
 	{
 		popUpForDeletingUser = false;
 	}
-
+	/// <summary>
+	/// Opens pop up window to confirm if user wants to delete their profile
+	/// </summary>
 	public void showPopUpForDeletingUser(User user)
 	{
 		popUpForDeletingUser = true;
 	}
 
-
+	/// <summary>
+	/// Triggers the dataservice method to delete this user from the database
+	/// </summary>
+	/// <returns></returns>
 	public async Task deleteUser()
 	{
 		DataService.deleteUser(user);

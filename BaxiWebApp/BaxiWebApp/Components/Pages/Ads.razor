@@ -298,12 +298,6 @@ Number of seats: @ad.NumberOfSeats
 
 
 
-	// public static List<Ad> deleteOldAds(List<Ad> AdList)
-	// {
-	// 	AdList.RemoveAll(ad => ad.pickUpDateAndTime < DateTime.Now);
-	// 	return AdList;
-	// }
-
 	string? _searchAddress = "";
 	int _requestedSeats = -1;
 
@@ -317,7 +311,6 @@ Number of seats: @ad.NumberOfSeats
 	DateTime _datetime2 = DateTime.Now.AddDays(90);
 
 
-	// IQueryable<Ad>? itemsQueryable = context.Ads.ToList<Ad>().AsQueryable();
 
 
 	QuickGrid<Ad>? grid;
@@ -347,7 +340,11 @@ Number of seats: @ad.NumberOfSeats
 		}
 	}
 
-
+	/// <summary>
+	/// First checks if there is already an existing conversation between the 2 users (the currently logged in user and the ad owner) connected to this ad, if there is, it redirects the user to that chat conversation
+	/// If there is no such a conversation, then it creates one between the 2 users (the currently logged in user and the ad owner) connected to this ad, and redirects the user to the chat conversation
+	/// </summary>
+	/// <param name="ad">Ad</param>
 	public void createChat(Ad ad)
 	{
 		//check current ad if matching conversation exists:
@@ -376,6 +373,10 @@ Number of seats: @ad.NumberOfSeats
 
 
 	public User currentlyLoggedInUser;
+	/// <summary>
+	/// Identifies the user who is currently logged in
+	/// </summary>
+	/// <returns>User</returns>
 	public async Task identifyLoggedInUser()
 	{
 		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
@@ -385,7 +386,10 @@ Number of seats: @ad.NumberOfSeats
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
-
+	/// <summary>
+	/// Redirects the user to a new page showing the one specific ad they want to see
+	/// </summary>
+	/// <param name="ad">Ad</param>
 	public void showAd(Ad ad)
 	{
 		int id = ad.ID;
@@ -398,6 +402,11 @@ Number of seats: @ad.NumberOfSeats
 	bool popUpForDeletingAd = false;
 	string reasonForDeleting = "";
 
+	/// <summary>
+	/// Removes the ad from the database and also sends an email about it to the ad owner user (deletion done by admins)
+	/// </summary>
+	/// <param name="ad">Ad</param>
+	/// <param name="reasonForDeleting">string</param>
 	public void deleteAd(Ad ad, string reasonForDeleting)
 	{
 		string text = $"Dear {DataService.showUserNameWithStatus(ad.AdOwner)}\r\nYour ad has been removed by the admins for reasons: {reasonForDeleting}\r\n\r\nAd:\r\nAd type: {ad.AdType}\r\nAd Direction: {ad.AdDirection}\r\nAddress: {ad.PickUpDropOffLocation}\r\n On {ad.PickUpDateAndTime}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n)";
@@ -411,11 +420,17 @@ Number of seats: @ad.NumberOfSeats
 		grid.RefreshDataAsync();
 	}
 
+	/// <summary>
+	/// Closes pop up window regarding deleting the ad
+	/// </summary>
 	public void closePopUpForDeletingAd()
 	{
 		popUpForDeletingAd = false;
 	}
 
+	/// <summary>
+	/// Opens pop up window regarding deleting the ad
+	/// </summary>
 	public void showPopUpForDeletingAd(Ad ad)
 	{
 		selectedAd = ad;

@@ -317,7 +317,6 @@
 
 	private static Ad ad { get; set; } = new();
 
-	private string anything = string.Empty;
 
 	//coordinates of Baierbrunn
 	public double latitudeBB = 48.0206345131560;
@@ -361,7 +360,10 @@
 		}
 	}
 
-
+	/// <summary>
+	/// Restarts the timer any time the user types a new input in this field
+	/// </summary>
+	/// <param name="e"></param>
 	private void OnValueChange(KeyboardEventArgs e)
 	{
 		// remove previous one
@@ -370,17 +372,27 @@
 		timerObj.Start();
 	}
 
+	/// <summary>
+	/// As the timer elapses, it triggers the method to show the map with the address given by the user
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="e"></param>
 	public void onTimer(object? sender, ElapsedEventArgs e)
 	{
 		showMapWithAddress();
 	}
 
-
+	/// <summary>
+	/// Closes pop up window with error message about incorrect address
+	/// </summary>
 	bool popUpForWrongCoordinates = false;
 	public void ClosePopUpForWrongCoordinates()
 	{
 		popUpForWrongCoordinates = false;
 	}
+	/// <summary>
+	/// Opens pop up window with error message about incorrect address
+	/// </summary>
 	public void ShowPopUpForWrongCoordinates()
 	{
 		popUpForWrongCoordinates = true;
@@ -389,7 +401,11 @@
 
 	bool showMap = false;
 
-
+	/// <summary>
+	/// Executes multiple checks if the address / coordinates given by the user are correct and valid, is there an existing route between the location and Baierbrunn, and if it is too close or too far from Baierbrunn
+	/// If the checks return as acceptable, it triggers the map (using Google API) showing the marker set on the location that was given by the user
+	/// </summary>
+	/// <returns>bool</returns>
 	public async Task showMapWithAddress()
 	{
 		(ad.Latitude, ad.Longitude) = await DataService.GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
@@ -441,20 +457,29 @@
 		}
 	}
 
-
+	/// <summary>
+	/// Returns the Latitude of the location where the user placed the marker on the map (Using Google API and Javascript)
+	/// </summary>
+	/// <returns>double</returns>
 	public async Task<double> GetLatitude()
 	{
 		double latitude = await JSRuntime.InvokeAsync<double>("getLatitude");
 		return latitude;
 	}
-
+	/// <summary>
+	/// Returns the Longitude of the location where the user placed the marker on the map (Using Google API and Javascript)
+	/// </summary>
+	/// <returns>double</returns>
 	public async Task<double> GetLongitude()
 	{
 		double longitude = await JSRuntime.InvokeAsync<double>("getLongitude");
 		return longitude;
 	}
 
-
+	/// <summary>
+	/// Identifies the user who is currently logged in
+	/// </summary>
+	/// <returns>User</returns>
 	private User _currentlyLoggedInUser;
 	public async Task IdentifyLoggedInUser()
 	{
@@ -465,6 +490,13 @@
 		_currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
+	/// <summary>
+	/// Compares the new Ad that was just created by the user with the existing ads, based on pick up time and the distance between the pickup / dropoff locations
+	/// If they are close enough in time and in geographical location, it sends an email notification to both ad owners, which email will contain the details of the other ad
+	/// </summary>
+	/// <param name="newAd">Ad</param>
+	/// <param name="adList"><List of Ads/param>
+	/// <returns>bool</returns>
 	public async Task CheckDistanceAndSendNotification(Ad newAd, List<Ad> adList)
 	{
 		//parameters to be defined:
@@ -498,6 +530,12 @@
 		}
 	}
 
+	/// <summary>
+	/// Compares the new Ad that was just created by the user with the existing ads, based on ad type (drivers against passengers) and Direction (TO or FROM Baierbrunn)
+	/// If there is a match, it triggers the CheckDistanceAndSendNotification method for further checks and possible email notifications
+	/// </summary>
+	/// <param name="newAd">Ad</param>
+	/// <returns>bool</returns>
 	public async Task CheckAdsForNotification(Ad newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
 	{
 
@@ -539,44 +577,33 @@
 
 
 
-
-
-
-	public async Task ValidateAdress()
-	{
-		(ad.Latitude, ad.Longitude) = await DataService.GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
-	}
-
-
-	public async Task<bool> IsAddressValid(string address)
-	{
-		if (address == null)
-			return false;
-
-		(ad.Latitude, ad.Longitude) = await DataService.GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
-		if (ad.Latitude == null)
-		{
-			return false;
-		}
-		return true;
-	}
-
-
 	bool popUpForTooClose = false;
+	/// <summary>
+	/// Closes pop up window to show error message about the location being too close to Baierbrunn
+	/// </summary>
 	public void ClosePopUpForTooClose()
 	{
 		popUpForTooClose = false;
 	}
+	/// <summary>
+	/// Opens pop up window to show error message about the location being too close to Baierbrunn
+	/// </summary>
 	public void ShowPopUpForTooClose()
 	{
 		popUpForTooClose = true;
 	}
 
 	bool popUpForTooFar = false;
+	/// <summary>
+	/// Closes pop up window to show error message about the location being too far from Baierbrunn
+	/// </summary>
 	public void ClosePopUpForTooFar()
 	{
 		popUpForTooFar = false;
 	}
+	/// <summary>
+	/// Opens pop up window to show error message about the location being too far from Baierbrunn
+	/// </summary>
 	public void ShowPopUpForTooFar()
 	{
 		popUpForTooFar = true;
@@ -584,10 +611,16 @@
 
 
 	bool popUpForTimeIsInPast = false;
+	/// <summary>
+	/// Closes pop up window to show error message about the pick up time being in the past
+	/// </summary>
 	public void ClosePopUpForTimeIsInPast()
 	{
 		popUpForTimeIsInPast = false;
 	}
+	/// <summary>
+	/// Opens pop up window to show error message about the pick up time being in the past
+	/// </summary>
 	public void ShowPopUpForTimeIsInPast()
 	{
 		popUpForTimeIsInPast = true;
@@ -596,27 +629,42 @@
 
 
 	bool popUpForInvalidRoute = false;
+	/// <summary>
+	/// Closes pop up window to show error message about invalid route
+	/// </summary>
 	public void ClosePopUpForInvalidRoute()
 	{
 		popUpForInvalidRoute = false;
 	}
+	/// <summary>
+	/// Opens pop up window to show error message about invalid route
+	/// </summary>
 	public void ShowPopUpForInvalidRoute()
 	{
 		popUpForInvalidRoute = true;
 	}
 
 	bool popUpForInvalidAdType = false;
+	/// <summary>
+	/// Closes pop up window to show error message about invalid ad type (neither driver or passenger)
+	/// </summary>
 	public void ClosePopUpForInvalidAdType()
 	{
 		popUpForInvalidAdType = false;
 	}
+	/// <summary>
+	/// Opens pop up window to show error message about invalid ad type (neither driver or passenger)
+	/// </summary>
 	public void ShowPopUpForInvalidAdType()
 	{
 		popUpForInvalidAdType = true;
 	}
 
 
-
+	/// <summary>
+	/// Performs a check on the new ad, checking if the cooordinates are 0, if the pick up time is in the past, if the coordinates / address is valid, is it too close / too far from Baierbrunn, and if a correct ad type was selected (Driver or Passenger)
+	/// If it passes all checks, it triggers the WriteData method to save the ad in the database
+	/// </summary>
 	async void CheckAd()
 	{
 		ad.Latitude = await GetLatitude();
@@ -662,6 +710,10 @@
 		}
 	}
 
+	/// <summary>
+	/// Saves the ad in the database, triggers the method to compare the new ad with the old ads for possible notifications, and also redirects user to the Ads page
+	/// </summary>
+	/// <returns>bool</returns>
 	async Task WriteData()
 	{
 		context.Ads.Add(ad);

@@ -232,7 +232,10 @@
 	public double latitudeBB = 48.0206345131560;
 	public double longitudeBB = 11.482919688669709;
 
-
+	/// <summary>
+	/// Identifies the user who is currently logged in
+	/// </summary>
+	/// <returns>User</returns>
 	public async Task identifyLoggedInUser()
 	{
 		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
@@ -274,7 +277,10 @@
 		}
 	}
 
-
+	/// <summary>
+	/// Saves the changes in the user parameters and also finds the coordinates of the default pick up address that the user entered (using Google API)
+	/// </summary>
+	/// <returns></returns>
 	public async Task Save()
 	{
 		if (user.DefaultPickUpAddress == "")
@@ -291,7 +297,10 @@
 
 
 
-
+	/// <summary>
+	/// Restarts the timer any time the user types a new input in this field
+	/// </summary>
+	/// <param name="e"></param>
 	private void OnValueChange(KeyboardEventArgs e)
 	{
 		// remove previous one
@@ -300,33 +309,56 @@
 		timerObj.Start();
 	}
 
+	/// <summary>
+	/// As the timer elapses, it triggers the method to show the map with the address given by the user
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="e"></param>
 	public void onTimer(object? sender, ElapsedEventArgs e)
 	{
 		showMapWithAddress();
 	}
 
 
+	/// <summary>
+	/// Closes pop up window with error message about incorrect address
+	/// </summary>
 	bool popUpForWrongCoordinates = false;
 	public void ClosePopUpForWrongCoordinates()
 	{
 		popUpForWrongCoordinates = false;
 	}
+	/// <summary>
+	/// Opens pop up window with error message about incorrect address
+	/// </summary>
 	public void ShowPopUpForWrongCoordinates()
 	{
 		popUpForWrongCoordinates = true;
 	}
 
 	bool popUpForInvalidRoute = false;
+	/// <summary>
+	/// Closes pop up window to show error message about invalid route
+	/// </summary>
 	public void ClosePopUpForInvalidRoute()
 	{
 		popUpForInvalidRoute = false;
 	}
+	/// <summary>
+	/// Opens pop up window to show error message about invalid route
+	/// </summary>
 	public void ShowPopUpForInvalidRoute()
 	{
 		popUpForInvalidRoute = true;
 	}
 
 	bool showMap = false;
+
+	/// <summary>
+	/// Executes multiple checks if the address / coordinates given by the user are correct and valid, is there an existing route between the location and Baierbrunn, and if it is too close or too far from Baierbrunn
+	/// If the checks return as acceptable, it triggers the map (using Google API) showing the marker set on the location that was given by the user
+	/// </summary>
+	/// <returns>bool</returns>
 	public async Task showMapWithAddress()
 	{
 		if (user.DefaultPickUpAddress == "")
@@ -390,31 +422,51 @@
 
 
 	bool popUpForTooClose = false;
+	/// <summary>
+	/// Closes pop up window to show error message about the location being too close to Baierbrunn
+	/// </summary>
 	public void ClosePopUpForTooClose()
 	{
 		popUpForTooClose = false;
 	}
+	/// <summary>
+	/// Opens pop up window to show error message about the location being too close to Baierbrunn
+	/// </summary>
 	public void ShowPopUpForTooClose()
 	{
 		popUpForTooClose = true;
 	}
 
 	bool popUpForTooFar = false;
+	/// <summary>
+	/// Closes pop up window to show error message about the location being too far from Baierbrunn
+	/// </summary>
 	public void ClosePopUpForTooFar()
 	{
 		popUpForTooFar = false;
 	}
+	/// <summary>
+	/// Opens pop up window to show error message about the location being too far from Baierbrunn
+	/// </summary>
 	public void ShowPopUpForTooFar()
 	{
 		popUpForTooFar = true;
 	}
 
+	/// <summary>
+	/// Returns the Latitude of the location where the user placed the marker on the map (Using Google API and Javascript)
+	/// </summary>
+	/// <returns>double</returns>
 	public async Task<double> GetLatitude()
 	{
 		double latitude = await JSRuntime.InvokeAsync<double>("getLatitude");
 		return latitude;
 	}
 
+	/// <summary>
+	/// Returns the Longitude of the location where the user placed the marker on the map (Using Google API and Javascript)
+	/// </summary>
+	/// <returns>double</returns>
 	public async Task<double> GetLongitude()
 	{
 		double longitude = await JSRuntime.InvokeAsync<double>("getLongitude");
