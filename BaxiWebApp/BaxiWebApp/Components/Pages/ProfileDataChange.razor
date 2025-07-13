@@ -120,6 +120,17 @@
 					<InputText @bind-Value="user.DefaultSpecificRequests"></InputText><br>
 					<br>
 
+					Notifications: if you check this box, you will automatically receive an email notification when another user posts an ad that would be matching your needs:
+					It is less than @distanceLimit km away from you and less than @Constants.TIME_LIMIT_FOR_NOTIFICATIONS hour(s) different.
+					@if (user.AreNotificationsOn == true)
+					{
+						<input type="checkbox" checked @bind-value="@user.AreNotificationsOn">
+					}
+					@if (user.AreNotificationsOn == false)
+					{
+						<input type="checkbox" @bind-value="@user.AreNotificationsOn">
+					}
+
 					<a href="Profile">
 						<button @onclick="Save">Save</button>
 					</a>
@@ -227,7 +238,7 @@
 
 @code {
 	public static User user;
-
+	int distanceLimit = Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS / 1000;
 	//coordinates of Baierbrunn
 	public double latitudeBB = 48.0206345131560;
 	public double longitudeBB = 11.482919688669709;

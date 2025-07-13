@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BaxiWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class UserData : Migration
+    public partial class notifications : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,11 +45,12 @@ namespace BaxiWebApp.Migrations
                     NumberOfWarnings = table.Column<int>(type: "INTEGER", nullable: false),
                     Contact = table.Column<string>(type: "TEXT", nullable: true),
                     DefaultAdType = table.Column<int>(type: "INTEGER", nullable: false),
-                    DefaultPickUpAddress = table.Column<string>(type: "TEXT", nullable: true),
+                    DefaultPickUpAddress = table.Column<string>(type: "TEXT", nullable: false),
                     DefaultLatitude = table.Column<double>(type: "REAL", nullable: true),
                     DefaultLongitude = table.Column<double>(type: "REAL", nullable: true),
-                    DefaultNumberOfSeats = table.Column<int>(type: "INTEGER", nullable: true),
-                    DefaultSpecificRequests = table.Column<string>(type: "TEXT", nullable: true),
+                    DefaultNumberOfSeats = table.Column<int>(type: "INTEGER", nullable: false),
+                    DefaultSpecificRequests = table.Column<string>(type: "TEXT", nullable: false),
+                    AreNotificationsOn = table.Column<bool>(type: "INTEGER", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -104,7 +105,7 @@ namespace BaxiWebApp.Migrations
                     Latitude = table.Column<double>(type: "REAL", nullable: true),
                     Longitude = table.Column<double>(type: "REAL", nullable: true),
                     PickUpDateAndTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    NumberOfSeats = table.Column<int>(type: "INTEGER", nullable: false),
+                    NumberOfSeats = table.Column<int>(type: "INTEGER", nullable: true),
                     SpecificRequests = table.Column<string>(type: "TEXT", nullable: true),
                     AdID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
@@ -276,8 +277,8 @@ namespace BaxiWebApp.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4d0569ff-c775-4cac-8dbf-000a7da12685", "549f2c87-9b0b-4053-876b-07117e36515a", "Regular", "REGULAR" },
-                    { "dd7ff2d2-9d4a-4b64-b134-6d3940494446", "9efacb09-45a6-4483-9b8e-ebf22d31115b", "Admin", "ADMIN" }
+                    { "7cb7fed3-aa18-4067-9644-eabbf6137adf", "867eaecc-4898-4624-a69a-b53806c46f60", "Admin", "ADMIN" },
+                    { "cf83d71c-1a90-4696-9595-f97462852a1f", "1dbdef6d-6756-495e-92fd-b8c524d8b628", "Regular", "REGULAR" }
                 });
 
             migrationBuilder.CreateIndex(

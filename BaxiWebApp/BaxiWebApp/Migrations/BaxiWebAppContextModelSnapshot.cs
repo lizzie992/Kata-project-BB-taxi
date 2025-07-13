@@ -41,7 +41,7 @@ namespace BaxiWebApp.Migrations
                     b.Property<double?>("Longitude")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("NumberOfSeats")
+                    b.Property<int?>("NumberOfSeats")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("PickUpDateAndTime")
@@ -130,6 +130,9 @@ namespace BaxiWebApp.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("AreNotificationsOn")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
@@ -146,13 +149,15 @@ namespace BaxiWebApp.Migrations
                     b.Property<double?>("DefaultLongitude")
                         .HasColumnType("REAL");
 
-                    b.Property<int?>("DefaultNumberOfSeats")
+                    b.Property<int>("DefaultNumberOfSeats")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("DefaultPickUpAddress")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("DefaultSpecificRequests")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Department")
@@ -268,15 +273,15 @@ namespace BaxiWebApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4d0569ff-c775-4cac-8dbf-000a7da12685",
-                            ConcurrencyStamp = "549f2c87-9b0b-4053-876b-07117e36515a",
+                            Id = "cf83d71c-1a90-4696-9595-f97462852a1f",
+                            ConcurrencyStamp = "1dbdef6d-6756-495e-92fd-b8c524d8b628",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         },
                         new
                         {
-                            Id = "dd7ff2d2-9d4a-4b64-b134-6d3940494446",
-                            ConcurrencyStamp = "9efacb09-45a6-4483-9b8e-ebf22d31115b",
+                            Id = "7cb7fed3-aa18-4067-9644-eabbf6137adf",
+                            ConcurrencyStamp = "867eaecc-4898-4624-a69a-b53806c46f60",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

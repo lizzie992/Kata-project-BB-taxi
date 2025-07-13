@@ -70,6 +70,20 @@
 					<p>Number of seats: @user.DefaultNumberOfSeats</p>
 					<p>Specific requests: @user.DefaultSpecificRequests</p>
 					<br>
+					<p>Notifications: @if (user.AreNotificationsOn == true)
+						{
+						<p>
+							Yes you will get notifications
+						</p>
+						}
+					@if (user.AreNotificationsOn == false)
+					{
+						<p>
+							No notifications for you
+						</p>
+					}
+					</p>
+					<br>
 				</div>
 				<a href="ProfileDataChange">
 					<button>Click here to change your profile data!</button>

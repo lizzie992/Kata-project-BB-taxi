@@ -148,5 +148,13 @@ namespace BB
             set { _defaultSpecificRequests = value; }
         }
 
+        private bool _areNotificationsOn;
+        public bool AreNotificationsOn
+        {
+            get { return _areNotificationsOn; }
+            set { _areNotificationsOn = value; }
+        }
+
+
     }
 }

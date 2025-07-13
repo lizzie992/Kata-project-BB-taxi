@@ -23,291 +23,305 @@
 <h1>Register</h1>
 
 <div class="row">
-    <div class="col-md-4">
-        <StatusMessage Message="@Message" />
-        <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
-            <DataAnnotationsValidator />
-            <h2>Create a new account.</h2>
-            <hr />
-            <ValidationSummary class="text-danger" role="alert" />
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label for="email">Email</label>
-                <ValidationMessage For="() => Input.Email" class="text-danger" />
-            </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="password">Password</label>
-                <ValidationMessage For="() => Input.Password" class="text-danger" />
-            </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="confirm-password">Confirm Password</label>
-                <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
-            </div>
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.FirstName" class="form-control" autocomplete="firstName" aria-required="true" placeholder="first name" />
-                <label for="First name">First name</label>
-            </div>
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.LastName" class="form-control" autocomplete="lastName" aria-required="true" placeholder="last name" />
-                <label for="Last name">Last name</label>
-            </div>
-            <div class="form-floating mb-3">
-                Department:
-                <br>
-                <InputSelect @bind-Value="Input.Department" id="department">
-                    @foreach (var value in Enum.GetValues<Department>())
-                    {
-                        <option value="@value">@value.ToString()</option>
-                    }
-                </InputSelect>
-                <label for="Department"></label>
-            </div>
-            <div class="form-floating mb-3">
-                Preferred language of communication
-                <br>
-                <InputSelect @bind-Value="Input.PreferredLanguage" id="preferredLanguage">
-                    @foreach (var value in Enum.GetValues<PreferredLanguage>())
-                    {
-                        <option value="@value">@value.ToString()</option>
-                    }
-                </InputSelect>
-                <label for="preferredLanguage"></label>
-            </div>
-            <div class="form-floating mb-3">
-                Contact (not mandatory)
-                <br>
-                <InputText @bind-Value="Input.Contact" class="form-control" autocomplete="contact" aria-required="true" placeholder="contact" />
-                <label for="Contact"></label>
-            </div>
+	<div class="col-md-4">
+		<StatusMessage Message="@Message" />
+		<EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
+			<DataAnnotationsValidator />
+			<h2>Create a new account.</h2>
+			<hr />
+			<ValidationSummary class="text-danger" role="alert" />
+			<div class="form-floating mb-3">
+				<InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+				<label for="email">Email</label>
+				<ValidationMessage For="() => Input.Email" class="text-danger" />
+			</div>
+			<div class="form-floating mb-3">
+				<InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+				<label for="password">Password</label>
+				<ValidationMessage For="() => Input.Password" class="text-danger" />
+			</div>
+			<div class="form-floating mb-3">
+				<InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+				<label for="confirm-password">Confirm Password</label>
+				<ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
+			</div>
+			<div class="form-floating mb-3">
+				<InputText @bind-Value="Input.FirstName" class="form-control" autocomplete="firstName" aria-required="true" placeholder="first name" />
+				<label for="First name">First name</label>
+			</div>
+			<div class="form-floating mb-3">
+				<InputText @bind-Value="Input.LastName" class="form-control" autocomplete="lastName" aria-required="true" placeholder="last name" />
+				<label for="Last name">Last name</label>
+			</div>
+			<div class="form-floating mb-3">
+				Department:
+				<br>
+				<InputSelect @bind-Value="Input.Department" id="department">
+					@foreach (var value in Enum.GetValues<Department>())
+					{
+						<option value="@value">@value.ToString()</option>
+					}
+				</InputSelect>
+				<label for="Department"></label>
+			</div>
+			<div class="form-floating mb-3">
+				Preferred language of communication
+				<br>
+				<InputSelect @bind-Value="Input.PreferredLanguage" id="preferredLanguage">
+					@foreach (var value in Enum.GetValues<PreferredLanguage>())
+					{
+						<option value="@value">@value.ToString()</option>
+					}
+				</InputSelect>
+				<label for="preferredLanguage"></label>
+			</div>
+			<div class="form-floating mb-3">
+				Contact (not mandatory)
+				<br>
+				<InputText @bind-Value="Input.Contact" class="form-control" autocomplete="contact" aria-required="true" placeholder="contact" />
+				<label for="Contact"></label>
+			</div>
 
 
-            <div class="form-floating mb-3">
-                Below you can add some additional data that will make your life easier when creating Ads in the application.
-                This is not mandatory and can be always changed / deleted in your profile!
-                <br>
-                <br>
-                I am usually a:
-                <br>
-                <InputSelect @bind-Value="Input.DefaultAdType" id="DefaultAdType">
-                    @foreach (var value in Enum.GetValues<AdType>())
-                    {
-                        if (value == AdType.SelectAll)
-                        {
-                            <option value="@value">No selection</option>
-                        }
-                        else
-                        {
-                            <option value="@value">@value.ToString()</option>
-                        }
-                    }
-                </InputSelect>
-                <label for="Ad Type"></label>
-            </div>
-            <div class="form-floating mb-3">
-                Default pick up / drop off location
-                You can add an address or location where you can usually pick up / drop off passengers // where you want to be picked up!
-                <br>
-                <InputText @bind-Value="Input.DefaultPickUpAddress" class="form-control" autocomplete="Default Address" aria-required="true" placeholder="Default Address" />
-                <label for="DefaultPickUpAddress"></label>
-            </div>
-            <div class="form-group">
-                <br>
-                <label for="NumberOfSeats">Number of seats:</label>
-                <InputSelect @bind-Value="Input.DefaultNumberOfSeats" class="form-control" id="DefaultNumberOfSeats">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                </InputSelect>
-                <br>
-            </div>
-            <div class="form-floating mb-3">
-                Default Requests
-                If you have the same requests regarding the ride (such as "No smokers Please" or "No loud music" etc...) please write them here:
-                <br>
-                <InputText @bind-Value="Input.DefaultSpecificRequests" class="form-control" autocomplete="Default Requests" aria-required="true" placeholder="Default Requests" />
-                <label for="DefaultSpecificRequests"></label>
-            </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </EditForm>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            <ExternalLoginPicker />
-        </section>
-    </div>
+			<div class="form-floating mb-3">
+				Below you can add some additional data that will make your life easier when creating Ads in the application.
+				This is not mandatory and can be always changed / deleted in your profile!
+				<br>
+				<br>
+				I am usually a:
+				<br>
+				<InputSelect @bind-Value="Input.DefaultAdType" id="DefaultAdType">
+					@foreach (var value in Enum.GetValues<AdType>())
+					{
+						if (value == AdType.SelectAll)
+						{
+							<option value="@value">No selection</option>
+						}
+						else
+						{
+							<option value="@value">@value.ToString()</option>
+						}
+					}
+				</InputSelect>
+				<label for="Ad Type"></label>
+			</div>
+			<div class="form-floating mb-3">
+				Default pick up / drop off location
+				You can add an address or location where you can usually pick up / drop off passengers // where you want to be picked up!
+				<br>
+				<InputText @bind-Value="Input.DefaultPickUpAddress" class="form-control" autocomplete="Default Address" aria-required="true" placeholder="Default Address" />
+				<label for="DefaultPickUpAddress"></label>
+			</div>
+			<div class="form-group">
+				<br>
+				<label for="NumberOfSeats">Number of seats:</label>
+				<InputSelect @bind-Value="Input.DefaultNumberOfSeats" class="form-control" id="DefaultNumberOfSeats">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+				</InputSelect>
+				<br>
+			</div>
+			<div class="form-floating mb-3">
+				Default Requests
+				If you have the same requests regarding the ride (such as "No smokers Please" or "No loud music" etc...) please write them here:
+				<br>
+				<InputText @bind-Value="Input.DefaultSpecificRequests" class="form-control" autocomplete="Default Requests" aria-required="true" placeholder="Default Requests" />
+				<label for="DefaultSpecificRequests"></label>
+			</div>
+			<div class="form-floating mb-3">
+				Notifications: if you check this box, you will automatically receive an email notification when another user posts an ad that would be matching your needs:
+				It is less than @distanceLimit km away from you and less than @Constants.TIME_LIMIT_FOR_NOTIFICATIONS hour(s) different.
+				<InputCheckbox @bind-Value="Input.notificationsOn" />
+			</div>
+			<button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+		</EditForm>
+	</div>
+	<div class="col-md-6 col-md-offset-2">
+		<section>
+			<h3>Use another service to register.</h3>
+			<hr />
+			<ExternalLoginPicker />
+		</section>
+	</div>
 </div>
 
 
 @code {
-    private IEnumerable<IdentityError>? identityErrors;
+	private IEnumerable<IdentityError>? identityErrors;
 
-    [SupplyParameterFromForm]
-    private InputModel Input { get; set; } = new();
+	[SupplyParameterFromForm]
+	private InputModel Input { get; set; } = new();
 
-    [SupplyParameterFromQuery]
-    private string? ReturnUrl { get; set; }
+	[SupplyParameterFromQuery]
+	private string? ReturnUrl { get; set; }
 
-    private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
+	private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
 
+	private void CheckboxValueChanged(bool value)
+	{
+		Input.notificationsOn = value;
+	}
 
-    public async Task RegisterUser(EditContext editContext)
-    {
+	public async Task RegisterUser(EditContext editContext)
+	{
 
-        var user = CreateUser();
+		var user = CreateUser();
 
-        await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-        var emailStore = GetEmailStore();
-        await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+		await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+		var emailStore = GetEmailStore();
+		await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
-        user.FirstName = Input.FirstName;
-        user.LastName = Input.LastName;
-        user.Department = Input.Department;
-        user.PreferredLanguage = Input.PreferredLanguage;
-        user.Contact = Input.Contact;
-        user.DefaultAdType = Input.DefaultAdType;
-        user.DefaultPickUpAddress = Input.DefaultPickUpAddress;
-        user.DefaultNumberOfSeats = Input.DefaultNumberOfSeats;
-        user.DefaultSpecificRequests = Input.DefaultSpecificRequests;
-        (user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
-        user.isActive = true;
-        user.isDeleted = false;
-        if (user.Email.Contains("admin"))
-        {
-            UserManager.AddToRoleAsync(user, "Admin");
-        }
-        else
-        {
-            UserManager.AddToRoleAsync(user, "Regular");
-        }
+		user.FirstName = Input.FirstName;
+		user.LastName = Input.LastName;
+		user.Department = Input.Department;
+		user.PreferredLanguage = Input.PreferredLanguage;
+		user.Contact = Input.Contact;
+		user.DefaultAdType = Input.DefaultAdType;
+		user.DefaultPickUpAddress = Input.DefaultPickUpAddress;
+		user.DefaultNumberOfSeats = Input.DefaultNumberOfSeats;
+		user.DefaultSpecificRequests = Input.DefaultSpecificRequests;
+		(user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
+		user.AreNotificationsOn = Input.notificationsOn;
+		user.isActive = true;
+		user.isDeleted = false;
+		if (user.Email.Contains("admin"))
+		{
+			UserManager.AddToRoleAsync(user, "Admin");
+		}
+		else
+		{
+			UserManager.AddToRoleAsync(user, "Regular");
+		}
 
-        var result = await UserManager.CreateAsync(user, Input.Password);
-
-
-        if (!result.Succeeded)
-        {
-            identityErrors = result.Errors;
-            return;
-        }
-
-        Logger.LogInformation("User created a new account with password.");
-
-        var userId = await UserManager.GetUserIdAsync(user);
-        var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        var callbackUrl = NavigationManager.GetUriWithQueryParameters(
-            NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
-            new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
+		var result = await UserManager.CreateAsync(user, Input.Password);
 
 
+		if (!result.Succeeded)
+		{
+			identityErrors = result.Errors;
+			return;
+		}
 
-        await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
+		Logger.LogInformation("User created a new account with password.");
 
-        if (UserManager.Options.SignIn.RequireConfirmedAccount)
-        {
-            RedirectManager.RedirectTo(
-                "Account/RegisterConfirmation",
-                new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
-        }
-
-        await SignInManager.SignInAsync(user, isPersistent: false);
-        RedirectManager.RedirectTo(ReturnUrl);
+		var userId = await UserManager.GetUserIdAsync(user);
+		var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+		code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+		var callbackUrl = NavigationManager.GetUriWithQueryParameters(
+			NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
+			new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
 
 
 
-    }
+		await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
-    private User CreateUser()
-    {
-        try
-        {
-            return Activator.CreateInstance<User>();
-        }
-        catch
-        {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
-                $"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor.");
-        }
-    }
+		if (UserManager.Options.SignIn.RequireConfirmedAccount)
+		{
+			RedirectManager.RedirectTo(
+				"Account/RegisterConfirmation",
+				new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
+		}
 
-    private IUserEmailStore<User> GetEmailStore()
-    {
-        if (!UserManager.SupportsUserEmail)
-        {
-            throw new NotSupportedException("The default UI requires a user store with email support.");
-        }
-        return (IUserEmailStore<User>)UserStore;
-    }
+		await SignInManager.SignInAsync(user, isPersistent: false);
+		RedirectManager.RedirectTo(ReturnUrl);
 
 
-    private sealed class InputModel
-    {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; } = "";
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; } = "";
+	}
 
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; } = "";
+	private User CreateUser()
+	{
+		try
+		{
+			return Activator.CreateInstance<User>();
+		}
+		catch
+		{
+			throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
+				$"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor.");
+		}
+	}
 
-        [Required]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; } = "";
+	private IUserEmailStore<User> GetEmailStore()
+	{
+		if (!UserManager.SupportsUserEmail)
+		{
+			throw new NotSupportedException("The default UI requires a user store with email support.");
+		}
+		return (IUserEmailStore<User>)UserStore;
+	}
 
-        [Required]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; } = "";
+	int distanceLimit = Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS / 1000;
 
-        [Required]
-        [Display(Name = "Department")]
-        public Department Department { get; set; }
+	private sealed class InputModel
+	{
+		[Required]
+		[EmailAddress]
+		[Display(Name = "Email")]
+		public string Email { get; set; } = "";
 
-        [Required]
-        [Display(Name = "Preferred language")]
-        public PreferredLanguage PreferredLanguage { get; set; }
+		[Required]
+		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+		[DataType(DataType.Password)]
+		[Display(Name = "Password")]
+		public string Password { get; set; } = "";
 
-        [Required]
-        [Display(Name = "Rating")]
-        public int? Rating;
+		[DataType(DataType.Password)]
+		[Display(Name = "Confirm password")]
+		[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+		public string ConfirmPassword { get; set; } = "";
 
-        [Required]
-        [Display(Name = "listOfRatings")]
-        public List<int>? ListOfRatings = new List<int>();
+		[Required]
+		[Display(Name = "First Name")]
+		public string FirstName { get; set; } = "";
 
-        [Required]
-        [Display(Name = "numberOfWarnings")]
-        public int NumberOfWarnings = 0; //this is default 0, the admins can add warnings later if needed
+		[Required]
+		[Display(Name = "Last Name")]
+		public string LastName { get; set; } = "";
 
-        [Display(Name = "Contact")]
-        public string? Contact { get; set; } = ""; //not mandatory so it can stay null if someone does not want to give contact info
+		[Required]
+		[Display(Name = "Department")]
+		public Department Department { get; set; }
 
-        [Display(Name = "Type")]
-        public AdType DefaultAdType;
+		[Required]
+		[Display(Name = "Preferred language")]
+		public PreferredLanguage PreferredLanguage { get; set; }
 
-        [Display(Name = "Default address")]
-        public string? DefaultPickUpAddress { get; set; } = "";
+		[Required]
+		[Display(Name = "Rating")]
+		public int? Rating;
 
-        [Display(Name = "Number of Seats")]
-        public int DefaultNumberOfSeats = 1;
+		[Required]
+		[Display(Name = "listOfRatings")]
+		public List<int>? ListOfRatings = new List<int>();
 
-        [Display(Name = "Default specific request")]
-        public string? DefaultSpecificRequests { get; set; } = "";
+		[Required]
+		[Display(Name = "numberOfWarnings")]
+		public int NumberOfWarnings = 0; //this is default 0, the admins can add warnings later if needed
 
-    }
+		[Display(Name = "Contact")]
+		public string? Contact { get; set; } = ""; //not mandatory so it can stay null if someone does not want to give contact info
+
+		[Display(Name = "Type")]
+		public AdType DefaultAdType;
+
+		[Display(Name = "Default address")]
+		public string? DefaultPickUpAddress { get; set; } = "";
+
+		[Display(Name = "Number of Seats")]
+		public int DefaultNumberOfSeats = 1;
+
+		[Display(Name = "Default specific request")]
+		public string? DefaultSpecificRequests { get; set; } = "";
+
+		[Display(Name = "Notifications")]
+		public bool notificationsOn { get; set; }
+
+	}
 
 
 

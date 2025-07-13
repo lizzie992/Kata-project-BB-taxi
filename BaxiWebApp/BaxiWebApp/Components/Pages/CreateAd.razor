@@ -1,6 +1,5 @@
 ﻿@page "/CreateAd"
 @using BB
-@inject Data.BaxiWebAppContext context;
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using System.Net.Mail
@@ -18,6 +17,12 @@
 @using System.Threading.Tasks;
 @using System.Text.Json;
 @using System.Timers
+@using System.Net
+@using System.IO
+@using Microsoft.EntityFrameworkCore
+@using System.Net.Mail
+@using System.Text;
+@inject Data.BaxiWebAppContext context;
 @inject IJSRuntime JSRuntime
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
@@ -499,14 +504,10 @@
 	/// <returns>bool</returns>
 	public async Task CheckDistanceAndSendNotification(Ad newAd, List<Ad> adList)
 	{
-		//parameters to be defined:
-		int distanceLimit = 5000; //PAY ATTENTION: METERS, NOT KILOMETERS, this is the limit of how many meters we calculate the notificaions for
-		int timeLimit = 1; //this is to define what is the max difference in time between the 2 ads so that they can be relevant to each other
-
 		foreach (Ad oldAd in adList)
 		{
 			int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
-			if (timeDifference <= timeLimit)
+			if (timeDifference <= Constants.TIME_LIMIT_FOR_NOTIFICATIONS)
 			{
 				int distance = await DataService.GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
 				if (distance == Constants.NULL_COORDINATES)
@@ -517,14 +518,22 @@
 				{
 					continue;
 				}
-				else if (distance <= distanceLimit)
+				else if (distance <= Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS)
 				{
-					string messageOldAd = $"You might be interested in this new Ad:\r\n Ad type: {oldAd.AdType}\r\nAd Direction: {oldAd.AdDirection}\r\nAddress: {oldAd.PickUpDropOffLocation}\r\n On {oldAd.PickUpDateAndTime}\r\n Available seats: {oldAd.NumberOfSeats}\r\n Any speicifc requests: {oldAd.SpecificRequests}\r\n";
-					string messageNewAd = $"You might be interested in this new Ad:\r\n Ad type: {newAd.AdType}\r\nAd Direction: {newAd.AdDirection}\r\nAddress: {newAd.PickUpDropOffLocation}\r\n On {newAd.PickUpDateAndTime}\r\n Available seats: {newAd.NumberOfSeats}\r\n Any speicifc requests: {newAd.SpecificRequests}\r\n";
-					string emailAddress = "gulyaskata99@gmail.com";
-					string subject = "Check out this new ad: ";
-					DataService.sendEmail(emailAddress, subject, messageOldAd);
-					DataService.sendEmail(emailAddress, subject, messageNewAd);
+					if (oldAd.AdOwner.AreNotificationsOn == true)
+					{
+						string messageNewAd = $"You might be interested in this new Ad:\r\n Ad type: {newAd.AdType}\r\nAd Direction: {newAd.AdDirection}\r\nAddress: {newAd.PickUpDropOffLocation}\r\n On {newAd.PickUpDateAndTime}\r\n Available seats: {newAd.NumberOfSeats}\r\n Any speicifc requests: {newAd.SpecificRequests}\r\n";
+						string emailAddress = "gulyaskata99@gmail.com";
+						string subject = "Check out this new ad: ";
+						DataService.sendEmail(emailAddress, subject, messageNewAd);
+					}
+					if (newAd.AdOwner.AreNotificationsOn == true)
+					{
+						string messageOldAd = $"You might be interested in this new Ad:\r\n Ad type: {oldAd.AdType}\r\nAd Direction: {oldAd.AdDirection}\r\nAddress: {oldAd.PickUpDropOffLocation}\r\n On {oldAd.PickUpDateAndTime}\r\n Available seats: {oldAd.NumberOfSeats}\r\n Any speicifc requests: {oldAd.SpecificRequests}\r\n";
+						string emailAddress = "gulyaskata99@gmail.com";
+						string subject = "Check out this new ad: ";
+						DataService.sendEmail(emailAddress, subject, messageOldAd);
+					}
 				}
 			}
 		}
@@ -538,8 +547,7 @@
 	/// <returns>bool</returns>
 	public async Task CheckAdsForNotification(Ad newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
 	{
-
-		var adList = context.Ads.ToList<Ad>().AsEnumerable();
+		var adList = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
 
 		//TO Baierbrunn, passenger looking for drivers
 		if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Passenger)
