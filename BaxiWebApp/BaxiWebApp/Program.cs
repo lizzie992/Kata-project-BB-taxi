@@ -4,7 +4,9 @@ using BaxiWebApp.Data;
 using BB;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace BaxiWebApp
 {
@@ -18,6 +20,8 @@ namespace BaxiWebApp
             builder.Services.AddDbContextFactory<BaxiWebAppContext>(options => options.UseSqlite(connectionString).EnableSensitiveDataLogging());
 
             builder.Services.AddSingleton<DataService>();
+
+            builder.Services.AddLocalization();
 
             builder.Services.AddQuickGridEntityFrameworkAdapter();
 
@@ -49,6 +53,13 @@ namespace BaxiWebApp
             builder.Services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
 
             var app = builder.Build();
+
+            string[] supportedCultures = ["de-DE", "en-GB"];
+            var localizationOptions = new RequestLocalizationOptions()
+                .SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+            app.UseRequestLocalization(localizationOptions);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
