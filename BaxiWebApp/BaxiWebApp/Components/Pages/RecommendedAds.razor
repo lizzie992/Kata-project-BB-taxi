@@ -1,0 +1,117 @@
+﻿@page "/RecommendedAds"
+@using BB
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@using System.Globalization
+@using System.Text.Json
+@using GoogleMapsApi;
+@using GoogleMapsApi.Entities.Common;
+@using GoogleMapsApi.Entities.Directions.Request;
+@using GoogleMapsApi.Entities.Directions.Response;
+@using GoogleMapsApi.Entities.Geocoding.Request;
+@using GoogleMapsApi.Entities.Geocoding.Response;
+@using GoogleMapsApi.StaticMaps;
+@using GoogleMapsApi.StaticMaps.Entities;
+@using System.Globalization;
+@using System.Threading.Tasks;
+@inject Data.BaxiWebAppContext context;
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject SignInManager<User> signInManger;
+@inject UserManager<User> UserManager;
+@inject NavigationManager NavigationManager
+@inject Data.DataService DataService
+@inject IJSRuntime JSRuntime
+
+
+
+<AuthorizeView Context="authContext">
+	<Authorized>
+
+		<h3>Recommended Ads</h3>
+
+		@if (recommendedAds.Count == 0)
+		{
+			<p>Unfortunately there are no ad recommendations for you. Please come back later or turn on the notifications so we can inform you when a matching ad is posted!</p>
+		}
+		else
+		{
+			
+		}
+
+
+
+
+
+
+	</Authorized>
+</AuthorizeView>
+
+
+
+@code {
+
+	List<Ad> recommendedAds = new List<Ad>();
+
+	//coordinates of Baierbrunn
+	public double latitudeBB = 48.0206345131560;
+	public double longitudeBB = 11.482919688669709;
+
+
+	public async Task<bool> CheckMatchingRouteLegs(double? coordinate1, double? coordinate2, double? coordinate3, double? coordinate4)
+	{
+		if (coordinate1 == null || coordinate2 == null || coordinate3 == null || coordinate4 == null)
+		{
+			return false;
+		}
+
+		//calculate the legs for the first ad:
+		var request = new DirectionsRequest
+		{
+			Origin = $"{coordinate1?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate2?.ToString("F8", CultureInfo.InvariantCulture)}",
+			Destination = $"{latitudeBB}, {longitudeBB}",
+			TravelMode = TravelMode.Driving,
+			ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk"
+		};
+		var result = await GoogleMaps.Directions.QueryAsync(request);
+		if (result.Routes.Count() == 0)
+		{
+			return false;
+		}
+		var legs = result.Routes.First().Legs;
+
+		//calculate the legs for the second ad:
+		var request2 = new DirectionsRequest
+		{
+			Origin = $"{coordinate3?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate4?.ToString("F8", CultureInfo.InvariantCulture)}",
+			Destination = $"{latitudeBB}, {longitudeBB}",
+			TravelMode = TravelMode.Driving,
+			ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk"
+		};
+		var result2 = await GoogleMaps.Directions.QueryAsync(request2);
+		if (result2.Routes.Count() == 0)
+		{
+			return false;
+		}
+		var legs2 = result2.Routes.First().Legs;
+
+		//aaand now compare the legs:
+		foreach (var v in legs)
+		{
+			foreach (var w in legs2)
+			{
+				if (v == w)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+
+
+
+
+}

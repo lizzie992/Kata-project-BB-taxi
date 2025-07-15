@@ -506,37 +506,24 @@
 	{
 		foreach (Ad oldAd in adList)
 		{
-			int timeDifference = Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours));
-			if (timeDifference <= Constants.TIME_LIMIT_FOR_NOTIFICATIONS)
+			if (await DataService.CheckDistanceBetweenAds(newAd, oldAd))
 			{
-				int distance = await DataService.GetDistance(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude);
-				if (distance == Constants.NULL_COORDINATES)
+				if (oldAd.AdOwner.AreNotificationsOn == true)
 				{
-					continue;
+					string messageNewAd = $"You might be interested in this new Ad:\r\n Ad type: {newAd.AdType}\r\nAd Direction: {newAd.AdDirection}\r\nAddress: {newAd.PickUpDropOffLocation}\r\n On {newAd.PickUpDateAndTime}\r\n Available seats: {newAd.NumberOfSeats}\r\n Any speicifc requests: {newAd.SpecificRequests}\r\n";
+					string emailAddress = "gulyaskata99@gmail.com";
+					string subject = "Check out this new ad: ";
+					DataService.sendEmail(emailAddress, subject, messageNewAd);
 				}
-				else if (distance == Constants.INVALID_ROUTE)
+				if (newAd.AdOwner.AreNotificationsOn == true)
 				{
-					continue;
-				}
-				else if (distance <= Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS)
-				{
-					if (oldAd.AdOwner.AreNotificationsOn == true)
-					{
-						string messageNewAd = $"You might be interested in this new Ad:\r\n Ad type: {newAd.AdType}\r\nAd Direction: {newAd.AdDirection}\r\nAddress: {newAd.PickUpDropOffLocation}\r\n On {newAd.PickUpDateAndTime}\r\n Available seats: {newAd.NumberOfSeats}\r\n Any speicifc requests: {newAd.SpecificRequests}\r\n";
-						string emailAddress = "gulyaskata99@gmail.com";
-						string subject = "Check out this new ad: ";
-						DataService.sendEmail(emailAddress, subject, messageNewAd);
-					}
-					if (newAd.AdOwner.AreNotificationsOn == true)
-					{
-						string messageOldAd = $"You might be interested in this new Ad:\r\n Ad type: {oldAd.AdType}\r\nAd Direction: {oldAd.AdDirection}\r\nAddress: {oldAd.PickUpDropOffLocation}\r\n On {oldAd.PickUpDateAndTime}\r\n Available seats: {oldAd.NumberOfSeats}\r\n Any speicifc requests: {oldAd.SpecificRequests}\r\n";
-						string emailAddress = "gulyaskata99@gmail.com";
-						string subject = "Check out this new ad: ";
-						DataService.sendEmail(emailAddress, subject, messageOldAd);
-					}
+					string messageOldAd = $"You might be interested in this new Ad:\r\n Ad type: {oldAd.AdType}\r\nAd Direction: {oldAd.AdDirection}\r\nAddress: {oldAd.PickUpDropOffLocation}\r\n On {oldAd.PickUpDateAndTime}\r\n Available seats: {oldAd.NumberOfSeats}\r\n Any speicifc requests: {oldAd.SpecificRequests}\r\n";
+					string emailAddress = "gulyaskata99@gmail.com";
+					string subject = "Check out this new ad: ";
+					DataService.sendEmail(emailAddress, subject, messageOldAd);
 				}
 			}
-		}
+		}	
 	}
 
 	/// <summary>

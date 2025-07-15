@@ -90,8 +90,33 @@ namespace BaxiWebApp.Data
             return totalDistanceInMeters; //output is in METERS!!!
         }
 
-
-
+        /// <summary>
+        /// Checks if the distance between the pick up location of 2 ads is under the limit
+        /// </summary>
+        /// <param name="ad1"></param>
+        /// <param name="ad2"></param>
+        /// <returns></returns>
+        public async Task<bool> CheckDistanceBetweenAds(Ad ad1, Ad ad2)
+        {
+            int timeDifference = Math.Abs((int)Math.Round((ad2.PickUpDateAndTime - ad1.PickUpDateAndTime).TotalHours));
+            if (timeDifference <= Constants.TIME_LIMIT_FOR_NOTIFICATIONS)
+            {
+                int distance = await GetDistance(ad1.Latitude, ad1.Longitude, ad2.Latitude, ad2.Longitude);
+                if (distance == Constants.NULL_COORDINATES)
+                {
+                    return false;
+                }
+                else if (distance == Constants.INVALID_ROUTE)
+                {
+                    return false;
+                }
+                else if (distance <= Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         /// <summary>
         ///Calculates the coordinates from a given address using Google API
@@ -246,7 +271,7 @@ namespace BaxiWebApp.Data
                 string output = message.ToString();
 
                 string emailAddress = "gulyaskata99@gmail.com";
-                string subject= "A conversation was just reported to you";
+                string subject = "A conversation was just reported to you";
                 string text = $"Please check out the following conversation below that {currentlyLoggedInUser} reported to you, with the following reason: {reasonForReporting}\r\n{message}";
 
                 sendEmail(emailAddress, subject, text);
