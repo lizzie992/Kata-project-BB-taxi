@@ -61,6 +61,7 @@ namespace BaxiWebApp
                 .AddSupportedUICultures(supportedCultures);
             app.UseRequestLocalization(localizationOptions);
 
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {

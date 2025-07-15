@@ -78,6 +78,8 @@ style="height: 400px">
 		var selectedCulture = e.Value.ToString();
 		CultureInfo.CurrentCulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
 						.First(c => c.Name == selectedCulture);
+		CultureInfo.CurrentUICulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
+		.First(c => c.Name == selectedCulture);
 		StateHasChanged();
 	}
 
