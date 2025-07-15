@@ -59,6 +59,76 @@ namespace BaxiWebApp.Data
 
 
         /// <summary>
+        /// Takes the coordinates of 2 ads, calculates the routes to Baiebrunn and checks if there is any match there
+        /// </summary>
+        /// <param name="coordinate1"></param>
+        /// <param name="coordinate2"></param>
+        /// <param name="coordinate3"></param>
+        /// <param name="coordinate4"></param>
+        /// <returns>bool</returns>
+        public async Task<bool> CheckMatchingRoutes(double? coordinate1, double? coordinate2, double? coordinate3, double? coordinate4)
+        {
+            if (coordinate1 == null || coordinate2 == null || coordinate3 == null || coordinate4 == null)
+            {
+                return false;
+            }
+
+            //calculate the steps for the first ad:
+            var request1 = new DirectionsRequest
+            {
+                Origin = $"{coordinate1?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate2?.ToString("F8", CultureInfo.InvariantCulture)}",
+                Destination = $"Baierbrunn, Germany",
+                TravelMode = TravelMode.Driving,
+                ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk"
+            };
+            var result1 = await GoogleMaps.Directions.QueryAsync(request1);
+            if (result1.Routes.Count() == 0)
+            {
+                return false;
+            }
+            // var legs = result.Routes.First().Legs;
+            var route1 = result1.Routes.First();
+            var leg1 = route1.Legs.First();
+            var steps1 = leg1.Steps;
+
+            //calculate the steps for the second ad:
+            var request2 = new DirectionsRequest
+            {
+                Origin = $"{coordinate3?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate4?.ToString("F8", CultureInfo.InvariantCulture)}",
+                Destination = $"Baierbrunn, Germany",
+                TravelMode = TravelMode.Driving,
+                ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk"
+            };
+            var result2 = await GoogleMaps.Directions.QueryAsync(request2);
+            if (result2.Routes.Count() == 0)
+            {
+                return false;
+            }
+            var route2 = result2.Routes.First();
+            var leg2 = route2.Legs.First();
+            var steps2 = leg2.Steps;
+
+
+            //aaand now compare the steps:
+            foreach (Step step1 in steps1)
+            {
+                foreach (Step step2 in steps2)
+                {
+                    if (step1.StartLocation.Latitude == step2.StartLocation.Latitude &&
+                    step1.StartLocation.Longitude == step2.StartLocation.Longitude &&
+                    step1.EndLocation.Latitude == step2.EndLocation.Latitude &&
+                    step1.EndLocation.Longitude == step2.EndLocation.Longitude)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
         /// Calculates the distance between 2 locations based on coordinates using Google API
         /// </summary>
         /// <param name="coordinate1">First location latitudes</param>
@@ -95,7 +165,7 @@ namespace BaxiWebApp.Data
         /// </summary>
         /// <param name="ad1"></param>
         /// <param name="ad2"></param>
-        /// <returns></returns>
+        /// <returns>bool</returns>
         public async Task<bool> CheckDistanceBetweenAds(Ad ad1, Ad ad2)
         {
             int timeDifference = Math.Abs((int)Math.Round((ad2.PickUpDateAndTime - ad1.PickUpDateAndTime).TotalHours));

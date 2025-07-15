@@ -1,4 +1,4 @@
-﻿@page "/RecommendedAds"
+﻿@page "/RecommendedAds/{ID:int}"
 @using BB
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using Microsoft.AspNetCore.Authorization
@@ -28,23 +28,66 @@
 
 <AuthorizeView Context="authContext">
 	<Authorized>
-
-		<h3>Recommended Ads</h3>
-
-		@if (recommendedAds.Count == 0)
+		@if (currentlyLoggedInUser == CurrentAd.AdOwner)
 		{
-			<p>Unfortunately there are no ad recommendations for you. Please come back later or turn on the notifications so we can inform you when a matching ad is posted!</p>
+			<h3>Recommended Ads</h3>
+
+			@if (recommendedAds.Count == 0)
+			{
+				<p>Unfortunately there are no ad recommendations for you. Please come back later or turn on the notifications so we can inform you when a matching ad is posted!</p>
+			}
+			else
+			{
+				<p>Here you will see the ads that are matching your selected ad.</p>
+				<p>Meaning: you are going in the same direction at the same time, and your pick up location or the route you are taking is close enough to each other</p>
+				<br>
+
+				<p>Your original ad:</p>
+				<div>Ad type: @CurrentAd.AdType</div>
+				<div>Ad owner: @DataService.showUserNameWithStatus(CurrentAd.AdOwner)</div>
+				<div>Ad Direction: @CurrentAd.AdDirection</div>
+				<div>Pick up or drop off location: @CurrentAd.PickUpDropOffLocation</div>
+				<div>Pick up Date and Time: @CurrentAd.PickUpDateAndTime</div>
+				<div>Number of seats: @CurrentAd.NumberOfSeats</div>
+				<div>Specific requests: @CurrentAd.SpecificRequests</div>
+				<br>
+
+
+				<p>And the possibly matching ads:</p>
+				<div>
+					<QuickGrid Items="adListForGrid" @ref="grid">
+						<PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title="Ad Direction:" Property="@(Ad => Ad.AdDirection)" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title="From/to this address:" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
+						<PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
+						<PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+@* 						<TemplateColumn Title="Show me the ad" Context="Ad">
+							<button @onclick="() => showAd(Ad)">Show me the ad!</button>
+						</TemplateColumn>
+						<TemplateColumn Title="Contact" Context="Ad">
+							@if (Ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser != Ad.AdOwner)
+							{
+								<button @onclick="() => createChat(Ad)">Contact me!</button>
+							}
+						</TemplateColumn>
+						@if (UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
+						{
+							<TemplateColumn Title="Delete ad" Context="Ad">
+								<button @onclick="() => showPopUpForDeletingAd(Ad)">Delete this ad!</button>
+							</TemplateColumn> *@
+						
+					</QuickGrid>
+				</div>
+				<br>
+
+
+			}
 		}
-		else
-		{
-			
-		}
-
-
-
-
-
-
+		
 	</Authorized>
 </AuthorizeView>
 
@@ -52,63 +95,94 @@
 
 @code {
 
+	[Parameter]
+	public int? ID { get; set; }
+
 	List<Ad> recommendedAds = new List<Ad>();
+
+	QuickGrid<Ad>? grid;
 
 	//coordinates of Baierbrunn
 	public double latitudeBB = 48.0206345131560;
 	public double longitudeBB = 11.482919688669709;
 
-
-	public async Task<bool> CheckMatchingRouteLegs(double? coordinate1, double? coordinate2, double? coordinate3, double? coordinate4)
+	public Ad? CurrentAd
 	{
-		if (coordinate1 == null || coordinate2 == null || coordinate3 == null || coordinate4 == null)
+		get
 		{
-			return false;
+			var result = context.Ads.FirstOrDefault(ad => ad.ID == ID);
+			return result;
 		}
+	}
 
-		//calculate the legs for the first ad:
-		var request = new DirectionsRequest
+	protected override void OnParametersSet()
+	{
+		identifyLoggedInUser().GetAwaiter().GetResult();
+		base.OnParametersSet();
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		recommendedAds = await collectRecommendedAds(CurrentAd);
+	}
+
+	// protected override async Task OnAfterRenderAsync(bool firstrender)
+	// {
+
+	// }
+
+
+	public User currentlyLoggedInUser;
+	/// <summary>
+	/// Identifies the user who is currently logged in
+	/// </summary>
+	/// <returns>User</returns>
+	public async Task identifyLoggedInUser()
+	{
+		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+		var claims = authState.User;
+
+		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+	}
+
+
+	IQueryable<Ad> adListForGrid
+	{
+		get
 		{
-			Origin = $"{coordinate1?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate2?.ToString("F8", CultureInfo.InvariantCulture)}",
-			Destination = $"{latitudeBB}, {longitudeBB}",
-			TravelMode = TravelMode.Driving,
-			ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk"
-		};
-		var result = await GoogleMaps.Directions.QueryAsync(request);
-		if (result.Routes.Count() == 0)
-		{
-			return false;
+			var result = recommendedAds.AsQueryable();
+			return result;
 		}
-		var legs = result.Routes.First().Legs;
+	}
 
-		//calculate the legs for the second ad:
-		var request2 = new DirectionsRequest
-		{
-			Origin = $"{coordinate3?.ToString("F8", CultureInfo.InvariantCulture)}, {coordinate4?.ToString("F8", CultureInfo.InvariantCulture)}",
-			Destination = $"{latitudeBB}, {longitudeBB}",
-			TravelMode = TravelMode.Driving,
-			ApiKey = "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk"
-		};
-		var result2 = await GoogleMaps.Directions.QueryAsync(request2);
-		if (result2.Routes.Count() == 0)
-		{
-			return false;
-		}
-		var legs2 = result2.Routes.First().Legs;
 
-		//aaand now compare the legs:
-		foreach (var v in legs)
+
+	/// <summary>
+	/// Checks the selected ad against the currently existing ads, if any of them has the same legs in the route, and collects them in a list of ads
+	/// </summary>
+	/// <param name="ad">Ad</param>
+	/// <returns>List of ads</returns>
+	public async Task<List<Ad>> collectRecommendedAds(Ad ad)
+	{
+		List<Ad> adList = new List<Ad>();
+		var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
+		foreach (var v in result)
 		{
-			foreach (var w in legs2)
+			if (v == ad)
 			{
-				if (v == w)
-				{
-					return true;
-				}
+				continue;
+			}
+			if (await DataService.CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+			{
+				adList.Add(v);
 			}
 		}
-		return false;
+		return adList;
 	}
+
+
+	
 
 
 

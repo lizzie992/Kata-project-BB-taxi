@@ -242,19 +242,6 @@ Number of seats: @ad.NumberOfSeats
 
 
 
-	public Ad ad9
-	{
-		get
-		{
-			var result = context.Ads.ToList<Ad>().AsQueryable();
-			Ad ad = result.FirstOrDefault(ad => ad.ID == 9);
-			return ad;
-		}
-	}
-
-
-
-
 	public List<Ad> adListForMap
 	{
 		get
