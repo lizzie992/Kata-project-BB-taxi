@@ -160,6 +160,9 @@ namespace BaxiWebApp.Data
             return totalDistanceInMeters; //output is in METERS!!!
         }
 
+
+
+
         /// <summary>
         /// Checks if the distance between the pick up location of 2 ads is under the limit
         /// </summary>

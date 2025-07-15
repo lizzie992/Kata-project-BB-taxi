@@ -121,7 +121,8 @@
 					<br>
 
 					Notifications: if you check this box, you will automatically receive an email notification when another user posts an ad that would be matching your needs:
-					It is less than @distanceLimit km away from you and less than @Constants.TIME_LIMIT_FOR_NOTIFICATIONS hour(s) different.
+					It is less than @distanceLimit km away from you and less than @Constants.TIME_LIMIT_FOR_NOTIFICATIONS hour(s) different,
+					Or your routes will meet somewhere on the way and could be convenient for both of you.
 					@if (user.AreNotificationsOn == true)
 					{
 						<input type="checkbox" checked @bind-value="@user.AreNotificationsOn">

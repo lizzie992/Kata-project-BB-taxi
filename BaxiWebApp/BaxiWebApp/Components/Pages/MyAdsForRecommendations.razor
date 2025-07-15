@@ -1,0 +1,94 @@
+﻿@page "/MyAdsForRecommendations"
+@using BB
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject Data.BaxiWebAppContext context;
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject SignInManager<User> signInManger;
+@inject UserManager<User> UserManager;
+@inject NavigationManager NavigationManager
+
+<AuthorizeView Context="authContext">
+    <Authorized>
+
+        @if (FilteredAds.ToArray().Length == 0)
+        {
+            <div>You do not have any ads :) You can create ads by clicking on Create Ad in the menu!</div>
+        }
+        else
+        {
+            <h3>Below you can select one of your ads, and find matches :)</h3>
+
+            <p>Click on the title of the column to sort it!</p>
+            <div>
+                <QuickGrid Items="FilteredAds" @ref="grid">
+
+                    <PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
+                    </PropertyColumn>
+                    <PropertyColumn Title="Ad Direction:" Property="@(Ad => Ad.AdDirection)" Sortable="true">
+                    </PropertyColumn>
+                    <PropertyColumn Title="From/To address:" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
+                    </PropertyColumn>
+                    <PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
+                    <PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
+                    <PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+                    <TemplateColumn Title="Find me ads that could match this ad" Context="Ad">
+                        <button class="btn btn-primary btn-sm mx-1" @onclick="() => recommendAds(Ad)">Find me recommendatios!</button>
+                    </TemplateColumn>
+                </QuickGrid>
+
+            </div>
+
+        }
+
+    </Authorized>
+</AuthorizeView>
+
+
+@code {
+    public User user;
+    /// <summary>
+    /// Identifies the user who is currently logged in
+    /// </summary>
+    /// <returns>User</returns>
+    public async Task identifyLoggedInUser()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        var claims = authState.User;
+
+        user = await UserManager.GetUserAsync(claims);
+    }
+
+
+    public static List<Ad> AdList = new List<Ad>();
+    protected override void OnParametersSet()
+    {
+        identifyLoggedInUser();
+        AdList = context.Ads.ToList<Ad>();
+        base.OnParametersSet();
+    }
+
+    QuickGrid<Ad>? grid;
+    IQueryable<Ad> FilteredAds
+    {
+        get
+        {
+            var result = context.Ads.ToList<Ad>().AsQueryable();
+            result = result.Where(Ad => Ad.AdOwner == user);
+            return result;
+        }
+    }
+
+    private int ID;
+    /// <summary>
+    /// Redirects the user to the RecommendedAds page with the correct ID number
+    /// </summary>
+    /// <param name="ad">Ad</param>
+    public void recommendAds(Ad ad)
+    {
+        ID = ad.ID;
+        NavigationManager.NavigateTo("RecommendedAds/" + ID);
+    }
+}

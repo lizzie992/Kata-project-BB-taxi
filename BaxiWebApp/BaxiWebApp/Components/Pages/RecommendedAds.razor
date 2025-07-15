@@ -14,7 +14,6 @@
 @using GoogleMapsApi.Entities.Geocoding.Response;
 @using GoogleMapsApi.StaticMaps;
 @using GoogleMapsApi.StaticMaps.Entities;
-@using System.Globalization;
 @using System.Threading.Tasks;
 @inject Data.BaxiWebAppContext context;
 @inject AuthenticationStateProvider AuthStateProvider;
@@ -28,66 +27,120 @@
 
 <AuthorizeView Context="authContext">
 	<Authorized>
-		@if (currentlyLoggedInUser == CurrentAd.AdOwner)
-		{
-			<h3>Recommended Ads</h3>
 
-			@if (recommendedAds.Count == 0)
-			{
-				<p>Unfortunately there are no ad recommendations for you. Please come back later or turn on the notifications so we can inform you when a matching ad is posted!</p>
+		<style>
+
+			#map {
+				height: 100%;
+				width: 100%; /* Optional but often useful */
 			}
-			else
-			{
-				<p>Here you will see the ads that are matching your selected ad.</p>
-				<p>Meaning: you are going in the same direction at the same time, and your pick up location or the route you are taking is close enough to each other</p>
-				<br>
 
-				<p>Your original ad:</p>
-				<div>Ad type: @CurrentAd.AdType</div>
-				<div>Ad owner: @DataService.showUserNameWithStatus(CurrentAd.AdOwner)</div>
-				<div>Ad Direction: @CurrentAd.AdDirection</div>
-				<div>Pick up or drop off location: @CurrentAd.PickUpDropOffLocation</div>
-				<div>Pick up Date and Time: @CurrentAd.PickUpDateAndTime</div>
-				<div>Number of seats: @CurrentAd.NumberOfSeats</div>
-				<div>Specific requests: @CurrentAd.SpecificRequests</div>
-				<br>
-
-
-				<p>And the possibly matching ads:</p>
-				<div>
-					<QuickGrid Items="adListForGrid" @ref="grid">
-						<PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title="Ad Direction:" Property="@(Ad => Ad.AdDirection)" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title="From/to this address:" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
-						<PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
-						<PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
-@* 						<TemplateColumn Title="Show me the ad" Context="Ad">
-							<button @onclick="() => showAd(Ad)">Show me the ad!</button>
-						</TemplateColumn>
-						<TemplateColumn Title="Contact" Context="Ad">
-							@if (Ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser != Ad.AdOwner)
-							{
-								<button @onclick="() => createChat(Ad)">Contact me!</button>
-							}
-						</TemplateColumn>
-						@if (UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
-						{
-							<TemplateColumn Title="Delete ad" Context="Ad">
-								<button @onclick="() => showPopUpForDeletingAd(Ad)">Delete this ad!</button>
-							</TemplateColumn> *@
-						
-					</QuickGrid>
-				</div>
-				<br>
-
-
+			.adList {
+				display: grid;
+				grid-template-columns: 33% 33% 33%;
 			}
-		}
-		
+
+			.ad {
+				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+				max-width: 400px;
+				margin: auto;
+				text-align: center;
+				font-family: arial;
+			}
+
+				.ad button {
+					border: none;
+					outline: 0;
+					padding: 12px;
+					color: white;
+					background-color: #000;
+					text-align: center;
+					cursor: pointer;
+					width: 100%;
+					font-size: 18px;
+				}
+
+			row {
+				display: block; /* Ensures it behaves like a container */
+				overflow: hidden; /* Clears floated children */
+				margin-bottom: 20px; /* Optional spacing between rows */
+			}
+
+			column {
+				float: left;
+				padding: 10px;
+				box-sizing: border-box; /* Prevents padding from affecting width */
+			}
+
+			.left {
+				width: 40%;
+			}
+
+			.right {
+				width: 60%;
+			}
+		</style>
+
+		<body>
+			@if (currentlyLoggedInUser == CurrentAd.AdOwner)
+			{
+				<h3>Recommended Ads</h3>
+
+				@if (recommendedAds.Count == 0)
+				{
+					<p>Unfortunately there are no ad recommendations for you. Please come back later or turn on the notifications so we can inform you when a matching ad is posted!</p>
+				}
+				else
+				{
+					<div class="row">
+						<p>Here you will see the ads that are matching your selected ad.</p>
+						<p>Meaning: you are going in the same direction at the same time, and your pick up location or the route you are taking is close enough to each other</p>
+						<br>
+						<div class="column left">
+							<p>Your original ad:</p>
+							<div>Ad type: @CurrentAd.AdType</div>
+							<div>Ad owner: @DataService.showUserNameWithStatus(CurrentAd.AdOwner)</div>
+							<div>Ad Direction: @CurrentAd.AdDirection</div>
+							<div>Pick up or drop off location: @CurrentAd.PickUpDropOffLocation</div>
+							<div>Pick up Date and Time: @CurrentAd.PickUpDateAndTime</div>
+							<div>Number of seats: @CurrentAd.NumberOfSeats</div>
+							<div>Specific requests: @CurrentAd.SpecificRequests</div>
+							<br>
+						</div>
+						<div class="column right">
+							<br>
+							<br>
+							<div>
+								<div id="map">
+								</div>
+								<script>
+									(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+									({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+							</div>
+						</div>
+					</div>
+					<div>
+						<p>And the possibly matching ads:</p>
+						<QuickGrid Items="adListForGrid" @ref="grid">
+							<PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
+							</PropertyColumn>
+							<PropertyColumn Title="Ad Direction:" Property="@(Ad => Ad.AdDirection)" Sortable="true">
+							</PropertyColumn>
+							<PropertyColumn Title="From/to this address:" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
+							</PropertyColumn>
+							<PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
+							<PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
+							<PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+							<TemplateColumn Title="Here you can open the ad and contact the owner!" Context="Ad">
+								<button @onclick="() => showAd(Ad)">Show me the ad</button>
+							</TemplateColumn>
+						</QuickGrid>
+					</div>
+					<br>
+
+				}
+			}
+		</body>
 	</Authorized>
 </AuthorizeView>
 
@@ -96,8 +149,9 @@
 @code {
 
 	[Parameter]
-	public int? ID { get; set; }
+	public int ID { get; set; }
 
+	// Ad CurrentAd;
 	List<Ad> recommendedAds = new List<Ad>();
 
 	QuickGrid<Ad>? grid;
@@ -115,20 +169,24 @@
 		}
 	}
 
-	protected override void OnParametersSet()
+	public async Task<Ad> getCurrentAd(int ID)
 	{
-		identifyLoggedInUser().GetAwaiter().GetResult();
-		base.OnParametersSet();
+		var result = context.Ads.FirstOrDefault(ad => ad.ID == ID);
+		return result;
 	}
 
-	protected override async Task OnInitializedAsync()
+
+	protected override async Task OnParametersSetAsync()
 	{
 		recommendedAds = await collectRecommendedAds(CurrentAd);
+		identifyLoggedInUser().GetAwaiter().GetResult();
+		await base.OnParametersSetAsync();
 	}
+
 
 	// protected override async Task OnAfterRenderAsync(bool firstrender)
 	// {
-
+	// 	await JSRuntime.InvokeVoidAsync("initMapForAdList", recommendedAds);
 	// }
 
 
@@ -166,23 +224,58 @@
 	public async Task<List<Ad>> collectRecommendedAds(Ad ad)
 	{
 		List<Ad> adList = new List<Ad>();
-		var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
+		var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
+
+		//TO Baierbrunn, passenger looking for drivers
+		if (CurrentAd.AdDirection == AdDirection.ToBaierbrunn && CurrentAd.AdType == AdType.Passenger)
+		{
+			result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= CurrentAd.NumberOfSeats);
+		}
+		//TO Baierbrunn, driver looking for passengers
+		if (CurrentAd.AdDirection == AdDirection.ToBaierbrunn && CurrentAd.AdType == AdType.Driver)
+		{
+			result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= CurrentAd.NumberOfSeats);
+		}
+		//FROM Baierbrunn, passenger looking for drivers
+		if (CurrentAd.AdDirection == AdDirection.FromBaierbrunn && CurrentAd.AdType == AdType.Passenger)
+		{
+			result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= CurrentAd.NumberOfSeats);
+		}
+		//FROM Baierbrunn, driver looking for passengers
+		if (CurrentAd.AdDirection == AdDirection.FromBaierbrunn && CurrentAd.AdType == AdType.Driver)
+		{
+			result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= CurrentAd.NumberOfSeats);
+		}
+
 		foreach (var v in result)
 		{
 			if (v == ad)
 			{
 				continue;
 			}
-			if (await DataService.CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+			int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpDateAndTime).TotalHours));
+			if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
 			{
-				adList.Add(v);
+				if (await DataService.CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+				{
+					adList.Add(v);
+				}
 			}
 		}
 		return adList;
 	}
 
 
-	
+	/// <summary>
+	/// Redirects the user to a new page showing the one specific ad they want to see
+	/// </summary>
+	/// <param name="ad">Ad</param>
+	public void showAd(Ad ad)
+	{
+		int id = ad.ID;
+		NavigationManager.NavigateTo("ShowAd/" + id);
+	}
+
 
 
 

@@ -523,7 +523,24 @@
 					DataService.sendEmail(emailAddress, subject, messageOldAd);
 				}
 			}
-		}	
+			else if (await DataService.CheckMatchingRoutes(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude))
+			{
+				if (oldAd.AdOwner.AreNotificationsOn == true)
+				{
+					string messageNewAd = $"You might be interested in this new Ad:\r\n Ad type: {newAd.AdType}\r\nAd Direction: {newAd.AdDirection}\r\nAddress: {newAd.PickUpDropOffLocation}\r\n On {newAd.PickUpDateAndTime}\r\n Available seats: {newAd.NumberOfSeats}\r\n Any speicifc requests: {newAd.SpecificRequests}\r\n";
+					string emailAddress = "gulyaskata99@gmail.com";
+					string subject = "Check out this new ad: ";
+					DataService.sendEmail(emailAddress, subject, messageNewAd);
+				}
+				if (newAd.AdOwner.AreNotificationsOn == true)
+				{
+					string messageOldAd = $"You might be interested in this new Ad:\r\n Ad type: {oldAd.AdType}\r\nAd Direction: {oldAd.AdDirection}\r\nAddress: {oldAd.PickUpDropOffLocation}\r\n On {oldAd.PickUpDateAndTime}\r\n Available seats: {oldAd.NumberOfSeats}\r\n Any speicifc requests: {oldAd.SpecificRequests}\r\n";
+					string emailAddress = "gulyaskata99@gmail.com";
+					string subject = "Check out this new ad: ";
+					DataService.sendEmail(emailAddress, subject, messageOldAd);
+				}
+			}
+	}	
 	}
 
 	/// <summary>
