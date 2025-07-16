@@ -1,4 +1,5 @@
 ﻿@page "/RecommendedAds/{ID:int}"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @using BB
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using Microsoft.AspNetCore.Authorization
@@ -31,53 +32,28 @@
 		<style>
 
 			#map {
-				height: 100%;
-				width: 100%; /* Optional but often useful */
+				height: 100%; 
+				width: 100%;
+				position: relative; 
+				overflow: hidden; 
+				min-height: 400px;
 			}
-
-			.adList {
-				display: grid;
-				grid-template-columns: 33% 33% 33%;
-			}
-
-			.ad {
-				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-				max-width: 400px;
-				margin: auto;
-				text-align: center;
-				font-family: arial;
-			}
-
-				.ad button {
-					border: none;
-					outline: 0;
-					padding: 12px;
-					color: white;
-					background-color: #000;
-					text-align: center;
-					cursor: pointer;
-					width: 100%;
-					font-size: 18px;
-				}
 
 			row {
-				display: block; /* Ensures it behaves like a container */
-				overflow: hidden; /* Clears floated children */
-				margin-bottom: 20px; /* Optional spacing between rows */
+				/* margin-bottom: 20px; /* Optional spacing between rows */ */
 			}
 
 			column {
 				float: left;
 				padding: 10px;
-				box-sizing: border-box; /* Prevents padding from affecting width */
 			}
 
 			.left {
-				width: 40%;
+				width: 50%;
 			}
 
 			.right {
-				width: 60%;
+				width: 50%;
 			}
 		</style>
 
@@ -98,6 +74,7 @@
 						<br>
 						<div class="column left">
 							<p>Your original ad:</p>
+							<br>
 							<div>Ad type: @CurrentAd.AdType</div>
 							<div>Ad owner: @DataService.showUserNameWithStatus(CurrentAd.AdOwner)</div>
 							<div>Ad Direction: @CurrentAd.AdDirection</div>
@@ -106,10 +83,13 @@
 							<div>Number of seats: @CurrentAd.NumberOfSeats</div>
 							<div>Specific requests: @CurrentAd.SpecificRequests</div>
 							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
 						</div>
 						<div class="column right">
-							<br>
-							<br>
 							<div>
 								<div id="map">
 								</div>
@@ -176,18 +156,23 @@
 	}
 
 
-	protected override async Task OnParametersSetAsync()
+	// protected override async Task OnParametersSetAsync()
+	// {
+	// 	recommendedAds = await collectRecommendedAds(CurrentAd);
+	// 	await identifyLoggedInUser();
+	// 	await base.OnParametersSetAsync();
+	// }
+	protected override void OnParametersSet()
 	{
-		recommendedAds = await collectRecommendedAds(CurrentAd);
+		recommendedAds = Task.Run( async () => await collectRecommendedAds(CurrentAd)).Result;
 		identifyLoggedInUser().GetAwaiter().GetResult();
-		await base.OnParametersSetAsync();
+		base.OnParametersSet();
 	}
 
-
-	// protected override async Task OnAfterRenderAsync(bool firstrender)
-	// {
-	// 	await JSRuntime.InvokeVoidAsync("initMapForAdList", recommendedAds);
-	// }
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		await JSRuntime.InvokeVoidAsync("initMapForAdList", recommendedAds);
+	}
 
 
 	public User currentlyLoggedInUser;
