@@ -1,24 +1,25 @@
 ﻿using BB;
-using GoogleMapsApi.Entities.Geocoding.Request;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
-using System.Net.Mail;
-using System.Runtime.InteropServices.Marshalling;
-using System.Text;
-using static System.Net.Mime.MediaTypeNames;
+using GoogleApi.Entities.Search.Common;
 using GoogleMapsApi;
 using GoogleMapsApi.Entities.Common;
 using GoogleMapsApi.Entities.Directions.Request;
 using GoogleMapsApi.Entities.Directions.Response;
 using GoogleMapsApi.Entities.Geocoding.Request;
+using GoogleMapsApi.Entities.Geocoding.Request;
 using GoogleMapsApi.Entities.Geocoding.Response;
 using GoogleMapsApi.StaticMaps;
 using GoogleMapsApi.StaticMaps.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using System.Threading.Tasks;
+using System.Net;
+using System.Net.Mail;
+using System.Runtime.InteropServices.Marshalling;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Timers;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace BaxiWebApp.Data
@@ -246,6 +247,62 @@ namespace BaxiWebApp.Data
         {
             _dbcFactory = dbcFactory;
         }
+
+
+        /// <summary>
+        /// Checks the selected ad against the currently existing ads, if any of them has the same legs in the route, and collects them in a list of ads
+        /// </summary>
+        /// <param name="ad">Ad</param>
+        /// <returns>List of ads</returns>
+        public async Task<List<Ad>> collectRecommendedAds(Ad ad, User currentlyLoggedInUser)
+        {
+            using (var context = _dbcFactory.CreateDbContext())
+            {
+                List<Ad> adList = new List<Ad>();
+                var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
+                result = result.Where(oldAd => oldAd.PickUpDateAndTime >= DateTime.Now && oldAd.AdOwner != currentlyLoggedInUser);
+
+                //TO Baierbrunn, passenger looking for drivers
+                if (ad.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Passenger)
+                {
+                    result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= ad.NumberOfSeats);
+                }
+                //TO Baierbrunn, driver looking for passengers
+                if (ad.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Driver)
+                {
+                    result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= ad.NumberOfSeats);
+                }
+                //FROM Baierbrunn, passenger looking for drivers
+                if (ad.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Passenger)
+                {
+                    result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= ad.NumberOfSeats);
+                }
+                //FROM Baierbrunn, driver looking for passengers
+                if (ad.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Driver)
+                {
+                    result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= ad.NumberOfSeats);
+                }
+
+                foreach (var v in result)
+                {
+                    if (v == ad)
+                    {
+                        continue;
+                    }
+                    int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpDateAndTime).TotalHours));
+                    if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                    {
+                        if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                        {
+                            adList.Add(v);
+                        }
+                    }
+                }
+                return adList;
+            }
+               
+        }
+
 
 
         public event EventHandler<int> ChatChanged;

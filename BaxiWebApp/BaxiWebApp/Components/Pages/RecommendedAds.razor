@@ -164,7 +164,7 @@
 	// }
 	protected override void OnParametersSet()
 	{
-		recommendedAds = Task.Run( async () => await collectRecommendedAds(CurrentAd)).Result;
+		recommendedAds = Task.Run(async () => await DataService.collectRecommendedAds(CurrentAd, currentlyLoggedInUser)).Result;
 		identifyLoggedInUser().GetAwaiter().GetResult();
 		base.OnParametersSet();
 	}
@@ -201,54 +201,7 @@
 
 
 
-	/// <summary>
-	/// Checks the selected ad against the currently existing ads, if any of them has the same legs in the route, and collects them in a list of ads
-	/// </summary>
-	/// <param name="ad">Ad</param>
-	/// <returns>List of ads</returns>
-	public async Task<List<Ad>> collectRecommendedAds(Ad ad)
-	{
-		List<Ad> adList = new List<Ad>();
-		var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
-
-		//TO Baierbrunn, passenger looking for drivers
-		if (CurrentAd.AdDirection == AdDirection.ToBaierbrunn && CurrentAd.AdType == AdType.Passenger)
-		{
-			result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= CurrentAd.NumberOfSeats);
-		}
-		//TO Baierbrunn, driver looking for passengers
-		if (CurrentAd.AdDirection == AdDirection.ToBaierbrunn && CurrentAd.AdType == AdType.Driver)
-		{
-			result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= CurrentAd.NumberOfSeats);
-		}
-		//FROM Baierbrunn, passenger looking for drivers
-		if (CurrentAd.AdDirection == AdDirection.FromBaierbrunn && CurrentAd.AdType == AdType.Passenger)
-		{
-			result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= CurrentAd.NumberOfSeats);
-		}
-		//FROM Baierbrunn, driver looking for passengers
-		if (CurrentAd.AdDirection == AdDirection.FromBaierbrunn && CurrentAd.AdType == AdType.Driver)
-		{
-			result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= CurrentAd.NumberOfSeats);
-		}
-
-		foreach (var v in result)
-		{
-			if (v == ad)
-			{
-				continue;
-			}
-			int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpDateAndTime).TotalHours));
-			if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
-			{
-				if (await DataService.CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
-				{
-					adList.Add(v);
-				}
-			}
-		}
-		return adList;
-	}
+	
 
 
 	/// <summary>

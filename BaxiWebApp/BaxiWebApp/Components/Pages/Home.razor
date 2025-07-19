@@ -10,14 +10,15 @@
 @using GoogleMapsApi.StaticMaps;
 @using GoogleMapsApi.StaticMaps.Entities;
 @using Pages.Res;
+@using Microsoft.EntityFrameworkCore;
 @using Microsoft.Extensions.Localization
 @using System.Globalization
 @inject IStringLocalizer<Resources> localizer
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject UserManager<User> UserManager;
 @inject NavigationManager NavigationManager
-
-
+@inject Data.DataService DataService
+@inject Data.BaxiWebAppContext context;
 
 <PageTitle>Home</PageTitle>
 
@@ -69,6 +70,41 @@ style="height: 400px">
 </p>
 
 
+@if (currentlyLoggedInUser != null && recommendedAds.Count != 0 && showPopUpRecommendedAds == true)
+{
+	{
+		<div class="modal" tabindex="-1" style="display:block" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title">Have you seen these ads?</h3>
+						<button type="button" class="close" @onclick="ClosePopUpRecommendedAds"> <span area-hidden="true">X</span></button>
+					</div>
+					<div class="modal-body">
+						<p>These might be interesting for you: </p>
+						<br>
+						@foreach (var ad in recommendedAds)
+						{
+							<p>Ad type: @ad.AdType</p>
+							<p>Ad owner: @DataService.showUserNameWithStatus(ad.AdOwner)</p>
+							<p>Ad Direction: @ad.AdDirection</p>
+							<p>Pick up or drop off location: @ad.PickUpDropOffLocation</p>
+							<p>Pick up Date and Time: @ad.PickUpDateAndTime</p>
+							<p>Number of seats: @ad.NumberOfSeats</p>
+							<p>Specific requests: @ad.SpecificRequests</p>
+							<button @onclick="() => showAd(ad)">Show me this ad!</button>
+							<br>
+						}
+						<br>
+						<button type="button" class="close" @onclick="navigateToRecommendedAds">Show me all recommendations!</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}
+
+
 
 
 @code {
@@ -83,7 +119,19 @@ style="height: 400px">
 		StateHasChanged();
 	}
 
-	public static User? user;
+	List<Ad> recommendedAds;
+
+
+	protected override async Task OnParametersSetAsync()
+	{
+		identifyLoggedInUser().GetAwaiter().GetResult();
+		recommendedAds = await getRecommendedAds();
+		showPopUpRecommendedAds = true;
+		base.OnParametersSet();
+	}
+
+
+	public static User? currentlyLoggedInUser;
 	/// <summary>
 	/// Identifies the user who is currently logged in
 	/// </summary>
@@ -94,8 +142,60 @@ style="height: 400px">
 
 		var claims = authState.User;
 
-		user = await UserManager.GetUserAsync(claims);
+		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 
+	}
+
+
+	bool showPopUpRecommendedAds = true;
+	/// <summary>
+	/// Closes pop up window to show error message about the location being too close to Baierbrunn
+	/// </summary>
+	public void ClosePopUpRecommendedAds()
+	{
+		showPopUpRecommendedAds = false;
+	}
+
+
+	public async Task<List<Ad>> getRecommendedAds()
+	{
+		var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsQueryable();
+		result = result.Where(Ad => Ad.AdOwner == currentlyLoggedInUser);
+		List<Ad> recommendedAds = new List<Ad>();
+		if (result is null)
+		{
+			return recommendedAds;
+		}
+		else
+		{
+			foreach (Ad ad in result)
+			{
+				List<Ad> list = Task.Run(async () => await DataService.collectRecommendedAds(ad, currentlyLoggedInUser)).Result;
+				recommendedAds.AddRange(list);
+			}
+			recommendedAds = recommendedAds.OrderBy(a => a.PickUpDateAndTime).ToList();
+			recommendedAds = recommendedAds.Take(3).ToList();
+			return recommendedAds;
+		}
+	}
+
+
+	/// <summary>
+	/// Navigates to the page where the user can look up their recommended ads
+	/// </summary>
+	public void navigateToRecommendedAds()
+	{
+		NavigationManager.NavigateTo("MyAdsForRecommendations");
+	}
+
+	/// <summary>
+	/// Redirects the user to a new page showing the one specific ad they want to see
+	/// </summary>
+	/// <param name="ad">Ad</param>
+	public void showAd(Ad ad)
+	{
+		int id = ad.ID;
+		NavigationManager.NavigateTo("ShowAd/" + id);
 	}
 
 
