@@ -17,6 +17,7 @@
 @using GoogleMapsApi.StaticMaps;
 @using GoogleMapsApi.StaticMaps.Entities;
 @using System.Globalization;
+@using Microsoft.EntityFrameworkCore;
 @inject Data.BaxiWebAppContext context;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
@@ -125,7 +126,7 @@ else
 	{
 		get
 		{
-			var result = context.Ads.FirstOrDefault(ad => ad.ID == ID);
+			var result = context.Ads.Include(u => u.AdOwner).FirstOrDefault(ad => ad.ID == ID);
 			return result;
 		}
 	}
