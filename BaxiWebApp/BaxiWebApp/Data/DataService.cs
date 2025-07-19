@@ -108,21 +108,38 @@ namespace BaxiWebApp.Data
             var leg2 = route2.Legs.First();
             var steps2 = leg2.Steps;
 
+            //these values represent a 1km distance in coordinates:
+            double latitudeDifference = 0.008983;
+            double longitudeDifference = 0.01342;
 
-            //aaand now compare the steps:
+
             foreach (Step step1 in steps1)
             {
                 foreach (Step step2 in steps2)
                 {
-                    if (step1.StartLocation.Latitude == step2.StartLocation.Latitude &&
-                    step1.StartLocation.Longitude == step2.StartLocation.Longitude &&
-                    step1.EndLocation.Latitude == step2.EndLocation.Latitude &&
-                    step1.EndLocation.Longitude == step2.EndLocation.Longitude)
+                    double dif1 = Math.Abs((double)((step1.StartLocation.Latitude - step2.StartLocation.Latitude)));
+                    double dif2 = Math.Abs((double)((step1.StartLocation.Longitude - step2.StartLocation.Longitude)));
+                    if (dif1 <= latitudeDifference &&
+                        dif2 <= longitudeDifference)
                     {
                         return true;
                     }
                 }
             }
+
+            //foreach (Step step1 in steps1)
+            //{
+            //    foreach (Step step2 in steps2)
+            //    {
+            //        if (step1.StartLocation.Latitude == step2.StartLocation.Latitude &&
+            //        step1.StartLocation.Longitude == step2.StartLocation.Longitude &&
+            //        step1.EndLocation.Latitude == step2.EndLocation.Latitude &&
+            //        step1.EndLocation.Longitude == step2.EndLocation.Longitude)
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //}
 
             return false;
         }
