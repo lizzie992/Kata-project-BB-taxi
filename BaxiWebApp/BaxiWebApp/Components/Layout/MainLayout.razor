@@ -7,18 +7,16 @@
 
 <div class="page">
     <div class="sidebar">
-        <NavMenu />
+        <NavMenu />  
     </div>
 
     <main>
-
-       @*  <div>
+        <div>
             <select @onchange="OnSelected">
-                <option value="en-GB">English</option>
                 <option value="de-DE">German</option>
+                <option value="en-GB">English</option>
             </select>
-        </div> *@
-
+        </div>
         <div class="top-row px-4">
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
         </div>
@@ -38,15 +36,15 @@
 
 @code {
 
-    // private void OnSelected(ChangeEventArgs e)
-    // {
-    //     // Code
-    //     var selectedCulture = e.Value.ToString();
-    //     CultureInfo.CurrentCulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
-    //               .First(c => c.Name == selectedCulture);
-    //     NavigationManager.NavigateTo("/", forceLoad: true);
-    // }
-
+    private void OnSelected(ChangeEventArgs e)
+    {
+        var selectedCulture = e.Value.ToString();
+        CultureInfo.CurrentCulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
+                        .First(c => c.Name == selectedCulture);
+        CultureInfo.CurrentUICulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
+        .First(c => c.Name == selectedCulture);
+        StateHasChanged();
+    }
     
 
 }

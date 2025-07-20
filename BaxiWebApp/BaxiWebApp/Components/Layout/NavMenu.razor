@@ -5,6 +5,9 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
+@using Microsoft.EntityFrameworkCore;
+@using Microsoft.Extensions.Localization
+@using System.Globalization
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
@@ -80,7 +83,6 @@
 						</button>
 					</form>
 				</div>
-
 			</Authorized>
 
 
@@ -97,8 +99,11 @@
 						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Log in!
 					</NavLink>
 				</div>
+
 			</NotAuthorized>
 		</AuthorizeView>
+
+		
 
 	</nav>
 </div>
@@ -138,6 +143,6 @@
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
-
+	
 
 }

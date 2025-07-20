@@ -117,7 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Ad_Direction" xml:space="preserve">
+    <value>Anzeige Richtung:</value>
+  </data>
+  <data name="Ad_Type" xml:space="preserve">
+    <value>Anzeigentyp:</value>
+  </data>
+  <data name="All_Ads_PageTitle" xml:space="preserve">
+    <value>Hier sehen Sie alle Anzeigen:</value>
+  </data>
+  <data name="Click_On_Column" xml:space="preserve">
+    <value>Klicken Sie auf den Spaltentitel, um zu sortieren!</value>
+  </data>
+  <data name="Contact_Me" xml:space="preserve">
+    <value>Kontaktieren Sie mich!</value>
+  </data>
+  <data name="Error_Message_Inactivated" xml:space="preserve">
+    <value>Sie sind deaktiviert, diese Seite ist für Sie nicht verfügbar</value>
+  </data>
   <data name="Greeting" xml:space="preserve">
     <value>Willkommen in Baierbrunn</value>
+  </data>
+  <data name="Number_Of_Seats" xml:space="preserve">
+    <value>Anzahl der Plätze:</value>
+  </data>
+  <data name="PickUp_DateAndTime" xml:space="preserve">
+    <value>Abholdatum und -zeit:</value>
+  </data>
+  <data name="Pick_Up_Location" xml:space="preserve">
+    <value>Von/zu dieser Adresse:</value>
+  </data>
+  <data name="Search_Adtype" xml:space="preserve">
+    <value>Ich suche nach einem/einer:</value>
+  </data>
+  <data name="Search_DateAndTime" xml:space="preserve">
+    <value>Zwischen folgendem Datum und Uhrzeit:</value>
+  </data>
+  <data name="Search_Direction" xml:space="preserve">
+    <value>Richtung:</value>
+  </data>
+  <data name="Search_PickUpAddress" xml:space="preserve">
+    <value>Von / zu dieser Adresse:</value>
+  </data>
+  <data name="Search_RequestedNumberOfSeats" xml:space="preserve">
+    <value>Gewünschte Anzahl an Sitzplätzen:</value>
+  </data>
+  <data name="Show_Me_Ad" xml:space="preserve">
+    <value>Zeig mir die Anzeige</value>
+  </data>
+  <data name="Specific_Requests" xml:space="preserve">
+    <value>Besondere Wünsche:</value>
+  </data>
+  <data name="Delete_Ad" xml:space="preserve">
+    <value>Anzeige löschen</value>
+  </data>
+  <data name="Write_Reason_For_Deleting_Ad" xml:space="preserve">
+    <value>Bitte geben Sie hier den Grund für das Löschen dieser Anzeige an:</value>
   </data>
 </root>

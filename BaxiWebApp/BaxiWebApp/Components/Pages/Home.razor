@@ -34,12 +34,7 @@
 
 <h1 style="text-align:center;">@localizer["Greeting"]</h1>
 
-<div>
-	<select @onchange="OnSelected">
-		<option value="de-DE">German</option>
-		<option value="en-GB">English</option>
-	</select>
-</div>
+
 
 
 <img src="https://www.bayregio.de/baierbrunn/oben.jpg" alt="Beautiful Baierbrunn" class="center" style="width:90%;">
@@ -109,15 +104,7 @@ style="height: 400px">
 
 @code {
 
-	private void OnSelected(ChangeEventArgs e)
-	{
-		var selectedCulture = e.Value.ToString();
-		CultureInfo.CurrentCulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
-						.First(c => c.Name == selectedCulture);
-		CultureInfo.CurrentUICulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
-		.First(c => c.Name == selectedCulture);
-		StateHasChanged();
-	}
+	
 
 	List<Ad> recommendedAds;
 
@@ -156,7 +143,10 @@ style="height: 400px">
 		showPopUpRecommendedAds = false;
 	}
 
-
+	/// <summary>
+	/// Collects a list of Ads that could be recommended to any ads of a specific user - sorts the ads by pick up date and time, and shows the first 3
+	/// </summary>
+	/// <returns>List of ads</returns>
 	public async Task<List<Ad>> getRecommendedAds()
 	{
 		var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsQueryable();
