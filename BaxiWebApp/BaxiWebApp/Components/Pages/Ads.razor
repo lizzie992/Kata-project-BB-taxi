@@ -14,9 +14,7 @@
 @inject Data.DataService DataService
 @inject IJSRuntime JSRuntime
 @using Pages.Res;
-@using Microsoft.EntityFrameworkCore;
 @using Microsoft.Extensions.Localization
-@using System.Globalization
 @inject IStringLocalizer<Resources> localizer
 
 <AuthorizeView Context="authContext">
@@ -241,7 +239,15 @@ Number of seats: @ad.NumberOfSeats
 
 	public static List<Ad> AdList = new List<Ad>();
 
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+		await InvokeAsync(() =>
+	{
+		StateHasChanged();
+	});
+	}
 
 
 	public List<Ad> adListForMap

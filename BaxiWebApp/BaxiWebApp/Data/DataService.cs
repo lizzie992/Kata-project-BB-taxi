@@ -9,6 +9,7 @@ using GoogleMapsApi.Entities.Geocoding.Request;
 using GoogleMapsApi.Entities.Geocoding.Response;
 using GoogleMapsApi.StaticMaps;
 using GoogleMapsApi.StaticMaps.Entities;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
@@ -26,6 +27,16 @@ namespace BaxiWebApp.Data
 {
     public class DataService
     {
+        public event EventHandler<CultureInfo> CultureChanged;
+        public void ChangeCulture(ChangeEventArgs e)
+        {
+            var selectedCulture = e.Value.ToString();
+            CultureInfo.CurrentCulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
+                            .First(c => c.Name == selectedCulture);
+            CultureInfo.CurrentUICulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
+            .First(c => c.Name == selectedCulture);
+            CultureChanged?.Invoke(this, CultureInfo.CurrentUICulture);
+        }
 
         int minDistanceLimit = 3000;
         int maxDistanceLimit = 200000;

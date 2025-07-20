@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BaxiWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class notifications : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -277,8 +277,8 @@ namespace BaxiWebApp.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "7cb7fed3-aa18-4067-9644-eabbf6137adf", "867eaecc-4898-4624-a69a-b53806c46f60", "Admin", "ADMIN" },
-                    { "cf83d71c-1a90-4696-9595-f97462852a1f", "1dbdef6d-6756-495e-92fd-b8c524d8b628", "Regular", "REGULAR" }
+                    { "b3ec8553-34a6-4d6a-8f0d-90e4be2b15b0", "36a0d2a0-4318-4b81-9299-d8a23b385fa6", "Regular", "REGULAR" },
+                    { "c55540ca-3aaa-4583-9c9f-aa47e23d4034", "6d861b53-582f-4d3c-a747-b8a7a8887eff", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -105,9 +105,18 @@ style="height: 400px">
 @code {
 
 	
-
 	List<Ad> recommendedAds;
 
+
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+		await InvokeAsync(() =>
+	{
+		StateHasChanged();
+	});
+	}
 
 	protected override async Task OnParametersSetAsync()
 	{
