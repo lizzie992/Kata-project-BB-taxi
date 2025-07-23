@@ -144,6 +144,9 @@
   <data name="Number_Of_Seats" xml:space="preserve">
     <value>Number of seats:</value>
   </data>
+  <data name="Passenger" xml:space="preserve">
+    <value>Passenger</value>
+  </data>
   <data name="PickUp_DateAndTime" xml:space="preserve">
     <value>Pick up date and time:</value>
   </data>

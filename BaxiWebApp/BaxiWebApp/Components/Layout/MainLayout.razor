@@ -1,11 +1,16 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager Navigation
 @using Pages.Res;
+@using BB;
 @using Microsoft.Extensions.Localization
 @using System.Globalization
+@using Microsoft.AspNetCore.Components;
+@using Microsoft.AspNetCore.Identity;
 @inject IStringLocalizer<Resources> localizer
 @inject Data.DataService DataService
-
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject SignInManager<User> signInManger;
+@inject UserManager<User> UserManager;
 
 
 <div class="page">
@@ -15,7 +20,7 @@
 
     <main>
         <div>
-            <select @onchange="DataService.ChangeCulture">
+            <select @onchange="(e) => DataService.ChangeCulture(e, currentlyLoggedInUser)">
                 <option value="de-DE">German</option>
                 <option value="en-GB">English</option>
             </select>
@@ -39,7 +44,28 @@
 
 @code {
 
+    protected override async Task OnParametersSetAsync()
+    {
+        identifyLoggedInUser().GetAwaiter().GetResult();
+        base.OnParametersSet();
+    }
 
 
+    public static User? currentlyLoggedInUser;
+    /// <summary>
+    /// Identifies the user who is currently logged in
+    /// </summary>
+    /// <returns>User</returns>
+    public async Task identifyLoggedInUser()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+        var claims = authState.User;
+
+        currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+
+    }
+
+    
 
 }

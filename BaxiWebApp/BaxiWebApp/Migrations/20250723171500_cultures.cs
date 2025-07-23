@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BaxiWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class cultures : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,6 +51,7 @@ namespace BaxiWebApp.Migrations
                     DefaultNumberOfSeats = table.Column<int>(type: "INTEGER", nullable: false),
                     DefaultSpecificRequests = table.Column<string>(type: "TEXT", nullable: false),
                     AreNotificationsOn = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Culture = table.Column<string>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -277,8 +278,8 @@ namespace BaxiWebApp.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "b3ec8553-34a6-4d6a-8f0d-90e4be2b15b0", "36a0d2a0-4318-4b81-9299-d8a23b385fa6", "Regular", "REGULAR" },
-                    { "c55540ca-3aaa-4583-9c9f-aa47e23d4034", "6d861b53-582f-4d3c-a747-b8a7a8887eff", "Admin", "ADMIN" }
+                    { "2a7581a0-7e89-473a-a89a-5f0256612787", "a377299e-e5f7-4ba3-8fed-10230800082e", "Regular", "REGULAR" },
+                    { "472f6ce9-46ee-4a71-85d1-00dd74847e1a", "bfb5c389-b146-46e1-b9ab-7a4fcfc64f52", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

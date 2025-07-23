@@ -28,15 +28,54 @@ namespace BaxiWebApp.Data
     public class DataService
     {
         public event EventHandler<CultureInfo> CultureChanged;
-        public void ChangeCulture(ChangeEventArgs e)
+
+        /// <summary>
+        /// Gets Culture input from UI, changes the current culture to this choice, and if the user is logged in, changes the user's culture property to this value
+        /// </summary>
+        /// <param name="e">Value from UI input</param>
+        /// <param name="user">Logged in user</param>
+        public void ChangeCulture(ChangeEventArgs e, User user)
         {
             var selectedCulture = e.Value.ToString();
-            CultureInfo.CurrentCulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
-                            .First(c => c.Name == selectedCulture);
-            CultureInfo.CurrentUICulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
-            .First(c => c.Name == selectedCulture);
+            setCulture(selectedCulture);
             CultureChanged?.Invoke(this, CultureInfo.CurrentUICulture);
+            if (user is not null)
+            {
+                using (var context = _dbcFactory.CreateDbContext())
+                {
+                    context.Update(user);
+                    user.Culture = selectedCulture.ToString();
+                    context.SaveChanges();
+                }
+            }
         }
+
+        /// <summary>
+        /// Changes the current culture to a specific value
+        /// </summary>
+        /// <param name="culture">string</param>
+        public void setCulture(string culture)
+        {
+            CultureInfo.CurrentCulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
+                           .First(c => c.Name == culture);
+            CultureInfo.CurrentUICulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
+            .First(c => c.Name == culture);
+        }
+
+        /// <summary>
+        /// Takes the culture property of a given user (if the user is not null) and changes the current culture to this value
+        /// </summary>
+        /// <param name="user">User</param>
+        public void loadCulture(User user)
+        {
+            if (user is not null)
+            {
+                var selectedCulture = user.Culture.ToString();
+                setCulture(selectedCulture);
+                CultureChanged?.Invoke(this, CultureInfo.CurrentUICulture);
+            }
+        }
+
 
         int minDistanceLimit = 3000;
         int maxDistanceLimit = 200000;
@@ -311,7 +350,7 @@ namespace BaxiWebApp.Data
                 }
                 return adList;
             }
-               
+
         }
 
 

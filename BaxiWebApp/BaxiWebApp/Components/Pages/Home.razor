@@ -104,7 +104,7 @@ style="height: 400px">
 
 @code {
 
-	
+
 	List<Ad> recommendedAds;
 
 
@@ -124,6 +124,14 @@ style="height: 400px">
 		recommendedAds = await getRecommendedAds();
 		showPopUpRecommendedAds = true;
 		base.OnParametersSet();
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		if (firstrender)
+		{
+			DataService.loadCulture(currentlyLoggedInUser);
+		}
 	}
 
 

@@ -132,6 +132,9 @@
   <data name="Contact_Me" xml:space="preserve">
     <value>Contact me!</value>
   </data>
+  <data name="Delete_Ad" xml:space="preserve">
+    <value>Delete ad</value>
+  </data>
   <data name="Error_Message_Inactivated" xml:space="preserve">
     <value>You are inactivated, this page is not available for you</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="Number_Of_Seats" xml:space="preserve">
     <value>Number of seats:</value>
+  </data>
+  <data name="Passenger" xml:space="preserve">
+    <value>Passenger</value>
   </data>
   <data name="PickUp_DateAndTime" xml:space="preserve">
     <value>Pick up date and time:</value>
@@ -167,9 +173,6 @@
   </data>
   <data name="Specific_Requests" xml:space="preserve">
     <value>Specific requests:</value>
-  </data>
-  <data name="Delete_Ad" xml:space="preserve">
-    <value>Delete ad</value>
   </data>
   <data name="Write_Reason_For_Deleting_Ad" xml:space="preserve">
     <value>Please write here the reason for the deleting this ad:</value>

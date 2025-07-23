@@ -187,6 +187,7 @@
 		user.DefaultSpecificRequests = Input.DefaultSpecificRequests;
 		(user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
 		user.AreNotificationsOn = Input.notificationsOn;
+		user.Culture = "de-DE";
 		user.isActive = true;
 		user.isDeleted = false;
 		if (user.Email.Contains("admin"))

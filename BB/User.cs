@@ -158,6 +158,12 @@ namespace BB
             set { _areNotificationsOn = value; }
         }
 
+        private string _culture;
+        public string Culture
+        {
+            get { return _culture; }
+            set { _culture = value; }
+        }
 
     }
 }

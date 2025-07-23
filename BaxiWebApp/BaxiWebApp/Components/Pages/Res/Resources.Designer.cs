@@ -142,6 +142,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Passenger.
+        /// </summary>
+        public static string Passenger {
+            get {
+                return ResourceManager.GetString("Passenger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From/to this address:.
         /// </summary>
         public static string Pick_Up_Location {

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaxiWebApp.Migrations
 {
     [DbContext(typeof(BaxiWebAppContext))]
-    [Migration("20250720134249_test")]
-    partial class test
+    [Migration("20250723171500_cultures")]
+    partial class cultures
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,6 +141,10 @@ namespace BaxiWebApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Contact")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Culture")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("DefaultAdType")
@@ -276,15 +280,15 @@ namespace BaxiWebApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b3ec8553-34a6-4d6a-8f0d-90e4be2b15b0",
-                            ConcurrencyStamp = "36a0d2a0-4318-4b81-9299-d8a23b385fa6",
+                            Id = "2a7581a0-7e89-473a-a89a-5f0256612787",
+                            ConcurrencyStamp = "a377299e-e5f7-4ba3-8fed-10230800082e",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         },
                         new
                         {
-                            Id = "c55540ca-3aaa-4583-9c9f-aa47e23d4034",
-                            ConcurrencyStamp = "6d861b53-582f-4d3c-a747-b8a7a8887eff",
+                            Id = "472f6ce9-46ee-4a71-85d1-00dd74847e1a",
+                            ConcurrencyStamp = "bfb5c389-b146-46e1-b9ab-7a4fcfc64f52",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

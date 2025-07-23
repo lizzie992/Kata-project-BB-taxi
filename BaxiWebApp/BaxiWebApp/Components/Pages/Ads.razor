@@ -29,46 +29,46 @@
 		<style>
 
 			#map {
-			height: 100%;
+				height: 100%;
 			}
 
 			.adList {
-			display: grid;
-			grid-template-columns: 33% 33% 33%;
+				display: grid;
+				grid-template-columns: 33% 33% 33%;
 			}
 
 			.ad {
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-			max-width: 400px;
-			margin: auto;
-			text-align: center;
-			font-family: arial;
+				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+				max-width: 400px;
+				margin: auto;
+				text-align: center;
+				font-family: arial;
 			}
 
-			.ad button {
-			border: none;
-			outline: 0;
-			padding: 12px;
-			color: white;
-			background-color: #000;
-			text-align: center;
-			cursor: pointer;
-			width: 100%;
-			font-size: 18px;
-			}
+				.ad button {
+					border: none;
+					outline: 0;
+					padding: 12px;
+					color: white;
+					background-color: #000;
+					text-align: center;
+					cursor: pointer;
+					width: 100%;
+					font-size: 18px;
+				}
 
 
 			column {
-			float: left;
-			padding: 10px;
+				float: left;
+				padding: 10px;
 			}
 
 			.left {
-			width: 50%;
+				width: 50%;
 			}
 
 			.right {
-			width: 50%;
+				width: 50%;
 			}
 
 		</style>
@@ -88,7 +88,7 @@
 						<InputSelect @bind-Value="_adType" id="adType">
 							@foreach (var value in Enum.GetValues<AdType>())
 							{
-								<option value="@value">@value.ToString()</option>
+								<option value="@value">@localizer[value.ToString()]</option>
 							}
 						</InputSelect>
 						<br>
@@ -114,10 +114,10 @@
 
 						<p>@localizer["Search_DateAndTime"]</p>
 						<InputDate Type="InputDateType.DateTimeLocal"
-						min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
+								   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
 						</InputDate>
 						<InputDate Type="InputDateType.DateTimeLocal"
-						min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime2">
+								   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime2">
 						</InputDate>
 						<br>
 						<br>
@@ -243,10 +243,11 @@ Number of seats: @ad.NumberOfSeats
 
 	public async void OnCultureChanged(object sender, CultureInfo culture)
 	{
+
 		await InvokeAsync(() =>
-	{
-		StateHasChanged();
-	});
+		{
+			StateHasChanged();
+		});
 	}
 
 
@@ -288,6 +289,10 @@ Number of seats: @ad.NumberOfSeats
 
 	protected override async Task OnAfterRenderAsync(bool firstrender)
 	{
+		if (firstrender)
+		{
+			DataService.loadCulture(currentlyLoggedInUser);
+		}
 		await JSRuntime.InvokeVoidAsync("initMapForAdList", adListForMap);
 	}
 
