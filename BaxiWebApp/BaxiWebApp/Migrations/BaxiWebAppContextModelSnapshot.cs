@@ -72,6 +72,9 @@ namespace BaxiWebApp.Migrations
                     b.Property<int?>("AdID")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime?>("TimeStamp")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("adOwnerUserId")
                         .HasColumnType("TEXT");
 
@@ -277,15 +280,15 @@ namespace BaxiWebApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2a7581a0-7e89-473a-a89a-5f0256612787",
-                            ConcurrencyStamp = "a377299e-e5f7-4ba3-8fed-10230800082e",
+                            Id = "9042ee2d-b216-4f0d-931a-8373f396e37f",
+                            ConcurrencyStamp = "37ac6a35-5325-46f8-a8e8-8d6964111cbb",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         },
                         new
                         {
-                            Id = "472f6ce9-46ee-4a71-85d1-00dd74847e1a",
-                            ConcurrencyStamp = "bfb5c389-b146-46e1-b9ab-7a4fcfc64f52",
+                            Id = "69180910-077e-4495-b28b-dcdf55b74bdd",
+                            ConcurrencyStamp = "5056b3ec-8a8f-4aaf-805b-040e791d285f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BaxiWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class cultures : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -218,6 +218,7 @@ namespace BaxiWebApp.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     adOwnerUserId = table.Column<string>(type: "TEXT", nullable: true),
                     contactingUserId = table.Column<string>(type: "TEXT", nullable: true),
+                    TimeStamp = table.Column<DateTime>(type: "TEXT", nullable: true),
                     AdID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
@@ -278,8 +279,8 @@ namespace BaxiWebApp.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2a7581a0-7e89-473a-a89a-5f0256612787", "a377299e-e5f7-4ba3-8fed-10230800082e", "Regular", "REGULAR" },
-                    { "472f6ce9-46ee-4a71-85d1-00dd74847e1a", "bfb5c389-b146-46e1-b9ab-7a4fcfc64f52", "Admin", "ADMIN" }
+                    { "69180910-077e-4495-b28b-dcdf55b74bdd", "5056b3ec-8a8f-4aaf-805b-040e791d285f", "Admin", "ADMIN" },
+                    { "9042ee2d-b216-4f0d-931a-8373f396e37f", "37ac6a35-5325-46f8-a8e8-8d6964111cbb", "Regular", "REGULAR" }
                 });
 
             migrationBuilder.CreateIndex(

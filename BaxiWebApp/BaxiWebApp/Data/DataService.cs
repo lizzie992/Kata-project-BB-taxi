@@ -381,9 +381,11 @@ namespace BaxiWebApp.Data
                 }
                 message.messageText = TextMessage;
                 message.timeStamp = DateTime.Now;
+                CurrentConversation.TimeStamp = DateTime.Now;
                 //  context.Entry(message.toUser).State = EntityState.Unchanged;
                 //    context.Entry(message.fromUser).State = EntityState.Unchanged;
                 CurrentConversation.messages.Add(message);
+                
                 //        context.Update(CurrentConversation);
                 context.SaveChanges();
                 ChatChanged?.Invoke(this, CurrentConversation.ID);

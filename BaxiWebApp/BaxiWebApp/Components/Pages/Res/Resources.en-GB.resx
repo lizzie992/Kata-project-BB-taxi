@@ -201,4 +201,52 @@
   <data name="Address..." xml:space="preserve">
     <value>Address...</value>
   </data>
+  <data name="All_chat_conversations" xml:space="preserve">
+    <value>All chat conversations</value>
+  </data>
+  <data name="No_conversations_yet" xml:space="preserve">
+    <value>No conversations yet!</value>
+  </data>
+  <data name="New_conversation" xml:space="preserve">
+    <value>New conversation</value>
+  </data>
+  <data name="Chat" xml:space="preserve">
+    <value>Chat</value>
+  </data>
+  <data name="Click_on_a_chat" xml:space="preserve">
+    <value>Click on a chat!</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Message:</value>
+  </data>
+  <data name="Timestamp" xml:space="preserve">
+    <value>Timestamp:</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Delete_conversation" xml:space="preserve">
+    <value>Delete conversation</value>
+  </data>
+  <data name="Report_conversation" xml:space="preserve">
+    <value>Report conversation</value>
+  </data>
+  <data name="Looks_like_you_are_lost_please_navigate_back_to_the_chat_using_the_navigation_menu_on_the_left" xml:space="preserve">
+    <value>Looks like you are lost :) Please navigate back to the chat using the navigation menu on the left!</value>
+  </data>
+  <data name="Are_you_sure_you_want_to_delete_it" xml:space="preserve">
+    <value>Are you sure you want to delete it?</value>
+  </data>
+  <data name="Report_this_conversations_to_the_admins" xml:space="preserve">
+    <value>Report this conversations to the admins!</value>
+  </data>
+  <data name="Please_write_here_the_reason_for_the_report" xml:space="preserve">
+    <value>Please write here the reason for the report:</value>
+  </data>
 </root>

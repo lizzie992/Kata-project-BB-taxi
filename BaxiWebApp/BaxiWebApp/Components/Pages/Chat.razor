@@ -9,12 +9,18 @@
 @using System.Net
 @using System.IO
 @using System.Text;
+@using System.Globalization
 @inject Data.BaxiWebAppContext context;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
 @inject NavigationManager NavigationManager
 @inject Data.DataService DataService
+@using Pages.Res;
+@using System.Linq;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer
+
 
 @* <h3>Chat</h3> *@
 
@@ -65,14 +71,14 @@
 
 	<div class="row">
 		<div class="column left" style="background-color:#aaa;">
-			<h2>All chat conversations</h2>
-			@if (ConvoList is null)
+			<h2>@localizer["All_chat_conversations"]</h2>
+			@if (ConvoList == null || ConvoList.Count == 0)
 			{
-				<p>No conversations yet!</p>
+				<p>@localizer["No_conversations_yet"]</p>
 			}
 			else
 			{
-				@foreach (Conversation C in ConvoList)
+				foreach (Conversation C in ConvoList)
 				{
 					<div class="clickable-div">
 						@if (C.MostRecentMessage is not null)
@@ -82,18 +88,19 @@
 						}
 						else
 						{
-							<a href="Chat/@C.ID">New conversation</a>
+							<a href="Chat/@C.ID">@localizer["New_conversation"]</a>
 						}
 					</div>
+
 				}
 			}
 		</div>
 		<div class="column right" style="background-color:#bbb;">
-			<h2>Chat</h2>
+			<h2>@localizer["Chat"]</h2>
 			<p>
 				@if (CurrentConversation is null)
 				{
-				<p>Click on a chat!</p>
+				<p>@localizer["Click_on_a_chat"]</p>
 			}
 			else
 			{
@@ -101,13 +108,13 @@
 				{
 					Ad ad = GetAd(CurrentConversation);
 					<div class="Ad">
-						<p>Ad owner: @DataService.showUserNameWithStatus(ad.AdOwner)</p>
-						<p>Ad type: @ad.AdType</p>
-						<p>Ad direction: @ad.AdDirection</p>
-						<p>From/To this address: @ad.PickUpDropOffLocation</p>
-						<p>Pick up Date and Time: @ad.PickUpDateAndTime</p>
-						<p>Number of seats: @ad.NumberOfSeats</p>
-						<p>Specific requests: @ad.SpecificRequests</p>
+						<p>@localizer["Ad_owner"] @DataService.showUserNameWithStatus(ad.AdOwner)</p>
+						<p>@localizer["Ad_type"] @localizer[@ad.AdType.ToString()]</p>
+						<p>@localizer["Ad_direction"] @localizer[@ad.AdDirection.ToString()]</p>
+						<p>@localizer["From/to_this_address"] @ad.PickUpDropOffLocation</p>
+						<p>@localizer["Pick_up_date_and_time"] @ad.PickUpDateAndTime</p>
+						<p>@localizer["Number_of_seats"] @ad.NumberOfSeats</p>
+						<p>@localizer["Specific_requests"] @ad.SpecificRequests</p>
 						<br>
 						<br>
 						<br>
@@ -115,26 +122,26 @@
 					@foreach (Message M in CurrentConversation.messages)
 					{
 						<div class="Message">
-							<p>From: @DataService.showUserNameWithStatus(M.fromUser)</p>
-							<p>To: @DataService.showUserNameWithStatus(M.toUser)</p>
-							<p>Message: @M.messageText</p>
-							<p>Timestamp: @M.timeStamp</p>
+							<p>@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</p>
+							<p>@localizer["To"] @DataService.showUserNameWithStatus(M.toUser)</p>
+							<p>@localizer["Message"] @M.messageText</p>
+							<p>@localizer["Timestamp"] @M.timeStamp</p>
 						</div>
 						<br>
 					}
 					@if (currentlyLoggedInUser.isActive == true)
 					{
 						<InputText @bind-Value="TextMessage"></InputText>
-						<button class="btn btn-primary" @onclick="SendMessage">Send</button>
+						<button class="btn btn-primary" @onclick="SendMessage">@localizer["Send"]</button>
 					}
 					<br>
 					<br>
-					<button class="btn btn-primary" @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">Delete conversation</button>
-					<button class="btn btn-primary" @onclick="() => showPopUpForReportConversation(CurrentConversation)">Report conversation</button>
+					<button class="btn btn-primary" @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button>
+					<button class="btn btn-primary" @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button>
 				}
 				else
 				{
-					<p>Looks like you are lost :) Please navigate back to the chat using the navigation menu on the left!</p>
+					<p>@localizer["Looks_like_you_are_lost_please_navigate_back_to_the_chat_using_the_navigation_menu_on_the_left"]</p>
 				}
 			}
 			</p>
@@ -149,12 +156,12 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h3 class="modal-title">Delete this conversation!</h3>
+					<h3 class="modal-title">@localizer["Delete_conversation"]</h3>
 					<button type="button" class="close" @onclick="closePopUpForDeletingConversation"> <span area-hidden="true">X</span></button>
 				</div>
 				<div class="modal-body">
-					<p>Are you sure you want to delete it?</p>
-					<button type="button" class="close" @onclick="() => DeleteConversation(CurrentConversation)">Delete it!</button>
+					<p>@localizer["Are_you_sure_you_want_to_delete_it"]</p>
+					<button type="button" class="close" @onclick="() => DeleteConversation(CurrentConversation)">@localizer["Delete_conversation"]</button>
 				</div>
 			</div>
 		</div>
@@ -169,13 +176,13 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h3 class="modal-title">Report this conversations to the admins!</h3>
+					<h3 class="modal-title">@localizer["Report_this_conversations_to_the_admins"]</h3>
 					<button type="button" class="close" @onclick="closePopUpForReportConversation"> <span area-hidden="true">X</span></button>
 				</div>
 				<div class="modal-body">
-					<p>Please write here the reason for the report:</p>
+					<p>@localizer["Please_write_here_the_reason_for_the_report"]</p>
 					<InputText @bind-Value="reasonForReporting"></InputText>
-					<button type="button" class="close" @onclick="() => ReportConversation(CurrentConversation, currentlyLoggedInUser, reasonForReporting)">Report this conversation!</button>
+					<button type="button" class="close" @onclick="() => ReportConversation(CurrentConversation, currentlyLoggedInUser, reasonForReporting)">@localizer["Report_conversation"]</button>
 				</div>
 			</div>
 		</div>
@@ -195,7 +202,28 @@
 	private string TextMessage { get; set; }
 	string reasonForReporting = "";
 
-	protected override void OnInitialized() => DataService.ChatChanged += OnChatChanged;
+	protected override void OnInitialized()
+	{
+		DataService.ChatChanged += OnChatChanged;
+		DataService.CultureChanged += OnCultureChanged;
+	}
+
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+		await InvokeAsync(() =>
+		{
+			StateHasChanged();
+		});
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		if (firstrender)
+		{
+			DataService.loadCulture(currentlyLoggedInUser);
+		}
+	}
+
 
 	/// <summary>
 	/// In case of event ChatChanged, it triggers a Statehaschanged to re-render the component
@@ -209,6 +237,8 @@
 		StateHasChanged();
 	});
 	}
+
+
 
 	protected override void OnParametersSet()
 	{
@@ -239,16 +269,26 @@
 		}
 	}
 
-	public IQueryable<Conversation>? ConvoList
+	public List<Conversation> ConvoList
 	{
 		get
 		{
-			var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).ToList<Conversation>().AsQueryable();
-			result = result.Where(c => c.adOwnerUser == currentlyLoggedInUser || c.contactingUser == currentlyLoggedInUser);
-			result = result.OrderByDescending(c => c.MostRecentMessage.timeStamp);
-			return result;
+			List<Conversation> result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).ToList();
+			result = result
+		.Where(c => c.adOwnerUser.Id == currentlyLoggedInUser.Id || c.contactingUser.Id == currentlyLoggedInUser.Id)
+		.ToList();
+			if (result.Count() == 0)
+			{
+				return null;
+			}
+			result = result.OrderByDescending(c => c.MostRecentMessage.timeStamp).ToList();
+			return result.ToList();
 		}
+
 	}
+
+
+
 
 	/// <summary>
 	/// Adds the current string as a message to the current conversation and also resets the textmessage to an empty string for the next message

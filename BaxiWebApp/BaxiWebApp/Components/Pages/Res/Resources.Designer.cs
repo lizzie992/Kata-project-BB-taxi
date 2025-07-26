@@ -106,11 +106,47 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All chat conversations.
+        /// </summary>
+        public static string All_chat_conversations {
+            get {
+                return ResourceManager.GetString("All_chat_conversations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete it?.
+        /// </summary>
+        public static string Are_you_sure_you_want_to_delete_it {
+            get {
+                return ResourceManager.GetString("Are_you_sure_you_want_to_delete_it", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Between the following date and time:.
         /// </summary>
         public static string Between_the_following_date_and_time {
             get {
                 return ResourceManager.GetString("Between_the_following_date_and_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat.
+        /// </summary>
+        public static string Chat {
+            get {
+                return ResourceManager.GetString("Chat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click on a chat!.
+        /// </summary>
+        public static string Click_on_a_chat {
+            get {
+                return ResourceManager.GetString("Click_on_a_chat", resourceCulture);
             }
         }
         
@@ -142,6 +178,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete conversation.
+        /// </summary>
+        public static string Delete_conversation {
+            get {
+                return ResourceManager.GetString("Delete_conversation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Direction:.
         /// </summary>
         public static string Direction {
@@ -156,6 +201,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Driver {
             get {
                 return ResourceManager.GetString("Driver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From:.
+        /// </summary>
+        public static string From {
+            get {
+                return ResourceManager.GetString("From", resourceCulture);
             }
         }
         
@@ -205,6 +259,43 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Looks like you are lost :) Please navigate back to the chat using the navigation menu on the left!.
+        /// </summary>
+        public static string Looks_like_you_are_lost_please_navigate_back_to_the_chat_using_the_navigation_menu_on_the_left {
+            get {
+                return ResourceManager.GetString("Looks_like_you_are_lost_please_navigate_back_to_the_chat_using_the_navigation_men" +
+                        "u_on_the_left", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message:.
+        /// </summary>
+        public static string Message {
+            get {
+                return ResourceManager.GetString("Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New conversation.
+        /// </summary>
+        public static string New_conversation {
+            get {
+                return ResourceManager.GetString("New_conversation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No conversations yet!.
+        /// </summary>
+        public static string No_conversations_yet {
+            get {
+                return ResourceManager.GetString("No_conversations_yet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of seats:.
         /// </summary>
         public static string Number_of_seats {
@@ -241,11 +332,47 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please write here the reason for the report:.
+        /// </summary>
+        public static string Please_write_here_the_reason_for_the_report {
+            get {
+                return ResourceManager.GetString("Please_write_here_the_reason_for_the_report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report conversation.
+        /// </summary>
+        public static string Report_conversation {
+            get {
+                return ResourceManager.GetString("Report_conversation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report this conversations to the admins!.
+        /// </summary>
+        public static string Report_this_conversations_to_the_admins {
+            get {
+                return ResourceManager.GetString("Report_this_conversations_to_the_admins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select all.
         /// </summary>
         public static string SelectAll {
             get {
                 return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send.
+        /// </summary>
+        public static string Send {
+            get {
+                return ResourceManager.GetString("Send", resourceCulture);
             }
         }
         
@@ -282,6 +409,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string These_might_be_interesting_for_you {
             get {
                 return ResourceManager.GetString("These_might_be_interesting_for_you", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timestamp:.
+        /// </summary>
+        public static string Timestamp {
+            get {
+                return ResourceManager.GetString("Timestamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To:.
+        /// </summary>
+        public static string To {
+            get {
+                return ResourceManager.GetString("To", resourceCulture);
             }
         }
         

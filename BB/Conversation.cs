@@ -45,6 +45,10 @@ namespace BB
         {
             get
             {
+                if (messages is null)
+                {
+                    return null;
+                }
                 if (messages.Count == 0)
                 {
                     return null;
@@ -57,6 +61,13 @@ namespace BB
             }
         }
 
+
+        private DateTime? _timeStamp;
+        public DateTime? TimeStamp
+        {
+            get { return _timeStamp; }
+            set { _timeStamp = value; }
+        }
 
     }
 }
