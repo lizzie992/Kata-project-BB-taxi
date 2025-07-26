@@ -63,81 +63,153 @@ namespace BaxiWebApp.Components.Pages.Res {
         /// <summary>
         ///   Looks up a localized string similar to Ad Direction:.
         /// </summary>
-        public static string Ad_Direction {
+        public static string Ad_direction {
             get {
-                return ResourceManager.GetString("Ad_Direction", resourceCulture);
+                return ResourceManager.GetString("Ad_direction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ad owner.
+        /// </summary>
+        public static string Ad_owner {
+            get {
+                return ResourceManager.GetString("Ad_owner", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Ad type:.
         /// </summary>
-        public static string Ad_Type {
+        public static string Ad_type {
             get {
-                return ResourceManager.GetString("Ad_Type", resourceCulture);
+                return ResourceManager.GetString("Ad_type", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All ads.
+        ///   Looks up a localized string similar to Address....
         /// </summary>
-        public static string All_Ads_PageTitle {
+        public static string Address___ {
             get {
-                return ResourceManager.GetString("All_Ads_PageTitle", resourceCulture);
+                return ResourceManager.GetString("Address...", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Between the following date and time:.
+        /// </summary>
+        public static string Between_the_following_date_and_time {
+            get {
+                return ResourceManager.GetString("Between_the_following_date_and_time", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Click on the title of the column to sort it!.
         /// </summary>
-        public static string Click_On_Column {
+        public static string Click_on_the_title_of_the_column_to_sort_it {
             get {
-                return ResourceManager.GetString("Click_On_Column", resourceCulture);
+                return ResourceManager.GetString("Click_on_the_title_of_the_column_to_sort_it", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Contact me!.
         /// </summary>
-        public static string Contact_Me {
+        public static string Contact_me {
             get {
-                return ResourceManager.GetString("Contact_Me", resourceCulture);
+                return ResourceManager.GetString("Contact_me", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Delete ad.
         /// </summary>
-        public static string Delete_Ad {
+        public static string Delete_ad {
             get {
-                return ResourceManager.GetString("Delete_Ad", resourceCulture);
+                return ResourceManager.GetString("Delete_ad", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Here you can see all of the ads:.
+        ///   Looks up a localized string similar to Direction:.
         /// </summary>
-        public static string Error_Message_Inactivated {
+        public static string Direction {
             get {
-                return ResourceManager.GetString("Error_Message_Inactivated", resourceCulture);
+                return ResourceManager.GetString("Direction", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hello Baierbrunn.
+        ///   Looks up a localized string similar to Driver.
         /// </summary>
-        public static string Greeting {
+        public static string Driver {
             get {
-                return ResourceManager.GetString("Greeting", resourceCulture);
+                return ResourceManager.GetString("Driver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From/to this address:.
+        /// </summary>
+        public static string From_to_this_address {
+            get {
+                return ResourceManager.GetString("From/to_this_address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From Baierbrunn.
+        /// </summary>
+        public static string FromBaierbrunn {
+            get {
+                return ResourceManager.GetString("FromBaierbrunn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Have you seen these ads?.
+        /// </summary>
+        public static string Have_you_seen_these_ads {
+            get {
+                return ResourceManager.GetString("Have_you_seen_these_ads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All ads.
+        /// </summary>
+        public static string Here_you_can_see_all_of_the_ads {
+            get {
+                return ResourceManager.GetString("Here_you_can_see_all_of_the_ads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I am looking for a:.
+        /// </summary>
+        public static string I_am_looking_for_a {
+            get {
+                return ResourceManager.GetString("I_am_looking_for_a", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Number of seats:.
         /// </summary>
-        public static string Number_Of_Seats {
+        public static string Number_of_seats {
             get {
-                return ResourceManager.GetString("Number_Of_Seats", resourceCulture);
+                return ResourceManager.GetString("Number_of_seats", resourceCulture);
             }
         }
         
@@ -151,92 +223,92 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to From/to this address:.
-        /// </summary>
-        public static string Pick_Up_Location {
-            get {
-                return ResourceManager.GetString("Pick_Up_Location", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Pick up date and time:.
         /// </summary>
-        public static string PickUp_DateAndTime {
+        public static string Pick_up_date_and_time {
             get {
-                return ResourceManager.GetString("PickUp_DateAndTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to I am looking for a:.
-        /// </summary>
-        public static string Search_Adtype {
-            get {
-                return ResourceManager.GetString("Search_Adtype", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Between the following date and time:.
-        /// </summary>
-        public static string Search_DateAndTime {
-            get {
-                return ResourceManager.GetString("Search_DateAndTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Direction:.
-        /// </summary>
-        public static string Search_Direction {
-            get {
-                return ResourceManager.GetString("Search_Direction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to From / to this address:.
-        /// </summary>
-        public static string Search_PickUpAddress {
-            get {
-                return ResourceManager.GetString("Search_PickUpAddress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Requested number of seats:.
-        /// </summary>
-        public static string Search_RequestedNumberOfSeats {
-            get {
-                return ResourceManager.GetString("Search_RequestedNumberOfSeats", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show me the ad.
-        /// </summary>
-        public static string Show_Me_Ad {
-            get {
-                return ResourceManager.GetString("Show_Me_Ad", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Specific requests:.
-        /// </summary>
-        public static string Specific_Requests {
-            get {
-                return ResourceManager.GetString("Specific_Requests", resourceCulture);
+                return ResourceManager.GetString("Pick_up_date_and_time", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Please write here the reason for the deleting this ad:.
         /// </summary>
-        public static string Write_Reason_For_Deleting_Ad {
+        public static string Please_write_here_the_reason_for_deleting_this_ad {
             get {
-                return ResourceManager.GetString("Write_Reason_For_Deleting_Ad", resourceCulture);
+                return ResourceManager.GetString("Please_write_here_the_reason_for_deleting_this_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select all.
+        /// </summary>
+        public static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show me all recommendations!.
+        /// </summary>
+        public static string Show_me_all_recommendations {
+            get {
+                return ResourceManager.GetString("Show_me_all_recommendations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show me the ad.
+        /// </summary>
+        public static string Show_me_the_ad {
+            get {
+                return ResourceManager.GetString("Show_me_the_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specific requests:.
+        /// </summary>
+        public static string Specific_requests {
+            get {
+                return ResourceManager.GetString("Specific_requests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These might be interesting for you: .
+        /// </summary>
+        public static string These_might_be_interesting_for_you {
+            get {
+                return ResourceManager.GetString("These_might_be_interesting_for_you", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To Baierbrunn.
+        /// </summary>
+        public static string ToBaierbrunn {
+            get {
+                return ResourceManager.GetString("ToBaierbrunn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hello Baierbrunn.
+        /// </summary>
+        public static string Welcome_to_Baierbrunn {
+            get {
+                return ResourceManager.GetString("Welcome_to_Baierbrunn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Here you can see all of the ads:.
+        /// </summary>
+        public static string You_are_inactivated_this_page_is_not_available_for_you {
+            get {
+                return ResourceManager.GetString("You_are_inactivated_this_page_is_not_available_for_you", resourceCulture);
             }
         }
     }

@@ -32,7 +32,7 @@
 	}
 </style>
 
-<h1 style="text-align:center;">@localizer["Greeting"]</h1>
+<h1 style="text-align:center;">@localizer["Welcome_to_Baierbrunn"]</h1>
 
 
 
@@ -72,26 +72,26 @@ style="height: 400px">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h3 class="modal-title">Have you seen these ads?</h3>
+						<h3 class="modal-title">@localizer["Have_you_seen_these_ads"]</h3>
 						<button type="button" class="close" @onclick="ClosePopUpRecommendedAds"> <span area-hidden="true">X</span></button>
 					</div>
 					<div class="modal-body">
-						<p>These might be interesting for you: </p>
+						<p>@localizer["These_might_be_interesting_for_you"]</p>
 						<br>
 						@foreach (var ad in recommendedAds)
 						{
-							<p>Ad type: @ad.AdType</p>
-							<p>Ad owner: @DataService.showUserNameWithStatus(ad.AdOwner)</p>
-							<p>Ad Direction: @ad.AdDirection</p>
-							<p>Pick up or drop off location: @ad.PickUpDropOffLocation</p>
-							<p>Pick up Date and Time: @ad.PickUpDateAndTime</p>
-							<p>Number of seats: @ad.NumberOfSeats</p>
-							<p>Specific requests: @ad.SpecificRequests</p>
-							<button @onclick="() => showAd(ad)">Show me this ad!</button>
+							<p>@localizer["Ad_type"] @ad.AdType</p>
+							<p>@localizer["Ad_owner"] @DataService.showUserNameWithStatus(ad.AdOwner)</p>
+							<p>@localizer["Ad_direction"] @ad.AdDirection</p>
+							<p>@localizer["From/to_this_address"] @ad.PickUpDropOffLocation</p>
+							<p>@localizer["Pick_up_date_and_time"] @ad.PickUpDateAndTime</p>
+							<p>@localizer["Number_of_seats"] @ad.NumberOfSeats</p>
+							<p>@localizer["Specific_requests"] @ad.SpecificRequests</p>
+							<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
 							<br>
 						}
 						<br>
-						<button type="button" class="close" @onclick="navigateToRecommendedAds">Show me all recommendations!</button>
+						<button type="button" class="close" @onclick="navigateToRecommendedAds">@localizer["Show_me_all_recommendations"]</button>
 					</div>
 				</div>
 			</div>

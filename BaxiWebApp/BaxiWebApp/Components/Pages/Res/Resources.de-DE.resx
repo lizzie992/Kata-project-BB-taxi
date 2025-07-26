@@ -117,64 +117,88 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Ad_Direction" xml:space="preserve">
+  <data name="Ad_direction" xml:space="preserve">
     <value>Anzeige Richtung:</value>
   </data>
-  <data name="Ad_Type" xml:space="preserve">
+  <data name="Ad_type" xml:space="preserve">
     <value>Anzeigentyp:</value>
   </data>
-  <data name="All_Ads_PageTitle" xml:space="preserve">
+  <data name="Here_you_can_see_all_of_the_ads" xml:space="preserve">
     <value>Hier sehen Sie alle Anzeigen:</value>
   </data>
-  <data name="Click_On_Column" xml:space="preserve">
+  <data name="Click_on_the_title_of_the_column_to_sort_it" xml:space="preserve">
     <value>Klicken Sie auf den Spaltentitel, um zu sortieren!</value>
   </data>
-  <data name="Contact_Me" xml:space="preserve">
+  <data name="Contact_me" xml:space="preserve">
     <value>Kontaktieren Sie mich!</value>
   </data>
-  <data name="Delete_Ad" xml:space="preserve">
+  <data name="Delete_ad" xml:space="preserve">
     <value>Anzeige löschen</value>
   </data>
-  <data name="Error_Message_Inactivated" xml:space="preserve">
+  <data name="You_are_inactivated_this_page_is_not_available_for_you" xml:space="preserve">
     <value>Sie sind deaktiviert, diese Seite ist für Sie nicht verfügbar</value>
   </data>
-  <data name="Greeting" xml:space="preserve">
+  <data name="Welcome_to_Baierbrunn" xml:space="preserve">
     <value>Willkommen in Baierbrunn</value>
   </data>
-  <data name="Number_Of_Seats" xml:space="preserve">
+  <data name="Number_of_seats" xml:space="preserve">
     <value>Anzahl der Plätze:</value>
   </data>
   <data name="Passenger" xml:space="preserve">
     <value>Passagier</value>
   </data>
-  <data name="PickUp_DateAndTime" xml:space="preserve">
+  <data name="Pick_up_date_and_time" xml:space="preserve">
     <value>Abholdatum und -zeit:</value>
   </data>
-  <data name="Pick_Up_Location" xml:space="preserve">
+  <data name="From/to_this_address" xml:space="preserve">
     <value>Von/zu dieser Adresse:</value>
   </data>
-  <data name="Search_Adtype" xml:space="preserve">
+  <data name="I_am_looking_for_a" xml:space="preserve">
     <value>Ich suche nach einem/einer:</value>
   </data>
-  <data name="Search_DateAndTime" xml:space="preserve">
+  <data name="Between_the_following_date_and_time" xml:space="preserve">
     <value>Zwischen folgendem Datum und Uhrzeit:</value>
   </data>
-  <data name="Search_Direction" xml:space="preserve">
+  <data name="Direction" xml:space="preserve">
     <value>Richtung:</value>
   </data>
-  <data name="Search_PickUpAddress" xml:space="preserve">
-    <value>Von / zu dieser Adresse:</value>
-  </data>
-  <data name="Search_RequestedNumberOfSeats" xml:space="preserve">
-    <value>Gewünschte Anzahl an Sitzplätzen:</value>
-  </data>
-  <data name="Show_Me_Ad" xml:space="preserve">
+  <data name="Show_me_the_ad" xml:space="preserve">
     <value>Zeig mir die Anzeige</value>
   </data>
-  <data name="Specific_Requests" xml:space="preserve">
+  <data name="Specific_requests" xml:space="preserve">
     <value>Besondere Wünsche:</value>
   </data>
-  <data name="Write_Reason_For_Deleting_Ad" xml:space="preserve">
+  <data name="Please_write_here_the_reason_for_deleting_this_ad" xml:space="preserve">
     <value>Bitte geben Sie hier den Grund für das Löschen dieser Anzeige an:</value>
+  </data>
+  <data name="Driver" xml:space="preserve">
+    <value>Fahrer</value>
+  </data>
+  <data name="FromBaierbrunn" xml:space="preserve">
+    <value>Von Baierbrunn</value>
+  </data>
+  <data name="ToBaierbrunn" xml:space="preserve">
+    <value>Nach Baierbrunn</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Alles auswählen</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Alle</value>
+  </data>
+  <data name="Have_you_seen_these_ads" xml:space="preserve">
+    <value>Haben Sie diese Anzeigen gesehen?</value>
+  </data>
+  <data name="These_might_be_interesting_for_you" xml:space="preserve">
+    <value>Das könnte für Sie interessant sein:</value>
+  </data>
+  <data name="Ad_owner" xml:space="preserve">
+    <value>Anzeigeninhaber:</value>
+  </data>
+  <data name="Show_me_all_recommendations" xml:space="preserve">
+    <value>Zeige mir alle Empfehlungen!</value>
+  </data>
+  <data name="Address..." xml:space="preserve">
+    <value>Adresse...</value>
   </data>
 </root>

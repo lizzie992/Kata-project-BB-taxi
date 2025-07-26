@@ -20,7 +20,7 @@
 <AuthorizeView Context="authContext">
 	<Authorized>
 
-		<PageTitle>@localizer["All_Ads_PageTitle"]</PageTitle>
+		<PageTitle>@localizer["Here_you_can_see_all_of_the_ads:"]</PageTitle>
 
 		<head>
 			<script type="module" src="./googleMaps.js"></script>
@@ -76,15 +76,15 @@
 		<body>
 			@if (currentlyLoggedInUser.isActive == false)
 			{
-				<p style="text-align:center; font-size:150%;">@localizer["Error_Message_Inactivated"]</p>
+				<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
 			}
 			else
 			{
-				<p style="text-align:center; font-size:150%;">@localizer["All_Ads_PageTitle"]</p>
+				<p style="text-align:center; font-size:150%;">@localizer["Here_you_can_see_all_of_the_ads"]</p>
 
 				<div class="row">
 					<div class="column left">
-						<p>@localizer["Search_Adtype"]</p>
+						<p>@localizer["I_am_looking_for_a"]</p>
 						<InputSelect @bind-Value="_adType" id="adType">
 							@foreach (var value in Enum.GetValues<AdType>())
 							{
@@ -94,25 +94,25 @@
 						<br>
 						<br>
 
-						<p>@localizer["Search_Direction"]</p>
+						<p>@localizer["Direction"]</p>
 						<InputSelect @bind-Value="_adDirection" id="adDirection">
 							@foreach (var value in Enum.GetValues<AdDirection>())
 							{
-								<option value="@value">@value.ToString()</option>
+								<option value="@value">@localizer[value.ToString()]</option>
 							}
 						</InputSelect>
 						<br>
 						<br>
 
 
-						<p>@localizer["Search_PickUpAddress"]</p>
+						<p>@localizer["From/to_this_address"]</p>
 						<div class="search-box">
-							<input type="search" autofocus @bind="_searchAddress" @bind:event="oninput" placeholder="Address..." />
+							<input type="search" autofocus @bind="_searchAddress" @bind:event="oninput" placeholder="@localizer["Address..."]" />
 						</div>
 						<br>
 						<br>
 
-						<p>@localizer["Search_DateAndTime"]</p>
+						<p>@localizer["Between_the_following_date_and_time"]</p>
 						<InputDate Type="InputDateType.DateTimeLocal"
 								   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
 						</InputDate>
@@ -122,9 +122,9 @@
 						<br>
 						<br>
 
-						<p>@localizer["Search_RequestedNumberOfSeats"]</p>
+						<p>@localizer["Number_of_seats"]</p>
 						<InputSelect @bind-Value="_requestedSeats" id="numberOfSeats">
-							<option value="-1">All</option>
+							<option value="-1">@localizer["All"]</option>
 							<option value="1">1</option>
 							<option value="2">2</option>
 							<option value="3">3</option>
@@ -174,31 +174,31 @@ Number of seats: @ad.NumberOfSeats
 
 
 
-				<p>@localizer["Click_On_Column"]</p>
+				<p>@localizer["Click_on_the_title_of_the_column_to_sort_it"]</p>
 				<div>
 					<QuickGrid Items="FilteredAds" @ref="grid">
-						<PropertyColumn Title="@localizer["Ad_Type"]" Property="@(Ad => Ad.AdType)" Sortable="true">
+						<PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => Ad.AdType)" Sortable="true">
 						</PropertyColumn>
-						<PropertyColumn Title="@localizer["Ad_Direction"]" Property="@(Ad => Ad.AdDirection)" Sortable="true">
+						<PropertyColumn Title="@localizer["Ad_direction"]" Property="@(Ad => Ad.AdDirection)" Sortable="true">
 						</PropertyColumn>
-						<PropertyColumn Title="@localizer["Pick_Up_Location"]" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
+						<PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
 						</PropertyColumn>
-						<PropertyColumn Title="@localizer["PickUp_DateAndTime"]" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
-						<PropertyColumn Title="@localizer["Number_Of_Seats"]" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
-						<PropertyColumn Title="@localizer["Specific_Requests"]" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
-						<TemplateColumn Title="@localizer["Show_Me_Ad"]" Context="Ad">
-							<button @onclick="() => showAd(Ad)">@localizer["Show_Me_Ad"]</button>
+						<PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
+						<PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
+						<PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+						<TemplateColumn Title="@localizer["Show_me_the_ad"]" Context="Ad">
+							<button @onclick="() => showAd(Ad)">@localizer["Show_me_the_ad"]</button>
 						</TemplateColumn>
-						<TemplateColumn Title="@localizer["Contact_Me"]" Context="Ad">
+						<TemplateColumn Title="@localizer["Contact_me"]" Context="Ad">
 							@if (Ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser != Ad.AdOwner)
 							{
-								<button @onclick="() => createChat(Ad)">@localizer["Contact_Me"]!</button>
+								<button @onclick="() => createChat(Ad)">@localizer["Contact_me"]!</button>
 							}
 						</TemplateColumn>
 						@if (UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
 						{
-							<TemplateColumn Title="@localizer["Delete_Ad"]" Context="Ad">
-								<button @onclick="() => showPopUpForDeletingAd(Ad)">@localizer["Delete_Ad"]</button>
+							<TemplateColumn Title="@localizer["Delete_ad"]" Context="Ad">
+								<button @onclick="() => showPopUpForDeletingAd(Ad)">@localizer["Delete_ad"]</button>
 							</TemplateColumn>
 						}
 					</QuickGrid>
