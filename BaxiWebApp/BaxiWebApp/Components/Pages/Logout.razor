@@ -7,11 +7,14 @@
 @inject UserManager<User> UserManager;
 @inject Data.DataService DataService
 @inject NavigationManager NavigationManager
+@using Microsoft.Extensions.Localization
+@using System.Globalization
+@inject IStringLocalizer<Resources> localizer
+@using Pages.Res;
 
+<h3>@localizer["Logout"]</h3>
 
-<h3>Logout</h3>
-
-<p>You are logged out now!</p>
+<p>@localizer["You_are_logged_out_now"]</p>
 
 @code {
 

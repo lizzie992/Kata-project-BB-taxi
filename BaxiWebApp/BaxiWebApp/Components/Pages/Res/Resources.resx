@@ -324,4 +324,31 @@
   <data name="You_have_to_select_driver_or_passenger" xml:space="preserve">
     <value>You have to select Driver or Passenger!</value>
   </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="You_are_logged_out_now" xml:space="preserve">
+    <value>You are logged out now!</value>
+  </data>
+  <data name="My_ads" xml:space="preserve">
+    <value>My Ads</value>
+  </data>
+  <data name="You_do_not_have_any_ads_you_can_create_ads_by_clicking_on_Create_Ad_in_the_menu" xml:space="preserve">
+    <value>You do not have any ads :) You can create ads by clicking on Create Ad in the menu!</value>
+  </data>
+  <data name="Modify_ad" xml:space="preserve">
+    <value>Modify Ad!</value>
+  </data>
+  <data name="Below_you_can_select_one_of_your_ads_and_find_matches" xml:space="preserve">
+    <value>Below you can select one of your ads, and find matches :)</value>
+  </data>
+  <data name="Find_me_ads_that_would_match_this_ad" xml:space="preserve">
+    <value>Find me ads that could match this ad</value>
+  </data>
+  <data name="Find_me_recommendations" xml:space="preserve">
+    <value>Find me recommendations!</value>
+  </data>
+  <data name="This_ad_is_in_the_past" xml:space="preserve">
+    <value>This ad is in the past</value>
+  </data>
 </root>

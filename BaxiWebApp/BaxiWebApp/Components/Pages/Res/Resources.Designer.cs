@@ -142,6 +142,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Below you can select one of your ads, and find matches :).
+        /// </summary>
+        public static string Below_you_can_select_one_of_your_ads_and_find_matches {
+            get {
+                return ResourceManager.GetString("Below_you_can_select_one_of_your_ads_and_find_matches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Between the following date and time:.
         /// </summary>
         public static string Between_the_following_date_and_time {
@@ -228,6 +237,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Driver {
             get {
                 return ResourceManager.GetString("Driver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find me ads that could match this ad.
+        /// </summary>
+        public static string Find_me_ads_that_would_match_this_ad {
+            get {
+                return ResourceManager.GetString("Find_me_ads_that_would_match_this_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find me recommendations!.
+        /// </summary>
+        public static string Find_me_recommendations {
+            get {
+                return ResourceManager.GetString("Find_me_recommendations", resourceCulture);
             }
         }
         
@@ -322,6 +349,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        public static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Looks like the location you wrote is not correct, please, give me a valid address!.
         /// </summary>
         public static string Looks_like_the_location_you_wrote_is_not_correct_please_give_me_a_valid_address {
@@ -373,6 +409,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Message {
             get {
                 return ResourceManager.GetString("Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modify Ad!.
+        /// </summary>
+        public static string Modify_ad {
+            get {
+                return ResourceManager.GetString("Modify_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Ads.
+        /// </summary>
+        public static string My_ads {
+            get {
+                return ResourceManager.GetString("My_ads", resourceCulture);
             }
         }
         
@@ -603,6 +657,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This ad is in the past.
+        /// </summary>
+        public static string This_ad_is_in_the_past {
+            get {
+                return ResourceManager.GetString("This_ad_is_in_the_past", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This ad must have been deleted!.
         /// </summary>
         public static string This_ad_must_have_been_deleted {
@@ -653,6 +716,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string You_are_inactivated_this_page_is_not_available_for_you {
             get {
                 return ResourceManager.GetString("You_are_inactivated_this_page_is_not_available_for_you", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are logged out now!.
+        /// </summary>
+        public static string You_are_logged_out_now {
+            get {
+                return ResourceManager.GetString("You_are_logged_out_now", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You do not have any ads :) You can create ads by clicking on Create Ad in the menu!.
+        /// </summary>
+        public static string You_do_not_have_any_ads_you_can_create_ads_by_clicking_on_Create_Ad_in_the_menu {
+            get {
+                return ResourceManager.GetString("You_do_not_have_any_ads_you_can_create_ads_by_clicking_on_Create_Ad_in_the_menu", resourceCulture);
             }
         }
         

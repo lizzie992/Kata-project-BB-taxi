@@ -324,4 +324,31 @@
   <data name="You_have_to_select_driver_or_passenger" xml:space="preserve">
     <value>Sie müssen Fahrer oder Beifahrer auswählen!</value>
   </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Abmelden</value>
+  </data>
+  <data name="You_are_logged_out_now" xml:space="preserve">
+    <value>Sie sind jetzt abgemeldet!</value>
+  </data>
+  <data name="My_ads" xml:space="preserve">
+    <value>Meine Anzeigen</value>
+  </data>
+  <data name="You_do_not_have_any_ads_you_can_create_ads_by_clicking_on_Create_Ad_in_the_menu" xml:space="preserve">
+    <value>Sie haben noch keine Anzeigen :) Sie können Anzeigen erstellen, indem Sie im Menü auf „Anzeige erstellen“ klicken!</value>
+  </data>
+  <data name="Modify_ad" xml:space="preserve">
+    <value>Anzeige ändern!</value>
+  </data>
+  <data name="Below_you_can_select_one_of_your_ads_and_find_matches" xml:space="preserve">
+    <value>Unten können Sie eine Ihrer Anzeigen auswählen und Übereinstimmungen finden :)</value>
+  </data>
+  <data name="Find_me_ads_that_would_match_this_ad" xml:space="preserve">
+    <value>Finden Sie Anzeigen, die zu dieser Anzeige passen könnten</value>
+  </data>
+  <data name="Find_me_recommendations" xml:space="preserve">
+    <value>Finden Sie mir Empfehlungen!</value>
+  </data>
+  <data name="This_ad_is_in_the_past" xml:space="preserve">
+    <value>Diese Anzeige liegt in der Vergangenheit</value>
+  </data>
 </root>

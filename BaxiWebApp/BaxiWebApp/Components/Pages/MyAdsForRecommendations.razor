@@ -8,39 +8,44 @@
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
 @inject NavigationManager NavigationManager
+@using Pages.Res;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer
+@inject Data.DataService DataService
+@using System.Globalization;
+
 
 <AuthorizeView Context="authContext">
     <Authorized>
 
         @if (FilteredAds.ToArray().Length == 0)
         {
-            <div>You do not have any ads :) You can create ads by clicking on Create Ad in the menu!</div>
+            <div>@localizer["You_do_not_have_any_ads_you_can_create_ads_by_clicking_on_Create_Ad_in_the_menu"]</div>
         }
         else
         {
-            <h3>Below you can select one of your ads, and find matches :)</h3>
+            <h3>@localizer["Below_you_can_select_one_of_your_ads_and_find_matches"]</h3>
 
-            <p>Click on the title of the column to sort it!</p>
+            <p>@localizer["Click_on_the_title_of_the_column_to_sort_it"]</p>
             <div>
                 <QuickGrid Items="FilteredAds" @ref="grid">
-
-                    <PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
+                    <PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => @localizer[@Ad.AdType.ToString()])" Sortable="true">
                     </PropertyColumn>
-                    <PropertyColumn Title="Ad Direction:" Property="@(Ad => Ad.AdDirection)" Sortable="true">
+                    <PropertyColumn Title="@localizer["Ad_direction"]" Property="@(Ad => @localizer[@Ad.AdDirection.ToString()])" Sortable="true">
                     </PropertyColumn>
-                    <PropertyColumn Title="From/To address:" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
+                    <PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
                     </PropertyColumn>
-                    <PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
-                    <PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
-                    <PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
-                    <TemplateColumn Title="Find me ads that could match this ad" Context="Ad">
+                    <PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
+                    <PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
+                    <PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+                    <TemplateColumn Title="@localizer["Find_me_ads_that_would_match_this_ad"]" Context="Ad">
                         @if (Ad.PickUpDateAndTime >= DateTime.Now)
                         {
-                            <button class="btn btn-primary btn-sm mx-1" @onclick="() => recommendAds(Ad)">Find me recommendatios!</button>
+                            <button class="btn btn-primary btn-sm mx-1" @onclick="() => recommendAds(Ad)">@localizer["Find_me_recommendations"]</button>
                         }
                         else
                         {
-                            <p>This ad is in the past</p>
+                            <p>@localizer["This_ad_is_in_the_past"]</p>
                         }
                     </TemplateColumn>
                 </QuickGrid>
@@ -54,6 +59,20 @@
 
 
 @code {
+
+    protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+
+    public async void OnCultureChanged(object sender, CultureInfo culture)
+    {
+
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+
+
     public User user;
     /// <summary>
     /// Identifies the user who is currently logged in
