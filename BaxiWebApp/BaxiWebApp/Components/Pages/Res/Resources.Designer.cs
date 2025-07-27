@@ -341,11 +341,29 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please write here the reason for the reporting this ad:.
+        /// </summary>
+        public static string Please_write_here_the_reason_for_the_reporting_this_ad {
+            get {
+                return ResourceManager.GetString("Please_write_here_the_reason_for_the_reporting_this_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please write your first message here.
         /// </summary>
-        public static string Please_write_your_first_messge_here {
+        public static string Please_write_your_first_message_here {
             get {
-                return ResourceManager.GetString("Please_write_your_first_messge_here", resourceCulture);
+                return ResourceManager.GetString("Please_write_your_first_message_here", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report ad!.
+        /// </summary>
+        public static string Report_ad {
+            get {
+                return ResourceManager.GetString("Report_ad", resourceCulture);
             }
         }
         
@@ -418,6 +436,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string These_might_be_interesting_for_you {
             get {
                 return ResourceManager.GetString("These_might_be_interesting_for_you", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This ad must have been deleted!.
+        /// </summary>
+        public static string This_ad_must_have_been_deleted {
+            get {
+                return ResourceManager.GetString("This_ad_must_have_been_deleted", resourceCulture);
             }
         }
         

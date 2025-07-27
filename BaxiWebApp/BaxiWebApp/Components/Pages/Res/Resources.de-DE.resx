@@ -249,10 +249,19 @@
   <data name="Please_write_here_the_reason_for_the_report" xml:space="preserve">
     <value>Bitte tragen Sie hier den Grund für die Meldung ein:</value>
   </data>
-  <data name="Please_write_your_first_messge_here" xml:space="preserve">
+  <data name="Please_write_your_first_message_here" xml:space="preserve">
     <value>Bitte schreiben Sie hier Ihre erste Nachricht</value>
   </data>
   <data name="Your_first_message" xml:space="preserve">
     <value>Ihre erste Nachricht:</value>
+  </data>
+  <data name="This_ad_must_have_been_deleted" xml:space="preserve">
+    <value>Diese Anzeige muss gelöscht worden sein!</value>
+  </data>
+  <data name="Report_ad" xml:space="preserve">
+    <value>Anzeige melden!</value>
+  </data>
+  <data name="Please_write_here_the_reason_for_the_reporting_this_ad" xml:space="preserve">
+    <value>Bitte geben Sie hier den Grund für die Meldung dieser Anzeige an:</value>
   </data>
 </root>

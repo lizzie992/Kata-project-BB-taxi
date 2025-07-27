@@ -18,6 +18,9 @@
 @using GoogleMapsApi.StaticMaps.Entities;
 @using System.Globalization;
 @using Microsoft.EntityFrameworkCore;
+@using Pages.Res;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer
 @inject Data.BaxiWebAppContext context;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
@@ -28,16 +31,15 @@
 
 @if (CurrentAd is null)
 {
-	<p>This ad must have been deleted!</p>
+	<p>@localizer["This_ad_must_have_been_deleted"]</p>
 }
 
 @if (currentlyLoggedInUser.isActive == false)
 {
-	<p style="text-align:center; font-size:150%;">You are inactivated, this page is not available for you</p>
+	<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
 }
 else
 {
-	<h3>Ad</h3>
 
 	@if (CurrentAd.AdDirection == AdDirection.ToBaierbrunn)
 	{
@@ -73,22 +75,22 @@ else
 
 	}
 
-	
 
-	<div>Ad type: @CurrentAd.AdType</div>
-	<div>Ad owner: @DataService.showUserNameWithStatus(CurrentAd.AdOwner)</div>
-	<div>Ad Direction: @CurrentAd.AdDirection</div>
-	<div>Pick up or drop off location: @CurrentAd.PickUpDropOffLocation</div>
-	<div>Pick up Date and Time: @CurrentAd.PickUpDateAndTime</div>
-	<div>Number of seats: @CurrentAd.NumberOfSeats</div>
-	<div>Specific requests: @CurrentAd.SpecificRequests</div>
+
+	<div>@localizer["Ad_type"] @localizer[@CurrentAd.AdType.ToString()]</div>
+	<div>@localizer["Ad_owner"] @DataService.showUserNameWithStatus(CurrentAd.AdOwner)</div>
+	<div>@localizer["Ad_direction"] @localizer[@CurrentAd.AdDirection.ToString()]</div>
+	<div>@localizer["From/to_this_address"] @CurrentAd.PickUpDropOffLocation</div>
+	<div>@localizer["Pick_up_date_and_time"] @CurrentAd.PickUpDateAndTime</div>
+	<div>@localizer["Number_of_seats"] @CurrentAd.NumberOfSeats</div>
+	<div>@localizer["Specific_requests"] @CurrentAd.SpecificRequests</div>
 
 	@if (CurrentAd.PickUpDateAndTime >= DateTime.Now.AddMinutes(-30) && currentlyLoggedInUser != CurrentAd.AdOwner)
 	{
-		<button @onclick="() => createChat(CurrentAd)">Contact me!</button>
+		<button @onclick="() => openChat(CurrentAd)">@localizer["Contact_me"]</button>
 	}
 
-	<button @onclick="() => showPopUpForReportAd(CurrentAd)">Report ad!</button>
+	<button @onclick="() => showPopUpForReportAd(CurrentAd)">@localizer["Report_ad"]</button>
 
 	@if (popUpForReportAd)
 	{
@@ -96,13 +98,33 @@ else
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h3 class="modal-title">Report this ad</h3>
+						<h3 class="modal-title">@localizer["Report_ad"]</h3>
 						<button type="button" class="close" @onclick="closePopUpForReportAd"> <span area-hidden="true">X</span></button>
 					</div>
 					<div class="modal-body">
-						<p>Please write here the reason for the reporting this ad:</p>
+						<p>@localizer["Please_write_here_the_reason_for_the_reporting_this_ad"]</p>
 						<InputText @bind-Value="reasonForReporting"></InputText>
-						<button type="button" class="close" @onclick="() => reportAd(selectedAd, reasonForReporting)">Report this ad!</button>
+						<button type="button" class="close" @onclick="() => reportAd(selectedAd, reasonForReporting)">@localizer["Report_ad"]</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	}
+
+	@if (popUpForNewConversation)
+	{
+		<div class="modal" tabindex="-1" style="display:block" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title">@localizer["Please_write_your_first_message_here"]</h3>
+						<button type="button" class="close" @onclick="closePopUpForNewConversation"> <span area-hidden="true">X</span></button>
+					</div>
+					<div class="modal-body">
+						<p>@localizer["Your_first_message"]</p>
+						<InputText @bind-Value="message"></InputText>
+						<button type="button" class="close" @onclick="() => createChat(selectedAd)">@localizer["Send"]</button>
 					</div>
 				</div>
 			</div>
@@ -151,12 +173,15 @@ else
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
+	public string message = "";
+
+
 	/// <summary>
 	/// First checks if there is already an existing conversation between the 2 users (the currently logged in user and the ad owner) connected to this ad, if there is, it redirects the user to that chat conversation
-	/// If there is no such a conversation, then it creates one between the 2 users (the currently logged in user and the ad owner) connected to this ad, and redirects the user to the chat conversation
+	/// If there is no such a conversation, it opens the pop up window for the first message to be sent (using createChat method)
 	/// </summary>
 	/// <param name="ad">Ad</param>
-	public void createChat(Ad ad)
+	public void openChat(Ad ad)
 	{
 		//check current ad if matching conversation exists:
 		var previousConversations = ad.adConversations.AsQueryable();
@@ -168,19 +193,33 @@ else
 		}
 		else        //if not found, create new conversasion (+id)
 		{
-			Conversation conversation = new();
-			conversation.adOwnerUser = ad.AdOwner;
-			conversation.contactingUser = currentlyLoggedInUser;
-			conversation.messages = new List<Message>();
-			//in service
-			//add new conversation boject to context
-			ad.adConversations.Add(conversation);
-			// savechanges
-			context.SaveChanges();
-			int id = conversation.ID;
-			NavigationManager.NavigateTo("Chat/" + id);
+			showPopUpForNewConversation(ad);
 		}
 	}
+
+	
+
+	/// <summary>
+	/// It creates a new conversation between the 2 users (the currently logged in user and the ad owner) connected to this ad, and redirects the user to the chat conversation
+	/// </summary>
+	/// <param name="ad">Ad</param>
+	public void createChat(Ad ad)
+	{
+		Conversation conversation = new();
+		conversation.adOwnerUser = ad.AdOwner;
+		conversation.contactingUser = currentlyLoggedInUser;
+		conversation.messages = new List<Message>();
+		//in service
+		//add new conversation boject to context
+		ad.adConversations.Add(conversation);
+		// savechanges
+		context.SaveChanges();
+		DataService.SendChatMessage(conversation, currentlyLoggedInUser, message, conversation.ID);
+		context.SaveChanges();
+		int id = conversation.ID;
+		NavigationManager.NavigateTo("Chat/" + id);
+	}
+
 
 	/// <summary>
 	/// Triggers the dataservice method to report the selected ad to the admins
@@ -212,4 +251,26 @@ else
 		selectedAd = ad;
 		popUpForReportAd = true;
 	}
+
+	bool popUpForNewConversation = false;
+
+	/// <summary>
+	/// Closes pop up window regarding new conversation
+	/// </summary>
+	public void closePopUpForNewConversation()
+	{
+		popUpForNewConversation = false;
+		message = "";
+	}
+
+	/// <summary>
+	/// Opens pop up window regarding new conversation
+	/// </summary>
+	public void showPopUpForNewConversation(Ad ad)
+	{
+		selectedAd = ad;
+		popUpForNewConversation = true;
+	}
+
+
 }

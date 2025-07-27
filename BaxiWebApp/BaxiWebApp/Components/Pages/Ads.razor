@@ -177,9 +177,9 @@ Number of seats: @ad.NumberOfSeats
 				<p>@localizer["Click_on_the_title_of_the_column_to_sort_it"]</p>
 				<div>
 					<QuickGrid Items="FilteredAds" @ref="grid">
-						<PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => Ad.AdType)" Sortable="true">
+						<PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => @localizer[@Ad.AdType.ToString()])" Sortable="true">
 						</PropertyColumn>
-						<PropertyColumn Title="@localizer["Ad_direction"]" Property="@(Ad => Ad.AdDirection)" Sortable="true">
+						<PropertyColumn Title="@localizer["Ad_direction"]" Property="@(Ad => @localizer[@Ad.AdDirection.ToString()])" Sortable="true">
 						</PropertyColumn>
 						<PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
 						</PropertyColumn>
@@ -236,7 +236,7 @@ Number of seats: @ad.NumberOfSeats
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h3 class="modal-title">@localizer["Please_write_your_first_messge_here"]</h3>
+									<h3 class="modal-title">@localizer["Please_write_your_first_message_here"]</h3>
 									<button type="button" class="close" @onclick="closePopUpForNewConversation"> <span area-hidden="true">X</span></button>
 								</div>
 								<div class="modal-body">
