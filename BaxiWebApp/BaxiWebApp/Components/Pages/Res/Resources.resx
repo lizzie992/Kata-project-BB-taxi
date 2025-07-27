@@ -249,4 +249,10 @@
   <data name="Please_write_here_the_reason_for_the_report" xml:space="preserve">
     <value>Please write here the reason for the report:</value>
   </data>
+  <data name="Please_write_your_first_messge_here" xml:space="preserve">
+    <value>Please write your first message here</value>
+  </data>
+  <data name="Your_first_message" xml:space="preserve">
+    <value>Your first message:</value>
+  </data>
 </root>

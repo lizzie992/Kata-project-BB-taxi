@@ -192,7 +192,7 @@ Number of seats: @ad.NumberOfSeats
 						<TemplateColumn Title="@localizer["Contact_me"]" Context="Ad">
 							@if (Ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser != Ad.AdOwner)
 							{
-								<button @onclick="() => createChat(Ad)">@localizer["Contact_me"]!</button>
+								<button @onclick="() => openChat(Ad)">@localizer["Contact_me"]!</button>
 							}
 						</TemplateColumn>
 						@if (UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
@@ -228,6 +228,28 @@ Number of seats: @ad.NumberOfSeats
 					</div>
 
 				}
+
+
+				@if (popUpForNewConversation)
+				{
+					<div class="modal" tabindex="-1" style="display:block" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3 class="modal-title">@localizer["Please_write_your_first_messge_here"]</h3>
+									<button type="button" class="close" @onclick="closePopUpForNewConversation"> <span area-hidden="true">X</span></button>
+								</div>
+								<div class="modal-body">
+									<p>@localizer["Your_first_message"]</p>
+									<InputText @bind-Value="message"></InputText>
+									<button type="button" class="close" @onclick="() => createChat(selectedAd)">@localizer["Send"]</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				}
+
 			}
 
 		</body>
@@ -342,10 +364,10 @@ Number of seats: @ad.NumberOfSeats
 
 	/// <summary>
 	/// First checks if there is already an existing conversation between the 2 users (the currently logged in user and the ad owner) connected to this ad, if there is, it redirects the user to that chat conversation
-	/// If there is no such a conversation, then it creates one between the 2 users (the currently logged in user and the ad owner) connected to this ad, and redirects the user to the chat conversation
+	/// If there is no such a conversation, it opens the pop up window for the first message to be sent (using createChat method)
 	/// </summary>
 	/// <param name="ad">Ad</param>
-	public void createChat(Ad ad)
+	public void openChat(Ad ad)
 	{
 		//check current ad if matching conversation exists:
 		var previousConversations = ad.adConversations.AsQueryable();
@@ -357,19 +379,33 @@ Number of seats: @ad.NumberOfSeats
 		}
 		else        //if not found, create new conversasion (+id)
 		{
-			Conversation conversation = new();
-			conversation.adOwnerUser = ad.AdOwner;
-			conversation.contactingUser = currentlyLoggedInUser;
-			conversation.messages = new List<Message>();
-			//in service
-			//add new conversation boject to context
-			ad.adConversations.Add(conversation);
-			// savechanges
-			context.SaveChanges();
-			int id = conversation.ID;
-			NavigationManager.NavigateTo("Chat/" + id);
+			showPopUpForNewConversation(ad);
 		}
 	}
+
+	public string message = "";
+
+	/// <summary>
+	/// It creates a new conversation between the 2 users (the currently logged in user and the ad owner) connected to this ad, and redirects the user to the chat conversation
+	/// </summary>
+	/// <param name="ad">Ad</param>
+	public void createChat(Ad ad)
+	{
+		Conversation conversation = new();
+		conversation.adOwnerUser = ad.AdOwner;
+		conversation.contactingUser = currentlyLoggedInUser;
+		conversation.messages = new List<Message>();
+		//in service
+		//add new conversation boject to context
+		ad.adConversations.Add(conversation);
+		// savechanges
+		context.SaveChanges();
+		DataService.SendChatMessage(conversation, currentlyLoggedInUser, message, conversation.ID);
+		context.SaveChanges();
+		int id = conversation.ID;
+		NavigationManager.NavigateTo("Chat/" + id);
+	}
+
 
 
 	public User currentlyLoggedInUser;
@@ -435,6 +471,28 @@ Number of seats: @ad.NumberOfSeats
 	{
 		selectedAd = ad;
 		popUpForDeletingAd = true;
+	}
+
+
+
+	bool popUpForNewConversation = false;
+
+	/// <summary>
+	/// Closes pop up window regarding new conversation
+	/// </summary>
+	public void closePopUpForNewConversation()
+	{
+		popUpForNewConversation = false;
+		message = "";
+	}
+
+	/// <summary>
+	/// Opens pop up window regarding new conversation
+	/// </summary>
+	public void showPopUpForNewConversation(Ad ad)
+	{
+		selectedAd = ad;
+		popUpForNewConversation = true;
 	}
 
 

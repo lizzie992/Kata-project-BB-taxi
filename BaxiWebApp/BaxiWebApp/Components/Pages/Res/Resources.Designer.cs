@@ -341,6 +341,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please write your first message here.
+        /// </summary>
+        public static string Please_write_your_first_messge_here {
+            get {
+                return ResourceManager.GetString("Please_write_your_first_messge_here", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report conversation.
         /// </summary>
         public static string Report_conversation {
@@ -454,6 +463,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string You_are_inactivated_this_page_is_not_available_for_you {
             get {
                 return ResourceManager.GetString("You_are_inactivated_this_page_is_not_available_for_you", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your first message:.
+        /// </summary>
+        public static string Your_first_message {
+            get {
+                return ResourceManager.GetString("Your_first_message", resourceCulture);
             }
         }
     }
