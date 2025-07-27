@@ -264,4 +264,64 @@
   <data name="Please_write_here_the_reason_for_the_reporting_this_ad" xml:space="preserve">
     <value>Please write here the reason for the reporting this ad:</value>
   </data>
+  <data name="Create_a_new_ad" xml:space="preserve">
+    <value>Create a new ad</value>
+  </data>
+  <data name="I_am_a" xml:space="preserve">
+    <value>I am a:</value>
+  </data>
+  <data name="Please_select" xml:space="preserve">
+    <value>Please select!</value>
+  </data>
+  <data name="Save_the_ad" xml:space="preserve">
+    <value>Save the ad:</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Here_you_can_specify_the_exact_pick_up_drop_off_location" xml:space="preserve">
+    <value>Here you can specify the exact pick up / drop off location!</value>
+  </data>
+  <data name="Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up" xml:space="preserve">
+    <value>Please move the marker to the place where you can stop with your car / wait for your pick up!</value>
+  </data>
+  <data name="Are_you_already_in_baierbrunn" xml:space="preserve">
+    <value>Are you already in Baierbrunn?</value>
+  </data>
+  <data name="Looks_like_your_ad_is_very_close_to_baierbrunn" xml:space="preserve">
+    <value>Looks like your ad is very close to Baierbrunn</value>
+  </data>
+  <data name="Go_back_to_edit_the_location" xml:space="preserve">
+    <value>Go back to edit the location!</value>
+  </data>
+  <data name="Are_you_trying_to_reach_baierbrunn_from_the_moon" xml:space="preserve">
+    <value>Are you trying to reach Baierbrunn from the moon?</value>
+  </data>
+  <data name="Looks_like_your_ad_is_very_far_away_from_baierbrunn" xml:space="preserve">
+    <value>Looks like your ad is very far away from Baierbrunn</value>
+  </data>
+  <data name="Your_pick_up_time_is_in_the_past" xml:space="preserve">
+    <value>Your pick up time is in the past!</value>
+  </data>
+  <data name="The_pick_up_time_you_added_is_in_the_past_please_go_back_and_correct_it" xml:space="preserve">
+    <value>The pick up time you added is in the past! Please go back and correct it!</value>
+  </data>
+  <data name="I_will_correct_it" xml:space="preserve">
+    <value>I will correct it!</value>
+  </data>
+  <data name="Please_give_me_a_correct_address" xml:space="preserve">
+    <value>Please give me a correct address</value>
+  </data>
+  <data name="Looks_like_the_location_you_wrote_is_not_correct_please_give_me_a_valid_address" xml:space="preserve">
+    <value>Looks like the location you wrote is not correct, please, give me a valid address!</value>
+  </data>
+  <data name="Looks_like_there_is_no_route_between_your_location_and_baierbrunn" xml:space="preserve">
+    <value>Looks like there is no route between your location and Baierbrunn!</value>
+  </data>
+  <data name="Please_give_me_a_correct_ad_type" xml:space="preserve">
+    <value>Please give me a correct Ad type</value>
+  </data>
+  <data name="You_have_to_select_driver_or_passenger" xml:space="preserve">
+    <value>You have to select Driver or Passenger!</value>
+  </data>
 </root>

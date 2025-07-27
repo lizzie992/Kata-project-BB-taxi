@@ -144,6 +144,19 @@ else
 	public int? ID { get; set; }
 	public string reasonForReporting = "";
 
+
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+
+		await InvokeAsync(() =>
+		{
+			StateHasChanged();
+		});
+	}
+
+
 	public Ad? CurrentAd
 	{
 		get

@@ -17,10 +17,7 @@
 @using System.Threading.Tasks;
 @using System.Text.Json;
 @using System.Timers
-@using System.Net
-@using System.IO
 @using Microsoft.EntityFrameworkCore
-@using System.Net.Mail
 @using System.Text;
 @inject Data.BaxiWebAppContext context;
 @inject IJSRuntime JSRuntime
@@ -29,13 +26,16 @@
 @inject UserManager<User> UserManager;
 @inject NavigationManager NavigationManager
 @inject Data.DataService DataService
+@using Pages.Res;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer
 
 <AuthorizeView Context="authContext">
 	<Authorized>
 
 		@if (_currentlyLoggedInUser.isActive == false)
 		{
-			<p style="text-align:center; font-size:150%;">You are inactivated, this page is not available for you</p>
+			<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
 		}
 		else
 		{
@@ -61,7 +61,7 @@
 
 
 
-			<PageTitle>Create A New Ad</PageTitle>
+			<PageTitle>@localizer["Create_a_new_ad"]</PageTitle>
 
 
 
@@ -71,21 +71,23 @@
 					<EditForm Model="@ad">
 						<DataAnnotationsValidator />
 						<ValidationSummary />
-						I am a: <br>
+						<p>@localizer["I_am_a"]</p>
+						<br>
 						<InputSelect @bind-Value="ad.AdType" id="adType">
-							<option value="@AdType.SelectAll">Please select!</option>
+							<option value="@AdType.SelectAll">@localizer["Please_select"]</option>
 							@foreach (var value in Enum.GetValues<AdType>())
 							{
 								if (value == AdType.SelectAll)
 								{
 									continue;
 								}
-								<option value="@value">@value.ToString()</option>
+								<option value="@value">@localizer[value.ToString()]</option>
 							}
 						</InputSelect>
 						<br>
 
-						Direction: <br>
+						<p>@localizer["Direction"] </p>
+						<br>
 						<InputSelect @bind-Value="ad.AdDirection" id="adDirection">
 							@foreach (var value in Enum.GetValues<AdDirection>())
 							{
@@ -93,12 +95,13 @@
 								{
 									continue;
 								}
-								<option value="@value">@value.ToString()</option>
+								<option value="@value">@localizer[value.ToString()]</option>
 							}
 						</InputSelect>
 						<br>
 
-						Pick up date: <br>
+						<p>@localizer["Pick_up_date_and_time"] </p>
+						<br>
 						<InputDate Type="InputDateType.DateTimeLocal"
 								   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
 						</InputDate>
@@ -106,7 +109,7 @@
 
 						<div class="form-group">
 							<br>
-							<label for="NumberOfSeats">Number of seats:</label>
+							<label for="NumberOfSeats">@localizer["Number_of_seats"]</label>
 							<InputSelect @bind-Value="ad.NumberOfSeats" class="form-control" id="numberOfSeats">
 								<option value="1">1</option>
 								<option value="2">2</option>
@@ -119,21 +122,22 @@
 							<br>
 						</div>
 
-						Specific requests: <br>
+						<p>@localizer["Specific_requests"] </p>
+						<br>
 						<InputText @bind-Value="ad.SpecificRequests"></InputText><br>
 						<br>
 
 
 						<div class="form-group">
-							<label for="PickUpDropOffLocation">Pick up / drop off location (outside of Baierbrunn)</label>
+							<label for="PickUpDropOffLocation">@localizer["From/to_this_address"]</label>
 							<input @bind="ad.PickUpDropOffLocation" class="form-control" id="PickUpDropOffLocation"
 								   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
 							<ValidationMessage For="() => ad.PickUpDropOffLocation" />
 							<br>
 						</div>
 
-						Save the ad:
-						<button class="btn btn-primary" @onclick="CheckAd">Save</button>
+						<p>@localizer["Save_the_ad"]</p>
+						<button class="btn btn-primary" @onclick="CheckAd">@localizer["Save"]</button>
 						<br>
 
 						@if (ad.Longitude != null)
@@ -184,8 +188,8 @@
 					<br>
 					@if (showMap)
 					{
-						<div>Here you can specify the exact pick up / drop off location!</div>
-						<div>Please move the marker to the place where you can stop with your car / wait for your pick up!</div>
+						<div>@localizer["Here_you_can_specify_the_exact_pick_up_drop_off_location"]</div>
+						<div>@localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
 						<br>
 						<div id="map">
 						</div>
@@ -208,12 +212,12 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h3 class="modal-title">Are you already in Baierbrunn?</h3>
+								<h3 class="modal-title">@localizer["Are_you_already_in_baierbrunn"]</h3>
 								<button type="button" class="close" @onclick="ClosePopUpForTooClose"> <span area-hidden="true">X</span></button>
 							</div>
 							<div class="modal-body">
-								<p>Looks like your ad is very close to Baierbrunn.</p>
-								<button type="button" class="close" @onclick="ClosePopUpForTooClose">Go back to edit the location!</button>
+								<p>@localizer["Looks_like_your_ad_is_very_close_to_baierbrunn"]</p>
+								<button type="button" class="close" @onclick="ClosePopUpForTooClose">@localizer["Go_back_to_edit_the_location"]</button>
 							</div>
 						</div>
 					</div>
@@ -226,12 +230,12 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h3 class="modal-title">Are you trying to reach Baierbrunn from the moon?</h3>
+								<h3 class="modal-title">@localizer["Are_you_trying_to_reach_baierbrunn_from_the_moon"]</h3>
 								<button type="button" class="close" @onclick="ClosePopUpForTooFar"> <span area-hidden="true">X</span></button>
 							</div>
 							<div class="modal-body">
-								<p>Looks like your ad is very far away from Baierbrunn.</p>
-								<button type="button" class="close" @onclick="ClosePopUpForTooFar">Go back to edit the location!</button>
+								<p>@localizer["Looks_like_your_ad_is_very_far_away_from_baierbrunn"]</p>
+								<button type="button" class="close" @onclick="ClosePopUpForTooFar">@localizer["Go_back_to_edit_the_location"]</button>
 							</div>
 						</div>
 					</div>
@@ -244,12 +248,12 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h3 class="modal-title">Your pick up time is in the past!</h3>
+								<h3 class="modal-title">@localizer["Your_pick_up_time_is_in_the_past"]</h3>
 								<button type="button" class="close" @onclick="ClosePopUpForTimeIsInPast"> <span area-hidden="true">X</span></button>
 							</div>
 							<div class="modal-body">
-								<p>The pick up time you added is in the past! Please go back and correct it</p>
-								<button type="button" class="close" @onclick="ClosePopUpForTimeIsInPast">I will correct it!</button>
+								<p>@localizer["The_pick_up_time_you_added_is_in_the_past_please_go_back_and_correct_it"]</p>
+								<button type="button" class="close" @onclick="ClosePopUpForTimeIsInPast">@localizer["I_will_correct_it"]</button>
 							</div>
 						</div>
 					</div>
@@ -263,12 +267,12 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h3 class="modal-title">Please give me a correct address</h3>
+								<h3 class="modal-title">@localizer["Please_give_me_a_correct_address"]</h3>
 								<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates"> <span area-hidden="true">X</span></button>
 							</div>
 							<div class="modal-body">
-								<p>Looks like the location you wrote is not corect, please, give me a valid address!</p>
-								<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates">I will correct it!</button>
+								<p>@localizer["Looks_like_the_location_you_wrote_is_not_correct_please_give_me_a_valid_address"]</p>
+								<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates">@localizer["I_will_correct_it"]</button>
 							</div>
 						</div>
 					</div>
@@ -283,12 +287,12 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h3 class="modal-title">Please give me a correct address</h3>
+								<h3 class="modal-title">@localizer["Please_give_me_a_correct_address"]</h3>
 								<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute"> <span area-hidden="true">X</span></button>
 							</div>
 							<div class="modal-body">
-								<p>Looks like there is no route between your location and Baierbrunn!</p>
-								<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute">I will correct it!</button>
+								<p>@localizer["Looks_like_there_is_no_route_between_your_location_and_baierbrunn"]</p>
+								<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute">@localizer["I_will_correct_it"]</button>
 							</div>
 						</div>
 					</div>
@@ -301,12 +305,12 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h3 class="modal-title">Please give me a correct Ad type</h3>
+								<h3 class="modal-title">@localizer["Please_give_me_a_correct_ad_type"]</h3>
 								<button type="button" class="close" @onclick="ClosePopUpForInvalidAdType"> <span area-hidden="true">X</span></button>
 							</div>
 							<div class="modal-body">
-								<p>You have to select Driver or Passenger!</p>
-								<button type="button" class="close" @onclick="ClosePopUpForInvalidAdType">I will correct it!</button>
+								<p>@localizer["You_have_to_select_driver_or_passenger"]</p>
+								<button type="button" class="close" @onclick="ClosePopUpForInvalidAdType">@localizer["I_will_correct_it"]</button>
 							</div>
 						</div>
 					</div>
@@ -322,6 +326,16 @@
 
 	private static Ad ad { get; set; } = new();
 
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+
+		await InvokeAsync(() =>
+		{
+			StateHasChanged();
+		});
+	}
 
 	//coordinates of Baierbrunn
 	public double latitudeBB = 48.0206345131560;
@@ -540,7 +554,7 @@
 					DataService.sendEmail(emailAddress, subject, messageOldAd);
 				}
 			}
-	}	
+		}
 	}
 
 	/// <summary>
@@ -739,11 +753,11 @@
 	}
 
 
-	
 
 
 
-	
+
+
 
 
 

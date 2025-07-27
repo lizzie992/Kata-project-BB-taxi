@@ -115,11 +115,29 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you already in Baierbrunn?.
+        /// </summary>
+        public static string Are_you_already_in_baierbrunn {
+            get {
+                return ResourceManager.GetString("Are_you_already_in_baierbrunn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete it?.
         /// </summary>
         public static string Are_you_sure_you_want_to_delete_it {
             get {
                 return ResourceManager.GetString("Are_you_sure_you_want_to_delete_it", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you trying to reach Baierbrunn from the moon?.
+        /// </summary>
+        public static string Are_you_trying_to_reach_baierbrunn_from_the_moon {
+            get {
+                return ResourceManager.GetString("Are_you_trying_to_reach_baierbrunn_from_the_moon", resourceCulture);
             }
         }
         
@@ -165,6 +183,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Contact_me {
             get {
                 return ResourceManager.GetString("Contact_me", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new ad.
+        /// </summary>
+        public static string Create_a_new_ad {
+            get {
+                return ResourceManager.GetString("Create_a_new_ad", resourceCulture);
             }
         }
         
@@ -232,6 +259,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go back to edit the location!.
+        /// </summary>
+        public static string Go_back_to_edit_the_location {
+            get {
+                return ResourceManager.GetString("Go_back_to_edit_the_location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Have you seen these ads?.
         /// </summary>
         public static string Have_you_seen_these_ads {
@@ -250,11 +286,56 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Here you can specify the exact pick up / drop off location!.
+        /// </summary>
+        public static string Here_you_can_specify_the_exact_pick_up_drop_off_location {
+            get {
+                return ResourceManager.GetString("Here_you_can_specify_the_exact_pick_up_drop_off_location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I am a:.
+        /// </summary>
+        public static string I_am_a {
+            get {
+                return ResourceManager.GetString("I_am_a", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to I am looking for a:.
         /// </summary>
         public static string I_am_looking_for_a {
             get {
                 return ResourceManager.GetString("I_am_looking_for_a", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I will correct it!.
+        /// </summary>
+        public static string I_will_correct_it {
+            get {
+                return ResourceManager.GetString("I_will_correct_it", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Looks like the location you wrote is not correct, please, give me a valid address!.
+        /// </summary>
+        public static string Looks_like_the_location_you_wrote_is_not_correct_please_give_me_a_valid_address {
+            get {
+                return ResourceManager.GetString("Looks_like_the_location_you_wrote_is_not_correct_please_give_me_a_valid_address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Looks like there is no route between your location and Baierbrunn!.
+        /// </summary>
+        public static string Looks_like_there_is_no_route_between_your_location_and_baierbrunn {
+            get {
+                return ResourceManager.GetString("Looks_like_there_is_no_route_between_your_location_and_baierbrunn", resourceCulture);
             }
         }
         
@@ -265,6 +346,24 @@ namespace BaxiWebApp.Components.Pages.Res {
             get {
                 return ResourceManager.GetString("Looks_like_you_are_lost_please_navigate_back_to_the_chat_using_the_navigation_men" +
                         "u_on_the_left", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Looks like your ad is very close to Baierbrunn.
+        /// </summary>
+        public static string Looks_like_your_ad_is_very_close_to_baierbrunn {
+            get {
+                return ResourceManager.GetString("Looks_like_your_ad_is_very_close_to_baierbrunn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Looks like your ad is very far away from Baierbrunn.
+        /// </summary>
+        public static string Looks_like_your_ad_is_very_far_away_from_baierbrunn {
+            get {
+                return ResourceManager.GetString("Looks_like_your_ad_is_very_far_away_from_baierbrunn", resourceCulture);
             }
         }
         
@@ -319,6 +418,43 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Pick_up_date_and_time {
             get {
                 return ResourceManager.GetString("Pick_up_date_and_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please give me a correct Ad type.
+        /// </summary>
+        public static string Please_give_me_a_correct_ad_type {
+            get {
+                return ResourceManager.GetString("Please_give_me_a_correct_ad_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please give me a correct address.
+        /// </summary>
+        public static string Please_give_me_a_correct_address {
+            get {
+                return ResourceManager.GetString("Please_give_me_a_correct_address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please move the marker to the place where you can stop with your car / wait for your pick up!.
+        /// </summary>
+        public static string Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick_up {
+            get {
+                return ResourceManager.GetString("Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_you" +
+                        "r_pick up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select!.
+        /// </summary>
+        public static string Please_select {
+            get {
+                return ResourceManager.GetString("Please_select", resourceCulture);
             }
         }
         
@@ -386,6 +522,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save the ad:.
+        /// </summary>
+        public static string Save_the_ad {
+            get {
+                return ResourceManager.GetString("Save_the_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select all.
         /// </summary>
         public static string SelectAll {
@@ -427,6 +581,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Specific_requests {
             get {
                 return ResourceManager.GetString("Specific_requests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The pick up time you added is in the past! Please go back and correct it.
+        /// </summary>
+        public static string The_pick_up_time_you_added_is_in_the_past_please_go_back_and_correct_it {
+            get {
+                return ResourceManager.GetString("The_pick_up_time_you_added_is_in_the_past_please_go_back_and_correct_it", resourceCulture);
             }
         }
         
@@ -494,11 +657,29 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have to select Driver or Passenger!.
+        /// </summary>
+        public static string You_have_to_select_driver_or_passenger {
+            get {
+                return ResourceManager.GetString("You_have_to_select_driver_or_passenger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your first message:.
         /// </summary>
         public static string Your_first_message {
             get {
                 return ResourceManager.GetString("Your_first_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your pick up time is in the past!.
+        /// </summary>
+        public static string Your_pick_up_time_is_in_the_past {
+            get {
+                return ResourceManager.GetString("Your_pick_up_time_is_in_the_past", resourceCulture);
             }
         }
     }
