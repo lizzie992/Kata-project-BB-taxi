@@ -23,7 +23,10 @@
 @inject NavigationManager NavigationManager
 @inject Data.DataService DataService
 @inject IJSRuntime JSRuntime
-
+@inject IJSRuntime JSRuntime
+@using Pages.Res;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer
 
 
 <AuthorizeView Context="authContext">
@@ -60,28 +63,27 @@
 		<body>
 			@if (currentlyLoggedInUser == CurrentAd.AdOwner)
 			{
-				<h3>Recommended Ads</h3>
+				<h3>@localizer["Recommended_ads"]</h3>
 
 				@if (recommendedAds.Count == 0)
 				{
-					<p>Unfortunately there are no ad recommendations for you. Please come back later or turn on the notifications so we can inform you when a matching ad is posted!</p>
+					<p>@localizer["Unfortunately_there_are_no_ad_recommendations_for_you_please_come_back_later_or_turn_on_the_notifications_so_we_can_inform_you_when_a_matching_ad_is_posted"]</p>
 				}
 				else
 				{
 					<div class="row">
-						<p>Here you will see the ads that are matching your selected ad.</p>
-						<p>Meaning: you are going in the same direction at the same time, and your pick up location or the route you are taking is close enough to each other</p>
+						<p>@localizer["Here_you_will_see_the_ads_that_are_matching_your_selected_ad"]</p>
+						<p>@localizer["Meaning_you_are_going_in_the_same_direction_at_the_same_time_and_your_pick_up_location_or_the_route_you_are_taking_is_close_enough_to_each_other"]</p>
 						<br>
 						<div class="column left">
-							<p>Your original ad:</p>
+							<p>@localizer["Your_original_ad"]</p>
 							<br>
-							<div>Ad type: @CurrentAd.AdType</div>
-							<div>Ad owner: @DataService.showUserNameWithStatus(CurrentAd.AdOwner)</div>
-							<div>Ad Direction: @CurrentAd.AdDirection</div>
-							<div>Pick up or drop off location: @CurrentAd.PickUpDropOffLocation</div>
-							<div>Pick up Date and Time: @CurrentAd.PickUpDateAndTime</div>
-							<div>Number of seats: @CurrentAd.NumberOfSeats</div>
-							<div>Specific requests: @CurrentAd.SpecificRequests</div>
+							<div>@localizer["Ad_type"] @localizer[@CurrentAd.AdType.ToString()]</div>
+							<div>@localizer["Ad_direction"] @localizer[@CurrentAd.AdDirection.ToString()]</div>
+							<div>@localizer["From/to_this_address"] @CurrentAd.PickUpDropOffLocation</div>
+							<div>@localizer["Pick_up_date_and_time"] @CurrentAd.PickUpDateAndTime</div>
+							<div>@localizer["Number_of_seats"] @CurrentAd.NumberOfSeats</div>
+							<div>@localizer["Specific_requests"] @CurrentAd.SpecificRequests</div>
 							<br>
 							<br>
 							<br>
@@ -100,19 +102,19 @@
 						</div>
 					</div>
 					<div>
-						<p>And the possibly matching ads:</p>
+						<p>@localizer["And_the_possibly_matching_ads"]</p>
 						<QuickGrid Items="adListForGrid" @ref="grid">
-							<PropertyColumn Title="Ad type:" Property="@(Ad => Ad.AdType)" Sortable="true">
+							<PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => @localizer[@Ad.AdType.ToString()])" Sortable="true">
 							</PropertyColumn>
-							<PropertyColumn Title="Ad Direction:" Property="@(Ad => Ad.AdDirection)" Sortable="true">
+							<PropertyColumn Title="@localizer["Ad_direction"]" Property="@(Ad => @localizer[@Ad.AdDirection.ToString()])" Sortable="true">
 							</PropertyColumn>
-							<PropertyColumn Title="From/to this address:" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
+							<PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
 							</PropertyColumn>
-							<PropertyColumn Title="Pick up date and time:" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
-							<PropertyColumn Title="Number of seats:" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
-							<PropertyColumn Title="Specific requests:" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
-							<TemplateColumn Title="Here you can open the ad and contact the owner!" Context="Ad">
-								<button @onclick="() => showAd(Ad)">Show me the ad</button>
+							<PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
+							<PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
+							<PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+							<TemplateColumn Title="@localizer["Show_me_the_ad"]" Context="Ad">
+								<button @onclick="() => showAd(Ad)">@localizer["Show_me_the_ad"]</button>
 							</TemplateColumn>
 						</QuickGrid>
 					</div>
@@ -130,6 +132,18 @@
 
 	[Parameter]
 	public int ID { get; set; }
+
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+
+		await InvokeAsync(() =>
+		{
+			StateHasChanged();
+		});
+	}
+
 
 	// Ad CurrentAd;
 	List<Ad> recommendedAds = new List<Ad>();

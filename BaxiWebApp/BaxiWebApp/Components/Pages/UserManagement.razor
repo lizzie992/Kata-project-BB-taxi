@@ -5,13 +5,17 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter
-
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer
+@inject Data.DataService DataService
+@using System.Globalization;
+@using Pages.Res;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject UserManager<User> UserManager;
 @inject Data.BaxiWebAppContext context;
 @inject Data.DataService DataService
 
-<h3>User Management Page</h3>
+
 
 <style>
 
@@ -44,73 +48,64 @@
 
 <AuthorizeView Roles="Admin" Context="authContext">
 
-	@* <p>Show me the following users:</p>
-	<br>
-	<p>Role:</p>
-	<InputSelect @bind-Value="_userType" id="_userType">
-		@foreach (var value in Enum.GetValues<UserType>())
-		{
-			<option value="@value">@value.ToString()</option>
-		}
-	</InputSelect>
-	<br> *@
+	<h3>@localizer["User_management_page"]</h3>
 
-	<p>Show me the following users:</p>
+	<p>@localizer["Show_me_the_following_users"]</p>
 	<br>
-	<p>Role:</p>
+	<p>@localizer["Role"]</p>
 	<InputSelect @bind-Value="_role" id="_role">
-		<option value="allRoles">Select all!</option>
+		<option value="allRoles">@localizer["SelectAll"]</option>
 		@foreach (var value in context.Roles)
 		{
-			<option value="@value">@value.ToString()</option>
+			<option value="@value">@localizer[@value.ToString()]</option>
 		}
 	</InputSelect>
 
-	<p>Status:</p>
+	<p>@localizer["Status"]</p>
 	<InputSelect @bind-Value="_status" id="_status">
-		<option value="All!">All!</option>
-		<option value="Active">Active</option>
-		<option value="Inactive">Inactive</option>
+		<option value="All!">@localizer["SelectAll"]</option>
+		<option value="Active">@localizer["Active"]</option>
+		<option value="Inactive">@localizer["Inactive"]</option>
 	</InputSelect>
 
-	<p>Email address contains:</p>
+	<p>@localizer["Email_address_contains"]</p>
 	<div class="search-box">
-		<input type="search" autofocus @bind="_searchEmail" @bind:event="oninput" placeholder="Email..." />
+		<input type="search" autofocus @bind="_searchEmail" @bind:event="oninput" placeholder=@localizer["Email"] />
 	</div>
 	<br>
-	<p>First name contains:</p>
+	<p>@localizer["First_name"]</p>
 	<div class="search-box">
-		<input type="search" autofocus @bind="_searchFirstName" @bind:event="oninput" placeholder="First name..." />
+		<input type="search" autofocus @bind="_searchFirstName" @bind:event="oninput" placeholder=@localizer["First_name"] />
 	</div>
 	<br>
-	<p>Last name contains:</p>
+	<p>@localizer["Last_name"]</p>
 	<div class="search-box">
-		<input type="search" autofocus @bind="_searchLastName" @bind:event="oninput" placeholder="Last name..." />
+		<input type="search" autofocus @bind="_searchLastName" @bind:event="oninput" placeholder=@localizer["Last_name"] />
 	</div>
 	<br>
-	<p>Contact contains:</p>
+	<p>@localizer["Contact"]</p>
 	<div class="search-box">
-		<input type="search" autofocus @bind="_contact" @bind:event="oninput" placeholder="Contact..." />
+		<input type="search" autofocus @bind="_contact" @bind:event="oninput" placeholder=@localizer["Contact"] />
 	</div>
-	<p>Department:</p>
+	<p>@localizer["Department"]</p>
 	<InputSelect @bind-Value="_department" id="_department">
 		@foreach (var value in Enum.GetValues<Department>())
 		{
-			<option value="@value">@value.ToString()</option>
+			<option value="@value">@localizer[@value.ToString()]</option>
 		}
 	</InputSelect>
 	<br>
-	<p>Preferred language:</p>
+	<p>@localizer["Preferred_language"]</p>
 	<InputSelect @bind-Value="_preferredLanguage" id="_preferredLanguage">
 		@foreach (var value in Enum.GetValues<PreferredLanguage>())
 		{
-			<option value="@value">@value.ToString()</option>
+			<option value="@value">@localizer[@value.ToString()]</option>
 		}
 	</InputSelect>
-	<p>Rating:</p>
+	<p>@localizer["Rating"]</p>
 	<InputSelect @bind-Value="_rating" id="_rating">
-		<option value="-1">Show all</option>
-		<option value="0">No rating yet</option>
+		<option value="-1">@localizer["SelectAll"]</option>
+		<option value="0">@localizer["No_rating_yet"]</option>
 		<option value="1">1</option>
 		<option value="2">2</option>
 		<option value="3">3</option>
@@ -118,64 +113,58 @@
 		<option value="5">5</option>
 	</InputSelect>
 	<br>
-	<p>Number of warnings:</p>
+	<p>@localizer["Number_of_warnings"]</p>
 	<InputSelect @bind-Value="_numberOfWarnings" id="_numberOfWarnings">
-		<option value="-1">Show all</option>
-		<option value="0">No warning yet</option>
+		<option value="-1">@localizer["SelectAll"]</option>
+		<option value="0">@localizer["No_warning_yet"]</option>
 		<option value="1">1</option>
 		<option value="2">2</option>
 	</InputSelect>
 	<br>
 	<br>
-	<p>Click on the title of the column to sort it!</p>
+	<p>@localizer["Click_on_the_title_of_the_column_to_sort_it"]</p>
 	<div>
 		<QuickGrid Items="UserList" @ref="grid">
-			<PropertyColumn Title="Role:" Property="@(User => getRole(User).ToString())" Sortable="true">
+			<PropertyColumn Title=@localizer["Role"] Property="@(User => localizer[getRole(User).ToString()])" Sortable="true">
 			</PropertyColumn>
-			<PropertyColumn Title="Status:" Property="@(User => getStatus(User))" Sortable="true">
+			<PropertyColumn Title=@localizer["Status"] Property="@(User => localizer[getStatus(User)])" Sortable="true">
 			</PropertyColumn>
-			<PropertyColumn Title="Email address:" Property="@(User => User.Email)" Sortable="true">
+			<PropertyColumn Title=@localizer["Email_address"] Property="@(User => User.Email)" Sortable="true">
 			</PropertyColumn>
-			<PropertyColumn Title="First name:" Property="@(User => User.FirstName)" Sortable="true">
+			<PropertyColumn Title=@localizer["First_name"] Property="@(User => User.FirstName)" Sortable="true">
 			</PropertyColumn>
-			<PropertyColumn Title="Last name:" Property="@(User => User.LastName)" Sortable="true">
+			<PropertyColumn Title=@localizer["Last_name"] Property="@(User => User.LastName)" Sortable="true">
 			</PropertyColumn>
-			<PropertyColumn Title="Department:" Property="@(User => User.Department)" Sortable="true">
+			<PropertyColumn Title=@localizer["Department"] Property="@(User => localizer[@User.Department.ToString()])" Sortable="true">
 			</PropertyColumn>
-			<PropertyColumn Title="Preferred language:" Property="@(User => User.PreferredLanguage)" Sortable="true">
+			<PropertyColumn Title=@localizer["Preferred_language"] Property="@(User => localizer[@User.PreferredLanguage.ToString()])" Sortable="true">
 			</PropertyColumn>
-			<PropertyColumn Title="Rating:" Property="@(User => User.Rating)" Sortable="true">
+			<PropertyColumn Title=@localizer["Rating"] Property="@(User => User.Rating)" Sortable="true">
 			</PropertyColumn>
-			<PropertyColumn Title="Number of warnings:" Property="@(User => User.NumberOfWarnings)" Sortable="true">
+			<PropertyColumn Title=@localizer["Number_of_warnings"] Property="@(User => User.NumberOfWarnings)" Sortable="true">
 			</PropertyColumn>
-			<PropertyColumn Title="Contact:" Property="@(User => User.Contact)" Sortable="true">
+			<PropertyColumn Title=@localizer["Contact"] Property="@(User => User.Contact)" Sortable="true">
 			</PropertyColumn>
-			@* <TemplateColumn Title="Message:" Context="User">
-				@if (User.isActive == true)
-				{
-					<button>Send a message!</button>
-				}
-			</TemplateColumn> *@
-			<TemplateColumn Title="Make User an Admin:" Context="User">
+			<TemplateColumn Title=@localizer["Make_user_an_admin"] Context="User">
 				@if (User.isActive == true && UserManager.GetRolesAsync(User).Result.First() == "Regular")
 				{
-					<button @onclick="() => showPopUpForMakeUserAdmin(User)">Give this user admin rights!</button>
+					<button @onclick="() => showPopUpForMakeUserAdmin(User)">@localizer["Give_this_user_admin_rights"]</button>
 				}
 			</TemplateColumn>
-			<TemplateColumn Title="Warning:" Context="User">
+			<TemplateColumn Title=@localizer["Warning"] Context="User">
 				@if (User.isActive == true)
 				{
-					<button @onclick="() => showPopUpForWarning(User)">Give a warning!</button>
+					<button @onclick="() => showPopUpForWarning(User)">@localizer["Give_a_warning"]</button>
 				}
 			</TemplateColumn>
-			<TemplateColumn Title="Change status:" Context="User">
+			<TemplateColumn Title=@localizer["Change_status"] Context="User">
 				@if (User.isActive == true)
 				{
-					<button @onclick="() => showPopUpForDeactivatingUser(User)">Deactivate user!</button>
+					<button @onclick="() => showPopUpForDeactivatingUser(User)">@localizer["Deactivate_user"]</button>
 				}
 				@if (User.isActive == false)
 				{
-					<button @onclick="() => showPopUpForReactivatingUser(User)">Reactivate user!</button>
+					<button @onclick="() => showPopUpForReactivatingUser(User)">@localizer["Reactivate_user"]</button>
 				}
 			</TemplateColumn>
 		</QuickGrid>
@@ -188,14 +177,14 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h3 class="modal-title">Warning</h3>
+						<h3 class="modal-title">@localizer["Warning"]</h3>
 						<button type="button" class="close" @onclick="closePopUpForWarning"> <span area-hidden="true">X</span></button>
 					</div>
 					<div class="modal-body">
-						<p>Please write here the reason for the warning:</p>
+						<p>@localizer["Please_write_here_the_reason_for_the_warning"]</p>
 						<InputText @bind-Value="reasonForWarning"></InputText>
 						<br>
-						<button type="button" class="close" @onclick="() => giveUserAWarning(selectedUser, reasonForWarning)">Send warning</button>
+						<button type="button" class="close" @onclick="() => giveUserAWarning(selectedUser, reasonForWarning)">@localizer["Give_a_warning"]</button>
 					</div>
 				</div>
 			</div>
@@ -212,13 +201,13 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h3 class="modal-title">Make this user an admin</h3>
+						<h3 class="modal-title">@localizer["Make_user_an_admin"]</h3>
 						<button type="button" class="close" @onclick="closePopUpForMakeUserAdmin"> <span area-hidden="true">X</span></button>
 					</div>
 					<div class="modal-body">
-						<p>Are you sure you want to make this user an admin? It cannot be revoked anymore!</p>
+						<p>@localizer["Are_you_sure_you_want_to_make_this_user_an_admin_it_cannot_be_revoked_anymore"]</p>
 						<br>
-						<button type="button" class="close" @onclick="() => makeUserAdmin(selectedUser)">Make them an admin!</button>
+						<button type="button" class="close" @onclick="() => makeUserAdmin(selectedUser)">@localizer["Give_this_user_admin_rights"]</button>
 					</div>
 				</div>
 			</div>
@@ -232,13 +221,13 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h3 class="modal-title">Deactivate this user</h3>
+						<h3 class="modal-title">@localizer["Deactivate_user"]</h3>
 						<button type="button" class="close" @onclick="closePopUpForDeactivatingUser"> <span area-hidden="true">X</span></button>
 					</div>
 					<div class="modal-body">
-						<p>Please write here the reason for the deactivation:</p>
+						<p>@localizer["Please_write_here_the_reason_for_the_deactivation"]</p>
 						<InputText @bind-Value="reasonForDeactivating"></InputText>
-						<button type="button" class="close" @onclick="() => deactivateUser(selectedUser, reasonForDeactivating)">Deactivate User!</button>
+						<button type="button" class="close" @onclick="() => deactivateUser(selectedUser, reasonForDeactivating)">@localizer["Deactivate_user"]</button>
 					</div>
 				</div>
 			</div>
@@ -252,13 +241,13 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h3 class="modal-title">Reactivate this user</h3>
+						<h3 class="modal-title">@localizer["Reactivate_user"]</h3>
 						<button type="button" class="close" @onclick="closePopUpForReactivatingUser"> <span area-hidden="true">X</span></button>
 					</div>
 					<div class="modal-body">
-						<p>Are you sure you want to reactivate this user?</p>
+						<p>@localizer["Are_you_sure_you_want_to_reactivate_this_user"]</p>
 						<br>
-						<button type="button" class="close" @onclick="() => reactivateUser(selectedUser)">Reactivate User!</button>
+						<button type="button" class="close" @onclick="() => reactivateUser(selectedUser)">@localizer["Reactivate_user"]</button>
 					</div>
 				</div>
 			</div>
@@ -276,7 +265,16 @@
 
 @code {
 
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+
+		await InvokeAsync(() =>
+		{
+			StateHasChanged();
+		});
+	}
 
 
 	BB.UserType _userType = UserType.SelectAll;

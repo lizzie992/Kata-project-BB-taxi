@@ -414,4 +414,85 @@
   <data name="Default_ad_type" xml:space="preserve">
     <value>Standard-Anzeigentyp:</value>
   </data>
+  <data name="Recommended_ads" xml:space="preserve">
+    <value>Empfohlene Anzeigen</value>
+  </data>
+  <data name="Unfortunately_there_are_no_ad_recommendations_for_you_please_come_back_later_or_turn_on_the_notifications_so_we_can_inform_you_when_a_matching_ad_is_posted" xml:space="preserve">
+    <value>Leider liegen für Sie keine Anzeigenempfehlungen vor. Schauen Sie später noch einmal vorbei oder aktivieren Sie die Benachrichtigungen, damit wir Sie informieren können, wenn eine passende Anzeige erscheint!</value>
+  </data>
+  <data name="Here_you_will_see_the_ads_that_are_matching_your_selected_ad" xml:space="preserve">
+    <value>Hier werden Ihnen die Anzeigen angezeigt, die zu Ihrer ausgewählten Anzeige passen.</value>
+  </data>
+  <data name="Meaning_you_are_going_in_the_same_direction_at_the_same_time_and_your_pick_up_location_or_the_route_you_are_taking_is_close_enough_to_each_other" xml:space="preserve">
+    <value>Das bedeutet: Sie fahren zur gleichen Zeit in die gleiche Richtung und Ihr Abholort bzw. die Route, die Sie nehmen, liegt nahe genug beieinander</value>
+  </data>
+  <data name="Your_original_ad" xml:space="preserve">
+    <value>Ihre Originalanzeige:</value>
+  </data>
+  <data name="And_the_possibly_matching_ads" xml:space="preserve">
+    <value>Und die möglicherweise dazu passenden Anzeigen:</value>
+  </data>
+  <data name="User_management_page" xml:space="preserve">
+    <value>Benutzerverwaltungsseite</value>
+  </data>
+  <data name="Show_me_the_following_users" xml:space="preserve">
+    <value>Zeigen Sie mir die folgenden Benutzer:</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Rolle:</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inaktiv</value>
+  </data>
+  <data name="Email_address_contains" xml:space="preserve">
+    <value>E-Mail-Adresse enthält:</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-Mail...</value>
+  </data>
+  <data name="No_rating_yet" xml:space="preserve">
+    <value>Noch keine Bewertung</value>
+  </data>
+  <data name="No_warning_yet" xml:space="preserve">
+    <value>Noch keine Warnung</value>
+  </data>
+  <data name="Make_user_an_admin" xml:space="preserve">
+    <value>Benutzer zum Administrator machen:</value>
+  </data>
+  <data name="Give_this_user_admin_rights" xml:space="preserve">
+    <value>Geben Sie diesem Benutzer Administratorrechte!</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning:</value>
+  </data>
+  <data name="Give_a_warning" xml:space="preserve">
+    <value>Geben Sie eine Warnung!</value>
+  </data>
+  <data name="Change_status" xml:space="preserve">
+    <value>Status ändern:</value>
+  </data>
+  <data name="Deactivate_user" xml:space="preserve">
+    <value>Benutzer deaktivieren!</value>
+  </data>
+  <data name="Reactivate_user" xml:space="preserve">
+    <value>Benutzer reaktivieren!</value>
+  </data>
+  <data name="Please_write_here_the_reason_for_the_warning" xml:space="preserve">
+    <value>Bitte tragen Sie hier den Grund der Abmahnung ein:</value>
+  </data>
+  <data name="Are_you_sure_you_want_to_make_this_user_an_admin_it_cannot_be_revoked_anymore" xml:space="preserve">
+    <value>Möchten Sie diesen Benutzer wirklich zum Administrator machen? Die Berechtigung kann nicht mehr widerrufen werden!</value>
+  </data>
+  <data name="Please_write_here_the_reason_for_the_deactivation" xml:space="preserve">
+    <value>Bitte schreiben Sie hier den Grund für die Deaktivierung:</value>
+  </data>
+  <data name="Are_you_sure_you_want_to_reactivate_this_user" xml:space="preserve">
+    <value>Möchten Sie diesen Benutzer wirklich reaktivieren?</value>
+  </data>
 </root>

@@ -61,6 +61,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string Active {
+            get {
+                return ResourceManager.GetString("Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ad Direction:.
         /// </summary>
         public static string Ad_direction {
@@ -115,6 +124,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to And the possibly matching ads:.
+        /// </summary>
+        public static string And_the_possibly_matching_ads {
+            get {
+                return ResourceManager.GetString("And_the_possibly_matching_ads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you already in Baierbrunn?.
         /// </summary>
         public static string Are_you_already_in_baierbrunn {
@@ -143,6 +161,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to make this user an admin? It cannot be revoked anymore!.
+        /// </summary>
+        public static string Are_you_sure_you_want_to_make_this_user_an_admin_it_cannot_be_revoked_anymore {
+            get {
+                return ResourceManager.GetString("Are_you_sure_you_want_to_make_this_user_an_admin_it_cannot_be_revoked_anymore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to reactivate this user?.
+        /// </summary>
+        public static string Are_you_sure_you_want_to_reactivate_this_user {
+            get {
+                return ResourceManager.GetString("Are_you_sure_you_want_to_reactivate_this_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you trying to reach Baierbrunn from the moon?.
         /// </summary>
         public static string Are_you_trying_to_reach_baierbrunn_from_the_moon {
@@ -166,6 +202,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Between_the_following_date_and_time {
             get {
                 return ResourceManager.GetString("Between_the_following_date_and_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change status:.
+        /// </summary>
+        public static string Change_status {
+            get {
+                return ResourceManager.GetString("Change_status", resourceCulture);
             }
         }
         
@@ -251,6 +296,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deactivate user!.
+        /// </summary>
+        public static string Deactivate_user {
+            get {
+                return ResourceManager.GetString("Deactivate_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default ad type:.
         /// </summary>
         public static string Default_ad_type {
@@ -323,11 +377,29 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email....
+        /// </summary>
+        public static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email address:.
         /// </summary>
         public static string Email_address {
             get {
                 return ResourceManager.GetString("Email_address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email address contains:.
+        /// </summary>
+        public static string Email_address_contains {
+            get {
+                return ResourceManager.GetString("Email_address_contains", resourceCulture);
             }
         }
         
@@ -386,6 +458,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Give a warning!.
+        /// </summary>
+        public static string Give_a_warning {
+            get {
+                return ResourceManager.GetString("Give_a_warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Give this user admin rights!.
+        /// </summary>
+        public static string Give_this_user_admin_rights {
+            get {
+                return ResourceManager.GetString("Give_this_user_admin_rights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Go back to edit the location!.
         /// </summary>
         public static string Go_back_to_edit_the_location {
@@ -422,6 +512,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Here you will see the ads that are matching your selected ad..
+        /// </summary>
+        public static string Here_you_will_see_the_ads_that_are_matching_your_selected_ad {
+            get {
+                return ResourceManager.GetString("Here_you_will_see_the_ads_that_are_matching_your_selected_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to I am a:.
         /// </summary>
         public static string I_am_a {
@@ -445,6 +544,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string I_will_correct_it {
             get {
                 return ResourceManager.GetString("I_will_correct_it", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inactive.
+        /// </summary>
+        public static string Inactive {
+            get {
+                return ResourceManager.GetString("Inactive", resourceCulture);
             }
         }
         
@@ -509,6 +617,25 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Looks_like_your_ad_is_very_far_away_from_baierbrunn {
             get {
                 return ResourceManager.GetString("Looks_like_your_ad_is_very_far_away_from_baierbrunn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make User an Admin:.
+        /// </summary>
+        public static string Make_user_an_admin {
+            get {
+                return ResourceManager.GetString("Make_user_an_admin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Meaning: you are going in the same direction at the same time, and your pick up location or the route you are taking is close enough to each other.
+        /// </summary>
+        public static string Meaning_you_are_going_in_the_same_direction_at_the_same_time_and_your_pick_up_location_or_the_route_you_are_taking_is_close_enough_to_each_other {
+            get {
+                return ResourceManager.GetString("Meaning_you_are_going_in_the_same_direction_at_the_same_time_and_your_pick_up_loc" +
+                        "ation_or_the_route_you_are_taking_is_close_enough_to_each_other", resourceCulture);
             }
         }
         
@@ -581,6 +708,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string No_notifications_for_you {
             get {
                 return ResourceManager.GetString("No_notifications_for_you", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No rating yet.
+        /// </summary>
+        public static string No_rating_yet {
+            get {
+                return ResourceManager.GetString("No_rating_yet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No warning yet.
+        /// </summary>
+        public static string No_warning_yet {
+            get {
+                return ResourceManager.GetString("No_warning_yet", resourceCulture);
             }
         }
         
@@ -676,6 +821,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please write here the reason for the deactivation:.
+        /// </summary>
+        public static string Please_write_here_the_reason_for_the_deactivation {
+            get {
+                return ResourceManager.GetString("Please_write_here_the_reason_for_the_deactivation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please write here the reason for the report:.
         /// </summary>
         public static string Please_write_here_the_reason_for_the_report {
@@ -690,6 +844,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Please_write_here_the_reason_for_the_reporting_this_ad {
             get {
                 return ResourceManager.GetString("Please_write_here_the_reason_for_the_reporting_this_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please write here the reason for the warning:.
+        /// </summary>
+        public static string Please_write_here_the_reason_for_the_warning {
+            get {
+                return ResourceManager.GetString("Please_write_here_the_reason_for_the_warning", resourceCulture);
             }
         }
         
@@ -721,6 +884,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reactivate user!.
+        /// </summary>
+        public static string Reactivate_user {
+            get {
+                return ResourceManager.GetString("Reactivate_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recommended ads.
+        /// </summary>
+        public static string Recommended_ads {
+            get {
+                return ResourceManager.GetString("Recommended_ads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report ad!.
         /// </summary>
         public static string Report_ad {
@@ -744,6 +925,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Report_this_conversations_to_the_admins {
             get {
                 return ResourceManager.GetString("Report_this_conversations_to_the_admins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role:.
+        /// </summary>
+        public static string Role {
+            get {
+                return ResourceManager.GetString("Role", resourceCulture);
             }
         }
         
@@ -802,11 +992,29 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show me the following users:.
+        /// </summary>
+        public static string Show_me_the_following_users {
+            get {
+                return ResourceManager.GetString("Show_me_the_following_users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specific requests:.
         /// </summary>
         public static string Specific_requests {
             get {
                 return ResourceManager.GetString("Specific_requests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status:.
+        /// </summary>
+        public static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
             }
         }
         
@@ -870,6 +1078,34 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string ToBaierbrunn {
             get {
                 return ResourceManager.GetString("ToBaierbrunn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unfortunately there are no ad recommendations for you. Please come back later or turn on the notifications so we can inform you when a matching ad is posted!.
+        /// </summary>
+        public static string Unfortunately_there_are_no_ad_recommendations_for_you_please_come_back_later_or_turn_on_the_notifications_so_we_can_inform_you_when_a_matching_ad_is_posted {
+            get {
+                return ResourceManager.GetString("Unfortunately_there_are_no_ad_recommendations_for_you_please_come_back_later_or_t" +
+                        "urn_on_the_notifications_so_we_can_inform_you_when_a_matching_ad_is_posted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Management Page.
+        /// </summary>
+        public static string User_management_page {
+            get {
+                return ResourceManager.GetString("User_management_page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning:.
+        /// </summary>
+        public static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
         
@@ -942,6 +1178,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Your_first_message {
             get {
                 return ResourceManager.GetString("Your_first_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your original ad:.
+        /// </summary>
+        public static string Your_original_ad {
+            get {
+                return ResourceManager.GetString("Your_original_ad", resourceCulture);
             }
         }
         
