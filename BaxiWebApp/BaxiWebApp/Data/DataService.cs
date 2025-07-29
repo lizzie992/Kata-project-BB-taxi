@@ -354,6 +354,49 @@ namespace BaxiWebApp.Data
         }
 
 
+        /// <summary>
+        /// Finds out if there is an existing conversation for this ad and for this logged in user
+        /// </summary>
+        /// <param name="ad">Ad</param>
+        /// <param name="currentlyLoggedInUser">User</param>
+        /// <returns>List of Conversations</returns>
+        public List<Conversation> findPreviousConvo(Ad ad, User currentlyLoggedInUser)
+        {
+            using (var context = _dbcFactory.CreateDbContext())
+            {
+                //check current ad if matching conversation exists:
+                var previousConversations = ad.adConversations.AsQueryable();
+                previousConversations = previousConversations.Where(Conversation => Conversation.contactingUser == currentlyLoggedInUser);
+                return previousConversations.ToList();
+            }
+        }
+
+
+        /// <summary>
+        /// Creates new conversation for a specific ad, for a logged in User, with a starting message
+        /// </summary>
+        /// <param name="ad">Ad</param>
+        /// <param name="currentlyLoggedInUser">User</param>
+        /// <param name="message">String</param>
+        /// <returns>Conversation</returns>
+        public Conversation createConvo(Ad ad, User currentlyLoggedInUser, string message)
+        {
+            using (var context = _dbcFactory.CreateDbContext())
+            {
+                Conversation conversation = new();
+                conversation.adOwnerUser = ad.AdOwner;
+                conversation.contactingUser = currentlyLoggedInUser;
+                conversation.messages = new List<Message>();
+                //in service
+                //add new conversation boject to context
+                ad.adConversations.Add(conversation);
+                // savechanges
+                context.SaveChanges();
+                SendChatMessage(conversation, currentlyLoggedInUser, message, conversation.ID);
+                context.SaveChanges();
+                return conversation;
+            }
+        }
 
         public event EventHandler<int> ChatChanged;
 

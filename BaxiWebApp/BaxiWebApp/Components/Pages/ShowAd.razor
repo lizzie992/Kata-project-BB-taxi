@@ -172,6 +172,8 @@ else
 		base.OnParametersSet();
 	}
 
+	public string message = "";
+
 	public User currentlyLoggedInUser;
 	/// <summary>
 	/// Identifies the user who is currently logged in
@@ -186,7 +188,6 @@ else
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
-	public string message = "";
 
 
 	/// <summary>
@@ -196,9 +197,7 @@ else
 	/// <param name="ad">Ad</param>
 	public void openChat(Ad ad)
 	{
-		//check current ad if matching conversation exists:
-		var previousConversations = ad.adConversations.AsQueryable();
-		previousConversations = previousConversations.Where(Conversation => Conversation.contactingUser == currentlyLoggedInUser);
+		List<Conversation> previousConversations = DataService.findPreviousConvo(ad, currentlyLoggedInUser);
 		if (previousConversations.ToList().Count != 0)
 		{
 			Conversation conversation = previousConversations.FirstOrDefault();
@@ -210,7 +209,7 @@ else
 		}
 	}
 
-	
+
 
 	/// <summary>
 	/// It creates a new conversation between the 2 users (the currently logged in user and the ad owner) connected to this ad, and redirects the user to the chat conversation
@@ -218,17 +217,7 @@ else
 	/// <param name="ad">Ad</param>
 	public void createChat(Ad ad)
 	{
-		Conversation conversation = new();
-		conversation.adOwnerUser = ad.AdOwner;
-		conversation.contactingUser = currentlyLoggedInUser;
-		conversation.messages = new List<Message>();
-		//in service
-		//add new conversation boject to context
-		ad.adConversations.Add(conversation);
-		// savechanges
-		context.SaveChanges();
-		DataService.SendChatMessage(conversation, currentlyLoggedInUser, message, conversation.ID);
-		context.SaveChanges();
+		Conversation conversation = DataService.createConvo(ad, currentlyLoggedInUser, message);
 		int id = conversation.ID;
 		NavigationManager.NavigateTo("Chat/" + id);
 	}

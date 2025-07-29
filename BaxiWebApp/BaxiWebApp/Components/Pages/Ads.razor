@@ -369,9 +369,7 @@ Number of seats: @ad.NumberOfSeats
 	/// <param name="ad">Ad</param>
 	public void openChat(Ad ad)
 	{
-		//check current ad if matching conversation exists:
-		var previousConversations = ad.adConversations.AsQueryable();
-		previousConversations = previousConversations.Where(Conversation => Conversation.contactingUser == currentlyLoggedInUser);
+		List<Conversation> previousConversations = DataService.findPreviousConvo(ad, currentlyLoggedInUser);
 		if (previousConversations.ToList().Count != 0)
 		{
 			Conversation conversation = previousConversations.FirstOrDefault();
@@ -391,17 +389,7 @@ Number of seats: @ad.NumberOfSeats
 	/// <param name="ad">Ad</param>
 	public void createChat(Ad ad)
 	{
-		Conversation conversation = new();
-		conversation.adOwnerUser = ad.AdOwner;
-		conversation.contactingUser = currentlyLoggedInUser;
-		conversation.messages = new List<Message>();
-		//in service
-		//add new conversation boject to context
-		ad.adConversations.Add(conversation);
-		// savechanges
-		context.SaveChanges();
-		DataService.SendChatMessage(conversation, currentlyLoggedInUser, message, conversation.ID);
-		context.SaveChanges();
+		Conversation conversation = DataService.createConvo(ad, currentlyLoggedInUser, message);
 		int id = conversation.ID;
 		NavigationManager.NavigateTo("Chat/" + id);
 	}
