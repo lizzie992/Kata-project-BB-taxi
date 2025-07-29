@@ -18,6 +18,12 @@
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject UserManager<User> UserManager;
 @inject Data.DataService DataService;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer
+@inject Data.DataService DataService
+@using System.Globalization;
+@using Pages.Res;
+
 
 <AuthorizeView Context="authContext">
 	<Authorized>
@@ -41,71 +47,71 @@
 		</style>
 
 
-		<PageTitle>ProfileDataChange</PageTitle>
 
-		<h1 style="text-align:center;">Change your profile data!</h1>
+		<h1 style="text-align:center;">@localizer["Change_your_profile_data"]</h1>
 
 		<div class="row">
 			<div class="column left">
 				<EditForm Model="@user" OnValidSubmit="Save">
 
-					First name:
+					@localizer["First_name"]
 					<InputText @bind-Value="user.FirstName"></InputText><br>
 					<br>
 
-					Last name:
+					@localizer["Last_name"]
 					<InputText @bind-Value="user.LastName"></InputText><br>
 					<br>
 
-					Department:
+					@localizer["Department"]
 					<InputSelect @bind-Value="user.Department" id="department">
 						@foreach (var value in Enum.GetValues<Department>())
 						{
-							<option value="@value">@value.ToString()</option>
+							<option value="@value">@localizer[@value.ToString()]</option>
 						}
 					</InputSelect>
 					<br>
 
-					Preferred language:
+					@localizer["Preferred_language"]
 					<InputSelect @bind-Value="user.PreferredLanguage" id="preferredLanguage">
 						@foreach (var value in Enum.GetValues<PreferredLanguage>())
 						{
-							<option value="@value">@value.ToString()</option>
+							<option value="@value">@localizer[@value.ToString()]</option>
 						}
 					</InputSelect>
 					<br>
 
 
-					Contact:
+					@localizer["Contact"]
 					<InputText @bind-Value="user.Contact"></InputText><br>
 					<br>
 
-					Default ad type:
+
+					@localizer["Default_data_for_creating_ads"]
+					@localizer["Default_ad_type"]
 					<InputSelect @bind-Value="user.DefaultAdType" id="DefaultAdType">
 						@foreach (var value in Enum.GetValues<AdType>())
 						{
 							if (value == AdType.SelectAll)
 							{
-								<option value="@value">No selection</option>
+								<option value="@value">@localizer["No_default_type"]</option>
 							}
 							else
 							{
-								<option value="@value">@value.ToString()</option>
+								<option value="@value">@localizer[@value.ToString()]</option>
 							}
 						}
 					</InputSelect>
 					<br>
 
-					Default pick up address:
 					<div class="form-group">
-						<label for="PickUpDropOffLocation">Pick up / drop off location (outside of Baierbrunn)</label>
+						<label for="PickUpDropOffLocation">@localizer["From/to_this_address"]</label>
 						<input @bind="user.DefaultPickUpAddress" class="form-control" id="DefaultPickUpAddress"
 							   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
 						<br>
 					</div>
 					<br>
 
-					Default number of seats:
+					@localizer["Number_of_seats"]
 					<InputSelect @bind-Value="user.DefaultNumberOfSeats" class="form-control" id="DefaultNumberOfSeats">
 						<option value="1">1</option>
 						<option value="2">2</option>
@@ -116,7 +122,7 @@
 					</InputSelect>
 					<br>
 
-					Default requests:
+					@localizer["Specific_requests"]
 					<InputText @bind-Value="user.DefaultSpecificRequests"></InputText><br>
 					<br>
 
@@ -133,7 +139,7 @@
 					}
 
 					<a href="Profile">
-						<button @onclick="Save">Save</button>
+						<button @onclick="Save">@localizer["Save"]</button>
 					</a>
 				</EditForm>
 			</div>
@@ -142,9 +148,9 @@
 				@if (showMap)
 				{
 					<div>
-						Here you can specify the exact pick up / drop off location!
+						@localizer["Here_you_can_specify_the_exact_pick_up_drop_off_location"]
 					</div>
-					<div>Please move the marker to the place where you can stop with your car / wait for your pick up!</div>
+					<div>@localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
 					<br>
 					<div id="map">
 					</div>
@@ -168,12 +174,12 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h3 class="modal-title">Are you already in Baierbrunn?</h3>
+							<h3 class="modal-title">@localizer["Are_you_already_in_baierbrunn"]</h3>
 							<button type="button" class="close" @onclick="ClosePopUpForTooClose"> <span area-hidden="true">X</span></button>
 						</div>
 						<div class="modal-body">
-							<p>Looks like your ad is very close to Baierbrunn.</p>
-							<button type="button" class="close" @onclick="ClosePopUpForTooClose">Go back to edit the location!</button>
+							<p>@localizer["Looks_like_your_ad_is_very_close_to_baierbrunn"]</p>
+							<button type="button" class="close" @onclick="ClosePopUpForTooClose">@localizer["Go_back_to_edit_the_location"]</button>
 						</div>
 					</div>
 				</div>
@@ -186,12 +192,12 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h3 class="modal-title">Are you trying to reach Baierbrunn from the moon?</h3>
+							<h3 class="modal-title">@localizer["Are_you_trying_to_reach_baierbrunn_from_the_moon"]</h3>
 							<button type="button" class="close" @onclick="ClosePopUpForTooFar"> <span area-hidden="true">X</span></button>
 						</div>
 						<div class="modal-body">
-							<p>Looks like your ad is very far away from Baierbrunn.</p>
-							<button type="button" class="close" @onclick="ClosePopUpForTooFar">Go back to edit the location!</button>
+							<p>@localizer["Looks_like_your_ad_is_very_far_away_from_baierbrunn"]</p>
+							<button type="button" class="close" @onclick="ClosePopUpForTooFar">@localizer["Go_back_to_edit_the_location"]</button>
 						</div>
 					</div>
 				</div>
@@ -204,12 +210,12 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h3 class="modal-title">Please give me a correct address</h3>
+							<h3 class="modal-title">@localizer["Please_give_me_a_correct_address"]</h3>
 							<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates"> <span area-hidden="true">X</span></button>
 						</div>
 						<div class="modal-body">
-							<p>Looks like the location you wrote is not corect, please, give me a valid address!</p>
-							<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates">I will correct it!</button>
+							<p>@localizer["Looks_like_the_location_you_wrote_is_not_correct_please_give_me_a_valid_address"]</p>
+							<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates">@localizer["I_will_correct_it"]</button>
 						</div>
 					</div>
 				</div>
@@ -222,12 +228,12 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h3 class="modal-title">Please give me a correct address</h3>
+							<h3 class="modal-title">@localizer["Please_give_me_a_correct_address"]</h3>
 							<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute"> <span area-hidden="true">X</span></button>
 						</div>
 						<div class="modal-body">
-							<p>Looks like there is no route between your location and Baierbrunn!</p>
-							<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute">I will correct it!</button>
+							<p>@localizer["Looks_like_there_is_no_route_between_your_location_and_baierbrunn"]</p>
+							<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute">@localizer["I_will_correct_it"]</button>
 						</div>
 					</div>
 				</div>
@@ -238,6 +244,19 @@
 </AuthorizeView>
 
 @code {
+
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+
+		await InvokeAsync(() =>
+		{
+			StateHasChanged();
+		});
+	}
+
+
 	public static User user;
 	int distanceLimit = Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS / 1000;
 	//coordinates of Baierbrunn

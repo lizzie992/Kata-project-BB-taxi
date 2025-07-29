@@ -19,6 +19,11 @@
 @inject UserManager<User> UserManager;
 @inject Data.DataService DataService
 @inject NavigationManager NavigationManager
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer
+@inject Data.DataService DataService
+@using System.Globalization;
+@using Pages.Res;
 
 <AuthorizeView>
 	<Authorized>
@@ -47,59 +52,60 @@
 		<div class="row">
 			<div class="column left">
 				<div class="profileData">
-					<p>Email address: @user.Email</p>
-					<p>Name: @DataService.showUserNameWithStatus(user)</p>
-					<p>Department: @user.Department</p>
-					<p>Preferred language: @user.PreferredLanguage</p>
-					<p>Contact: @user.Contact</p>
-					<p>Rating: @user.Rating</p>
-					<p>Number of warnings: @user.NumberOfWarnings</p>
+					<p>@localizer["Email_address"] @user.Email</p>
+					<p>@localizer["Name:"] @DataService.showUserNameWithStatus(user)</p>
+					<p>@localizer["Department"] @localizer["@user.Department"]</p>
+					<p>@localizer["Preferred_language"] @localizer["@user.PreferredLanguage"]</p>
+					<p>@localizer["Contact"] @user.Contact</p>
+					<p>@localizer["Rating"] @user.Rating</p>
+					<p>@localizer["Number_of_warnings"] @user.NumberOfWarnings</p>
 					<br>
-					<p>Default data for creating ads:</p>
+					<p>@localizer["Default_data_for_creating_ads"]</p>
 					<p>
-						Ad type: @if (user.DefaultAdType == AdType.SelectAll)
+						@localizer["Default_ad_type"] @if (user.DefaultAdType == AdType.SelectAll)
 						{
-						<p>No default type</p>
+						<p>@localizer["No_default_type"]</p>
 					}
 										else
 					{
-						@user.DefaultAdType
+						<p>@localizer["@user.DefaultAdType"]</p>
 					}
 					</p>
-					<p>Address / location for pick up / drop off: @user.DefaultPickUpAddress</p>
-					<p>Number of seats: @user.DefaultNumberOfSeats</p>
-					<p>Specific requests: @user.DefaultSpecificRequests</p>
+					<p>@localizer["From/to_this_address"] @user.DefaultPickUpAddress</p>
+					<p>@localizer["Number_of_seats"] @user.DefaultNumberOfSeats</p>
+					<p>@localizer["Specific_requests"] @user.DefaultSpecificRequests</p>
 					<br>
-					<p>Notifications: @if (user.AreNotificationsOn == true)
+					<p>
+						@localizer["Notifications"] @if (user.AreNotificationsOn == true)
 						{
 						<p>
-							Yes you will get notifications
+							@localizer["Yes_you_will_get_notifications"]
 						</p>
-						}
+					}
 					@if (user.AreNotificationsOn == false)
 					{
 						<p>
-							No notifications for you
+							@localizer["No_notifications_for_you"]
 						</p>
 					}
 					</p>
 					<br>
 				</div>
 				<a href="ProfileDataChange">
-					<button>Click here to change your profile data!</button>
+					<button>@localizer["Click_here_to_change_your_profile_data"]</button>
 				</a>
 
 				<a href="/Account/Manage/ChangePassword">
-					<button>Click here to change your password!</button>
+					<button>@localizer["Click_here_to_change_your_password"]</button>
 				</a>
 
-				<button @onclick="() => showPopUpForDeletingUser(user)">Delete my profile!</button>
+				<button @onclick="() => showPopUpForDeletingUser(user)">@localizer["Delete_my_profile"]</button>
 			</div>
 
 			<div class="column right">
 				@if (user.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
 				{
-					<p>Your default pick up / drop off location on the map:</p>
+					<p>@localizer["Your_default_pick_up_drop_off_location_on_the_map"]</p>
 					<br>
 					<p align="center">
 						<iframe width="600"
@@ -107,10 +113,10 @@
 								loading="lazy"
 								allowfullscreen
 								src="https://www.google.com/maps/embed/v1/directions
-				?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
-				&origin=@user.DefaultLatitude?.ToString("F8", CultureInfo.InvariantCulture), @user.DefaultLongitude?.ToString("F8", CultureInfo.InvariantCulture)
-				&destination=Givaudan,Baierbrunn+Germany
-				&avoid=tolls">
+					?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
+					&origin=@user.DefaultLatitude?.ToString("F8", CultureInfo.InvariantCulture), @user.DefaultLongitude?.ToString("F8", CultureInfo.InvariantCulture)
+					&destination=Givaudan,Baierbrunn+Germany
+					&avoid=tolls">
 						</iframe>
 					</p>
 				}
@@ -127,13 +133,13 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h3 class="modal-title">Delete your profile</h3>
+								<h3 class="modal-title">@localizer["Delete_my_profile"]</h3>
 								<button type="button" class="close" @onclick="closePopUpForDeletingUser"> <span area-hidden="true">X</span></button>
 							</div>
 							<div class="modal-body">
-								<p>Are you sure you want to delete our profile? If you delete it, you cannot reactivate it again!</p>
+								<p>@localizer["Are_you_sure_you_want_to_delete_our_profile_if_you_delete_it_you_cannot_reactivate_it_again"]</p>
 								<br>
-								<button type="button" class="close" @onclick="() => deleteUser()">Delete my profile!</button>
+								<button type="button" class="close" @onclick="() => deleteUser()">@localizer["Delete_my_profile"]</button>
 							</div>
 						</div>
 					</div>
@@ -146,6 +152,18 @@
 </AuthorizeView>
 
 @code {
+
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+
+		await InvokeAsync(() =>
+		{
+			StateHasChanged();
+		});
+	}
+
 
 	private User user;
 	/// <summary>

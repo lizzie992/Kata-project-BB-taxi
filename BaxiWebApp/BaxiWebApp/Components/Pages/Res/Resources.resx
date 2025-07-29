@@ -351,4 +351,67 @@
   <data name="This_ad_is_in_the_past" xml:space="preserve">
     <value>This ad is in the past</value>
   </data>
+  <data name="Email_address" xml:space="preserve">
+    <value>Email address:</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>Department:</value>
+  </data>
+  <data name="Preferred_language" xml:space="preserve">
+    <value>Preferred language:</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>Contact:</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Rating:</value>
+  </data>
+  <data name="Number_of_warnings" xml:space="preserve">
+    <value>Number of warnings:</value>
+  </data>
+  <data name="Default_data_for_creating_ads" xml:space="preserve">
+    <value>Default data for creating ads:</value>
+  </data>
+  <data name="No_default_type" xml:space="preserve">
+    <value>No default type</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Notifications:</value>
+  </data>
+  <data name="Yes_you_will_get_notifications" xml:space="preserve">
+    <value>Yes you will get notifications</value>
+  </data>
+  <data name="No_notifications_for_you" xml:space="preserve">
+    <value>No notifications for you</value>
+  </data>
+  <data name="Click_here_to_change_your_profile_data" xml:space="preserve">
+    <value>Click here to change your profile data!</value>
+  </data>
+  <data name="Click_here_to_change_your_password" xml:space="preserve">
+    <value>Click here to change your password!</value>
+  </data>
+  <data name="Delete_my_profile" xml:space="preserve">
+    <value>Delete my profile!</value>
+  </data>
+  <data name="Are_you_sure_you_want_to_delete_our_profile_if_you_delete_it_you_cannot_reactivate_it_again" xml:space="preserve">
+    <value>Are you sure you want to delete our profile? If you delete it, you cannot reactivate it again!</value>
+  </data>
+  <data name="Your_default_pick_up_drop_off_location_on_the_map" xml:space="preserve">
+    <value>Your default pick up / drop off location on the map:</value>
+  </data>
+  <data name="Change_your_profile_data" xml:space="preserve">
+    <value>Change your profile data!</value>
+  </data>
+  <data name="First_name" xml:space="preserve">
+    <value>First name:</value>
+  </data>
+  <data name="Last_name" xml:space="preserve">
+    <value>Last name:</value>
+  </data>
+  <data name="Default_ad_type" xml:space="preserve">
+    <value>Default ad type:</value>
+  </data>
 </root>

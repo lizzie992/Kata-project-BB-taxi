@@ -351,4 +351,67 @@
   <data name="This_ad_is_in_the_past" xml:space="preserve">
     <value>Diese Anzeige liegt in der Vergangenheit</value>
   </data>
+  <data name="Email_address" xml:space="preserve">
+    <value>E-Mail-Adresse:</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>Abteilung:</value>
+  </data>
+  <data name="Preferred_language" xml:space="preserve">
+    <value>Bevorzugte Sprache:</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>Kontakt:</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Bewertung:</value>
+  </data>
+  <data name="Number_of_warnings" xml:space="preserve">
+    <value>Anzahl der Warnungen:</value>
+  </data>
+  <data name="Default_data_for_creating_ads" xml:space="preserve">
+    <value>Standarddaten zur Anzeigenerstellung:</value>
+  </data>
+  <data name="No_default_type" xml:space="preserve">
+    <value>Kein Standardtyp</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Benachrichtigungen:</value>
+  </data>
+  <data name="Yes_you_will_get_notifications" xml:space="preserve">
+    <value>Ja, Sie erhalten Benachrichtigungen</value>
+  </data>
+  <data name="No_notifications_for_you" xml:space="preserve">
+    <value>Keine Benachrichtigungen für Sie</value>
+  </data>
+  <data name="Click_here_to_change_your_profile_data" xml:space="preserve">
+    <value>Klicken Sie hier, um Ihre Profildaten zu ändern!</value>
+  </data>
+  <data name="Click_here_to_change_your_password" xml:space="preserve">
+    <value>Klicken Sie hier, um Ihr Passwort zu ändern!</value>
+  </data>
+  <data name="Delete_my_profile" xml:space="preserve">
+    <value>Mein Profil löschen!</value>
+  </data>
+  <data name="Are_you_sure_you_want_to_delete_our_profile_if_you_delete_it_you_cannot_reactivate_it_again" xml:space="preserve">
+    <value>Möchten Sie unser Profil wirklich löschen? Nach der Löschung ist eine Reaktivierung nicht mehr möglich!</value>
+  </data>
+  <data name="Your_default_pick_up_drop_off_location_on_the_map" xml:space="preserve">
+    <value>Ihr Standard-Abhol-/Abgabeort auf der Karte:</value>
+  </data>
+  <data name="Change_your_profile_data" xml:space="preserve">
+    <value>Ändern Sie Ihre Profildaten!</value>
+  </data>
+  <data name="First_name" xml:space="preserve">
+    <value>Vorname:</value>
+  </data>
+  <data name="Last_name" xml:space="preserve">
+    <value>Nachname:</value>
+  </data>
+  <data name="Default_ad_type" xml:space="preserve">
+    <value>Standard-Anzeigentyp:</value>
+  </data>
 </root>

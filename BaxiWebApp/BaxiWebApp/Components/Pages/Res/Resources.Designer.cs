@@ -133,6 +133,16 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete our profile? If you delete it, you cannot reactivate it again!.
+        /// </summary>
+        public static string Are_you_sure_you_want_to_delete_our_profile_if_you_delete_it_you_cannot_reactivate_it_again {
+            get {
+                return ResourceManager.GetString("Are_you_sure_you_want_to_delete_our_profile_if_you_delete_it_you_cannot_reactivat" +
+                        "e_it_again", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you trying to reach Baierbrunn from the moon?.
         /// </summary>
         public static string Are_you_trying_to_reach_baierbrunn_from_the_moon {
@@ -160,11 +170,38 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change your profile data!.
+        /// </summary>
+        public static string Change_your_profile_data {
+            get {
+                return ResourceManager.GetString("Change_your_profile_data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chat.
         /// </summary>
         public static string Chat {
             get {
                 return ResourceManager.GetString("Chat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click here to change your password!.
+        /// </summary>
+        public static string Click_here_to_change_your_password {
+            get {
+                return ResourceManager.GetString("Click_here_to_change_your_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click here to change your profile data!.
+        /// </summary>
+        public static string Click_here_to_change_your_profile_data {
+            get {
+                return ResourceManager.GetString("Click_here_to_change_your_profile_data", resourceCulture);
             }
         }
         
@@ -187,6 +224,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contact:.
+        /// </summary>
+        public static string Contact {
+            get {
+                return ResourceManager.GetString("Contact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact me!.
         /// </summary>
         public static string Contact_me {
@@ -201,6 +247,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Create_a_new_ad {
             get {
                 return ResourceManager.GetString("Create_a_new_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default ad type:.
+        /// </summary>
+        public static string Default_ad_type {
+            get {
+                return ResourceManager.GetString("Default_ad_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default data for creating ads:.
+        /// </summary>
+        public static string Default_data_for_creating_ads {
+            get {
+                return ResourceManager.GetString("Default_data_for_creating_ads", resourceCulture);
             }
         }
         
@@ -223,6 +287,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete my profile!.
+        /// </summary>
+        public static string Delete_my_profile {
+            get {
+                return ResourceManager.GetString("Delete_my_profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Department:.
+        /// </summary>
+        public static string Department {
+            get {
+                return ResourceManager.GetString("Department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Direction:.
         /// </summary>
         public static string Direction {
@@ -241,6 +323,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email address:.
+        /// </summary>
+        public static string Email_address {
+            get {
+                return ResourceManager.GetString("Email_address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find me ads that could match this ad.
         /// </summary>
         public static string Find_me_ads_that_would_match_this_ad {
@@ -255,6 +346,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Find_me_recommendations {
             get {
                 return ResourceManager.GetString("Find_me_recommendations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First name:.
+        /// </summary>
+        public static string First_name {
+            get {
+                return ResourceManager.GetString("First_name", resourceCulture);
             }
         }
         
@@ -349,6 +449,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last name:.
+        /// </summary>
+        public static string Last_name {
+            get {
+                return ResourceManager.GetString("Last_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logout.
         /// </summary>
         public static string Logout {
@@ -431,6 +540,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name:.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New conversation.
         /// </summary>
         public static string New_conversation {
@@ -449,11 +567,47 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No default type.
+        /// </summary>
+        public static string No_default_type {
+            get {
+                return ResourceManager.GetString("No_default_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No notifications for you.
+        /// </summary>
+        public static string No_notifications_for_you {
+            get {
+                return ResourceManager.GetString("No_notifications_for_you", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifications:.
+        /// </summary>
+        public static string Notifications {
+            get {
+                return ResourceManager.GetString("Notifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of seats:.
         /// </summary>
         public static string Number_of_seats {
             get {
                 return ResourceManager.GetString("Number_of_seats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of warnings:.
+        /// </summary>
+        public static string Number_of_warnings {
+            get {
+                return ResourceManager.GetString("Number_of_warnings", resourceCulture);
             }
         }
         
@@ -545,6 +699,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Please_write_your_first_message_here {
             get {
                 return ResourceManager.GetString("Please_write_your_first_message_here", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preferred language:.
+        /// </summary>
+        public static string Preferred_language {
+            get {
+                return ResourceManager.GetString("Preferred_language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rating:.
+        /// </summary>
+        public static string Rating {
+            get {
+                return ResourceManager.GetString("Rating", resourceCulture);
             }
         }
         
@@ -711,6 +883,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Yes you will get notifications.
+        /// </summary>
+        public static string Yes_you_will_get_notifications {
+            get {
+                return ResourceManager.GetString("Yes_you_will_get_notifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Here you can see all of the ads:.
         /// </summary>
         public static string You_are_inactivated_this_page_is_not_available_for_you {
@@ -743,6 +924,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string You_have_to_select_driver_or_passenger {
             get {
                 return ResourceManager.GetString("You_have_to_select_driver_or_passenger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your default pick up / drop off location on the map:.
+        /// </summary>
+        public static string Your_default_pick_up_drop_off_location_on_the_map {
+            get {
+                return ResourceManager.GetString("Your_default_pick_up_drop_off_location_on_the_map", resourceCulture);
             }
         }
         
