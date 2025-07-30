@@ -1,8 +1,26 @@
 ﻿@page "/Account/Lockout"
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer
+@using System.Globalization;
+@using Components.Pages.Res;
+@inject Data.DataService DataService
 
-<PageTitle>Locked out</PageTitle>
+<PageTitle>@localizer["Locked_out"]</PageTitle>
 
 <header>
-    <h1 class="text-danger">Locked out</h1>
-    <p class="text-danger">This account has been locked out, please try again later.</p>
+    <h1 class="text-danger">@localizer["Locked_out"]</h1>
+    <p class="text-danger">@localizer["This_account_has_been_locked_out_please_try_again_later"]</p>
 </header>
+
+@code{
+
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+		await InvokeAsync(() =>
+	{
+		StateHasChanged();
+	});
+	}
+}

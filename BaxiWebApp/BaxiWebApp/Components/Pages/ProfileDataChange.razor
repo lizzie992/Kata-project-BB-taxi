@@ -126,9 +126,7 @@
 					<InputText @bind-Value="user.DefaultSpecificRequests"></InputText><br>
 					<br>
 
-					Notifications: if you check this box, you will automatically receive an email notification when another user posts an ad that would be matching your needs:
-					It is less than @distanceLimit km away from you and less than @Constants.TIME_LIMIT_FOR_NOTIFICATIONS hour(s) different,
-					Or your routes will meet somewhere on the way and could be convenient for both of you.
+					@localizer["Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", @Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS, @Constants.TIME_LIMIT_FOR_NOTIFICATIONS]
 					@if (user.AreNotificationsOn == true)
 					{
 						<input type="checkbox" checked @bind-value="@user.AreNotificationsOn">

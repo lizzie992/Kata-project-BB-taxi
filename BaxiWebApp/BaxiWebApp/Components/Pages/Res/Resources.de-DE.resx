@@ -498,4 +498,102 @@
   <data name="Ad_not_found" xml:space="preserve">
     <value>Anzeige nicht gefunden</value>
   </data>
+  <data name="Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you" xml:space="preserve">
+    <value>Benachrichtigungen: Wenn Sie dieses Kontrollkästchen aktivieren, erhalten Sie automatisch eine E-Mail-Benachrichtigung, wenn ein anderer Nutzer eine Anzeige veröffentlicht, die Ihren Anforderungen entspricht:
+Sie ist weniger als {0} km von Ihnen entfernt und hat weniger als {1} Stunden Unterschied.
+Oder Ihre Routen kreuzen sich irgendwo auf dem Weg und könnten für Sie beide günstig sein.</value>
+  </data>
+  <data name="Confirm_email" xml:space="preserve">
+    <value>E-Mail bestätigen</value>
+  </data>
+  <data name="Error_loading_user_with_ID_{0}" xml:space="preserve">
+    <value>Fehler beim Laden des Benutzers mit der ID {0}</value>
+  </data>
+  <data name="Thank_you_for_confirming_your_email" xml:space="preserve">
+    <value>Vielen Dank für die Bestätigung Ihrer E-Mail.</value>
+  </data>
+  <data name="Error_confirming_your_email" xml:space="preserve">
+    <value>Fehler beim Bestätigen Ihrer E-Mail.</value>
+  </data>
+  <data name="Forgot_your_password" xml:space="preserve">
+    <value>Passwort vergessen?</value>
+  </data>
+  <data name="Enter_your_email" xml:space="preserve">
+    <value>Geben Sie Ihre E-Mail-Adresse ein.</value>
+  </data>
+  <data name="Reset_password" xml:space="preserve">
+    <value>Passwort zurücksetzen</value>
+  </data>
+  <data name="Please_check_your_email_to_reset_your_password" xml:space="preserve">
+    <value>Bitte überprüfen Sie Ihre E-Mails, um Ihr Passwort zurückzusetzen.</value>
+  </data>
+  <data name="Forgot_password_confirmation" xml:space="preserve">
+    <value>Passwortbestätigung vergessen</value>
+  </data>
+  <data name="Locked_out" xml:space="preserve">
+    <value>Ausgesperrt</value>
+  </data>
+  <data name="This_account_has_been_locked_out_please_try_again_later" xml:space="preserve">
+    <value>Dieses Konto wurde gesperrt. Bitte versuchen Sie es später erneut.</value>
+  </data>
+  <data name="Use_a_local_account_to_log_in" xml:space="preserve">
+    <value>Verwenden Sie zum Anmelden ein lokales Konto.</value>
+  </data>
+  <data name="Error_invalid_login_attempt" xml:space="preserve">
+    <value>Fehler: Ungültiger Anmeldeversuch.</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Passwort</value>
+  </data>
+  <data name="email_example" xml:space="preserve">
+    <value>name@beispiel.com</value>
+  </data>
+  <data name="Remember_me" xml:space="preserve">
+    <value>Erinnere dich an mich</value>
+  </data>
+  <data name="Log_in" xml:space="preserve">
+    <value>Einloggen</value>
+  </data>
+  <data name="Register_as_a_new_user" xml:space="preserve">
+    <value>Als neuer Benutzer registrieren</value>
+  </data>
+  <data name="Resend_email_confirmation" xml:space="preserve">
+    <value>E-Mail-Bestätigung erneut senden</value>
+  </data>
+  <data name="Use_another_service_to_log_in" xml:space="preserve">
+    <value>Verwenden Sie einen anderen Dienst zum Anmelden.</value>
+  </data>
+  <data name="Create_a_new_account" xml:space="preserve">
+    <value>Erstellen Sie ein neues Konto.</value>
+  </data>
+  <data name="Confirm_password" xml:space="preserve">
+    <value>Passwort bestätigen</value>
+  </data>
+  <data name="Not_mandatory_field" xml:space="preserve">
+    <value>Kein Pflichtfeld</value>
+  </data>
+  <data name="Below_you_can_add_some_additional_data_that_will_make_your_life_easier_when_creating_ads_in_the_application_this_is_not_mandatory_and_can_be_always_changed_deleted_in_your_profile" xml:space="preserve">
+    <value>Nachfolgend können Sie einige zusätzliche Daten hinzufügen, die Ihnen das Erstellen von Anzeigen in der Anwendung erleichtern. Dies ist nicht obligatorisch und kann jederzeit in Ihrem Profil geändert / gelöscht werden!</value>
+  </data>
+  <data name="Default_pick_up_drop_off_location" xml:space="preserve">
+    <value>Standard-Abhol-/Abgabeort</value>
+  </data>
+  <data name="You_can_add_an_address_or_location_where_you_can_usually_pick_up_drop_off_passengers_where_you_want_to_be_picked_up" xml:space="preserve">
+    <value>Sie können eine Adresse oder einen Ort hinzufügen, an dem Sie normalerweise Passagiere abholen/absetzen können // wo Sie abgeholt werden möchten!</value>
+  </data>
+  <data name="If_you_have_the_same_requests_regarding_the_ride_such_as_no_smokers_please_or_no_loud_music_etc_please_write_them_here" xml:space="preserve">
+    <value>Wenn Sie bezüglich der Fahrt dieselben Wünsche haben (wie etwa „Bitte nicht rauchen“ oder „Keine laute Musik“ usw.), schreiben Sie diese bitte hier:</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Registrieren</value>
+  </data>
+  <data name="Use_another_service_to_register" xml:space="preserve">
+    <value>Verwenden Sie zur Registrierung einen anderen Dienst.</value>
+  </data>
+  <data name="Reset_password_confirmation" xml:space="preserve">
+    <value>Passwortbestätigung zurücksetzen</value>
+  </data>
+  <data name="Your_password_has_been_reset_please_log_in" xml:space="preserve">
+    <value>Ihr Passwort wurde zurückgesetzt. Bitte melden Sie sich an</value>
+  </data>
 </root>

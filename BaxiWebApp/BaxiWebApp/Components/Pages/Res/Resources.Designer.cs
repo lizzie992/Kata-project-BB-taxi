@@ -197,6 +197,17 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Below you can add some additional data that will make your life easier when creating Ads in the application. This is not mandatory and can be always changed / deleted in your profile!.
+        /// </summary>
+        public static string Below_you_can_add_some_additional_data_that_will_make_your_life_easier_when_creating_ads_in_the_application_this_is_not_mandatory_and_can_be_always_changed_deleted_in_your_profile {
+            get {
+                return ResourceManager.GetString("Below_you_can_add_some_additional_data_that_will_make_your_life_easier_when_creat" +
+                        "ing_ads_in_the_application_this_is_not_mandatory_and_can_be_always_changed_delet" +
+                        "ed_in_your_profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Below you can select one of your ads, and find matches :).
         /// </summary>
         public static string Below_you_can_select_one_of_your_ads_and_find_matches {
@@ -278,6 +289,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm email.
+        /// </summary>
+        public static string Confirm_email {
+            get {
+                return ResourceManager.GetString("Confirm_email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Password.
+        /// </summary>
+        public static string Confirm_password {
+            get {
+                return ResourceManager.GetString("Confirm_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact:.
         /// </summary>
         public static string Contact {
@@ -292,6 +321,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Contact_me {
             get {
                 return ResourceManager.GetString("Contact_me", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new account..
+        /// </summary>
+        public static string Create_a_new_account {
+            get {
+                return ResourceManager.GetString("Create_a_new_account", resourceCulture);
             }
         }
         
@@ -328,6 +366,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Default_data_for_creating_ads {
             get {
                 return ResourceManager.GetString("Default_data_for_creating_ads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default pick up / drop off location.
+        /// </summary>
+        public static string Default_pick_up_drop_off_location {
+            get {
+                return ResourceManager.GetString("Default_pick_up_drop_off_location", resourceCulture);
             }
         }
         
@@ -413,6 +460,51 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to name@example.com.
+        /// </summary>
+        public static string email_example {
+            get {
+                return ResourceManager.GetString("email_example", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter your email..
+        /// </summary>
+        public static string Enter_your_email {
+            get {
+                return ResourceManager.GetString("Enter_your_email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error confirming your email..
+        /// </summary>
+        public static string Error_confirming_your_email {
+            get {
+                return ResourceManager.GetString("Error_confirming_your_email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: Invalid login attempt..
+        /// </summary>
+        public static string Error_invalid_login_attempt {
+            get {
+                return ResourceManager.GetString("Error_invalid_login_attempt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error loading user with ID {0}.
+        /// </summary>
+        public static string Error_loading_user_with_ID__0_ {
+            get {
+                return ResourceManager.GetString("Error_loading_user_with_ID_{0}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find me ads that could match this ad.
         /// </summary>
         public static string Find_me_ads_that_would_match_this_ad {
@@ -436,6 +528,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string First_name {
             get {
                 return ResourceManager.GetString("First_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forgot password confirmation.
+        /// </summary>
+        public static string Forgot_password_confirmation {
+            get {
+                return ResourceManager.GetString("Forgot_password_confirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forgot your password?.
+        /// </summary>
+        public static string Forgot_your_password {
+            get {
+                return ResourceManager.GetString("Forgot_your_password", resourceCulture);
             }
         }
         
@@ -557,6 +667,16 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If you have the same requests regarding the ride (such as &quot;No smokers Please&quot; or &quot;No loud music&quot; etc...) please write them here:.
+        /// </summary>
+        public static string If_you_have_the_same_requests_regarding_the_ride_such_as_no_smokers_please_or_no_loud_music_etc_please_write_them_here {
+            get {
+                return ResourceManager.GetString("If_you_have_the_same_requests_regarding_the_ride_such_as_no_smokers_please_or_no_" +
+                        "loud_music_etc_please_write_them_here", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inactive.
         /// </summary>
         public static string Inactive {
@@ -571,6 +691,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Last_name {
             get {
                 return ResourceManager.GetString("Last_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locked out.
+        /// </summary>
+        public static string Locked_out {
+            get {
+                return ResourceManager.GetString("Locked_out", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log in.
+        /// </summary>
+        public static string Log_in {
+            get {
+                return ResourceManager.GetString("Log_in", resourceCulture);
             }
         }
         
@@ -739,11 +877,31 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not mandatory field.
+        /// </summary>
+        public static string Not_mandatory_field {
+            get {
+                return ResourceManager.GetString("Not_mandatory_field", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifications:.
         /// </summary>
         public static string Notifications {
             get {
                 return ResourceManager.GetString("Notifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifications: if you check this box, you will automatically receive an email notification when another user posts an ad that would be matching your needs:
+        ///It is less than {0} km away from you and less than {1} hour(s) different,
+        ///Or your routes will meet somewhere on the way and could be convenient for both of you..
+        /// </summary>
+        public static string Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than__0__km_away_from_you_and_less_than__1__hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you {
+            get {
+                return ResourceManager.GetString(@"Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", resourceCulture);
             }
         }
         
@@ -775,11 +933,29 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pick up date and time:.
         /// </summary>
         public static string Pick_up_date_and_time {
             get {
                 return ResourceManager.GetString("Pick_up_date_and_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check your email to reset your password..
+        /// </summary>
+        public static string Please_check_your_email_to_reset_your_password {
+            get {
+                return ResourceManager.GetString("Please_check_your_email_to_reset_your_password", resourceCulture);
             }
         }
         
@@ -911,6 +1087,33 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        public static string Register {
+            get {
+                return ResourceManager.GetString("Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register as a new user.
+        /// </summary>
+        public static string Register_as_a_new_user {
+            get {
+                return ResourceManager.GetString("Register_as_a_new_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remember me.
+        /// </summary>
+        public static string Remember_me {
+            get {
+                return ResourceManager.GetString("Remember_me", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report ad!.
         /// </summary>
         public static string Report_ad {
@@ -934,6 +1137,33 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Report_this_conversations_to_the_admins {
             get {
                 return ResourceManager.GetString("Report_this_conversations_to_the_admins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resend email confirmation.
+        /// </summary>
+        public static string Resend_email_confirmation {
+            get {
+                return ResourceManager.GetString("Resend_email_confirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset password.
+        /// </summary>
+        public static string Reset_password {
+            get {
+                return ResourceManager.GetString("Reset_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset password confirmation.
+        /// </summary>
+        public static string Reset_password_confirmation {
+            get {
+                return ResourceManager.GetString("Reset_password_confirmation", resourceCulture);
             }
         }
         
@@ -1028,6 +1258,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thank you for confirming your email..
+        /// </summary>
+        public static string Thank_you_for_confirming_your_email {
+            get {
+                return ResourceManager.GetString("Thank_you_for_confirming_your_email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The pick up time you added is in the past! Please go back and correct it.
         /// </summary>
         public static string The_pick_up_time_you_added_is_in_the_past_please_go_back_and_correct_it {
@@ -1042,6 +1281,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string These_might_be_interesting_for_you {
             get {
                 return ResourceManager.GetString("These_might_be_interesting_for_you", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This account has been locked out, please try again later..
+        /// </summary>
+        public static string This_account_has_been_locked_out_please_try_again_later {
+            get {
+                return ResourceManager.GetString("This_account_has_been_locked_out_please_try_again_later", resourceCulture);
             }
         }
         
@@ -1101,6 +1349,33 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use a local account to log in..
+        /// </summary>
+        public static string Use_a_local_account_to_log_in {
+            get {
+                return ResourceManager.GetString("Use_a_local_account_to_log_in", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use another service to log in..
+        /// </summary>
+        public static string Use_another_service_to_log_in {
+            get {
+                return ResourceManager.GetString("Use_another_service_to_log_in", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use another service to register..
+        /// </summary>
+        public static string Use_another_service_to_register {
+            get {
+                return ResourceManager.GetString("Use_another_service_to_register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Management Page.
         /// </summary>
         public static string User_management_page {
@@ -1155,6 +1430,16 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can add an address or location where you can usually pick up / drop off passengers // where you want to be picked up!.
+        /// </summary>
+        public static string You_can_add_an_address_or_location_where_you_can_usually_pick_up_drop_off_passengers_where_you_want_to_be_picked_up {
+            get {
+                return ResourceManager.GetString("You_can_add_an_address_or_location_where_you_can_usually_pick_up_drop_off_passeng" +
+                        "ers_where_you_want_to_be_picked_up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You do not have any ads :) You can create ads by clicking on Create Ad in the menu!.
         /// </summary>
         public static string You_do_not_have_any_ads_you_can_create_ads_by_clicking_on_Create_Ad_in_the_menu {
@@ -1196,6 +1481,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Your_original_ad {
             get {
                 return ResourceManager.GetString("Your_original_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your password has been reset. Please log in.
+        /// </summary>
+        public static string Your_password_has_been_reset_please_log_in {
+            get {
+                return ResourceManager.GetString("Your_password_has_been_reset_please_log_in", resourceCulture);
             }
         }
         

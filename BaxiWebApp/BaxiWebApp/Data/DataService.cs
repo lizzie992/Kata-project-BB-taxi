@@ -20,7 +20,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Timers;
-using static System.Net.Mime.MediaTypeNames;
+using BaxiWebApp.Components.Account.Pages;
 
 
 namespace BaxiWebApp.Data

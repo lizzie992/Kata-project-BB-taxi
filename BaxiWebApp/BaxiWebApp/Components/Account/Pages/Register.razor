@@ -17,6 +17,10 @@
 @inject IdentityRedirectManager RedirectManager
 @inject Data.BaxiWebAppContext context;
 @inject Data.DataService DataService
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer
+@using System.Globalization;
+@using Components.Pages.Res;
 
 <PageTitle>Register</PageTitle>
 
@@ -27,94 +31,93 @@
 		<StatusMessage Message="@Message" />
 		<EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
 			<DataAnnotationsValidator />
-			<h2>Create a new account.</h2>
+			<h2>@localizer["Create_a_new_account"]</h2>
 			<hr />
 			<ValidationSummary class="text-danger" role="alert" />
 			<div class="form-floating mb-3">
-				<InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-				<label for="email">Email</label>
+				<InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder=@localizer["name_example_com"] />
+				<label for="email">@localizer["Email_address"]</label>
 				<ValidationMessage For="() => Input.Email" class="text-danger" />
 			</div>
 			<div class="form-floating mb-3">
-				<InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-				<label for="password">Password</label>
+				<InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder=@localizer["Password"] />
+				<label for="password">@localizer["Password"]</label>
 				<ValidationMessage For="() => Input.Password" class="text-danger" />
 			</div>
 			<div class="form-floating mb-3">
-				<InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-				<label for="confirm-password">Confirm Password</label>
+				<InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder=@localizer["Password"] />
+				<label for="confirm-password">@localizer["Confirm_password"]</label>
 				<ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
 			</div>
 			<div class="form-floating mb-3">
-				<InputText @bind-Value="Input.FirstName" class="form-control" autocomplete="firstName" aria-required="true" placeholder="first name" />
-				<label for="First name">First name</label>
+				<InputText @bind-Value="Input.FirstName" class="form-control" autocomplete="firstName" aria-required="true" placeholder=@localizer["First_name"] />
+				<label for="First name">@localizer["First_name"]</label>
 			</div>
 			<div class="form-floating mb-3">
-				<InputText @bind-Value="Input.LastName" class="form-control" autocomplete="lastName" aria-required="true" placeholder="last name" />
-				<label for="Last name">Last name</label>
+				<InputText @bind-Value="Input.LastName" class="form-control" autocomplete="lastName" aria-required="true" placeholder=@localizer["Last_name"] />
+				<label for="Last name">@localizer["Last_name"]</label>
 			</div>
 			<div class="form-floating mb-3">
-				Department:
+				@localizer["Department"]
 				<br>
 				<InputSelect @bind-Value="Input.Department" id="department">
 					@foreach (var value in Enum.GetValues<Department>())
 					{
-						<option value="@value">@value.ToString()</option>
+						<option value="@value">@localizer[@value.ToString()]</option>
 					}
 				</InputSelect>
 				<label for="Department"></label>
 			</div>
 			<div class="form-floating mb-3">
-				Preferred language of communication
+				@localizer["Preferred_language"]
 				<br>
 				<InputSelect @bind-Value="Input.PreferredLanguage" id="preferredLanguage">
 					@foreach (var value in Enum.GetValues<PreferredLanguage>())
 					{
-						<option value="@value">@value.ToString()</option>
+						<option value="@value">@localizer[@value.ToString()]</option>
 					}
 				</InputSelect>
 				<label for="preferredLanguage"></label>
 			</div>
 			<div class="form-floating mb-3">
-				Contact (not mandatory)
+				@localizer["Contact"] (@localizer["Not_mandatory_field"])
 				<br>
-				<InputText @bind-Value="Input.Contact" class="form-control" autocomplete="contact" aria-required="true" placeholder="contact" />
+				<InputText @bind-Value="Input.Contact" class="form-control" autocomplete="contact" aria-required="true" placeholder=@localizer["Contact"] />
 				<label for="Contact"></label>
 			</div>
 
 
 			<div class="form-floating mb-3">
-				Below you can add some additional data that will make your life easier when creating Ads in the application.
-				This is not mandatory and can be always changed / deleted in your profile!
+				@localizer["Below_you_can_add_some_additional_data_that_will_make_your_life_easier_when_creating_ads_in_the_application_this_is_not_mandatory_and_can_be_always_changed_deleted_in_your_profile"]
 				<br>
 				<br>
-				I am usually a:
+				@localizer["I_am_a"]
 				<br>
 				<InputSelect @bind-Value="Input.DefaultAdType" id="DefaultAdType">
 					@foreach (var value in Enum.GetValues<AdType>())
 					{
 						if (value == AdType.SelectAll)
 						{
-							<option value="@value">No selection</option>
+							<option value="@value">@localizer["No_default_type"]</option>
 						}
 						else
 						{
-							<option value="@value">@value.ToString()</option>
+							<option value="@value">@localizer[@value.ToString()]</option>
 						}
 					}
 				</InputSelect>
 				<label for="Ad Type"></label>
 			</div>
 			<div class="form-floating mb-3">
-				Default pick up / drop off location
-				You can add an address or location where you can usually pick up / drop off passengers // where you want to be picked up!
+				@localizer["Default_pick_up_drop_off_location"]
+				@localizer["You_can_add_an_address_or_location_where_you_can_usually_pick_up_drop_off_passengers_where_you_want_to_be_picked_up"]
 				<br>
-				<InputText @bind-Value="Input.DefaultPickUpAddress" class="form-control" autocomplete="Default Address" aria-required="true" placeholder="Default Address" />
+				<InputText @bind-Value="Input.DefaultPickUpAddress" class="form-control" autocomplete="Default Address" aria-required="true" placeholder=@localizer["From/to_this_address"] />
 				<label for="DefaultPickUpAddress"></label>
 			</div>
 			<div class="form-group">
 				<br>
-				<label for="NumberOfSeats">Number of seats:</label>
+				<label for="NumberOfSeats">@localizer["Number_of_seats"]</label>
 				<InputSelect @bind-Value="Input.DefaultNumberOfSeats" class="form-control" id="DefaultNumberOfSeats">
 					<option value="1">1</option>
 					<option value="2">2</option>
@@ -126,24 +129,22 @@
 				<br>
 			</div>
 			<div class="form-floating mb-3">
-				Default Requests
-				If you have the same requests regarding the ride (such as "No smokers Please" or "No loud music" etc...) please write them here:
+				@localizer["Specific_requests"]
+				@localizer["If_you_have_the_same_requests_regarding_the_ride_such_as_no_smokers_please_or_no_loud_music_etc_please_write_them_here"]
 				<br>
-				<InputText @bind-Value="Input.DefaultSpecificRequests" class="form-control" autocomplete="Default Requests" aria-required="true" placeholder="Default Requests" />
+				<InputText @bind-Value="Input.DefaultSpecificRequests" class="form-control" autocomplete="Default Requests" aria-required="true" placeholder=@localizer["Specific_requests"] />
 				<label for="DefaultSpecificRequests"></label>
 			</div>
 			<div class="form-floating mb-3">
-				Notifications: if you check this box, you will automatically receive an email notification when another user posts an ad that would be matching your needs:
-				It is less than @distanceLimit km away from you and less than @Constants.TIME_LIMIT_FOR_NOTIFICATIONS hour(s) different,
-				Or your routes will meet somewhere on the way and could be convenient for both of you.
+				@localizer["Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", @Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS, @Constants.TIME_LIMIT_FOR_NOTIFICATIONS]
 				<InputCheckbox @bind-Value="Input.notificationsOn" />
 			</div>
-			<button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+			<button type="submit" class="w-100 btn btn-lg btn-primary">@localizer["Register"]</button>
 		</EditForm>
 	</div>
 	<div class="col-md-6 col-md-offset-2">
 		<section>
-			<h3>Use another service to register.</h3>
+			<h3>@localizer["Use_another_service_to_register"]</h3>
 			<hr />
 			<ExternalLoginPicker />
 		</section>
@@ -326,5 +327,14 @@
 	}
 
 
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+		await InvokeAsync(() =>
+	{
+		StateHasChanged();
+	});
+	}
 
 }

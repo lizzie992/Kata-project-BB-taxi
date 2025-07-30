@@ -5,14 +5,18 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 @using BaxiWebApp.Data
-
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer
+@using System.Globalization;
+@using Components.Pages.Res;
 @inject UserManager<User> UserManager
 @inject IdentityRedirectManager RedirectManager
+@inject Data.DataService DataService
 
-<PageTitle>Confirm email</PageTitle>
+<PageTitle>@localizer["Confirm_email"]</PageTitle>
 
-<h1>Confirm email</h1>
-<StatusMessage Message="@statusMessage" />
+<h1>@localizer["Confirm_email"]</h1>
+<StatusMessage Message=@localizer[@statusMessage, UserId] />
 
 @code {
     private string? statusMessage;
@@ -46,4 +50,15 @@
             statusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
         }
     }
+    protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+
+    public async void OnCultureChanged(object sender, CultureInfo culture)
+    {
+
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
 }
