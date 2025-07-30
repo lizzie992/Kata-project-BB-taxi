@@ -115,6 +115,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Admin.
+        /// </summary>
+        public static string Admin {
+            get {
+                return ResourceManager.GetString("Admin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string All {
@@ -147,6 +156,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string And_the_possibly_matching_ads {
             get {
                 return ResourceManager.GetString("And_the_possibly_matching_ads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arabic.
+        /// </summary>
+        public static string Arabic {
+            get {
+                return ResourceManager.GetString("Arabic", resourceCulture);
             }
         }
         
@@ -258,6 +276,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Chat {
             get {
                 return ResourceManager.GetString("Chat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chinese.
+        /// </summary>
+        public static string Chinese {
+            get {
+                return ResourceManager.GetString("Chinese", resourceCulture);
             }
         }
         
@@ -451,6 +478,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EHS.
+        /// </summary>
+        public static string EHS {
+            get {
+                return ResourceManager.GetString("EHS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email....
         /// </summary>
         public static string Email {
@@ -483,6 +519,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string email_example {
             get {
                 return ResourceManager.GetString("email_example", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        public static string English {
+            get {
+                return ResourceManager.GetString("English", resourceCulture);
             }
         }
         
@@ -568,6 +613,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fragrance Team.
+        /// </summary>
+        public static string FragranceTeam {
+            get {
+                return ResourceManager.GetString("FragranceTeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to French.
+        /// </summary>
+        public static string French {
+            get {
+                return ResourceManager.GetString("French", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From:.
         /// </summary>
         public static string From {
@@ -591,6 +654,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string FromBaierbrunn {
             get {
                 return ResourceManager.GetString("FromBaierbrunn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General Services.
+        /// </summary>
+        public static string GeneralServices {
+            get {
+                return ResourceManager.GetString("GeneralServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to German.
+        /// </summary>
+        public static string German {
+            get {
+                return ResourceManager.GetString("German", resourceCulture);
             }
         }
         
@@ -713,6 +794,51 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IT.
+        /// </summary>
+        public static string IT {
+            get {
+                return ResourceManager.GetString("IT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Italian.
+        /// </summary>
+        public static string Italian {
+            get {
+                return ResourceManager.GetString("Italian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Japanese.
+        /// </summary>
+        public static string Japanese {
+            get {
+                return ResourceManager.GetString("Japanese", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Korean.
+        /// </summary>
+        public static string Korean {
+            get {
+                return ResourceManager.GetString("Korean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Laboratories.
+        /// </summary>
+        public static string Laboratories {
+            get {
+                return ResourceManager.GetString("Laboratories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last name:.
         /// </summary>
         public static string Last_name {
@@ -791,6 +917,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Looks_like_your_ad_is_very_far_away_from_baierbrunn {
             get {
                 return ResourceManager.GetString("Looks_like_your_ad_is_very_far_away_from_baierbrunn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maintenance.
+        /// </summary>
+        public static string Maintenance {
+            get {
+                return ResourceManager.GetString("Maintenance", resourceCulture);
             }
         }
         
@@ -922,8 +1057,7 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifications: if you check this box, you will automatically receive an email notification when another user posts an ad that would be matching your needs:
-        ///It is less than {0} km away from you and less than {1} hour(s) different,
+        ///   Looks up a localized string similar to Notifications: if you check this box, you will automatically receive an email notification when another user posts an ad that would be matching your needs: It is less than {0} km away from you and less than {1} hour(s) different,
         ///Or your routes will meet somewhere on the way and could be convenient for both of you..
         /// </summary>
         public static string Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than__0__km_away_from_you_and_less_than__1__hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you {
@@ -947,6 +1081,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Number_of_warnings {
             get {
                 return ResourceManager.GetString("Number_of_warnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other.
+        /// </summary>
+        public static string Other {
+            get {
+                return ResourceManager.GetString("Other", resourceCulture);
             }
         }
         
@@ -1078,6 +1221,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Portuguese.
+        /// </summary>
+        public static string Portuguese {
+            get {
+                return ResourceManager.GetString("Portuguese", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preferred language:.
         /// </summary>
         public static string Preferred_language {
@@ -1087,11 +1239,29 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Production.
+        /// </summary>
+        public static string Production {
+            get {
+                return ResourceManager.GetString("Production", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile.
         /// </summary>
         public static string Profile {
             get {
                 return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quality Control.
+        /// </summary>
+        public static string QualityControl {
+            get {
+                return ResourceManager.GetString("QualityControl", resourceCulture);
             }
         }
         
@@ -1146,6 +1316,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Register_as_a_new_user {
             get {
                 return ResourceManager.GetString("Register_as_a_new_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Regular User .
+        /// </summary>
+        public static string Regular {
+            get {
+                return ResourceManager.GetString("Regular", resourceCulture);
             }
         }
         
@@ -1222,6 +1401,24 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Russian.
+        /// </summary>
+        public static string Russian {
+            get {
+                return ResourceManager.GetString("Russian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sales.
+        /// </summary>
+        public static string Sales {
+            get {
+                return ResourceManager.GetString("Sales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
@@ -1285,6 +1482,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spanish.
+        /// </summary>
+        public static string Spanish {
+            get {
+                return ResourceManager.GetString("Spanish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specific requests:.
         /// </summary>
         public static string Specific_requests {
@@ -1299,6 +1505,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Supply Chain.
+        /// </summary>
+        public static string SupplyChain {
+            get {
+                return ResourceManager.GetString("SupplyChain", resourceCulture);
             }
         }
         
@@ -1384,6 +1599,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Turkish.
+        /// </summary>
+        public static string Turkish {
+            get {
+                return ResourceManager.GetString("Turkish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unfortunately there are no ad recommendations for you. Please come back later or turn on the notifications so we can inform you when a matching ad is posted!.
         /// </summary>
         public static string Unfortunately_there_are_no_ad_recommendations_for_you_please_come_back_later_or_turn_on_the_notifications_so_we_can_inform_you_when_a_matching_ad_is_posted {
@@ -1444,6 +1668,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Welcome_to_Baierbrunn {
             get {
                 return ResourceManager.GetString("Welcome_to_Baierbrunn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work Council.
+        /// </summary>
+        public static string WorkCouncil {
+            get {
+                return ResourceManager.GetString("WorkCouncil", resourceCulture);
             }
         }
         

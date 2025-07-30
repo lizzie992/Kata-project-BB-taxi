@@ -66,6 +66,10 @@
 					<InputSelect @bind-Value="user.Department" id="department">
 						@foreach (var value in Enum.GetValues<Department>())
 						{
+							@if (@value == Department.SelectAll)
+							{
+								continue;
+							}
 							<option value="@value">@localizer[@value.ToString()]</option>
 						}
 					</InputSelect>

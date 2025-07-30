@@ -80,9 +80,9 @@ style="height: 400px">
 						<br>
 						@foreach (var ad in recommendedAds)
 						{
-							<p>@localizer["Ad_type"] @ad.AdType</p>
+							<p>@localizer["Ad_type"] @localizer[@ad.AdType.ToString()]</p>
 							<p>@localizer["Ad_owner"] @DataService.showUserNameWithStatus(ad.AdOwner)</p>
-							<p>@localizer["Ad_direction"] @ad.AdDirection</p>
+							<p>@localizer["Ad_direction"] @localizer[ad.AdDirection.ToString()]</p>
 							<p>@localizer["From/to_this_address"] @ad.PickUpDropOffLocation</p>
 							<p>@localizer["Pick_up_date_and_time"] @ad.PickUpDateAndTime</p>
 							<p>@localizer["Number_of_seats"] @ad.NumberOfSeats</p>
