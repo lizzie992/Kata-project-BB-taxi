@@ -596,4 +596,19 @@ Oder Ihre Routen kreuzen sich irgendwo auf dem Weg und könnten für Sie beide g
   <data name="Your_password_has_been_reset_please_log_in" xml:space="preserve">
     <value>Ihr Passwort wurde zurückgesetzt. Bitte melden Sie sich an</value>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>Startseite</value>
+  </data>
+  <data name="Create_an_ad" xml:space="preserve">
+    <value>Erstellen Sie eine Anzeige!</value>
+  </data>
+  <data name="All_ads" xml:space="preserve">
+    <value>Alle Anzeigen</value>
+  </data>
+  <data name="Recommend_me_ads" xml:space="preserve">
+    <value>Empfehlen Sie mir Anzeigen</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
 </root>

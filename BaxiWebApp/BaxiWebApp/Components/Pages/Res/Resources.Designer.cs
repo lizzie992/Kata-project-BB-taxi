@@ -124,6 +124,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Ads.
+        /// </summary>
+        public static string All_ads {
+            get {
+                return ResourceManager.GetString("All_ads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All chat conversations.
         /// </summary>
         public static string All_chat_conversations {
@@ -339,6 +348,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Create_a_new_ad {
             get {
                 return ResourceManager.GetString("Create_a_new_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create an ad!.
+        /// </summary>
+        public static string Create_an_ad {
+            get {
+                return ResourceManager.GetString("Create_an_ad", resourceCulture);
             }
         }
         
@@ -636,6 +654,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Here_you_will_see_the_ads_that_are_matching_your_selected_ad {
             get {
                 return ResourceManager.GetString("Here_you_will_see_the_ads_that_are_matching_your_selected_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
             }
         }
         
@@ -1060,6 +1087,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        public static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rating:.
         /// </summary>
         public static string Rating {
@@ -1074,6 +1110,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Reactivate_user {
             get {
                 return ResourceManager.GetString("Reactivate_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recommend me Ads.
+        /// </summary>
+        public static string Recommend_me_ads {
+            get {
+                return ResourceManager.GetString("Recommend_me_ads", resourceCulture);
             }
         }
         

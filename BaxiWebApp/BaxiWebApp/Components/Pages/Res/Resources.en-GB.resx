@@ -596,4 +596,19 @@ Or your routes will meet somewhere on the way and could be convenient for both o
   <data name="Your_password_has_been_reset_please_log_in" xml:space="preserve">
     <value>Your password has been reset. Please log in</value>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Create_an_ad" xml:space="preserve">
+    <value>Create an ad!</value>
+  </data>
+  <data name="All_ads" xml:space="preserve">
+    <value>All Ads</value>
+  </data>
+  <data name="Recommend_me_ads" xml:space="preserve">
+    <value>Recommend me Ads</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
 </root>

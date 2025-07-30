@@ -5,13 +5,15 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore
-@using Microsoft.EntityFrameworkCore;
 @using Microsoft.Extensions.Localization
 @using System.Globalization
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
 @inject Data.BaxiWebAppContext context;
+@using Pages.Res;
+@inject IStringLocalizer<Resources> localizer
+@inject Data.DataService DataService
 
 <div class="top-row ps-3 navbar navbar-dark">
 	<div class="container-fluid">
@@ -25,7 +27,7 @@
 	<nav class="flex-column">
 		<div class="nav-item px-3">
 			<NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-				<span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+				<span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> @localizer["Home"]
 			</NavLink>
 		</div>
 
@@ -35,23 +37,23 @@
 				{
 					<div class="nav-item px-3">
 						<NavLink class="nav-link" href="CreateAd">
-							<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Create an ad!
+							<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> @localizer["Create_an_ad"]
 						</NavLink>
 					</div>
 					<div class="nav-item px-3">
 						<NavLink class="nav-link" href="ads">
-							<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> All Ads
+							<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> @localizer["All_ads"]
 						</NavLink>
 					</div>
 					<div class="nav-item px-3">
 						<NavLink class="nav-link" href="MyAdsForRecommendations">
-							<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Recommend me Ads
+							<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> @localizer["Recommend_me_ads"]
 						</NavLink>
 					</div>
 					<AuthorizeView Roles="Admin" Context="authContext">
 						<div class="nav-item px-3">
 							<NavLink class="nav-link" href="UserManagement">
-								<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> User Management
+								<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> @localizer["User_management_page"]
 							</NavLink>
 						</div>
 					</AuthorizeView>
@@ -59,17 +61,17 @@
 
 				<div class="nav-item px-3">
 					<NavLink class="nav-link" href="profile">
-						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Profile
+						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> @localizer["Profile"]
 					</NavLink>
 				</div>
 				<div class="nav-item px-3">
 					<NavLink class="nav-link" href="MyAds">
-						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> My ads
+						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> @localizer["My_ads"]
 					</NavLink>
 				</div>
 				<div class="nav-item px-3">
 					<NavLink class="nav-link" href="Chat" D>
-						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Chat
+						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> @localizer["Chat"]
 					</NavLink>
 				</div>
 				
@@ -79,7 +81,7 @@
 						<AntiforgeryToken />
 						<input type="hidden" name="ReturnUrl" value="Account/Login" />
 						<button type="submit" class="nav-link">
-							<span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+							<span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> @localizer["Logout"]
 						</button>
 					</form>
 				</div>
@@ -90,13 +92,13 @@
 			<NotAuthorized>
 				<div class="nav-item px-3">
 					<NavLink class="nav-link" href="Account/Register">
-						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Register an account!
+						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> @localizer["Register"]
 					</NavLink>
 				</div>
 
 				<div class="nav-item px-3">
 					<NavLink class="nav-link" href="Account/Login">
-						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Log in!
+						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> @localizer["Log_in"]
 					</NavLink>
 				</div>
 
@@ -112,6 +114,7 @@
 	private string? currentUrl;
 	protected override void OnInitialized()
 	{
+		DataService.CultureChanged += OnCultureChanged;
 		currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
 		NavigationManager.LocationChanged += OnLocationChanged;
 	}
@@ -143,6 +146,13 @@
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
-	
+
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+		await InvokeAsync(() =>
+	{
+		StateHasChanged();
+	});
+	}
 
 }
