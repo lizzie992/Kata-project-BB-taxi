@@ -495,4 +495,7 @@
   <data name="Are_you_sure_you_want_to_reactivate_this_user" xml:space="preserve">
     <value>Möchten Sie diesen Benutzer wirklich reaktivieren?</value>
   </data>
+  <data name="Ad_not_found" xml:space="preserve">
+    <value>Anzeige nicht gefunden</value>
+  </data>
 </root>

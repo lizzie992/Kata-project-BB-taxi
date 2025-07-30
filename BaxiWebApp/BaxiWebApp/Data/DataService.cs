@@ -259,6 +259,100 @@ namespace BaxiWebApp.Data
             return false;
         }
 
+
+
+        /// <summary>
+        /// Compares the new Ad that was just created by the user with the existing ads, based on pick up time and the distance between the pickup / dropoff locations
+        /// If they are close enough in time and in geographical location, it sends an email notification to both ad owners, which email will contain the details of the other ad
+        /// </summary>
+        /// <param name="newAd">Ad</param>
+        /// <param name="adList"><List of Ads/param>
+        /// <returns>bool</returns>
+        public async Task CheckDistanceAndSendNotification(Ad newAd, List<Ad> adList)
+        {
+            foreach (Ad oldAd in adList)
+            {
+                if (await CheckDistanceBetweenAds(newAd, oldAd))
+                {
+                    if (oldAd.AdOwner.AreNotificationsOn == true)
+                    {
+                        string messageNewAd = $"You might be interested in this new Ad:\r\n Ad type: {newAd.AdType}\r\nAd Direction: {newAd.AdDirection}\r\nAddress: {newAd.PickUpDropOffLocation}\r\n On {newAd.PickUpDateAndTime}\r\n Available seats: {newAd.NumberOfSeats}\r\n Any speicifc requests: {newAd.SpecificRequests}\r\n";
+                        string emailAddress = "gulyaskata99@gmail.com";
+                        string subject = "Check out this new ad: ";
+                        sendEmail(emailAddress, subject, messageNewAd);
+                    }
+                    if (newAd.AdOwner.AreNotificationsOn == true)
+                    {
+                        string messageOldAd = $"You might be interested in this new Ad:\r\n Ad type: {oldAd.AdType}\r\nAd Direction: {oldAd.AdDirection}\r\nAddress: {oldAd.PickUpDropOffLocation}\r\n On {oldAd.PickUpDateAndTime}\r\n Available seats: {oldAd.NumberOfSeats}\r\n Any speicifc requests: {oldAd.SpecificRequests}\r\n";
+                        string emailAddress = "gulyaskata99@gmail.com";
+                        string subject = "Check out this new ad: ";
+                        sendEmail(emailAddress, subject, messageOldAd);
+                    }
+                }
+                else if (await CheckMatchingRoutes(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude))
+                {
+                    if (oldAd.AdOwner.AreNotificationsOn == true)
+                    {
+                        string messageNewAd = $"You might be interested in this new Ad:\r\n Ad type: {newAd.AdType}\r\nAd Direction: {newAd.AdDirection}\r\nAddress: {newAd.PickUpDropOffLocation}\r\n On {newAd.PickUpDateAndTime}\r\n Available seats: {newAd.NumberOfSeats}\r\n Any speicifc requests: {newAd.SpecificRequests}\r\n";
+                        string emailAddress = "gulyaskata99@gmail.com";
+                        string subject = "Check out this new ad: ";
+                        sendEmail(emailAddress, subject, messageNewAd);
+                    }
+                    if (newAd.AdOwner.AreNotificationsOn == true)
+                    {
+                        string messageOldAd = $"You might be interested in this new Ad:\r\n Ad type: {oldAd.AdType}\r\nAd Direction: {oldAd.AdDirection}\r\nAddress: {oldAd.PickUpDropOffLocation}\r\n On {oldAd.PickUpDateAndTime}\r\n Available seats: {oldAd.NumberOfSeats}\r\n Any speicifc requests: {oldAd.SpecificRequests}\r\n";
+                        string emailAddress = "gulyaskata99@gmail.com";
+                        string subject = "Check out this new ad: ";
+                        sendEmail(emailAddress, subject, messageOldAd);
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Compares the new Ad that was just created by the user with the existing ads, based on ad type (drivers against passengers) and Direction (TO or FROM Baierbrunn)
+        /// If there is a match, it triggers the CheckDistanceAndSendNotification method for further checks and possible email notifications
+        /// </summary>
+        /// <param name="newAd">Ad</param>
+        /// <returns>bool</returns>
+        public async Task CheckAdsForNotification(Ad newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
+        {
+            using (var context = _dbcFactory.CreateDbContext())
+            {
+                var adList = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
+
+                //TO Baierbrunn, passenger looking for drivers
+                if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Passenger)
+                {
+                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats);
+                    await CheckDistanceAndSendNotification(newAd, adList.ToList());
+                }
+
+                //TO Baierbrunn, driver looking for passengers
+                if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Driver)
+                {
+                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats);
+                    await CheckDistanceAndSendNotification(newAd, adList.ToList());
+                }
+
+
+                //FROM Baierbrunn, passenger looking for drivers
+                if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Passenger)
+                {
+                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats);
+                    await CheckDistanceAndSendNotification(newAd, adList.ToList());
+                }
+
+                //FROM Baierbrunn, driver looking for passengers
+                if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Driver)
+                {
+                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats);
+                    await CheckDistanceAndSendNotification(newAd, adList.ToList());
+                }
+            }
+        }
+
         /// <summary>
         ///Calculates the coordinates from a given address using Google API
         /// </summary>

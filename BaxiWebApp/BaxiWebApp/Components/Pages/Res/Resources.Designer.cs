@@ -79,6 +79,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ad not Found.
+        /// </summary>
+        public static string Ad_not_found {
+            get {
+                return ResourceManager.GetString("Ad_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ad owner.
         /// </summary>
         public static string Ad_owner {

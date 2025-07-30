@@ -8,86 +8,261 @@
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger
 @inject UserManager<User> UserManager
+@using Pages.Res;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer
+@using System.Globalization;
+@inject IJSRuntime JSRuntime
+@inject Data.DataService DataService
+@using System.Timers
 
 <AuthorizeView Context="authContext">
 	<Authorized>
 
+		<style>
+			#map {
+				height: 100%;
+			}
+
+			column {
+				float: left;
+				padding: 10px;
+			}
+
+			.left {
+				width: 25%;
+			}
+
+			.right {
+				width: 75%;
+			}
+		</style>
+
+
 		@if (currentlyLoggedInUser.isActive == false)
 		{
-			<p style="text-align:center; font-size:150%;">You are inactivated, this page is not available for you</p>
+			<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
 		}
 		else
 		{
 
 
-			<h3>ModifyAd</h3>
-
 
 			@if (ad != null)
 			{
+				<div class="row">
+					<div class="column left">
+						<EditForm Model="@ad">
+							<p>@localizer["I_am_a"]</p>
+							<br>
+							<InputSelect @bind-Value="ad.AdType" id="adType">
+								<option value="@AdType.SelectAll">@localizer["Please_select"]</option>
+								@foreach (var value in Enum.GetValues<AdType>())
+								{
+									if (value == AdType.SelectAll)
+									{
+										continue;
+									}
+									<option value="@value">@localizer[value.ToString()]</option>
+								}
+							</InputSelect>
+							<br>
 
+							<p>@localizer["Direction"] </p>
+							<br>
+							<InputSelect @bind-Value="ad.AdDirection" id="adDirection">
+								@foreach (var value in Enum.GetValues<AdDirection>())
+								{
+									if (value == AdDirection.SelectAll)
+									{
+										continue;
+									}
+									<option value="@value">@localizer[value.ToString()]</option>
+								}
+							</InputSelect>
+							<br>
 
-				<EditForm Model="@ad">
-					I am a: <br>
-					<InputSelect @bind-Value="ad.AdType" id="adType">
-						@foreach (var value in Enum.GetValues<AdType>())
+							<div class="form-group">
+								<label for="PickUpDropOffLocation">@localizer["From/to_this_address"]</label>
+								<input @bind="ad.PickUpDropOffLocation" class="form-control" id="PickUpDropOffLocation"
+									   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
+								<ValidationMessage For="() => ad.PickUpDropOffLocation" />
+								<br>
+							</div>
+
+							<p>@localizer["Pick_up_date_and_time"] </p>
+							<br>
+							<InputDate Type="InputDateType.DateTimeLocal"
+									   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
+							</InputDate>
+							<br>
+
+							<div class="form-group">
+								<br>
+								<label for="NumberOfSeats">@localizer["Number_of_seats"]</label>
+								<InputSelect @bind-Value="ad.NumberOfSeats" class="form-control" id="numberOfSeats">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+								</InputSelect>
+								<ValidationMessage For=@(() => ad.NumberOfSeats) />
+								<br>
+							</div>
+
+							<p>@localizer["Specific_requests"] </p>
+							<br>
+							<InputText @bind-Value="ad.SpecificRequests"></InputText><br>
+							<br>
+
+							<p>@localizer["Save_the_ad"]</p>
+							<button class="btn btn-primary" @onclick="CheckAd">@localizer["Save"]</button>
+							<br>
+
+						</EditForm>
+					</div>
+
+					<div class="column right">
+						<br>
+						@if (showMap)
 						{
-							if (value == AdType.SelectAll)
-							{
-								continue;
-							}
-							<option value="@value">@value.ToString()</option>
+							<div>@localizer["Here_you_can_specify_the_exact_pick_up_drop_off_location"]</div>
+							<div>@localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
+							<br>
+							<div id="map">
+							</div>
+							<script>
+								(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+								({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+							<br>
+							<br>
 						}
-					</InputSelect>
-					<br>
-
-					Direction: <br>
-					<InputSelect @bind-Value="ad.AdDirection" id="adDirection">
-						@foreach (var value in Enum.GetValues<AdDirection>())
+						else
 						{
-							if (value == AdDirection.SelectAll)
-							{
-								continue;
-							}
-							<option value="@value">@value.ToString()</option>
+							<img src="/images/bb.jpeg" alt="Baierbrunn" style="width:600px;height:337px;">
 						}
-					</InputSelect>
-					<br>
+					</div>
+				</div>
 
-					From/to address: <br>
-					<InputText @bind-Value="ad.PickUpDropOffLocation"></InputText><br>
-					<br>
+				@if (popUpForTooClose)
+				{
+					<div class="modal" tabindex="-1" style="display:block" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3 class="modal-title">@localizer["Are_you_already_in_baierbrunn"]</h3>
+									<button type="button" class="close" @onclick="ClosePopUpForTooClose"> <span area-hidden="true">X</span></button>
+								</div>
+								<div class="modal-body">
+									<p>@localizer["Looks_like_your_ad_is_very_close_to_baierbrunn"]</p>
+									<button type="button" class="close" @onclick="ClosePopUpForTooClose">@localizer["Go_back_to_edit_the_location"]</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
 
-					Pick up date: <br>
-					<InputDate Type="InputDateType.DateTimeLocal"
-							   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
-					</InputDate>
-					<br>
+				@if (popUpForTooFar)
+				{
+					<div class="modal" tabindex="-1" style="display:block" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3 class="modal-title">@localizer["Are_you_trying_to_reach_baierbrunn_from_the_moon"]</h3>
+									<button type="button" class="close" @onclick="ClosePopUpForTooFar"> <span area-hidden="true">X</span></button>
+								</div>
+								<div class="modal-body">
+									<p>@localizer["Looks_like_your_ad_is_very_far_away_from_baierbrunn"]</p>
+									<button type="button" class="close" @onclick="ClosePopUpForTooFar">@localizer["Go_back_to_edit_the_location"]</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
 
-					Number of seats: <br>
-					<InputSelect @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-					</InputSelect>
-					<br>
+				@if (popUpForTimeIsInPast)
+				{
+					<div class="modal" tabindex="-1" style="display:block" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3 class="modal-title">@localizer["Your_pick_up_time_is_in_the_past"]</h3>
+									<button type="button" class="close" @onclick="ClosePopUpForTimeIsInPast"> <span area-hidden="true">X</span></button>
+								</div>
+								<div class="modal-body">
+									<p>@localizer["The_pick_up_time_you_added_is_in_the_past_please_go_back_and_correct_it"]</p>
+									<button type="button" class="close" @onclick="ClosePopUpForTimeIsInPast">@localizer["I_will_correct_it"]</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
 
-					Specific requests: <br>
-					<InputText @bind-Value="ad.SpecificRequests"></InputText><br>
-					<br>
 
-					<button class="btn btn-primary" @onclick="WriteData">Save</button>
-					<br>
+				@if (popUpForWrongCoordinates)
+				{
+					<div class="modal" tabindex="-1" style="display:block" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3 class="modal-title">@localizer["Please_give_me_a_correct_address"]</h3>
+									<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates"> <span area-hidden="true">X</span></button>
+								</div>
+								<div class="modal-body">
+									<p>@localizer["Looks_like_the_location_you_wrote_is_not_correct_please_give_me_a_valid_address"]</p>
+									<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates">@localizer["I_will_correct_it"]</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
 
-				</EditForm>
+
+
+				@if (popUpForInvalidRoute)
+				{
+					<div class="modal" tabindex="-1" style="display:block" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3 class="modal-title">@localizer["Please_give_me_a_correct_address"]</h3>
+									<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute"> <span area-hidden="true">X</span></button>
+								</div>
+								<div class="modal-body">
+									<p>@localizer["Looks_like_there_is_no_route_between_your_location_and_baierbrunn"]</p>
+									<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute">@localizer["I_will_correct_it"]</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+
+				@if (popUpForInvalidAdType)
+				{
+					<div class="modal" tabindex="-1" style="display:block" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h3 class="modal-title">@localizer["Please_give_me_a_correct_ad_type"]</h3>
+									<button type="button" class="close" @onclick="ClosePopUpForInvalidAdType"> <span area-hidden="true">X</span></button>
+								</div>
+								<div class="modal-body">
+									<p>@localizer["You_have_to_select_driver_or_passenger"]</p>
+									<button type="button" class="close" @onclick="ClosePopUpForInvalidAdType">@localizer["I_will_correct_it"]</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+
+
 
 			}
 			else
 			{
-				<p>Ad not Found</p>
+				<p>@localizer["Ad_not_found"]</p>
 			}
 		}
 
@@ -97,6 +272,7 @@
 @code {
 	[Parameter]
 	public int ID { get; set; }
+
 	Ad ad
 	{
 		get
@@ -106,6 +282,26 @@
 		}
 	}
 
+	//coordinates of Baierbrunn
+	public double latitudeBB = 48.0206345131560;
+	public double longitudeBB = 11.482919688669709;
+
+	bool showMap = false;
+
+	Timer timerObj = new();
+
+
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+
+		await InvokeAsync(() =>
+		{
+			StateHasChanged();
+		});
+	}
+
 	/// <summary>
 	/// Saves changes in the ad to the database and redirects users to the MyAds page
 	/// </summary>
@@ -113,6 +309,7 @@
 	async Task WriteData()
 	{
 		context.SaveChanges();
+		await DataService.CheckAdsForNotification(ad);
 		NavigationManager.NavigateTo("MyAds");
 	}
 
@@ -133,8 +330,281 @@
 
 	protected override void OnParametersSet()
 	{
-		identifyLoggedInUser();
+		identifyLoggedInUser().GetAwaiter().GetResult();
+
+		timerObj = new Timer(1500);
+		timerObj.Elapsed += onTimer;
+		timerObj.AutoReset = false;
+
 		base.OnParametersSet();
 	}
 
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		if (firstrender)
+		{
+			if (showMap = true)
+			{
+				await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+				await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad.Latitude, ad.Longitude);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Restarts the timer any time the user types a new input in this field
+	/// </summary>
+	/// <param name="e"></param>
+	private void OnValueChange(KeyboardEventArgs e)
+	{
+		// remove previous one
+		timerObj.Stop();
+		// new timer
+		timerObj.Start();
+	}
+
+	/// <summary>
+	/// As the timer elapses, it triggers the method to show the map with the address given by the user
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="e"></param>
+	public void onTimer(object? sender, ElapsedEventArgs e)
+	{
+		showMapWithAddress();
+	}
+
+	/// <summary>
+	/// Executes multiple checks if the address / coordinates given by the user are correct and valid, is there an existing route between the location and Baierbrunn, and if it is too close or too far from Baierbrunn
+	/// If the checks return as acceptable, it triggers the map (using Google API) showing the marker set on the location that was given by the user
+	/// </summary>
+	/// <returns>bool</returns>
+	public async Task showMapWithAddress()
+	{
+		(ad.Latitude, ad.Longitude) = await DataService.GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
+		int distance = await DataService.GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
+		if (distance == Constants.INVALID_ROUTE)
+		{
+			showMap = false;
+			ShowPopUpForInvalidRoute();
+			await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+		}
+		else if (ad.Latitude == null || ad.Longitude == null)
+		{
+			showMap = false;
+			ShowPopUpForWrongCoordinates();
+			await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+		}
+		else if (await DataService.IsItTooCloseToBB(distance))
+		{
+			showMap = false;
+			ShowPopUpForTooClose();
+			await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+		}
+		else if (await DataService.IsItTooFarFromBB(distance))
+		{
+			showMap = false;
+			ShowPopUpForTooFar();
+			await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+		}
+		else
+		{
+			showMap = true;
+			await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad.Latitude, ad.Longitude);
+		}
+	}
+
+	/// <summary>
+	/// Returns the Latitude of the location where the user placed the marker on the map (Using Google API and Javascript)
+	/// </summary>
+	/// <returns>double</returns>
+	public async Task<double> GetLatitude()
+	{
+		double latitude = await JSRuntime.InvokeAsync<double>("getLatitude");
+		return latitude;
+	}
+	/// <summary>
+	/// Returns the Longitude of the location where the user placed the marker on the map (Using Google API and Javascript)
+	/// </summary>
+	/// <returns>double</returns>
+	public async Task<double> GetLongitude()
+	{
+		double longitude = await JSRuntime.InvokeAsync<double>("getLongitude");
+		return longitude;
+	}
+
+
+
+
+	/// <summary>
+	/// Performs a check on the new ad, checking if the cooordinates are 0, if the pick up time is in the past, if the coordinates / address is valid, is it too close / too far from Baierbrunn, and if a correct ad type was selected (Driver or Passenger)
+	/// If it passes all checks, it triggers the WriteData method to save the ad in the database
+	/// </summary>
+	async void CheckAd()
+	{
+		ad.Latitude = await GetLatitude();
+		ad.Longitude = await GetLongitude();
+		if (ad.Longitude == 0 || ad.Latitude == 0)
+		{
+			(ad.Latitude, ad.Longitude) = await DataService.GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
+		}
+		int distance = await DataService.GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
+		if (ad.PickUpDateAndTime <= DateTime.Now)
+		{
+			ShowPopUpForTimeIsInPast();
+			StateHasChanged();
+		}
+		else if (distance == Constants.NULL_COORDINATES)
+		{
+			ShowPopUpForWrongCoordinates();
+			StateHasChanged();
+		}
+		else if (distance == Constants.INVALID_ROUTE)
+		{
+			ShowPopUpForInvalidRoute();
+			StateHasChanged();
+		}
+		else if (await DataService.IsItTooCloseToBB(distance))
+		{
+			ShowPopUpForTooClose();
+			StateHasChanged();
+		}
+		else if (await DataService.IsItTooFarFromBB(distance))
+		{
+			ShowPopUpForTooFar();
+			StateHasChanged();
+		}
+		else if (ad.AdType == AdType.SelectAll)
+		{
+			ShowPopUpForInvalidAdType();
+			StateHasChanged();
+		}
+		else
+		{
+			await WriteData();
+		}
+	}
+
+
+	bool popUpForTooClose = false;
+	/// <summary>
+	/// Closes pop up window to show error message about the location being too close to Baierbrunn
+	/// </summary>
+	public void ClosePopUpForTooClose()
+	{
+		popUpForTooClose = false;
+	}
+	/// <summary>
+	/// Opens pop up window to show error message about the location being too close to Baierbrunn
+	/// </summary>
+	public void ShowPopUpForTooClose()
+	{
+		popUpForTooClose = true;
+	}
+
+	bool popUpForTooFar = false;
+	/// <summary>
+	/// Closes pop up window to show error message about the location being too far from Baierbrunn
+	/// </summary>
+	public void ClosePopUpForTooFar()
+	{
+		popUpForTooFar = false;
+	}
+	/// <summary>
+	/// Opens pop up window to show error message about the location being too far from Baierbrunn
+	/// </summary>
+	public void ShowPopUpForTooFar()
+	{
+		popUpForTooFar = true;
+	}
+
+
+	bool popUpForTimeIsInPast = false;
+	/// <summary>
+	/// Closes pop up window to show error message about the pick up time being in the past
+	/// </summary>
+	public void ClosePopUpForTimeIsInPast()
+	{
+		popUpForTimeIsInPast = false;
+	}
+	/// <summary>
+	/// Opens pop up window to show error message about the pick up time being in the past
+	/// </summary>
+	public void ShowPopUpForTimeIsInPast()
+	{
+		popUpForTimeIsInPast = true;
+	}
+
+
+
+	bool popUpForInvalidRoute = false;
+	/// <summary>
+	/// Closes pop up window to show error message about invalid route
+	/// </summary>
+	public void ClosePopUpForInvalidRoute()
+	{
+		popUpForInvalidRoute = false;
+	}
+	/// <summary>
+	/// Opens pop up window to show error message about invalid route
+	/// </summary>
+	public void ShowPopUpForInvalidRoute()
+	{
+		popUpForInvalidRoute = true;
+	}
+
+	bool popUpForInvalidAdType = false;
+	/// <summary>
+	/// Closes pop up window to show error message about invalid ad type (neither driver or passenger)
+	/// </summary>
+	public void ClosePopUpForInvalidAdType()
+	{
+		popUpForInvalidAdType = false;
+	}
+	/// <summary>
+	/// Opens pop up window to show error message about invalid ad type (neither driver or passenger)
+	/// </summary>
+	public void ShowPopUpForInvalidAdType()
+	{
+		popUpForInvalidAdType = true;
+	}
+
+	/// <summary>
+	/// Closes pop up window with error message about incorrect address
+	/// </summary>
+	bool popUpForWrongCoordinates = false;
+	public void ClosePopUpForWrongCoordinates()
+	{
+		popUpForWrongCoordinates = false;
+	}
+	/// <summary>
+	/// Opens pop up window with error message about incorrect address
+	/// </summary>
+	public void ShowPopUpForWrongCoordinates()
+	{
+		popUpForWrongCoordinates = true;
+	}
+
+
 }
+
+
+
