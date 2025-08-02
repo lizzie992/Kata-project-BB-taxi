@@ -72,6 +72,13 @@
     }
 
 
+    protected override async Task OnAfterRenderAsync(bool firstrender)
+    {
+        if (firstrender)
+        {
+            DataService.loadCulture(user);
+        }
+    }
 
     public User user;
     /// <summary>

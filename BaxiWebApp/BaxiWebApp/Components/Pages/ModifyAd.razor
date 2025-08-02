@@ -282,6 +282,10 @@
 		}
 	}
 
+
+
+
+
 	//coordinates of Baierbrunn
 	public double latitudeBB = 48.0206345131560;
 	public double longitudeBB = 11.482919688669709;
@@ -343,6 +347,7 @@
 	{
 		if (firstrender)
 		{
+			DataService.loadCulture(currentlyLoggedInUser);
 			if (showMap = true)
 			{
 				await InvokeAsync(() =>

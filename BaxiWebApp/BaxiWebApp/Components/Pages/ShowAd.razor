@@ -189,6 +189,13 @@ else
 	}
 
 
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		if (firstrender)
+		{
+			DataService.loadCulture(currentlyLoggedInUser);
+		}
+	}
 
 	/// <summary>
 	/// First checks if there is already an existing conversation between the 2 users (the currently logged in user and the ad owner) connected to this ad, if there is, it redirects the user to that chat conversation

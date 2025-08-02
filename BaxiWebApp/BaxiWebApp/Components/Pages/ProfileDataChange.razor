@@ -259,6 +259,8 @@
 	}
 
 
+
+
 	public static User user;
 	int distanceLimit = Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS / 1000;
 	//coordinates of Baierbrunn
@@ -294,6 +296,7 @@
 	{
 		if (firstrender)
 		{
+			DataService.loadCulture(user);
 			if (user.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
 			{
 				showMap = true;

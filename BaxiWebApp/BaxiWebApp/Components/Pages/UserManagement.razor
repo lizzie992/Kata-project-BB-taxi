@@ -299,7 +299,14 @@
 		identifyLoggedInUser();
 		base.OnParametersSet();
 	}
-
+	
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		if (firstrender)
+		{
+			DataService.loadCulture(currentlyLoggedInUser);
+		}
+	}
 
 	QuickGrid<User>? grid;
 

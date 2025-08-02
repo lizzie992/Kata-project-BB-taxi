@@ -145,6 +145,16 @@
 	}
 
 
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		if (firstrender)
+		{
+			DataService.loadCulture(currentlyLoggedInUser);
+		}
+		await JSRuntime.InvokeVoidAsync("initMapForAdList", recommendedAds);
+	}
+
+
 	// Ad CurrentAd;
 	List<Ad> recommendedAds = new List<Ad>();
 
@@ -183,10 +193,6 @@
 		base.OnParametersSet();
 	}
 
-	protected override async Task OnAfterRenderAsync(bool firstrender)
-	{
-		await JSRuntime.InvokeVoidAsync("initMapForAdList", recommendedAds);
-	}
 
 
 	public User currentlyLoggedInUser;

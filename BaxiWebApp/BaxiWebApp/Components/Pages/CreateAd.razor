@@ -337,6 +337,7 @@
 		});
 	}
 
+
 	//coordinates of Baierbrunn
 	public double latitudeBB = 48.0206345131560;
 	public double longitudeBB = 11.482919688669709;
@@ -367,6 +368,7 @@
 	{
 		if (firstrender)
 		{
+			DataService.loadCulture(_currentlyLoggedInUser);
 			if (_currentlyLoggedInUser.DefaultLatitude >= 1 && _currentlyLoggedInUser.DefaultLongitude >= 1)
 			{
 				showMap = true;
@@ -401,7 +403,7 @@
 		showMapWithAddress();
 	}
 
-	
+
 
 
 	bool showMap = false;
@@ -495,7 +497,7 @@
 		_currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
-	
+
 
 
 	bool popUpForTooClose = false;

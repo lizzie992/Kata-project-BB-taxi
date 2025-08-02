@@ -164,6 +164,15 @@
 		});
 	}
 
+	
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		if (firstrender)
+		{
+			DataService.loadCulture(user);
+		}
+	}
+
 
 	private User user;
 	/// <summary>
