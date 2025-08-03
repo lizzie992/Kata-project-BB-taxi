@@ -20,50 +20,31 @@
 @inject Data.DataService DataService
 @inject Data.BaxiWebAppContext context;
 
-<PageTitle>Home</PageTitle>
+
+<header>
+	<link rel="stylesheet" href="styles.css" />
+</header>
 
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-	img {
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
-	}
-</style>
+<body>
+	<PageTitle>Home</PageTitle>
+	<h1 style="text-align:center">@localizer["Welcome_to_Baierbrunn"]</h1>
 
-<h1 style="text-align:center;">@localizer["Welcome_to_Baierbrunn"]</h1>
+	<img src="https://www.bayregio.de/baierbrunn/oben.jpg" alt="Beautiful Baierbrunn">
 
+	<div class="welcome" style="text-align:center">@localizer["Welcome_text"]</div>
 
-
-
-<img src="https://www.bayregio.de/baierbrunn/oben.jpg" alt="Beautiful Baierbrunn" class="center" style="width:90%;">
-
-@* <gmp-map center="48.02051251896241, 11.482662196604283"
-zoom="12"
-map-id="DEMO_MAP_ID"
-style="height: 400px">
-</gmp-map>
-
-<script 
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk&loading=async&libraries=maps&v=beta" defer>
-</script> *@
-<br>
-<br>
-@* <div>@Loc["How to get to Baierbrunn"]</div> *@
-<br>
-<br>
-
-<p align="center">
-	<iframe width="600"
-			height="450"
-			loading="lazy"
-			allowfullscreen
-			src="https://www.google.com/maps/embed/v1/place?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
+	<p align="center">
+		<iframe class="framed-map"
+				width="600"
+				height="450"
+				loading="lazy"
+				allowfullscreen
+				src="https://www.google.com/maps/embed/v1/place?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
     &q=Givaudan,Baierbrunn+Germany&zoom=9">
-	</iframe>
-</p>
-
+		</iframe>
+	</p>
+</body>
 
 @if (currentlyLoggedInUser != null && recommendedAds.Count != 0 && showPopUpRecommendedAds == true)
 {
@@ -77,21 +58,45 @@ style="height: 400px">
 					</div>
 					<div class="modal-body">
 						<p>@localizer["These_might_be_interesting_for_you"]</p>
-						<br>
-						@foreach (var ad in recommendedAds)
-						{
-							<p>@localizer["Ad_type"] @localizer[@ad.AdType.ToString()]</p>
-							<p>@localizer["Ad_owner"] @DataService.showUserNameWithStatus(ad.AdOwner)</p>
-							<p>@localizer["Ad_direction"] @localizer[ad.AdDirection.ToString()]</p>
-							<p>@localizer["From/to_this_address"] @ad.PickUpDropOffLocation</p>
-							<p>@localizer["Pick_up_date_and_time"] @ad.PickUpDateAndTime</p>
-							<p>@localizer["Number_of_seats"] @ad.NumberOfSeats</p>
-							<p>@localizer["Specific_requests"] @ad.SpecificRequests</p>
-							<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
-							<br>
-						}
-						<br>
-						<button type="button" class="close" @onclick="navigateToRecommendedAds">@localizer["Show_me_all_recommendations"]</button>
+						<div class="card-container">
+							@foreach (var ad in recommendedAds)
+							{
+								<div class="card">
+									<table>
+										<tr>
+											<th style="text-align: left">@localizer["Ad_type"]</th>
+											<th style="text-align: right">@localizer[@ad.AdType.ToString()]</th>
+										</tr>
+										<tr>
+											<th style="text-align: left">@localizer["Ad_owner"]</th>
+											<th style="text-align: right">@DataService.showUserNameWithStatus(ad.AdOwner)</th>
+										</tr>
+										<tr>
+											<th style="text-align: left">@localizer["Ad_direction"]</th>
+											<th style="text-align: right">@localizer[ad.AdDirection.ToString()]</th>
+										</tr>
+										<tr>
+											<th style="text-align: left">@localizer["From/to_this_address"]</th>
+											<th style="text-align: right">@ad.PickUpDropOffLocation</th>
+										</tr>
+										<tr>
+											<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+											<th style="text-align: right">@ad.PickUpDateAndTime.ToString("g")</th>
+										</tr>
+										<tr>
+											<th style="text-align: left">@localizer["Number_of_seats"]</th>
+											<th style="text-align: right">@ad.NumberOfSeats</th>
+										</tr>
+										<tr>
+											<th style="text-align: left">@localizer["Specific_requests"]</th>
+											<th style="text-align: right">@ad.SpecificRequests</th>
+										</tr>
+									</table>
+									<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
+								</div>
+							}
+						</div>
+						<button type="button" style="margin: 25px; position: center" class="close" @onclick="navigateToRecommendedAds">@localizer["Show_me_all_recommendations"]</button>
 					</div>
 				</div>
 			</div>
@@ -181,7 +186,7 @@ style="height: 400px">
 				recommendedAds.AddRange(list);
 			}
 			recommendedAds = recommendedAds.OrderBy(a => a.PickUpDateAndTime).ToList();
-			recommendedAds = recommendedAds.Take(3).ToList();
+			recommendedAds = recommendedAds.Take(5).ToList();
 			return recommendedAds;
 		}
 	}

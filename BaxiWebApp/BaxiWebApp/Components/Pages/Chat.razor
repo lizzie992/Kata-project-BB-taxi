@@ -83,7 +83,7 @@
 					<div class="clickable-div">
 						@if (C.MostRecentMessage is not null)
 						{
-							string title = $"{C.MostRecentMessage.messageText.ToString()}, {C.MostRecentMessage.timeStamp.ToString("yyyy-MM-dd HH:mm")}";
+							string title = $"{C.MostRecentMessage.messageText.ToString()}, {C.MostRecentMessage.timeStamp.ToString("g")}";
 							<a href="Chat/@C.ID">@title</a>
 						}
 						else
@@ -112,7 +112,7 @@
 						<p>@localizer["Ad_type"] @localizer[@ad.AdType.ToString()]</p>
 						<p>@localizer["Ad_direction"] @localizer[@ad.AdDirection.ToString()]</p>
 						<p>@localizer["From/to_this_address"] @ad.PickUpDropOffLocation</p>
-						<p>@localizer["Pick_up_date_and_time"] @ad.PickUpDateAndTime</p>
+						<p>@localizer["Pick_up_date_and_time"] @ad.PickUpDateAndTime.ToString("g")</p>
 						<p>@localizer["Number_of_seats"] @ad.NumberOfSeats</p>
 						<p>@localizer["Specific_requests"] @ad.SpecificRequests</p>
 						<br>
@@ -125,7 +125,7 @@
 							<p>@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</p>
 							<p>@localizer["To"] @DataService.showUserNameWithStatus(M.toUser)</p>
 							<p>@localizer["Message"] @M.messageText</p>
-							<p>@localizer["Timestamp"] @M.timeStamp</p>
+							<p>@localizer["Timestamp"] @M.timeStamp.ToString("g")</p>
 						</div>
 						<br>
 					}

@@ -19,61 +19,12 @@
 
 <AuthorizeView Context="authContext">
 	<Authorized>
-
-		<PageTitle>@localizer["Here_you_can_see_all_of_the_ads:"]</PageTitle>
-
-		<head>
-			<script type="module" src="./googleMaps.js"></script>
-		</head>
-
-		<style>
-
-			#map {
-				height: 100%;
-			}
-
-			.adList {
-				display: grid;
-				grid-template-columns: 33% 33% 33%;
-			}
-
-			.ad {
-				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-				max-width: 400px;
-				margin: auto;
-				text-align: center;
-				font-family: arial;
-			}
-
-				.ad button {
-					border: none;
-					outline: 0;
-					padding: 12px;
-					color: white;
-					background-color: #000;
-					text-align: center;
-					cursor: pointer;
-					width: 100%;
-					font-size: 18px;
-				}
-
-
-			column {
-				float: left;
-				padding: 10px;
-			}
-
-			.left {
-				width: 50%;
-			}
-
-			.right {
-				width: 50%;
-			}
-
-		</style>
+		<header>
+			<link rel="stylesheet" href="styles.css" />
+		</header>
 
 		<body>
+			<PageTitle>@localizer["Here_you_can_see_all_of_the_ads:"]</PageTitle>
 			@if (currentlyLoggedInUser.isActive == false)
 			{
 				<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
@@ -81,133 +32,106 @@
 			else
 			{
 				<p style="text-align:center; font-size:150%;">@localizer["Here_you_can_see_all_of_the_ads"]</p>
+				<div class="container">
+					<div class="row">
+						<div class="column-left">
+							<div class="div-block">
+								<div class="input-block">
 
-				<div class="row">
-					<div class="column left">
-						<p>@localizer["I_am_looking_for_a"]</p>
-						<InputSelect @bind-Value="_adType" id="adType">
-							@foreach (var value in Enum.GetValues<AdType>())
-							{
-								<option value="@value">@localizer[value.ToString()]</option>
-							}
-						</InputSelect>
-						<br>
-						<br>
+									<div>@localizer["I_am_looking_for_a"]</div>
+									<InputSelect class="input" @bind-Value="_adType" id="adType">
+										@foreach (var value in Enum.GetValues<AdType>())
+										{
+											<option value="@value">@localizer[value.ToString()]</option>
+										}
+									</InputSelect>
+								</div>
 
-						<p>@localizer["Direction"]</p>
-						<InputSelect @bind-Value="_adDirection" id="adDirection">
-							@foreach (var value in Enum.GetValues<AdDirection>())
-							{
-								<option value="@value">@localizer[value.ToString()]</option>
-							}
-						</InputSelect>
-						<br>
-						<br>
+								<div class="input-block">
+									<div>@localizer["Direction"]</div>
+									<InputSelect class="input" @bind-Value="_adDirection" id="adDirection">
+										@foreach (var value in Enum.GetValues<AdDirection>())
+										{
+											<option value="@value">@localizer[value.ToString()]</option>
+										}
+									</InputSelect>
+								</div>
 
+								<div class="input-block">
+									<div>@localizer["From/to_this_address"]</div>
+									<div class="search-box">
+										<input class="input" type="search" autofocus @bind="_searchAddress" @bind:event="oninput" placeholder="@localizer["Address..."]" />
+									</div>
+								</div>
 
-						<p>@localizer["From/to_this_address"]</p>
-						<div class="search-box">
-							<input type="search" autofocus @bind="_searchAddress" @bind:event="oninput" placeholder="@localizer["Address..."]" />
+								<div class="input-block">
+									<div>@localizer["Between_the_following_date_and_time"]</div>
+									<InputDate Type="InputDateType.DateTimeLocal" class="input"
+											   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
+									</InputDate>
+									<InputDate Type="InputDateType.DateTimeLocal" class="input"
+											   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime2">
+									</InputDate>
+								</div>
+
+								<div class="input-block">
+									<div>@localizer["Number_of_seats"]</div>
+									<InputSelect class="input" @bind-Value="_requestedSeats" id="numberOfSeats">
+										<option value="-1">@localizer["All"]</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+									</InputSelect>
+								</div>
+
+							</div>
 						</div>
-						<br>
-						<br>
 
-						<p>@localizer["Between_the_following_date_and_time"]</p>
-						<InputDate Type="InputDateType.DateTimeLocal"
-								   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
-						</InputDate>
-						<InputDate Type="InputDateType.DateTimeLocal"
-								   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime2">
-						</InputDate>
-						<br>
-						<br>
-
-						<p>@localizer["Number_of_seats"]</p>
-						<InputSelect @bind-Value="_requestedSeats" id="numberOfSeats">
-							<option value="-1">@localizer["All"]</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-						</InputSelect>
-						<br>
-						<br>
-						<br>
+						<div class="column-right">
+							<div id="map">
+							</div>
+							<script>
+								(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+								({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+						</div>
 					</div>
 
 
-					<div class="column right">
-						@* <p align="center">
-						<gmp-map center="48.02051251896241, 11.482662196604283"
-								 zoom="10"
-								 map-id="DEMO_MAP_ID"
-								 style="height: 400px">
-							<gmp-advanced-marker position="48.02051251896241, 11.482662196604283"
-												 title="Our favourite place on the planet"></gmp-advanced-marker>
-
-							@foreach (Ad ad in adListForMap)
-							{
-								<gmp-advanced-marker position="@ad.Latitude?.ToString("F8",CultureInfo.InvariantCulture), @ad.Longitude?.ToString("F8",CultureInfo.InvariantCulture)"
-													 title="Ad type: @ad.AdType
-Direction: @ad.AdDirection
-Pick up time: @ad.PickUpDateAndTime
-Number of seats: @ad.NumberOfSeats
-		"></gmp-advanced-marker>
-							}
-
-						</gmp-map>
-
-						<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk&libraries=maps,marker&v=beta"
-								defer></script>
-					</p> *@
-						<br>
-						<br>
-						<div id="map">
+					<div class="row">
+						<div class="grid-wrapper">
+							<QuickGrid Items="FilteredAds" class="quickgrid" @ref="grid">
+								<PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => @localizer[@Ad.AdType.ToString()])" Sortable="true">
+								</PropertyColumn>
+								<PropertyColumn Title="@localizer["Ad_direction"]" Property="@(Ad => @localizer[@Ad.AdDirection.ToString()])" Sortable="true">
+								</PropertyColumn>
+								<PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
+								</PropertyColumn>
+								<PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime.ToString("g"))" Sortable="true" />
+								<PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
+								<PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+								<TemplateColumn Title="@localizer["Show_me_the_ad"]" Context="Ad">
+									<button @onclick="() => showAd(Ad)">@localizer["Show_me_the_ad"]</button>
+								</TemplateColumn>
+								<TemplateColumn Title="@localizer["Contact_me"]" Context="Ad">
+									@if (Ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser != Ad.AdOwner)
+									{
+										<button @onclick="() => openChat(Ad)">@localizer["Contact_me"]!</button>
+									}
+								</TemplateColumn>
+								@if (UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
+								{
+									<TemplateColumn Title="@localizer["Delete_ad"]" Context="Ad">
+										<button @onclick="() => showPopUpForDeletingAd(Ad)">@localizer["Delete_ad"]</button>
+									</TemplateColumn>
+								}
+							</QuickGrid>
 						</div>
-						<script>
-							(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-							({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
 					</div>
 				</div>
 
-
-
-				<p>@localizer["Click_on_the_title_of_the_column_to_sort_it"]</p>
-				<div>
-					<QuickGrid Items="FilteredAds" @ref="grid">
-						<PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => @localizer[@Ad.AdType.ToString()])" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title="@localizer["Ad_direction"]" Property="@(Ad => @localizer[@Ad.AdDirection.ToString()])" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
-						<PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
-						<PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
-						<TemplateColumn Title="@localizer["Show_me_the_ad"]" Context="Ad">
-							<button @onclick="() => showAd(Ad)">@localizer["Show_me_the_ad"]</button>
-						</TemplateColumn>
-						<TemplateColumn Title="@localizer["Contact_me"]" Context="Ad">
-							@if (Ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser != Ad.AdOwner)
-							{
-								<button @onclick="() => openChat(Ad)">@localizer["Contact_me"]!</button>
-							}
-						</TemplateColumn>
-						@if (UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
-						{
-							<TemplateColumn Title="@localizer["Delete_ad"]" Context="Ad">
-								<button @onclick="() => showPopUpForDeletingAd(Ad)">@localizer["Delete_ad"]</button>
-							</TemplateColumn>
-						}
-					</QuickGrid>
-				</div>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
 
 				@if (popUpForDeletingAd)
 				{
@@ -215,13 +139,13 @@ Number of seats: @ad.NumberOfSeats
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h3 class="modal-title">@localizer["Delete_Ad"]</h3>
+									<h3 class="modal-title">@localizer["Delete_ad"]</h3>
 									<button type="button" class="close" @onclick="closePopUpForDeletingAd"> <span area-hidden="true">X</span></button>
 								</div>
 								<div class="modal-body">
-									<p>@localizer["Write_Reason_For_Deleting_Ad"]</p>
-									<InputText @bind-Value="reasonForDeleting"></InputText>
-									<button type="button" class="close" @onclick="() => deleteAd(selectedAd, reasonForDeleting)">@localizer["Delete_Ad"]</button>
+									<p>@localizer["Please_write_here_the_reason_for_deleting_this_ad"]</p>
+									<InputText class="inputText" @bind-Value="reasonForDeleting"></InputText>
+									<button type="button" class="close" @onclick="() => deleteAd(selectedAd, reasonForDeleting)">@localizer["Delete_ad"]</button>
 								</div>
 							</div>
 						</div>
@@ -241,7 +165,7 @@ Number of seats: @ad.NumberOfSeats
 								</div>
 								<div class="modal-body">
 									<p>@localizer["Your_first_message"]</p>
-									<InputText @bind-Value="message"></InputText>
+									<InputText class="inputText" @bind-Value="message"></InputText>
 									<button type="button" class="close" @onclick="() => createChat(selectedAd)">@localizer["Send"]</button>
 								</div>
 							</div>
@@ -433,7 +357,7 @@ Number of seats: @ad.NumberOfSeats
 	/// <param name="reasonForDeleting">string</param>
 	public void deleteAd(Ad ad, string reasonForDeleting)
 	{
-		string text = $"Dear {DataService.showUserNameWithStatus(ad.AdOwner)}\r\nYour ad has been removed by the admins for reasons: {reasonForDeleting}\r\n\r\nAd:\r\nAd type: {@localizer[@ad.AdType.ToString()]}\r\nAd Direction: {@localizer[ad.AdDirection.ToString()]}\r\nAddress: {ad.PickUpDropOffLocation}\r\n On {ad.PickUpDateAndTime}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n)";
+		string text = $"Dear {DataService.showUserNameWithStatus(ad.AdOwner)}\r\nYour ad has been removed by the admins for reasons: {reasonForDeleting}\r\n\r\nAd:\r\nAd type: {@localizer[@ad.AdType.ToString()]}\r\nAd Direction: {@localizer[ad.AdDirection.ToString()]}\r\nAddress: {ad.PickUpDropOffLocation}\r\n On {ad.PickUpDateAndTime.ToString("g")}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n)";
 		string emailAddress = "gulyaskata99@gmail.com";
 		string subject = "Your Baxi ad is deleted!";
 		DataService.sendEmail(emailAddress, subject, text);

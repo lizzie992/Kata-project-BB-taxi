@@ -279,8 +279,8 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="Here_you_can_specify_the_exact_pick_up_drop_off_location" xml:space="preserve">
-    <value>Here you can specify the exact pick up / drop off location!</value>
+  <data name="On_the_map_you_can_specify_the_exact_pick_up_drop_off_location" xml:space="preserve">
+    <value>On the map you can specify the exact pick up / drop off location!</value>
   </data>
   <data name="Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up" xml:space="preserve">
     <value>Please move the marker to the place where you can stop with your car / wait for your pick up!</value>
@@ -687,5 +687,11 @@ Or your routes will meet somewhere on the way and could be convenient for both o
   </data>
   <data name="Other" xml:space="preserve">
     <value>Other</value>
+  </data>
+  <data name="Welcome_text" xml:space="preserve">
+    <value>Getting to Baierbrunn is something we all rely on - but when train service is disrupted, it can be a real challenge. 
+Baxi offers a smart and reliable solution by connecting drivers and passengers with the same destination. 
+Together, we make the journey smoother, more efficient, and more community-driven. 
+Welcome aboard!</value>
   </data>
 </root>

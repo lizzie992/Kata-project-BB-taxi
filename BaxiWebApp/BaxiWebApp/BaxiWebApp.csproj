@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\styles.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\BB\BB.csproj" />
   </ItemGroup>
 

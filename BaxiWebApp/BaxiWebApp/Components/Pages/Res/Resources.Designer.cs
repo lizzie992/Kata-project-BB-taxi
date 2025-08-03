@@ -721,15 +721,6 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Here you can specify the exact pick up / drop off location!.
-        /// </summary>
-        public static string Here_you_can_specify_the_exact_pick_up_drop_off_location {
-            get {
-                return ResourceManager.GetString("Here_you_can_specify_the_exact_pick_up_drop_off_location", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Here you will see the ads that are matching your selected ad..
         /// </summary>
         public static string Here_you_will_see_the_ads_that_are_matching_your_selected_ad {
@@ -1081,6 +1072,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Number_of_warnings {
             get {
                 return ResourceManager.GetString("Number_of_warnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On the map you can specify the exact pick up / drop off location!.
+        /// </summary>
+        public static string On_the_map_you_can_specify_the_exact_pick_up_drop_off_location {
+            get {
+                return ResourceManager.GetString("On_the_map_you_can_specify_the_exact_pick_up_drop_off_location", resourceCulture);
             }
         }
         
@@ -1659,6 +1659,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Warning {
             get {
                 return ResourceManager.GetString("Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting to Baierbrunn is something we all rely on - but when train service is disrupted, it can be a real challenge. Baxi offers a smart and reliable solution by connecting drivers and passengers with the same destination. Together, we make the journey smoother, more efficient, and more community-driven. Welcome aboard!.
+        /// </summary>
+        public static string Welcome_text {
+            get {
+                return ResourceManager.GetString("Welcome_text", resourceCulture);
             }
         }
         

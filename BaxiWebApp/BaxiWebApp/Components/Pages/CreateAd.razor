@@ -32,292 +32,259 @@
 
 <AuthorizeView Context="authContext">
 	<Authorized>
+		<header>
+			<link rel="stylesheet" href="styles.css" />
+		</header>
 
-		@if (_currentlyLoggedInUser.isActive == false)
-		{
-			<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
-		}
-		else
-		{
-			<style>
-				#map {
-					height: 100%;
-				}
+		<body>
+			@if (_currentlyLoggedInUser.isActive == false)
+			{
+				<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
+			}
+			else
+			{
+				<style>
+					#map {
+						height: 100%;
+					}
 
-				column {
-					float: left;
-					padding: 10px;
-				}
+					column {
+						float: left;
+						padding: 10px;
+					}
 
-				.left {
-					width: 25%;
-				}
+					.left {
+						width: 25%;
+					}
 
-				.right {
-					width: 75%;
-				}
-			</style>
-
-
-
-
-			<PageTitle>@localizer["Create_a_new_ad"]</PageTitle>
-
+					.right {
+						width: 75%;
+					}
+				</style>
 
 
 
-			<div class="row">
-				<div class="column left">
-					<EditForm Model="@ad">
-						<DataAnnotationsValidator />
-						<ValidationSummary />
-						<p>@localizer["I_am_a"]</p>
-						<br>
-						<InputSelect @bind-Value="ad.AdType" id="adType">
-							<option value="@AdType.SelectAll">@localizer["Please_select"]</option>
-							@foreach (var value in Enum.GetValues<AdType>())
-							{
-								if (value == AdType.SelectAll)
+
+				<PageTitle>@localizer["Create_a_new_ad"]</PageTitle>
+
+
+
+
+				<div class="row">
+					<div class="column-left">
+						<div class="div-block">
+							<EditForm Model="@ad">
+								<DataAnnotationsValidator />
+								<ValidationSummary />
+
+								<div class="input-block">
+									<div>@localizer["I_am_a"]</div>
+									<InputSelect class="input" @bind-Value="ad.AdType" id="adType">
+										<option value="@AdType.SelectAll">@localizer["Please_select"]</option>
+										@foreach (var value in Enum.GetValues<AdType>())
+										{
+											if (value == AdType.SelectAll)
+											{
+												continue;
+											}
+											<option value="@value">@localizer[value.ToString()]</option>
+										}
+									</InputSelect>
+								</div>
+
+								<div class="input-block">
+									<div>@localizer["Direction"] </div>
+									<InputSelect class="input" @bind-Value="ad.AdDirection" id="adDirection">
+										@foreach (var value in Enum.GetValues<AdDirection>())
+										{
+											if (value == AdDirection.SelectAll)
+											{
+												continue;
+											}
+											<option value="@value">@localizer[value.ToString()]</option>
+										}
+									</InputSelect>
+								</div>
+
+								<div class="input-block">
+									<div>@localizer["Pick_up_date_and_time"] </div>
+									<InputDate Type="InputDateType.DateTimeLocal" class="input"
+											   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
+									</InputDate>
+								</div>
+
+								<div class="input-block">
+									<div>@localizer["Number_of_seats"]</div>
+									<InputSelect class="input" @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+									</InputSelect>
+									<ValidationMessage For=@(() => ad.NumberOfSeats) />
+								</div>
+
+								<div class="input-block">
+									<div>@localizer["Specific_requests"] </div>
+									<InputText @bind-Value="ad.SpecificRequests" class="input"></InputText><br>
+								</div>
+
+								<div class="input-block">
+									<div>@localizer["From/to_this_address"]</div>
+									<input @bind="ad.PickUpDropOffLocation" class="input" id="PickUpDropOffLocation"
+										   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
+									<ValidationMessage For="() => ad.PickUpDropOffLocation" />
+								</div>
+
+								@if (showMap)
 								{
-									continue;
+									<div class="input-block">
+										<div>@localizer["On_the_map_you_can_specify_the_exact_pick_up_drop_off_location"]</div>
+										<div>@localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
+									</div>
 								}
-								<option value="@value">@localizer[value.ToString()]</option>
-							}
-						</InputSelect>
-						<br>
-
-						<p>@localizer["Direction"] </p>
-						<br>
-						<InputSelect @bind-Value="ad.AdDirection" id="adDirection">
-							@foreach (var value in Enum.GetValues<AdDirection>())
-							{
-								if (value == AdDirection.SelectAll)
-								{
-									continue;
-								}
-								<option value="@value">@localizer[value.ToString()]</option>
-							}
-						</InputSelect>
-						<br>
-
-						<p>@localizer["Pick_up_date_and_time"] </p>
-						<br>
-						<InputDate Type="InputDateType.DateTimeLocal"
-								   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
-						</InputDate>
-						<br>
-
-						<div class="form-group">
-							<br>
-							<label for="NumberOfSeats">@localizer["Number_of_seats"]</label>
-							<InputSelect @bind-Value="ad.NumberOfSeats" class="form-control" id="numberOfSeats">
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
-								<option value="6">6</option>
-							</InputSelect>
-							<ValidationMessage For=@(() => ad.NumberOfSeats) />
-							<br>
+								
+								<div class="input-block">
+									<div>@localizer["Save_the_ad"]</div>
+									<button @onclick="CheckAd">@localizer["Save"]</button>
+								</div>
+							</EditForm>
 						</div>
 
-						<p>@localizer["Specific_requests"] </p>
-						<br>
-						<InputText @bind-Value="ad.SpecificRequests"></InputText><br>
-						<br>
 
-
-						<div class="form-group">
-							<label for="PickUpDropOffLocation">@localizer["From/to_this_address"]</label>
-							<input @bind="ad.PickUpDropOffLocation" class="form-control" id="PickUpDropOffLocation"
-								   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
-							<ValidationMessage For="() => ad.PickUpDropOffLocation" />
-							<br>
-						</div>
-
-						<p>@localizer["Save_the_ad"]</p>
-						<button class="btn btn-primary" @onclick="CheckAd">@localizer["Save"]</button>
-						<br>
-
-						@if (ad.Longitude != null)
+					</div>
+					<div class="column-right">
+						@if (showMap)
 						{
-							@* @if (ad.AdDirection == AdDirection.ToBaierbrunn)
-								{
-									<p align="center">
-										<iframe width="600"
-												height="450"
-												loading="lazy"
-												allowfullscreen
-												src="https://www.google.com/maps/embed/v1/directions
-			?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
-			&origin=@ad.Latitude?.ToString("F8",CultureInfo.InvariantCulture), @ad.Longitude?.ToString("F8",CultureInfo.InvariantCulture)
-			&destination=Givaudan,Baierbrunn+Germany
-			&avoid=tolls">
-										</iframe>
-									</p>
-								}
-								@if (ad.AdDirection == AdDirection.FromBaierbrunn)
-								{
-									<p align="center">
-										<iframe width="600"
-												height="450"
-												loading="lazy"
-												allowfullscreen
-												src="https://www.google.com/maps/embed/v1/directions
-			?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
-			&origin=Givaudan,Baierbrunn+Germany
-			&destination=@ad.Latitude?.ToString("F8",CultureInfo.InvariantCulture), @ad.Longitude?.ToString("F8",CultureInfo.InvariantCulture)
-			&avoid=tolls">
-										</iframe>
-									</p>
-								} *@
-
+							<div id="map">
+							</div>
+							<script>
+								(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+								({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
 						}
 						else
 						{
-							@* <div>Please enter a valid address!</div> *@
+							<img src="/images/bb.jpeg" alt="Baierbrunn" style="width: 100%">
 						}
-
-					</EditForm>
-
-
-
+					</div>
 				</div>
-				<div class="column right">
-					<br>
-					@if (showMap)
-					{
-						<div>@localizer["Here_you_can_specify_the_exact_pick_up_drop_off_location"]</div>
-						<div>@localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
-						<br>
-						<div id="map">
+			}
+		</body>
+
+		@if (popUpForTooClose)
+		{
+			<div class="modal" tabindex="-1" style="display:block" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title">@localizer["Are_you_already_in_baierbrunn"]</h3>
+							<button type="button" class="close" @onclick="ClosePopUpForTooClose"> <span area-hidden="true">X</span></button>
 						</div>
-						<script>
-							(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-							({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
-						<br>
-						<br>
-					}
-					else
-					{
-						<img src="/images/bb.jpeg" alt="Baierbrunn" style="width:600px;height:337px;">
-					}
+						<div class="modal-body">
+							<p>@localizer["Looks_like_your_ad_is_very_close_to_baierbrunn"]</p>
+							<button type="button" class="close" @onclick="ClosePopUpForTooClose">@localizer["Go_back_to_edit_the_location"]</button>
+						</div>
+					</div>
 				</div>
 			</div>
-
-			@if (popUpForTooClose)
-			{
-				<div class="modal" tabindex="-1" style="display:block" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h3 class="modal-title">@localizer["Are_you_already_in_baierbrunn"]</h3>
-								<button type="button" class="close" @onclick="ClosePopUpForTooClose"> <span area-hidden="true">X</span></button>
-							</div>
-							<div class="modal-body">
-								<p>@localizer["Looks_like_your_ad_is_very_close_to_baierbrunn"]</p>
-								<button type="button" class="close" @onclick="ClosePopUpForTooClose">@localizer["Go_back_to_edit_the_location"]</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			}
-
-			@if (popUpForTooFar)
-			{
-				<div class="modal" tabindex="-1" style="display:block" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h3 class="modal-title">@localizer["Are_you_trying_to_reach_baierbrunn_from_the_moon"]</h3>
-								<button type="button" class="close" @onclick="ClosePopUpForTooFar"> <span area-hidden="true">X</span></button>
-							</div>
-							<div class="modal-body">
-								<p>@localizer["Looks_like_your_ad_is_very_far_away_from_baierbrunn"]</p>
-								<button type="button" class="close" @onclick="ClosePopUpForTooFar">@localizer["Go_back_to_edit_the_location"]</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			}
-
-			@if (popUpForTimeIsInPast)
-			{
-				<div class="modal" tabindex="-1" style="display:block" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h3 class="modal-title">@localizer["Your_pick_up_time_is_in_the_past"]</h3>
-								<button type="button" class="close" @onclick="ClosePopUpForTimeIsInPast"> <span area-hidden="true">X</span></button>
-							</div>
-							<div class="modal-body">
-								<p>@localizer["The_pick_up_time_you_added_is_in_the_past_please_go_back_and_correct_it"]</p>
-								<button type="button" class="close" @onclick="ClosePopUpForTimeIsInPast">@localizer["I_will_correct_it"]</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			}
-
-
-			@if (popUpForWrongCoordinates)
-			{
-				<div class="modal" tabindex="-1" style="display:block" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h3 class="modal-title">@localizer["Please_give_me_a_correct_address"]</h3>
-								<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates"> <span area-hidden="true">X</span></button>
-							</div>
-							<div class="modal-body">
-								<p>@localizer["Looks_like_the_location_you_wrote_is_not_correct_please_give_me_a_valid_address"]</p>
-								<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates">@localizer["I_will_correct_it"]</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			}
-
-
-
-			@if (popUpForInvalidRoute)
-			{
-				<div class="modal" tabindex="-1" style="display:block" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h3 class="modal-title">@localizer["Please_give_me_a_correct_address"]</h3>
-								<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute"> <span area-hidden="true">X</span></button>
-							</div>
-							<div class="modal-body">
-								<p>@localizer["Looks_like_there_is_no_route_between_your_location_and_baierbrunn"]</p>
-								<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute">@localizer["I_will_correct_it"]</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			}
-
-			@if (popUpForInvalidAdType)
-			{
-				<div class="modal" tabindex="-1" style="display:block" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h3 class="modal-title">@localizer["Please_give_me_a_correct_ad_type"]</h3>
-								<button type="button" class="close" @onclick="ClosePopUpForInvalidAdType"> <span area-hidden="true">X</span></button>
-							</div>
-							<div class="modal-body">
-								<p>@localizer["You_have_to_select_driver_or_passenger"]</p>
-								<button type="button" class="close" @onclick="ClosePopUpForInvalidAdType">@localizer["I_will_correct_it"]</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			}
-
 		}
+
+		@if (popUpForTooFar)
+		{
+			<div class="modal" tabindex="-1" style="display:block" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title">@localizer["Are_you_trying_to_reach_baierbrunn_from_the_moon"]</h3>
+							<button type="button" class="close" @onclick="ClosePopUpForTooFar"> <span area-hidden="true">X</span></button>
+						</div>
+						<div class="modal-body">
+							<p>@localizer["Looks_like_your_ad_is_very_far_away_from_baierbrunn"]</p>
+							<button type="button" class="close" @onclick="ClosePopUpForTooFar">@localizer["Go_back_to_edit_the_location"]</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+
+		@if (popUpForTimeIsInPast)
+		{
+			<div class="modal" tabindex="-1" style="display:block" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title">@localizer["Your_pick_up_time_is_in_the_past"]</h3>
+							<button type="button" class="close" @onclick="ClosePopUpForTimeIsInPast"> <span area-hidden="true">X</span></button>
+						</div>
+						<div class="modal-body">
+							<p>@localizer["The_pick_up_time_you_added_is_in_the_past_please_go_back_and_correct_it"]</p>
+							<button type="button" class="close" @onclick="ClosePopUpForTimeIsInPast">@localizer["I_will_correct_it"]</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+
+
+		@if (popUpForWrongCoordinates)
+		{
+			<div class="modal" tabindex="-1" style="display:block" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title">@localizer["Please_give_me_a_correct_address"]</h3>
+							<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates"> <span area-hidden="true">X</span></button>
+						</div>
+						<div class="modal-body">
+							<p>@localizer["Looks_like_the_location_you_wrote_is_not_correct_please_give_me_a_valid_address"]</p>
+							<button type="button" class="close" @onclick="ClosePopUpForWrongCoordinates">@localizer["I_will_correct_it"]</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+
+
+
+		@if (popUpForInvalidRoute)
+		{
+			<div class="modal" tabindex="-1" style="display:block" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title">@localizer["Please_give_me_a_correct_address"]</h3>
+							<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute"> <span area-hidden="true">X</span></button>
+						</div>
+						<div class="modal-body">
+							<p>@localizer["Looks_like_there_is_no_route_between_your_location_and_baierbrunn"]</p>
+							<button type="button" class="close" @onclick="ClosePopUpForInvalidRoute">@localizer["I_will_correct_it"]</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+
+		@if (popUpForInvalidAdType)
+		{
+			<div class="modal" tabindex="-1" style="display:block" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title">@localizer["Please_give_me_a_correct_ad_type"]</h3>
+							<button type="button" class="close" @onclick="ClosePopUpForInvalidAdType"> <span area-hidden="true">X</span></button>
+						</div>
+						<div class="modal-body">
+							<p>@localizer["You_have_to_select_driver_or_passenger"]</p>
+							<button type="button" class="close" @onclick="ClosePopUpForInvalidAdType">@localizer["I_will_correct_it"]</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+
+
 
 	</Authorized>
 </AuthorizeView>

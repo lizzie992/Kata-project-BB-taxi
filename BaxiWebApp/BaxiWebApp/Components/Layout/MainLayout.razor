@@ -12,60 +12,75 @@
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
 
+<style>
+	.languageSelection {
+		position: fixed;
+		right: 1rem;
+		top: 1rem;
+	}
+
+</style>
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />  
-    </div>
+	<div class="sidebar">
+		<NavMenu />
+	</div>
 
-    <main>
-        <div>
-            <select @onchange="(e) => DataService.ChangeCulture(e, currentlyLoggedInUser)">
-                <option value="de-DE">German</option>
-                <option value="en-GB">English</option>
-            </select>
-        </div>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+	<main>
+	
+		<div class="top-row px-4">
+			<div class="languageSelection">
+				<select @onchange="(e) => DataService.ChangeCulture(e, currentlyLoggedInUser)">
+					<option value="de-DE">@localizer["German"]</option>
+					<option value="en-GB">@localizer["English"]</option>
+				</select>
+			</div>
+			@* <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a> *@
+		</div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+		<article class="content px-4">
+			@Body
+		</article>
+	</main>
 </div>
 
 <div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
+	An unhandled error has occurred.
+	<a href="" class="reload">Reload</a>
+	<a class="dismiss">🗙</a>
 </div>
 
 
 @code {
 
-    protected override async Task OnParametersSetAsync()
-    {
-        identifyLoggedInUser().GetAwaiter().GetResult();
-        base.OnParametersSet();
-    }
+	protected override async Task OnParametersSetAsync()
+	{
+		identifyLoggedInUser().GetAwaiter().GetResult();
+		base.OnParametersSet();
+	}
 
 
-    public static User? currentlyLoggedInUser;
-    /// <summary>
-    /// Identifies the user who is currently logged in
-    /// </summary>
-    /// <returns>User</returns>
-    public async Task identifyLoggedInUser()
-    {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+	public static User? currentlyLoggedInUser;
+	/// <summary>
+	/// Identifies the user who is currently logged in
+	/// </summary>
+	/// <returns>User</returns>
+	public async Task identifyLoggedInUser()
+	{
+		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-        var claims = authState.User;
+		var claims = authState.User;
 
-        currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 
-    }
+	}
 
-    
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		if (firstrender)
+		{
+			DataService.loadCulture(currentlyLoggedInUser);
+		}
+	}
 
 }

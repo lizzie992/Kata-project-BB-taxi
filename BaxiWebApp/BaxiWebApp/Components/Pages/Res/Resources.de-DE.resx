@@ -279,8 +279,8 @@
   <data name="Save" xml:space="preserve">
     <value>Speichern</value>
   </data>
-  <data name="Here_you_can_specify_the_exact_pick_up_drop_off_location" xml:space="preserve">
-    <value>Hier können Sie den genauen Abhol-/Abgabeort angeben!</value>
+  <data name="On_the_map_you_can_specify_the_exact_pick_up_drop_off_location" xml:space="preserve">
+    <value>Auf der Karte können Sie den genauen Abhol-/Abgabeort angeben!</value>
   </data>
   <data name="Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up" xml:space="preserve">
     <value>Bitte verschieben Sie die Markierung an die Stelle, an der Sie mit Ihrem Auto anhalten bzw. auf Ihre Abholung warten können!</value>
@@ -688,5 +688,11 @@ Oder Ihre Routen kreuzen sich irgendwo auf dem Weg und könnten für Sie beide g
   </data>
   <data name="Other" xml:space="preserve">
     <value>Andere</value>
+  </data>
+  <data name="Welcome_text" xml:space="preserve">
+    <value>Nach Baierbrunn zu kommen, ist für viele von uns ein wichtiger Teil des Alltags - doch wenn die Züge nicht fahren, wird das schnell zur Herausforderung. 
+Baxi bietet eine clevere und verlässliche Lösung, indem es Fahrerinnen und Fahrer mit Mitfahrenden verbindet, die dasselbe Ziel haben. 
+Gemeinsam gestalten wir die Fahrt einfacher, effizienter und gemeinschaftlicher. 
+Schön, dass Sie dabei sind!</value>
   </data>
 </root>

@@ -1,0 +1,210 @@
+﻿img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    border-radius: 12px; /* Rounded corners */
+}
+
+
+body {
+    background-color: #e6f0f9;
+    color: #0066B2;
+    width: 100%;
+}
+
+h1 {
+    color: #0066B2;
+}
+
+.welcome {
+    color: #0066B2;
+    margin: 25px;
+}
+
+.framed-map {
+    border-radius: 12px; /* Rounded corners */
+}
+
+.modal-dialog {
+    border: 1px ridge #0066B2;
+    border-radius: 12px; /* Rounded corners */
+    text-align: center;
+    color: #0066B2;
+    max-width: 700px;
+    margin: 2rem auto;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    align-items: center; /* horizontal center in column layout */
+    justify-content: center; /* vertical center */
+}
+
+.modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 1rem;
+}
+
+    .modal-header h3 {
+        margin: 0;
+        text-align: center;
+        flex-grow: 1;
+        font-size: 18px;
+    }
+
+    .modal-header button {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        background-color: #0066B2;
+        color: #FFFFFF;
+        border-radius: 4px; /* Rounded corners */
+        border-style: none;
+    }
+
+.modal-body button {
+    background-color: #0066B2;
+    color: #FFFFFF;
+    margin: 5px;
+    border-radius: 6px; /* Rounded corners */
+    border-style: none;
+}
+
+.inputText {
+    border-radius: 6px;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 12px; /* Rounded corners */
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.card {
+    background-color: #cce0f2;
+    border: 1px ridge #0066B2;
+    color: #0066B2;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    width: 40%;
+    padding: 5px;
+    margin: 5px;
+}
+
+.table, th, td {
+    font-size: 12px;
+}
+
+.container {
+
+    margin: 0;
+}
+
+.row {
+    width: 100%;
+    padding: 16px;
+}
+
+.column-left {
+    width: 50%;
+}
+
+.column-right {
+    width: 50%;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    border-radius: 12px; /* Rounded corners */
+    position: static;
+    overflow: hidden;
+    min-height: 300px;
+    flex-direction: column;
+}
+
+
+.input {
+    color: #0066B2;
+    border-radius: 6px; /* Rounded corners */
+}
+
+.input-block {
+    display: flex;
+    border-radius: 6px; /* Rounded corners */
+    flex-direction: column;
+    align-items: center; /* horizontal center in column layout */
+    justify-content: center; /* vertical center */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 2px;
+    text-align: center;
+}
+
+.div-block {
+    box-sizing: border-box;
+    background-color: #cce0f2;
+    color: #0066B2;
+    border-radius: 12px; /* Rounded corners */
+    padding: 20px;
+    display: flex;
+    gap: 10px; /**/ /* Adds spacing between all items */
+    flex-direction: column;
+    align-items: center; /* horizontal center in column layout */
+    justify-content: center; /* vertical center */
+}
+
+    .div-block button {
+        border-radius: 6px; /* Rounded corners */
+        background-color: whitesmoke;
+        color: #0066B2;
+        border-style: none;
+        white-space: normal; /* allow wrapping */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: break-word;
+        vertical-align: top; /* optional: align top for multi-line */
+    }
+
+.grid-wrapper {
+    padding: 10px;
+    overflow: hidden; /* Important to clip the corners */
+    border-radius: 12px; /*Rounded corners */
+    background-color: #cce0f2;
+    color: #0066B2;
+    width: 100%;
+}
+
+.quickgrid {
+    width: 100%;
+    color: #0066B2;
+    border-collapse: separate; /* Allows rounding */
+    border-spacing: 0; /* Removes inner gaps */
+    table-layout: fixed; /* Force columns to respect width */
+    align-items: center; /* vertically center */
+    justify-content: center; /* horizontally center */
+}
+
+    .quickgrid th,
+    .quickgrid td {
+        padding: 1px;
+        color: #0066B2;
+        white-space: normal; /* allow wrapping */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: break-word;
+        /*vertical-align: top;*/ /* optional: align top for multi-line */
+        align-items: center; /* vertically center */
+        justify-content: center; /* horizontally center */
+    }
+
+    .quickgrid button {
+        border-radius: 6px; /* Rounded corners */
+        background-color: whitesmoke;
+        color: #0066B2;
+        border-style: none;
+        white-space: normal; /* allow wrapping */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: break-word;
+        vertical-align: top; /* optional: align top for multi-line */
+    }

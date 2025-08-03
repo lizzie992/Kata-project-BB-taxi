@@ -81,7 +81,7 @@
 							<div>@localizer["Ad_type"] @localizer[@CurrentAd.AdType.ToString()]</div>
 							<div>@localizer["Ad_direction"] @localizer[@CurrentAd.AdDirection.ToString()]</div>
 							<div>@localizer["From/to_this_address"] @CurrentAd.PickUpDropOffLocation</div>
-							<div>@localizer["Pick_up_date_and_time"] @CurrentAd.PickUpDateAndTime</div>
+							<div>@localizer["Pick_up_date_and_time"] @CurrentAd.PickUpDateAndTime.ToString("g")</div>
 							<div>@localizer["Number_of_seats"] @CurrentAd.NumberOfSeats</div>
 							<div>@localizer["Specific_requests"] @CurrentAd.SpecificRequests</div>
 							<br>
@@ -110,7 +110,7 @@
 							</PropertyColumn>
 							<PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
 							</PropertyColumn>
-							<PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime)" Sortable="true" />
+							<PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime.ToString("g"))" Sortable="true" />
 							<PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
 							<PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
 							<TemplateColumn Title="@localizer["Show_me_the_ad"]" Context="Ad">

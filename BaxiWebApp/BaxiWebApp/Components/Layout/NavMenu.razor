@@ -15,11 +15,23 @@
 @inject IStringLocalizer<Resources> localizer
 @inject Data.DataService DataService
 
-<div class="top-row ps-3 navbar navbar-dark">
+
+<style>
+
+	.navbar-toggler {
+		font-family: 'Merriweather', serif;
+		background-color: #0066B2;
+		color: #FFFFFF;
+	}
+
+</style>
+
+
+@* <div class="top-row ps-3 navbar navbar-dark">
 	<div class="container-fluid">
-		<a class="navbar-brand" href="">BaxiWebApp</a>
+		<a class="navbar-brand" href="">Baxi</a>
 	</div>
-</div>
+</div> *@
 
 <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
 
@@ -74,7 +86,7 @@
 						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> @localizer["Chat"]
 					</NavLink>
 				</div>
-				
+
 
 				<div class="nav-item px-3">
 					<form action="Account/Logout" method="post">
@@ -86,8 +98,6 @@
 					</form>
 				</div>
 			</Authorized>
-
-
 
 			<NotAuthorized>
 				<div class="nav-item px-3">
@@ -104,9 +114,6 @@
 
 			</NotAuthorized>
 		</AuthorizeView>
-
-		
-
 	</nav>
 </div>
 
@@ -155,4 +162,11 @@
 	});
 	}
 
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		if (firstrender)
+		{
+			DataService.loadCulture(currentlyLoggedInUser);
+		}
+	}
 }
