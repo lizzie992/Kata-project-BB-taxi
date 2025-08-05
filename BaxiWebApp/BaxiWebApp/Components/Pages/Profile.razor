@@ -24,129 +24,116 @@
 @inject Data.DataService DataService
 @using System.Globalization;
 @using Pages.Res;
+@inject Data.BaxiWebAppContext context;
 
 <AuthorizeView>
 	<Authorized>
-		<style>
-			#map {
-				height: 100%;
-			}
+		<header>
+			<link rel="stylesheet" href="styles.css" />
+		</header>
 
-			column {
-				float: left;
-				padding: 10px;
-			}
+		<body>
+			<PageTitle>Profile</PageTitle>
 
-			.left {
-				width: 25%;
-			}
-
-			.right {
-				width: 75%;
-			}
-		</style>
-
-		<PageTitle>Profile</PageTitle>
-
-
-		<div class="row">
-			<div class="column left">
-				<div class="profileData">
-					<p>@localizer["Email_address"] @user.Email</p>
-					<p>@localizer["Name:"] @DataService.showUserNameWithStatus(user)</p>
-					<p>@localizer["Department"] @localizer["@user.Department"]</p>
-					<p>@localizer["Preferred_language"] @localizer["@user.PreferredLanguage"]</p>
-					<p>@localizer["Contact"] @user.Contact</p>
-					<p>@localizer["Rating"] @user.Rating</p>
-					<p>@localizer["Number_of_warnings"] @user.NumberOfWarnings</p>
-					<br>
-					<p>@localizer["Default_data_for_creating_ads"]</p>
-					<p>
-						@localizer["Default_ad_type"] @if (user.DefaultAdType == AdType.SelectAll)
-						{
-						<p>@localizer["No_default_type"]</p>
-					}
-										else
-					{
-						<p>@localizer["@user.DefaultAdType"]</p>
-					}
-					</p>
-					<p>@localizer["From/to_this_address"] @user.DefaultPickUpAddress</p>
-					<p>@localizer["Number_of_seats"] @user.DefaultNumberOfSeats</p>
-					<p>@localizer["Specific_requests"] @user.DefaultSpecificRequests</p>
-					<br>
-					<p>
-						@localizer["Notifications"] @if (user.AreNotificationsOn == true)
-						{
+			<div class="row">
+				<div class="col">
+					<div class="div-block">
+						<p>@localizer["Email_address"] @user.Email</p>
+						<p>@localizer["Name:"] @DataService.showUserNameWithStatus(user)</p>
+						<p>@localizer["Department"] @localizer[@user.Department.ToString()]</p>
+						<p>@localizer["Preferred_language"] @localizer[@user.PreferredLanguage.ToString()]</p>
+						<p>@localizer["Contact"] @user.Contact</p>
+						<p>@localizer["Rating"] @user.Rating</p>
+						<p>@localizer["Number_of_warnings"] @user.NumberOfWarnings</p>
+						<p>@localizer["Default_data_for_creating_ads"]</p>
 						<p>
-							@localizer["Yes_you_will_get_notifications"]
+							@localizer["Default_ad_type"]
+							@if (user.DefaultAdType == AdType.SelectAll)
+							{
+								@localizer["No_default_type"]
+							}
+							else
+							{
+								@localizer[@user.DefaultAdType.ToString()]
+							}
 						</p>
-					}
-					@if (user.AreNotificationsOn == false)
-					{
+						<p>@localizer["From/to_this_address"] @user.DefaultPickUpAddress</p>
+						<p>@localizer["Number_of_seats"] @user.DefaultNumberOfSeats</p>
+						<p>@localizer["Specific_requests"] @user.DefaultSpecificRequests</p>
 						<p>
-							@localizer["No_notifications_for_you"]
+							@localizer["Notifications"]
+							@if (user.AreNotificationsOn == true)
+							{
+								@localizer["Yes_you_will_get_notifications"]
+							}
+							@if (user.AreNotificationsOn == false)
+							{
+								@localizer["No_notifications_for_you"]
+							}
 						</p>
-					}
-					</p>
-					<br>
-				</div>
-				<a href="ProfileDataChange">
-					<button>@localizer["Click_here_to_change_your_profile_data"]</button>
-				</a>
-
-				<a href="/Account/Manage/ChangePassword">
-					<button>@localizer["Click_here_to_change_your_password"]</button>
-				</a>
-
-				<button @onclick="() => showPopUpForDeletingUser(user)">@localizer["Delete_my_profile"]</button>
-			</div>
-
-			<div class="column right">
-				@if (user.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
-				{
-					<p>@localizer["Your_default_pick_up_drop_off_location_on_the_map"]</p>
-					<br>
-					<p align="center">
-						<iframe width="600"
-								height="450"
-								loading="lazy"
-								allowfullscreen
-								src="https://www.google.com/maps/embed/v1/directions
-					?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
-					&origin=@user.DefaultLatitude?.ToString("F8", CultureInfo.InvariantCulture), @user.DefaultLongitude?.ToString("F8", CultureInfo.InvariantCulture)
-					&destination=Givaudan,Baierbrunn+Germany
-					&avoid=tolls">
-						</iframe>
-					</p>
-				}
-				else
-				{
-					<img src="/images/bb.jpeg" alt="Baierbrunn" style="width:600px;height:337px;">
-				}
-			</div>
-
-
-			@if (popUpForDeletingUser)
-			{
-				<div class="modal" tabindex="-1" style="display:block" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h3 class="modal-title">@localizer["Delete_my_profile"]</h3>
-								<button type="button" class="close" @onclick="closePopUpForDeletingUser"> <span area-hidden="true">X</span></button>
-							</div>
-							<div class="modal-body">
-								<p>@localizer["Are_you_sure_you_want_to_delete_our_profile_if_you_delete_it_you_cannot_reactivate_it_again"]</p>
-								<br>
-								<button type="button" class="close" @onclick="() => deleteUser()">@localizer["Delete_my_profile"]</button>
-							</div>
-						</div>
+						<a href="ProfileDataChange">
+							<button>@localizer["Click_here_to_change_your_profile_data"]</button>
+						</a>
+						<a href="/Account/Manage/ChangePassword">
+							<button>@localizer["Click_here_to_change_your_password"]</button>
+						</a>
+						<button @onclick="() => showPopUpForDeletingUser(user)">@localizer["Delete_my_profile"]</button>
 					</div>
 				</div>
 
-			}
-		</div>
+
+				@if (user.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
+				{
+					<div class="col">
+						<div id="map">
+						</div>
+						<script>
+							(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+							({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+					</div>
+					@* <p style="text-align:center">@localizer["Your_default_pick_up_drop_off_location_on_the_map"]</p>
+						<p align="center">
+							<iframe class="framed-map"
+									width="600"
+									height="450"
+									loading="lazy"
+									allowfullscreen
+									src="https://www.google.com/maps/embed/v1/directions
+																?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
+																&origin=@user.DefaultLatitude?.ToString("F8", CultureInfo.InvariantCulture), @user.DefaultLongitude?.ToString("F8", CultureInfo.InvariantCulture)
+																&destination=Givaudan,Baierbrunn+Germany
+																&avoid=tolls">
+							</iframe>
+						</p> *@
+				}
+				@* else
+					{
+						<img src="/images/bb.jpeg" alt="Baierbrunn" style="width:600px;height:337px;">
+					} *@
+
+			</div>
+		</body>
+
+		@if (popUpForDeletingUser)
+		{
+			<div class="modal" tabindex="-1" style="display:block" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title">@localizer["Delete_my_profile"]</h3>
+							<button type="button" class="close" @onclick="closePopUpForDeletingUser"> <span area-hidden="true">X</span></button>
+						</div>
+						<div class="modal-body">
+							<p>@localizer["Are_you_sure_you_want_to_delete_our_profile_if_you_delete_it_you_cannot_reactivate_it_again"]</p>
+							<br>
+							<button type="button" class="close" @onclick="() => deleteUser()">@localizer["Delete_my_profile"]</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		}
+
 
 	</Authorized>
 </AuthorizeView>
@@ -164,12 +151,16 @@
 		});
 	}
 
-	
+
 	protected override async Task OnAfterRenderAsync(bool firstrender)
 	{
 		if (firstrender)
 		{
 			DataService.loadCulture(user);
+		}
+		if (user.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
+		{
+			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", user.DefaultLatitude, user.DefaultLongitude);
 		}
 	}
 

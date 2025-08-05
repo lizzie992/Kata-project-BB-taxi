@@ -23,152 +23,153 @@
 @inject Data.DataService DataService
 @using System.Globalization;
 @using Pages.Res;
-
+@inject Data.BaxiWebAppContext context;
 
 <AuthorizeView Context="authContext">
 	<Authorized>
-		<style>
-			#map {
-				height: 100%;
-			}
-
-			column {
-				float: left;
-				padding: 10px;
-			}
-
-			.left {
-				width: 25%;
-			}
-
-			.right {
-				width: 75%;
-			}
-		</style>
+		<header>
+			<link rel="stylesheet" href="styles.css" />
+		</header>
 
 
+		<body>
+			<h1 style="text-align:center;">@localizer["Change_your_profile_data"]</h1>
 
-		<h1 style="text-align:center;">@localizer["Change_your_profile_data"]</h1>
+			<div class="row">
+				<div class="col">
+					<div class="div-block">
+						<EditForm Model="@user" OnValidSubmit="Save">
 
-		<div class="row">
-			<div class="column left">
-				<EditForm Model="@user" OnValidSubmit="Save">
+							<div class="input-block">
+								@localizer["First_name"]
+								<InputText class="input" @bind-Value="user.FirstName"></InputText><br>
+							</div>
 
-					@localizer["First_name"]
-					<InputText @bind-Value="user.FirstName"></InputText><br>
-					<br>
+							<div class="input-block">
+								@localizer["Last_name"]
+								<InputText class="input" @bind-Value="user.LastName"></InputText><br>
+							</div>
 
-					@localizer["Last_name"]
-					<InputText @bind-Value="user.LastName"></InputText><br>
-					<br>
+							<div class="input-block">
+								@localizer["Department"]
+								<InputSelect class="input" @bind-Value="user.Department" id="department">
+									@foreach (var value in Enum.GetValues<Department>())
+									{
+										@if (@value == Department.SelectAll)
+										{
+											continue;
+										}
+										<option value="@value">@localizer[@value.ToString()]</option>
+									}
+								</InputSelect>
+							</div>
 
-					@localizer["Department"]
-					<InputSelect @bind-Value="user.Department" id="department">
-						@foreach (var value in Enum.GetValues<Department>())
-						{
-							@if (@value == Department.SelectAll)
-							{
-								continue;
-							}
-							<option value="@value">@localizer[@value.ToString()]</option>
-						}
-					</InputSelect>
-					<br>
+							<div class="input-block">
+								@localizer["Preferred_language"]
+								<InputSelect class="input" @bind-Value="user.PreferredLanguage" id="preferredLanguage">
+									@foreach (var value in Enum.GetValues<PreferredLanguage>())
+									{
+										<option value="@value">@localizer[@value.ToString()]</option>
+									}
+								</InputSelect>
+							</div>
 
-					@localizer["Preferred_language"]
-					<InputSelect @bind-Value="user.PreferredLanguage" id="preferredLanguage">
-						@foreach (var value in Enum.GetValues<PreferredLanguage>())
-						{
-							<option value="@value">@localizer[@value.ToString()]</option>
-						}
-					</InputSelect>
-					<br>
+							<div class="input-block">
+								@localizer["Contact"]
+								<InputText class="input" @bind-Value="user.Contact"></InputText><br>
+							</div>
+
+							<div class="input-block">
+								@localizer["Default_data_for_creating_ads"]
+							</div>
+
+							<div class="input-block">
+								@localizer["Default_ad_type"]
+								<InputSelect class="input" @bind-Value="user.DefaultAdType" id="DefaultAdType">
+									@foreach (var value in Enum.GetValues<AdType>())
+									{
+										if (value == AdType.SelectAll)
+										{
+											<option value="@value">@localizer["No_default_type"]</option>
+										}
+										else
+										{
+											<option value="@value">@localizer[@value.ToString()]</option>
+										}
+									}
+								</InputSelect>
+							</div>
+
+							<div class="input-block">
+								<div>@localizer["On_the_map_you_can_specify_the_exact_pick_up_drop_off_location"]</div>
+								<div>@localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
+							</div>
+
+							<div class="input-block">
+								@localizer["From/to_this_address"]
+								<input @bind="user.DefaultPickUpAddress" class="input" id="DefaultPickUpAddress"
+									   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
+							</div>
+
+							<div class="input-block">
+								@localizer["Number_of_seats"]
+								<InputSelect @bind-Value="user.DefaultNumberOfSeats" class="input" id="DefaultNumberOfSeats">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+								</InputSelect>
+							</div>
+
+							<div class="input-block">
+								@localizer["Specific_requests"]
+								<InputText class="input" @bind-Value="user.DefaultSpecificRequests"></InputText><br>
+							</div>
 
 
-					@localizer["Contact"]
-					<InputText @bind-Value="user.Contact"></InputText><br>
-					<br>
+							<div class="input-block">
+								@localizer["Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", @Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS, @Constants.TIME_LIMIT_FOR_NOTIFICATIONS]
+								@if (user.AreNotificationsOn == true)
+								{
+									<input type="checkbox" class="input" checked @bind-value="@user.AreNotificationsOn">
+								}
+								@if (user.AreNotificationsOn == false)
+								{
+									<input type="checkbox" class="input" @bind-value="@user.AreNotificationsOn">
+								}
+							</div>
 
+							<div class="input-block">
+								<a href="Profile">
+									<button @onclick="Save">@localizer["Save"]</button>
+								</a>
+							</div>
 
-					@localizer["Default_data_for_creating_ads"]
-					@localizer["Default_ad_type"]
-					<InputSelect @bind-Value="user.DefaultAdType" id="DefaultAdType">
-						@foreach (var value in Enum.GetValues<AdType>())
-						{
-							if (value == AdType.SelectAll)
-							{
-								<option value="@value">@localizer["No_default_type"]</option>
-							}
-							else
-							{
-								<option value="@value">@localizer[@value.ToString()]</option>
-							}
-						}
-					</InputSelect>
-					<br>
-
-					<div class="form-group">
-						<label for="PickUpDropOffLocation">@localizer["From/to_this_address"]</label>
-						<input @bind="user.DefaultPickUpAddress" class="form-control" id="DefaultPickUpAddress"
-							   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
-						<br>
+						</EditForm>
 					</div>
-					<br>
+				</div>
 
-					@localizer["Number_of_seats"]
-					<InputSelect @bind-Value="user.DefaultNumberOfSeats" class="form-control" id="DefaultNumberOfSeats">
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-					</InputSelect>
-					<br>
+				<div class="col">
 
-					@localizer["Specific_requests"]
-					<InputText @bind-Value="user.DefaultSpecificRequests"></InputText><br>
-					<br>
-
-					@localizer["Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", @Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS, @Constants.TIME_LIMIT_FOR_NOTIFICATIONS]
-					@if (user.AreNotificationsOn == true)
+					@if (showMap)
 					{
-						<input type="checkbox" checked @bind-value="@user.AreNotificationsOn">
+						<div id="map">
+						</div>
+						<script>
+							(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+							({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
 					}
-					@if (user.AreNotificationsOn == false)
+					else
 					{
-						<input type="checkbox" @bind-value="@user.AreNotificationsOn">
+						<img src="/images/bb.jpeg" alt="Baierbrunn" style="width:600px;height:337px;">
 					}
 
-					<a href="Profile">
-						<button @onclick="Save">@localizer["Save"]</button>
-					</a>
-				</EditForm>
+				</div>
 			</div>
+		</body>
 
-			<div class="column right">
-				@if (showMap)
-				{
-					<div>
-						@localizer["Here_you_can_specify_the_exact_pick_up_drop_off_location"]
-					</div>
-					<div>@localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
-					<br>
-					<div id="map">
-					</div>
-					<script>
-						(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-						({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
-					<br>
-					<br>
-				}
-				else
-				{
-					<img src="/images/bb.jpeg" alt="Baierbrunn" style="width:600px;height:337px;">
-				}
-
-			</div>
-		</div>
 
 		@if (popUpForTooClose)
 		{
@@ -326,9 +327,11 @@
 		}
 		else
 		{
-			(user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
+			user.DefaultLatitude = await GetLatitude();
+			user.DefaultLongitude = await GetLongitude();
 		}
-		await UserManager.UpdateAsync(user);
+		// await UserManager.UpdateAsync(user);
+		await context.SaveChangesAsync();
 	}
 
 

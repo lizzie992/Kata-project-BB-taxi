@@ -43,35 +43,12 @@
 			}
 			else
 			{
-				<style>
-					#map {
-						height: 100%;
-					}
-
-					column {
-						float: left;
-						padding: 10px;
-					}
-
-					.left {
-						width: 25%;
-					}
-
-					.right {
-						width: 75%;
-					}
-				</style>
-
-
-
 
 				<PageTitle>@localizer["Create_a_new_ad"]</PageTitle>
 
 
-
-
 				<div class="row">
-					<div class="column-left">
+					<div class="col">
 						<div class="div-block">
 							<EditForm Model="@ad">
 								<DataAnnotationsValidator />
@@ -145,7 +122,7 @@
 										<div>@localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
 									</div>
 								}
-								
+
 								<div class="input-block">
 									<div>@localizer["Save_the_ad"]</div>
 									<button @onclick="CheckAd">@localizer["Save"]</button>
@@ -155,7 +132,7 @@
 
 
 					</div>
-					<div class="column-right">
+					<div class="col">
 						@if (showMap)
 						{
 							<div id="map">

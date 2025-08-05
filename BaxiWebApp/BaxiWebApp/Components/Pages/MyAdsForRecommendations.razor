@@ -16,112 +16,116 @@
 
 
 <AuthorizeView Context="authContext">
-    <Authorized>
+	<Authorized>
+		<header>
+			<link rel="stylesheet" href="styles.css" />
+		</header>
 
-        @if (FilteredAds.ToArray().Length == 0)
-        {
-            <div>@localizer["You_do_not_have_any_ads_you_can_create_ads_by_clicking_on_Create_Ad_in_the_menu"]</div>
-        }
-        else
-        {
-            <h3>@localizer["Below_you_can_select_one_of_your_ads_and_find_matches"]</h3>
+		<body>
 
-            <p>@localizer["Click_on_the_title_of_the_column_to_sort_it"]</p>
-            <div>
-                <QuickGrid Items="FilteredAds" @ref="grid">
-                    <PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => @localizer[@Ad.AdType.ToString()])" Sortable="true">
-                    </PropertyColumn>
-                    <PropertyColumn Title="@localizer["Ad_direction"]" Property="@(Ad => @localizer[@Ad.AdDirection.ToString()])" Sortable="true">
-                    </PropertyColumn>
-                    <PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
-                    </PropertyColumn>
-                    <PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime.ToString("g"))" Sortable="true" />
-                    <PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
-                    <PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
-                    <TemplateColumn Title="@localizer["Find_me_ads_that_would_match_this_ad"]" Context="Ad">
-                        @if (Ad.PickUpDateAndTime >= DateTime.Now)
-                        {
-                            <button class="btn btn-primary btn-sm mx-1" @onclick="() => recommendAds(Ad)">@localizer["Find_me_recommendations"]</button>
-                        }
-                        else
-                        {
-                            <p>@localizer["This_ad_is_in_the_past"]</p>
-                        }
-                    </TemplateColumn>
-                </QuickGrid>
+			@if (FilteredAds.ToArray().Length == 0)
+			{
+				<div style="text-align:center">@localizer["You_do_not_have_any_ads_you_can_create_ads_by_clicking_on_Create_Ad_in_the_menu"]</div>
+			}
+			else
+			{
+				<h3 style="text-align:center">@localizer["Below_you_can_select_one_of_your_ads_and_find_matches"]</h3>
 
-            </div>
+				<p style="text-align:center">@localizer["Click_on_the_title_of_the_column_to_sort_it"]</p>
 
-        }
-
-    </Authorized>
+				<div class="grid-wrapper">
+					<QuickGrid Items="FilteredAds" @ref="grid">
+						<PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => @localizer[@Ad.AdType.ToString()])" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title="@localizer["Ad_direction"]" Property="@(Ad => @localizer[@Ad.AdDirection.ToString()])" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime.ToString("g"))" Sortable="true" />
+						<PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
+						<PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+						<TemplateColumn Title="@localizer["Find_me_ads_that_would_match_this_ad"]" Context="Ad">
+							@if (Ad.PickUpDateAndTime >= DateTime.Now)
+							{
+								<button @onclick="() => recommendAds(Ad)">@localizer["Find_me_recommendations"]</button>
+							}
+							else
+							{
+								<p>@localizer["This_ad_is_in_the_past"]</p>
+							}
+						</TemplateColumn>
+					</QuickGrid>
+				</div>
+			}
+		</body>
+	</Authorized>
 </AuthorizeView>
 
 
 @code {
 
-    protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
-    public async void OnCultureChanged(object sender, CultureInfo culture)
-    {
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
 
-        await InvokeAsync(() =>
-        {
-            StateHasChanged();
-        });
-    }
-
-
-    protected override async Task OnAfterRenderAsync(bool firstrender)
-    {
-        if (firstrender)
-        {
-            DataService.loadCulture(user);
-        }
-    }
-
-    public User user;
-    /// <summary>
-    /// Identifies the user who is currently logged in
-    /// </summary>
-    /// <returns>User</returns>
-    public async Task identifyLoggedInUser()
-    {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-
-        var claims = authState.User;
-
-        user = await UserManager.GetUserAsync(claims);
-    }
+		await InvokeAsync(() =>
+		{
+			StateHasChanged();
+		});
+	}
 
 
-    public static List<Ad> AdList = new List<Ad>();
-    protected override void OnParametersSet()
-    {
-        identifyLoggedInUser();
-        AdList = context.Ads.ToList<Ad>();
-        base.OnParametersSet();
-    }
+	protected override async Task OnAfterRenderAsync(bool firstrender)
+	{
+		if (firstrender)
+		{
+			DataService.loadCulture(user);
+		}
+	}
 
-    QuickGrid<Ad>? grid;
-    IQueryable<Ad> FilteredAds
-    {
-        get
-        {
-            var result = context.Ads.ToList<Ad>().AsQueryable();
-            result = result.Where(Ad => Ad.AdOwner == user);
-            return result;
-        }
-    }
+	public User user;
+	/// <summary>
+	/// Identifies the user who is currently logged in
+	/// </summary>
+	/// <returns>User</returns>
+	public async Task identifyLoggedInUser()
+	{
+		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-    private int ID;
-    /// <summary>
-    /// Redirects the user to the RecommendedAds page with the correct ID number
-    /// </summary>
-    /// <param name="ad">Ad</param>
-    public void recommendAds(Ad ad)
-    {
-        ID = ad.ID;
-        NavigationManager.NavigateTo("RecommendedAds/" + ID);
-    }
+		var claims = authState.User;
+
+		user = await UserManager.GetUserAsync(claims);
+	}
+
+
+	public static List<Ad> AdList = new List<Ad>();
+	protected override void OnParametersSet()
+	{
+		identifyLoggedInUser();
+		AdList = context.Ads.ToList<Ad>();
+		base.OnParametersSet();
+	}
+
+	QuickGrid<Ad>? grid;
+	IQueryable<Ad> FilteredAds
+	{
+		get
+		{
+			var result = context.Ads.ToList<Ad>().AsQueryable();
+			result = result.Where(Ad => Ad.AdOwner == user);
+			return result;
+		}
+	}
+
+	private int ID;
+	/// <summary>
+	/// Redirects the user to the RecommendedAds page with the correct ID number
+	/// </summary>
+	/// <param name="ad">Ad</param>
+	public void recommendAds(Ad ad)
+	{
+		ID = ad.ID;
+		NavigationManager.NavigateTo("RecommendedAds/" + ID);
+	}
 }

@@ -103,8 +103,7 @@ h1 {
 }
 
 .row {
-    width: 100%;
-    padding: 16px;
+    /*width: 100%;*/
 }
 
 .column-left {
@@ -168,7 +167,7 @@ h1 {
     }
 
 .grid-wrapper {
-    padding: 10px;
+    /*padding: 10px;*/
     overflow: hidden; /* Important to clip the corners */
     border-radius: 12px; /*Rounded corners */
     background-color: #cce0f2;

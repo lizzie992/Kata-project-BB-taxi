@@ -31,78 +31,48 @@
 
 <AuthorizeView Context="authContext">
 	<Authorized>
-
-		<style>
-
-			#map {
-				height: 100%; 
-				width: 100%;
-				position: relative; 
-				overflow: hidden; 
-				min-height: 400px;
-			}
-
-			row {
-				/* margin-bottom: 20px; /* Optional spacing between rows */ */
-			}
-
-			column {
-				float: left;
-				padding: 10px;
-			}
-
-			.left {
-				width: 50%;
-			}
-
-			.right {
-				width: 50%;
-			}
-		</style>
+		<header>
+			<link rel="stylesheet" href="styles.css" />
+		</header>
 
 		<body>
 			@if (currentlyLoggedInUser == CurrentAd.AdOwner)
 			{
-				<h3>@localizer["Recommended_ads"]</h3>
+				<h3 style="text-align:center">@localizer["Recommended_ads"]</h3>
 
 				@if (recommendedAds.Count == 0)
 				{
-					<p>@localizer["Unfortunately_there_are_no_ad_recommendations_for_you_please_come_back_later_or_turn_on_the_notifications_so_we_can_inform_you_when_a_matching_ad_is_posted"]</p>
+					<p style="text-align:center">@localizer["Unfortunately_there_are_no_ad_recommendations_for_you_please_come_back_later_or_turn_on_the_notifications_so_we_can_inform_you_when_a_matching_ad_is_posted"]</p>
 				}
 				else
 				{
 					<div class="row">
-						<p>@localizer["Here_you_will_see_the_ads_that_are_matching_your_selected_ad"]</p>
-						<p>@localizer["Meaning_you_are_going_in_the_same_direction_at_the_same_time_and_your_pick_up_location_or_the_route_you_are_taking_is_close_enough_to_each_other"]</p>
-						<br>
-						<div class="column left">
-							<p>@localizer["Your_original_ad"]</p>
-							<br>
-							<div>@localizer["Ad_type"] @localizer[@CurrentAd.AdType.ToString()]</div>
-							<div>@localizer["Ad_direction"] @localizer[@CurrentAd.AdDirection.ToString()]</div>
-							<div>@localizer["From/to_this_address"] @CurrentAd.PickUpDropOffLocation</div>
-							<div>@localizer["Pick_up_date_and_time"] @CurrentAd.PickUpDateAndTime.ToString("g")</div>
-							<div>@localizer["Number_of_seats"] @CurrentAd.NumberOfSeats</div>
-							<div>@localizer["Specific_requests"] @CurrentAd.SpecificRequests</div>
-							<br>
-							<br>
-							<br>
-							<br>
-							<br>
-							<br>
-						</div>
-						<div class="column right">
-							<div>
-								<div id="map">
-								</div>
-								<script>
-									(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-									({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+						<p style="text-align:center">@localizer["Here_you_will_see_the_ads_that_are_matching_your_selected_ad"]</p>
+						<p style="text-align:center">@localizer["Meaning_you_are_going_in_the_same_direction_at_the_same_time_and_your_pick_up_location_or_the_route_you_are_taking_is_close_enough_to_each_other"]</p>
+						
+						<div class="col">
+							<div class="div-block">
+								<p>@localizer["Your_original_ad"]</p>
+								<div>@localizer["Ad_type"] @localizer[@CurrentAd.AdType.ToString()]</div>
+								<div>@localizer["Ad_direction"] @localizer[@CurrentAd.AdDirection.ToString()]</div>
+								<div>@localizer["From/to_this_address"] @CurrentAd.PickUpDropOffLocation</div>
+								<div>@localizer["Pick_up_date_and_time"] @CurrentAd.PickUpDateAndTime.ToString("g")</div>
+								<div>@localizer["Number_of_seats"] @CurrentAd.NumberOfSeats</div>
+								<div>@localizer["Specific_requests"] @CurrentAd.SpecificRequests</div>
 							</div>
 						</div>
+
+						<div class="col">
+							<div id="map">
+							</div>
+							<script>
+								(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+								({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+						</div>
 					</div>
-					<div>
-						<p>@localizer["And_the_possibly_matching_ads"]</p>
+
+					<div class="row">
+						<p style="text-align:center">@localizer["And_the_possibly_matching_ads"]</p>
 						<QuickGrid Items="adListForGrid" @ref="grid">
 							<PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => @localizer[@Ad.AdType.ToString()])" Sortable="true">
 							</PropertyColumn>
@@ -118,8 +88,6 @@
 							</TemplateColumn>
 						</QuickGrid>
 					</div>
-					<br>
-
 				}
 			}
 		</body>
@@ -221,7 +189,7 @@
 
 
 
-	
+
 
 
 	/// <summary>
