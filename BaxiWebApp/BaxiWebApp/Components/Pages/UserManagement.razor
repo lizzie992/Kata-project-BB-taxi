@@ -17,159 +17,177 @@
 
 
 
-<style>
 
-	.UserList {
-	display: grid;
-	grid-template-columns: 33% 33% 33%;
-	}
-
-	.User {
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-	max-width: 400px;
-	margin: auto;
-	text-align: center;
-	font-family: arial;
-	}
-
-	.User button {
-	border: none;
-	outline: 0;
-	padding: 12px;
-	color: white;
-	background-color: #000;
-	text-align: center;
-	cursor: pointer;
-	width: 100%;
-	font-size: 18px;
-	}
-
-</style>
 
 <AuthorizeView Roles="Admin" Context="authContext">
+	<header>
+		<link rel="stylesheet" href="styles.css" />
+	</header>
 
-	<h3>@localizer["User_management_page"]</h3>
+	<body>
+		<h3 style="text-align:center">@localizer["User_management_page"]</h3>
 
-	<p>@localizer["Show_me_the_following_users"]</p>
-	<br>
-	<p>@localizer["Role"]</p>
-	<InputSelect @bind-Value="_role" id="_role">
-		<option value="allRoles">@localizer["SelectAll"]</option>
-		@foreach (var value in context.Roles)
-		{
-			<option value="@value">@localizer[@value.ToString()]</option>
-		}
-	</InputSelect>
+		<div class="row">
 
-	<p>@localizer["Status"]</p>
-	<InputSelect @bind-Value="_status" id="_status">
-		<option value="All!">@localizer["SelectAll"]</option>
-		<option value="Active">@localizer["Active"]</option>
-		<option value="Inactive">@localizer["Inactive"]</option>
-	</InputSelect>
+			<p style="text-align:center">@localizer["Show_me_the_following_users"]</p>
 
-	<p>@localizer["Email_address_contains"]</p>
-	<div class="search-box">
-		<input type="search" autofocus @bind="_searchEmail" @bind:event="oninput" placeholder=@localizer["Email"] />
-	</div>
-	<br>
-	<p>@localizer["First_name"]</p>
-	<div class="search-box">
-		<input type="search" autofocus @bind="_searchFirstName" @bind:event="oninput" placeholder=@localizer["First_name"] />
-	</div>
-	<br>
-	<p>@localizer["Last_name"]</p>
-	<div class="search-box">
-		<input type="search" autofocus @bind="_searchLastName" @bind:event="oninput" placeholder=@localizer["Last_name"] />
-	</div>
-	<br>
-	<p>@localizer["Contact"]</p>
-	<div class="search-box">
-		<input type="search" autofocus @bind="_contact" @bind:event="oninput" placeholder=@localizer["Contact"] />
-	</div>
-	<p>@localizer["Department"]</p>
-	<InputSelect @bind-Value="_department" id="_department">
-		@foreach (var value in Enum.GetValues<Department>())
-		{
-			<option value="@value">@localizer[@value.ToString()]</option>
-		}
-	</InputSelect>
-	<br>
-	<p>@localizer["Preferred_language"]</p>
-	<InputSelect @bind-Value="_preferredLanguage" id="_preferredLanguage">
-		@foreach (var value in Enum.GetValues<PreferredLanguage>())
-		{
-			<option value="@value">@localizer[@value.ToString()]</option>
-		}
-	</InputSelect>
-	<p>@localizer["Rating"]</p>
-	<InputSelect @bind-Value="_rating" id="_rating">
-		<option value="-1">@localizer["SelectAll"]</option>
-		<option value="0">@localizer["No_rating_yet"]</option>
-		<option value="1">1</option>
-		<option value="2">2</option>
-		<option value="3">3</option>
-		<option value="4">4</option>
-		<option value="5">5</option>
-	</InputSelect>
-	<br>
-	<p>@localizer["Number_of_warnings"]</p>
-	<InputSelect @bind-Value="_numberOfWarnings" id="_numberOfWarnings">
-		<option value="-1">@localizer["SelectAll"]</option>
-		<option value="0">@localizer["No_warning_yet"]</option>
-		<option value="1">1</option>
-		<option value="2">2</option>
-	</InputSelect>
-	<br>
-	<br>
-	<p>@localizer["Click_on_the_title_of_the_column_to_sort_it"]</p>
-	<div>
-		<QuickGrid Items="UserList" @ref="grid">
-			<PropertyColumn Title=@localizer["Role"] Property="@(User => localizer[getRole(User).ToString()])" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title=@localizer["Status"] Property="@(User => localizer[getStatus(User)])" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title=@localizer["Email_address"] Property="@(User => User.Email)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title=@localizer["First_name"] Property="@(User => User.FirstName)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title=@localizer["Last_name"] Property="@(User => User.LastName)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title=@localizer["Department"] Property="@(User => localizer[@User.Department.ToString()])" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title=@localizer["Preferred_language"] Property="@(User => localizer[@User.PreferredLanguage.ToString()])" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title=@localizer["Rating"] Property="@(User => User.Rating)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title=@localizer["Number_of_warnings"] Property="@(User => User.NumberOfWarnings)" Sortable="true">
-			</PropertyColumn>
-			<PropertyColumn Title=@localizer["Contact"] Property="@(User => User.Contact)" Sortable="true">
-			</PropertyColumn>
-			<TemplateColumn Title=@localizer["Make_user_an_admin"] Context="User">
-				@if (User.isActive == true && UserManager.GetRolesAsync(User).Result.First() == "Regular")
-				{
-					<button @onclick="() => showPopUpForMakeUserAdmin(User)">@localizer["Give_this_user_admin_rights"]</button>
-				}
-			</TemplateColumn>
-			<TemplateColumn Title=@localizer["Warning"] Context="User">
-				@if (User.isActive == true)
-				{
-					<button @onclick="() => showPopUpForWarning(User)">@localizer["Give_a_warning"]</button>
-				}
-			</TemplateColumn>
-			<TemplateColumn Title=@localizer["Change_status"] Context="User">
-				@if (User.isActive == true)
-				{
-					<button @onclick="() => showPopUpForDeactivatingUser(User)">@localizer["Deactivate_user"]</button>
-				}
-				@if (User.isActive == false)
-				{
-					<button @onclick="() => showPopUpForReactivatingUser(User)">@localizer["Reactivate_user"]</button>
-				}
-			</TemplateColumn>
-		</QuickGrid>
-	</div
+			<div class="col">
 
+				<div class="div-block">
+
+					<div class="input-block">
+						<p>@localizer["Role"]</p>
+						<InputSelect class="input" @bind-Value="_role" id="_role">
+							<option value="allRoles">@localizer["SelectAll"]</option>
+							@foreach (var value in context.Roles)
+							{
+								<option value="@value">@localizer[@value.ToString()]</option>
+							}
+						</InputSelect>
+					</div>
+
+					<div class="input-block">
+						<p>@localizer["Status"]</p>
+						<InputSelect class="input" @bind-Value="_status" id="_status">
+							<option value="All!">@localizer["SelectAll"]</option>
+							<option value="Active">@localizer["Active"]</option>
+							<option value="Inactive">@localizer["Inactive"]</option>
+						</InputSelect>
+					</div>
+
+					<div class="input-block">
+						<p>@localizer["Email_address_contains"]</p>
+						<div class="search-box">
+							<input type="search" class="input" autofocus @bind="_searchEmail" @bind:event="oninput" placeholder=@localizer["Email"] />
+						</div>
+					</div>
+
+					<div class="input-block">
+						<p>@localizer["First_name"]</p>
+						<div class="search-box">
+							<input type="search" class="input" autofocus @bind="_searchFirstName" @bind:event="oninput" placeholder=@localizer["First_name"] />
+						</div>
+					</div>
+
+
+					<div class="input-block">
+						<p>@localizer["Last_name"]</p>
+						<div class="search-box">
+							<input type="search" class="input" autofocus @bind="_searchLastName" @bind:event="oninput" placeholder=@localizer["Last_name"] />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col">
+				<div class="div-block">
+
+					<div class="input-block">
+						<p>@localizer["Contact"]</p>
+						<div class="search-box">
+							<input type="search" class="input" autofocus @bind="_contact" @bind:event="oninput" placeholder=@localizer["Contact"] />
+						</div>
+					</div>
+
+					<div class="input-block">
+						<p>@localizer["Department"]</p>
+						<InputSelect class="input" @bind-Value="_department" id="_department">
+							@foreach (var value in Enum.GetValues<Department>())
+							{
+								<option value="@value">@localizer[@value.ToString()]</option>
+							}
+						</InputSelect>
+					</div>
+
+					<div class="input-block">
+						<p>@localizer["Preferred_language"]</p>
+						<InputSelect class="input" @bind-Value="_preferredLanguage" id="_preferredLanguage">
+							@foreach (var value in Enum.GetValues<PreferredLanguage>())
+							{
+								<option value="@value">@localizer[@value.ToString()]</option>
+							}
+						</InputSelect>
+					</div>
+
+					<div class="input-block">
+						<p>@localizer["Rating"]</p>
+						<InputSelect class="input" @bind-Value="_rating" id="_rating">
+							<option value="-1">@localizer["SelectAll"]</option>
+							<option value="0">@localizer["No_rating_yet"]</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+						</InputSelect>
+					</div>
+
+					<div class="input-block">
+						<p>@localizer["Number_of_warnings"]</p>
+						<InputSelect class="input" @bind-Value="_numberOfWarnings" id="_numberOfWarnings">
+							<option value="-1">@localizer["SelectAll"]</option>
+							<option value="0">@localizer["No_warning_yet"]</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+						</InputSelect>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col">
+				<p style="text-align:center">@localizer["Click_on_the_title_of_the_column_to_sort_it"]</p>
+				<div class="div-block">
+					<QuickGrid Items="UserList" @ref="grid">
+						<PropertyColumn Title=@localizer["Role"] Property="@(User => localizer[getRole(User).ToString()])" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title=@localizer["Status"] Property="@(User => localizer[getStatus(User)])" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title=@localizer["Email_address"] Property="@(User => User.Email)" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title=@localizer["First_name"] Property="@(User => User.FirstName)" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title=@localizer["Last_name"] Property="@(User => User.LastName)" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title=@localizer["Department"] Property="@(User => localizer[@User.Department.ToString()])" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title=@localizer["Preferred_language"] Property="@(User => localizer[@User.PreferredLanguage.ToString()])" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title=@localizer["Rating"] Property="@(User => User.Rating)" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title=@localizer["Number_of_warnings"] Property="@(User => User.NumberOfWarnings)" Sortable="true">
+						</PropertyColumn>
+						<PropertyColumn Title=@localizer["Contact"] Property="@(User => User.Contact)" Sortable="true">
+						</PropertyColumn>
+						<TemplateColumn Title=@localizer["Make_user_an_admin"] Context="User">
+							@if (User.isActive == true && UserManager.GetRolesAsync(User).Result.First() == "Regular")
+							{
+								<button @onclick="() => showPopUpForMakeUserAdmin(User)">@localizer["Give_this_user_admin_rights"]</button>
+							}
+						</TemplateColumn>
+						<TemplateColumn Title=@localizer["Warning"] Context="User">
+							@if (User.isActive == true)
+							{
+								<button @onclick="() => showPopUpForWarning(User)">@localizer["Give_a_warning"]</button>
+							}
+						</TemplateColumn>
+						<TemplateColumn Title=@localizer["Change_status"] Context="User">
+							@if (User.isActive == true)
+							{
+								<button @onclick="() => showPopUpForDeactivatingUser(User)">@localizer["Deactivate_user"]</button>
+							}
+							@if (User.isActive == false)
+							{
+								<button @onclick="() => showPopUpForReactivatingUser(User)">@localizer["Reactivate_user"]</button>
+							}
+						</TemplateColumn>
+					</QuickGrid>
+				</div>
+			</div>
+		</div>
+	</body>
 
 	@if (popUpForWarning)
 	{
@@ -255,8 +273,6 @@
 
 	}
 
-
-
 </AuthorizeView>
 
 
@@ -299,7 +315,7 @@
 		identifyLoggedInUser();
 		base.OnParametersSet();
 	}
-	
+
 	protected override async Task OnAfterRenderAsync(bool firstrender)
 	{
 		if (firstrender)
@@ -474,7 +490,7 @@
 		popUpForWarning = false;
 	}
 	/// <summary>
-	/// Opens pop up window to show confirmation message about giving a warning to a user 
+	/// Opens pop up window to show confirmation message about giving a warning to a user
 	/// </summary>
 	/// <param name="user">User</param>
 	public void showPopUpForWarning(User user)
