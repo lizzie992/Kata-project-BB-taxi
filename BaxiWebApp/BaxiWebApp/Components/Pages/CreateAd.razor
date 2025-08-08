@@ -48,7 +48,7 @@
 
 
 				<div class="row">
-					<div class="col">
+					<div class="col-12 col-md-6">
 						<div class="div-block">
 							<EditForm Model="@ad">
 								<DataAnnotationsValidator />
@@ -118,8 +118,7 @@
 								@if (showMap)
 								{
 									<div class="input-block">
-										<div>@localizer["On_the_map_you_can_specify_the_exact_pick_up_drop_off_location"]</div>
-										<div>@localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
+										<div>@localizer["On_the_map_you_can_specify_the_exact_pick_up_drop_off_location"] @localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
 									</div>
 								}
 
@@ -132,7 +131,7 @@
 
 
 					</div>
-					<div class="col">
+					<div class="col-12 col-md-6">
 						@if (showMap)
 						{
 							<div id="map">

@@ -33,89 +33,87 @@
 				@if (ad != null)
 				{
 					<div class="row">
-						<div class="col">
-							<div class="div-block">
-								<EditForm Model="@ad">
-
-									<div class="input-block">
-										<p>@localizer["I_am_a"]</p>
-										<InputSelect class="input" @bind-Value="ad.AdType" id="adType">
-											<option value="@AdType.SelectAll">@localizer["Please_select"]</option>
-											@foreach (var value in Enum.GetValues<AdType>())
+						<div class="col-12 col-md-6">
+							@* <div class="div-block"> *@
+							<EditForm Model="@ad" class="div-block">
+								<div class="input-block">
+									<p>@localizer["I_am_a"]</p>
+									<InputSelect class="input" @bind-Value="ad.AdType" id="adType">
+										<option value="@AdType.SelectAll">@localizer["Please_select"]</option>
+										@foreach (var value in Enum.GetValues<AdType>())
+										{
+											if (value == AdType.SelectAll)
 											{
-												if (value == AdType.SelectAll)
-												{
-													continue;
-												}
-												<option value="@value">@localizer[value.ToString()]</option>
+												continue;
 											}
-										</InputSelect>
-									</div>
+											<option value="@value">@localizer[value.ToString()]</option>
+										}
+									</InputSelect>
+								</div>
 
-									<div class="input-block">
-										<p>@localizer["Direction"] </p>
-										<InputSelect class="input" @bind-Value="ad.AdDirection" id="adDirection">
-											@foreach (var value in Enum.GetValues<AdDirection>())
+								<div class="input-block">
+									<p>@localizer["Direction"] </p>
+									<InputSelect class="input" @bind-Value="ad.AdDirection" id="adDirection">
+										@foreach (var value in Enum.GetValues<AdDirection>())
+										{
+											if (value == AdDirection.SelectAll)
 											{
-												if (value == AdDirection.SelectAll)
-												{
-													continue;
-												}
-												<option value="@value">@localizer[value.ToString()]</option>
+												continue;
 											}
-										</InputSelect>
-									</div>
+											<option value="@value">@localizer[value.ToString()]</option>
+										}
+									</InputSelect>
+								</div>
 
+								<div class="input-block">
+									<p>@localizer["Pick_up_date_and_time"] </p>
+									<InputDate Type="InputDateType.DateTimeLocal" class="input"
+											   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
+									</InputDate>
+								</div>
+
+								<div class="input-block">
+									<p>@localizer["Number_of_seats"]</p>
+									<InputSelect class="input" @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+									</InputSelect>
+									<ValidationMessage For=@(() => ad.NumberOfSeats) />
+								</div>
+
+								<div class="input-block">
+									<p>@localizer["Specific_requests"] </p>
+									<InputText class="input" @bind-Value="ad.SpecificRequests"></InputText><br>
+								</div>
+
+								<div class="input-block">
+									<p>@localizer["From/to_this_address"]</p>
+									<input class="input" @bind="ad.PickUpDropOffLocation" id="PickUpDropOffLocation"
+										   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
+									<ValidationMessage For="() => ad.PickUpDropOffLocation" />
+								</div>
+
+								@if (showMap)
+								{
 									<div class="input-block">
-										<p>@localizer["Pick_up_date_and_time"] </p>
-										<InputDate Type="InputDateType.DateTimeLocal" class="input"
-												   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
-										</InputDate>
+										<div>@localizer["On_the_map_you_can_specify_the_exact_pick_up_drop_off_location"] @localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
 									</div>
+								}
 
-									<div class="input-block">
-										<p>@localizer["Number_of_seats"]</p>
-										<InputSelect class="input" @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-											<option value="5">5</option>
-											<option value="6">6</option>
-										</InputSelect>
-										<ValidationMessage For=@(() => ad.NumberOfSeats) />
-									</div>
+								<div class="input-block">
+									<p>@localizer["Save_the_ad"]</p>
+									<button @onclick="CheckAd">@localizer["Save"]</button>
+								</div>
 
-									<div class="input-block">
-										<p>@localizer["Specific_requests"] </p>
-										<InputText class="input" @bind-Value="ad.SpecificRequests"></InputText><br>
-									</div>
-
-									<div class="input-block">
-										<p>@localizer["From/to_this_address"]</p>
-										<input class="input" @bind="ad.PickUpDropOffLocation" id="PickUpDropOffLocation"
-											   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
-										<ValidationMessage For="() => ad.PickUpDropOffLocation" />
-									</div>
-
-									@if (showMap)
-									{
-										<div class="input-block">
-											<div>@localizer["On_the_map_you_can_specify_the_exact_pick_up_drop_off_location"]</div>
-											<div>@localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
-										</div>
-									}
-
-									<div class="input-block">
-										<p>@localizer["Save_the_ad"]</p>
-										<button @onclick="CheckAd">@localizer["Save"]</button>
-									</div>
-
-								</EditForm>
-							</div>
+							</EditForm>
+							@* </div> *@
 						</div>
 
-						<div class="col">
+						<div class="col-12 col-md-6">
 							@if (showMap)
 							{
 								<div id="map">

@@ -46,47 +46,51 @@
 				}
 				else
 				{
-					<div class="row">
-						<p style="text-align:center">@localizer["Here_you_will_see_the_ads_that_are_matching_your_selected_ad"]</p>
-						<p style="text-align:center">@localizer["Meaning_you_are_going_in_the_same_direction_at_the_same_time_and_your_pick_up_location_or_the_route_you_are_taking_is_close_enough_to_each_other"]</p>
-						
-						<div class="col">
-							<div class="div-block">
-								<p>@localizer["Your_original_ad"]</p>
-								<div>@localizer["Ad_type"] @localizer[@CurrentAd.AdType.ToString()]</div>
-								<div>@localizer["Ad_direction"] @localizer[@CurrentAd.AdDirection.ToString()]</div>
-								<div>@localizer["From/to_this_address"] @CurrentAd.PickUpDropOffLocation</div>
-								<div>@localizer["Pick_up_date_and_time"] @CurrentAd.PickUpDateAndTime.ToString("g")</div>
-								<div>@localizer["Number_of_seats"] @CurrentAd.NumberOfSeats</div>
-								<div>@localizer["Specific_requests"] @CurrentAd.SpecificRequests</div>
+					<p style="text-align:center">@localizer["Here_you_will_see_the_ads_that_are_matching_your_selected_ad"]</p>
+					<p style="text-align:center">@localizer["Meaning_you_are_going_in_the_same_direction_at_the_same_time_and_your_pick_up_location_or_the_route_you_are_taking_is_close_enough_to_each_other"]</p>
+					<div class="container text-center">
+						<div class="row">
+							<div class="col-12 col-md-6">
+								<div class="div-block">
+									<p>@localizer["Your_original_ad"]</p>
+									<div>@localizer["Ad_type"] @localizer[@CurrentAd.AdType.ToString()]</div>
+									<div>@localizer["Ad_direction"] @localizer[@CurrentAd.AdDirection.ToString()]</div>
+									<div>@localizer["From/to_this_address"] @CurrentAd.PickUpDropOffLocation</div>
+									<div>@localizer["Pick_up_date_and_time"] @CurrentAd.PickUpDateAndTime.ToString("g")</div>
+									<div>@localizer["Number_of_seats"] @CurrentAd.NumberOfSeats</div>
+									<div>@localizer["Specific_requests"] @CurrentAd.SpecificRequests</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div id="map">
+								</div>
+								<script>
+									(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+									({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
 							</div>
 						</div>
 
-						<div class="col">
-							<div id="map">
+						<div class="row">
+							<div class="col">
+								<p style="text-align:center">@localizer["And_the_possibly_matching_ads"]</p>
+								<div class="grid-wrapper">
+									<QuickGrid Items="adListForGrid" @ref="grid">
+										<PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => @localizer[@Ad.AdType.ToString()])" Sortable="true">
+										</PropertyColumn>
+										<PropertyColumn Title="@localizer["Ad_direction"]" Property="@(Ad => @localizer[@Ad.AdDirection.ToString()])" Sortable="true">
+										</PropertyColumn>
+										<PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
+										</PropertyColumn>
+										<PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime.ToString("g"))" Sortable="true" />
+										<PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
+										<PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+										<TemplateColumn Title="@localizer["Show_me_the_ad"]" Context="Ad">
+											<button @onclick="() => showAd(Ad)">@localizer["Show_me_the_ad"]</button>
+										</TemplateColumn>
+									</QuickGrid>
+								</div>
 							</div>
-							<script>
-								(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-								({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
 						</div>
-					</div>
-
-					<div class="row">
-						<p style="text-align:center">@localizer["And_the_possibly_matching_ads"]</p>
-						<QuickGrid Items="adListForGrid" @ref="grid">
-							<PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => @localizer[@Ad.AdType.ToString()])" Sortable="true">
-							</PropertyColumn>
-							<PropertyColumn Title="@localizer["Ad_direction"]" Property="@(Ad => @localizer[@Ad.AdDirection.ToString()])" Sortable="true">
-							</PropertyColumn>
-							<PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
-							</PropertyColumn>
-							<PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime.ToString("g"))" Sortable="true" />
-							<PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
-							<PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
-							<TemplateColumn Title="@localizer["Show_me_the_ad"]" Context="Ad">
-								<button @onclick="() => showAd(Ad)">@localizer["Show_me_the_ad"]</button>
-							</TemplateColumn>
-						</QuickGrid>
 					</div>
 				}
 			}

@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Ad_direction" xml:space="preserve">
-    <value>Anzeige Richtung:</value>
+    <value>Richtung:</value>
   </data>
   <data name="Ad_type" xml:space="preserve">
-    <value>Anzeigentyp:</value>
+    <value>Typ:</value>
   </data>
   <data name="Here_you_can_see_all_of_the_ads" xml:space="preserve">
     <value>Hier sehen Sie alle Anzeigen:</value>
@@ -148,7 +148,7 @@
     <value>Passagier</value>
   </data>
   <data name="Pick_up_date_and_time" xml:space="preserve">
-    <value>Abholdatum und -zeit:</value>
+    <value>Datum:</value>
   </data>
   <data name="From/to_this_address" xml:space="preserve">
     <value>Adresse:</value>
@@ -166,7 +166,7 @@
     <value>Zeig mir die Anzeige</value>
   </data>
   <data name="Specific_requests" xml:space="preserve">
-    <value>Besondere Wünsche:</value>
+    <value>Wünsche:</value>
   </data>
   <data name="Please_write_here_the_reason_for_deleting_this_ad" xml:space="preserve">
     <value>Bitte geben Sie hier den Grund für das Löschen dieser Anzeige an:</value>
@@ -193,7 +193,7 @@
     <value>Das könnte für Sie interessant sein:</value>
   </data>
   <data name="Ad_owner" xml:space="preserve">
-    <value>Anzeigeninhaber:</value>
+    <value>Inhaber:</value>
   </data>
   <data name="Show_me_all_recommendations" xml:space="preserve">
     <value>Zeige mir alle Empfehlungen!</value>

@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Ad_direction" xml:space="preserve">
-    <value>Ad Direction:</value>
+    <value>Direction:</value>
   </data>
   <data name="Ad_type" xml:space="preserve">
-    <value>Ad type:</value>
+    <value>Type:</value>
   </data>
   <data name="Here_you_can_see_all_of_the_ads" xml:space="preserve">
     <value>Here you can see all of the ads:</value>
@@ -148,7 +148,7 @@
     <value>Passenger</value>
   </data>
   <data name="Pick_up_date_and_time" xml:space="preserve">
-    <value>Pick up date and time:</value>
+    <value>Date:</value>
   </data>
   <data name="From/to_this_address" xml:space="preserve">
     <value>Address:</value>
@@ -166,7 +166,7 @@
     <value>Show me the ad</value>
   </data>
   <data name="Specific_requests" xml:space="preserve">
-    <value>Specific requests:</value>
+    <value>Requests:</value>
   </data>
   <data name="Please_write_here_the_reason_for_deleting_this_ad" xml:space="preserve">
     <value>Please write here the reason for deleting this ad:</value>
@@ -193,7 +193,7 @@
     <value>These might be interesting for you: </value>
   </data>
   <data name="Ad_owner" xml:space="preserve">
-    <value>Ad owner:</value>
+    <value>Owner:</value>
   </data>
   <data name="Show_me_all_recommendations" xml:space="preserve">
     <value>Show me all recommendations!</value>
