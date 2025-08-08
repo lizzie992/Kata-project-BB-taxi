@@ -142,7 +142,7 @@
     <value>Welcome to Baierbrunn</value>
   </data>
   <data name="Number_of_seats" xml:space="preserve">
-    <value>Number of seats:</value>
+    <value>Seats:</value>
   </data>
   <data name="Passenger" xml:space="preserve">
     <value>Passenger</value>
@@ -151,13 +151,13 @@
     <value>Pick up date and time:</value>
   </data>
   <data name="From/to_this_address" xml:space="preserve">
-    <value>From/to this address:</value>
+    <value>Address:</value>
   </data>
   <data name="I_am_looking_for_a" xml:space="preserve">
-    <value>I am looking for a:</value>
+    <value>Looking for a:</value>
   </data>
   <data name="Between_the_following_date_and_time" xml:space="preserve">
-    <value>Between the following date and time:</value>
+    <value>Date:</value>
   </data>
   <data name="Direction" xml:space="preserve">
     <value>Direction:</value>

@@ -34,16 +34,14 @@
 
 	<div class="welcome" style="text-align:center">@localizer["Welcome_text"]</div>
 
-	<p align="center">
+	<div align="center" class="map-frame">
 		<iframe class="framed-map"
-				width="600"
-				height="450"
 				loading="lazy"
 				allowfullscreen
 				src="https://www.google.com/maps/embed/v1/place?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
     &q=Givaudan,Baierbrunn+Germany&zoom=9">
 		</iframe>
-	</p>
+	</div>
 </body>
 
 @if (currentlyLoggedInUser != null && recommendedAds.Count != 0 && showPopUpRecommendedAds == true)

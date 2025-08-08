@@ -1,4 +1,5 @@
-﻿img {
+﻿
+img {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -22,9 +23,47 @@ h1 {
     margin: 25px;
 }
 
+.map-frame {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding-bottom: 56.25%; /*16:9 Aspect Ratio (height / width * 100) */
+    height: 0;
+    overflow: hidden;
+}
+
 .framed-map {
     border-radius: 12px; /* Rounded corners */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
+
+
+@media (min-width: 641px) {
+    .map-frame {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        padding-bottom: 56.25%; /*16:9 Aspect Ratio (height / width * 100) */
+        height: 0;
+        overflow: hidden;
+    }
+
+    .framed-map {
+        border-radius: 12px; /* Rounded corners */
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+
+
 
 .modal-dialog {
     border: 1px ridge #0066B2;
@@ -98,20 +137,17 @@ h1 {
 }
 
 .container {
-
     margin: 0;
 }
 
+
 .row {
-    /*width: 100%;*/
+    padding: 10px;
 }
 
-.column-left {
-    width: 50%;
-}
 
-.column-right {
-    width: 50%;
+.col {
+    padding: 10px;
 }
 
 #map {
@@ -128,18 +164,23 @@ h1 {
 .input {
     color: #0066B2;
     border-radius: 6px; /* Rounded corners */
+    float: right;
 }
 
+
+
+
+
 .input-block {
+    /*width: 100%;*/
+    /*border-radius: 6px;*/ /* Rounded corners */
     display: flex;
-    border-radius: 6px; /* Rounded corners */
-    flex-direction: column;
-    align-items: center; /* horizontal center in column layout */
-    justify-content: center; /* vertical center */
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem; /* optional: adds space between the items */
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 2px;
-    text-align: center;
 }
 
 .div-block {
@@ -151,8 +192,8 @@ h1 {
     display: flex;
     gap: 10px; /**/ /* Adds spacing between all items */
     flex-direction: column;
-    align-items: center; /* horizontal center in column layout */
-    justify-content: center; /* vertical center */
+    justify-content: flex-start; /* 👈 Aligns items to the left horizontally */
+    align-items: flex-start; /* 👈 Aligns items to the center vertically */
 }
 
     .div-block button {
@@ -165,6 +206,49 @@ h1 {
         overflow-wrap: break-word;
         vertical-align: top; /* optional: align top for multi-line */
     }
+
+
+@media (max-width: 575.98px) { /*phone size*/
+    .input-block {
+        /*width: 100%;*/
+        /*border-radius: 6px;*/ /* Rounded corners */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem; /* optional: adds space between the items */
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 2px;
+    }
+
+    .div-block {
+        box-sizing: border-box;
+        background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 20px;
+        display: flex;
+        gap: 10px; /**/ /* Adds spacing between all items */
+        flex-direction: column;
+        align-items: center; /* horizontal center in column layout */
+        justify-content: center; /* vertical center */
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+        .div-block button {
+            border-radius: 6px; /* Rounded corners */
+            background-color: whitesmoke;
+            color: #0066B2;
+            border-style: none;
+            white-space: normal; /* allow wrapping */
+            word-wrap: break-word; /* break long words if needed */
+            overflow-wrap: break-word;
+            vertical-align: top; /* optional: align top for multi-line */
+        }
+}
+
+
 
 .grid-wrapper {
     /*padding: 10px;*/

@@ -142,7 +142,7 @@
     <value>Willkommen in Baierbrunn</value>
   </data>
   <data name="Number_of_seats" xml:space="preserve">
-    <value>Anzahl der Plätze:</value>
+    <value>Plätze:</value>
   </data>
   <data name="Passenger" xml:space="preserve">
     <value>Passagier</value>
@@ -151,13 +151,13 @@
     <value>Abholdatum und -zeit:</value>
   </data>
   <data name="From/to_this_address" xml:space="preserve">
-    <value>Von/zu dieser Adresse:</value>
+    <value>Adresse:</value>
   </data>
   <data name="I_am_looking_for_a" xml:space="preserve">
-    <value>Ich suche nach einem/einer:</value>
+    <value>Ich suche:</value>
   </data>
   <data name="Between_the_following_date_and_time" xml:space="preserve">
-    <value>Zwischen folgendem Datum und Uhrzeit:</value>
+    <value>Datum:</value>
   </data>
   <data name="Direction" xml:space="preserve">
     <value>Richtung:</value>
