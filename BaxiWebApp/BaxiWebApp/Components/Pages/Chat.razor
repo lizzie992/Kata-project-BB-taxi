@@ -43,8 +43,9 @@
 							<div class="convo-preview">
 								@if (C.MostRecentMessage is not null)
 								{
-									string title = $"{C.MostRecentMessage.messageText.ToString()}, {C.MostRecentMessage.timeStamp.ToString("g")}";
-									<p>@title</p>
+									<div class="convo-other-user">@DataService.showUserNameWithStatus(getOtherUser(C))</div>
+									<div class="convo-last-message">@C.MostRecentMessage.messageText.ToString()</div>
+									<div class="convo-timestamp">@C.MostRecentMessage.timeStamp.ToString("g")</div>
 								}
 								else
 								{
@@ -68,7 +69,7 @@
 					@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
 					{
 						Ad ad = GetAd(CurrentConversation);
-						<div class="actions-for-chat">
+						@* <div class="actions-for-chat">
 							<table>
 								<tr>
 									<th style="text-align: left">@localizer["Ad_owner"]</th>
@@ -102,7 +103,7 @@
 							<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
 							<button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button>
 							<button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button>
-						</div>
+						</div> *@
 						<div class="message-block">
 							@foreach (Message M in CurrentConversation.messages)
 							{
@@ -125,21 +126,21 @@
 									</div>
 								}
 							}
+							
 						</div>
-						@if (currentlyLoggedInUser.isActive == true)
-						{
-							<div class="chat-send">
-								<InputText class="chat-input" @bind-Value="TextMessage"></InputText>
-								<button class="chat-button" @onclick="SendMessage">@localizer["Send"]</button>
-							</div>
-						}
 					}
 					else
 					{
 						<p>@localizer["Looks_like_you_are_lost_please_navigate_back_to_the_chat_using_the_navigation_menu_on_the_left"]</p>
 					}
+					@if (currentlyLoggedInUser.isActive == true)
+					{
+						<div class="chat-send">
+							<InputText class="chat-input" @bind-Value="TextMessage"></InputText>
+							<button class="chat-button" @onclick="SendMessage">@localizer["Send"]</button>
+						</div>
+					}
 				}
-
 			</div>
 		</div>
 	</div>
@@ -244,6 +245,8 @@
 		NavigationManager.NavigateTo("ShowAd/" + id);
 	}
 
+
+
 	protected override void OnParametersSet()
 	{
 		IdentifyLoggedInUser().GetAwaiter().GetResult();
@@ -291,7 +294,24 @@
 
 	}
 
-
+	/// <summary>
+	/// defines who is the other participant in the conversation
+	/// </summary>
+	/// <param name="C">Conversation</param>
+	/// <returns>User</returns>
+	public User getOtherUser(Conversation C)
+	{
+		User otherUser = new User();
+		if (currentlyLoggedInUser == C.contactingUser)
+		{
+			otherUser = C.adOwnerUser;
+		}
+		if (currentlyLoggedInUser == C.adOwnerUser)
+		{
+			otherUser = C.contactingUser;
+		}
+		return otherUser;
+	}
 
 
 	/// <summary>
