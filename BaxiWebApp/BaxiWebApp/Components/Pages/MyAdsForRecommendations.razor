@@ -30,20 +30,17 @@
 			else
 			{
 				<h3 style="text-align:center">@localizer["Below_you_can_select_one_of_your_ads_and_find_matches"]</h3>
-
-				<p style="text-align:center">@localizer["Click_on_the_title_of_the_column_to_sort_it"]</p>
-
 				<div class="grid-wrapper">
 					<QuickGrid Items="FilteredAds" @ref="grid">
-						<PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => @localizer[@Ad.AdType.ToString()])" Sortable="true">
+						<PropertyColumn Title="@localizer["Ad_type"]" Property="@(Ad => @localizer[@Ad.AdType.ToString()])" >
 						</PropertyColumn>
-						<PropertyColumn Title="@localizer["Ad_direction"]" Property="@(Ad => @localizer[@Ad.AdDirection.ToString()])" Sortable="true">
+						<PropertyColumn Title="@localizer["Ad_direction"]" Property="@(Ad => @localizer[@Ad.AdDirection.ToString()])" >
 						</PropertyColumn>
-						<PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)" Sortable="true">
+						<PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)" >
 						</PropertyColumn>
-						<PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime.ToString("g"))" Sortable="true" />
-						<PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)" Sortable="true" />
-						<PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)" Sortable="true" />
+						<PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime.ToString("g"))"  />
+						<PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)"  />
+						<PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)"  />
 						<TemplateColumn Title="@localizer["Find_me_ads_that_would_match_this_ad"]" Context="Ad">
 							@if (Ad.PickUpDateAndTime >= DateTime.Now)
 							{

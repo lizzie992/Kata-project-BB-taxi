@@ -97,7 +97,7 @@
 						</InputSelect>
 					</div>
 
-					<div class="input-block">
+					@* <div class="input-block">
 						<p>@localizer["Rating"]</p>
 						<InputSelect class="input" @bind-Value="_rating" id="_rating">
 							<option value="-1">@localizer["SelectAll"]</option>
@@ -108,7 +108,7 @@
 							<option value="4">4</option>
 							<option value="5">5</option>
 						</InputSelect>
-					</div>
+					</div> *@
 
 					<div class="input-block">
 						<p>@localizer["Number_of_warnings"]</p>
@@ -126,28 +126,27 @@
 		<div class="row">
 			<div class="col">
 				<div class="grid-wrapper">
-					<p style="text-align:center">@localizer["Click_on_the_title_of_the_column_to_sort_it"]</p>
 					<div class="div-block">
 						<QuickGrid Items="UserList" @ref="grid">
-							<PropertyColumn Title=@localizer["Role"] Property="@(User => localizer[getRole(User).ToString()])" Sortable="true">
+							<PropertyColumn Title=@localizer["Role"] Property="@(User => localizer[getRole(User).ToString()])">
 							</PropertyColumn>
-							<PropertyColumn Title=@localizer["Status"] Property="@(User => localizer[getStatus(User)])" Sortable="true">
+							<PropertyColumn Title=@localizer["Status"] Property="@(User => localizer[getStatus(User)])">
 							</PropertyColumn>
-							<PropertyColumn Title=@localizer["Email_address"] Property="@(User => User.Email)" Sortable="true">
+							<PropertyColumn Title=@localizer["Email_address"] Property="@(User => User.Email)">
 							</PropertyColumn>
-							<PropertyColumn Title=@localizer["First_name"] Property="@(User => User.FirstName)" Sortable="true">
+							<PropertyColumn Title=@localizer["First_name"] Property="@(User => User.FirstName)">
 							</PropertyColumn>
-							<PropertyColumn Title=@localizer["Last_name"] Property="@(User => User.LastName)" Sortable="true">
+							<PropertyColumn Title=@localizer["Last_name"] Property="@(User => User.LastName)">
 							</PropertyColumn>
-							<PropertyColumn Title=@localizer["Department"] Property="@(User => localizer[@User.Department.ToString()])" Sortable="true">
+							<PropertyColumn Title=@localizer["Department"] Property="@(User => localizer[@User.Department.ToString()])">
 							</PropertyColumn>
-							<PropertyColumn Title=@localizer["Preferred_language"] Property="@(User => localizer[@User.PreferredLanguage.ToString()])" Sortable="true">
+							<PropertyColumn Title=@localizer["Preferred_language"] Property="@(User => localizer[@User.PreferredLanguage.ToString()])">
 							</PropertyColumn>
-							<PropertyColumn Title=@localizer["Rating"] Property="@(User => User.Rating)" Sortable="true">
+							@* <PropertyColumn Title=@localizer["Rating"] Property="@(User => User.Rating)">
+							</PropertyColumn> *@
+							<PropertyColumn Title=@localizer["Number_of_warnings"] Property="@(User => User.NumberOfWarnings)">
 							</PropertyColumn>
-							<PropertyColumn Title=@localizer["Number_of_warnings"] Property="@(User => User.NumberOfWarnings)" Sortable="true">
-							</PropertyColumn>
-							<PropertyColumn Title=@localizer["Contact"] Property="@(User => User.Contact)" Sortable="true">
+							<PropertyColumn Title=@localizer["Contact"] Property="@(User => User.Contact)">
 							</PropertyColumn>
 							<TemplateColumn Title=@localizer["Make_user_an_admin"] Context="User">
 								@if (User.isActive == true && UserManager.GetRolesAsync(User).Result.First() == "Regular")
@@ -207,10 +206,10 @@
 									<th style="text-align: left">@localizer["Preferred_language"]</th>
 									<th style="text-align: right">@localizer[@user.PreferredLanguage.ToString()]</th>
 								</tr>
-								<tr>
+@* 								<tr>
 									<th style="text-align: left">@localizer["Rating"]</th>
 									<th style="text-align: right">@user.Rating</th>
-								</tr>
+								</tr> *@
 								<tr>
 									<th style="text-align: left">@localizer["Number_of_warnings"]</th>
 									<th style="text-align: right">@user.NumberOfWarnings</th>

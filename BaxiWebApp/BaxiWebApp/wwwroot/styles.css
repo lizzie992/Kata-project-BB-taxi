@@ -321,10 +321,22 @@ h1 {
     color: #0066B2;
     border-collapse: separate; /* Allows rounding */
     border-spacing: 0; /* Removes inner gaps */
-    table-layout: fixed; /* Force columns to respect width */
+    table-layout: fixed;  /*Force columns to respect width */
     align-items: center; /* vertically center */
     justify-content: center; /* horizontally center */
 }
+
+    .quickgrid thead {
+        /*padding: 1px;*/
+        color: #0066B2;
+        white-space: normal; /* allow wrapping */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: break-word;
+        vertical-align: top; /*optional: align top for multi-line */
+        align-items: center; /* vertically center */
+        justify-content: center; 
+        text-wrap-style: pretty;
+    }
 
     .quickgrid th,
     .quickgrid td {
@@ -333,9 +345,9 @@ h1 {
         white-space: normal; /* allow wrapping */
         word-wrap: break-word; /* break long words if needed */
         overflow-wrap: break-word;
-        /*vertical-align: top;*/ /* optional: align top for multi-line */
+        vertical-align: top; /* optional: align top for multi-line */
         align-items: center; /* vertically center */
-        justify-content: center; /* horizontally center */
+        justify-content: left; 
     }
 
     .quickgrid button {
