@@ -361,6 +361,8 @@ h1 {
     justify-content: center;
     align-items: center;
     padding: 10px;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 .convo-preview {
@@ -402,18 +404,30 @@ h1 {
     background-color: #0066B2;
     color: whitesmoke;
     gap: 10px; /* Adds spacing between all items */
+    position: relative;
+    max-height: 80vh;
+    display: grid;
+    grid-template-rows: 10% 80% 10%;
 }
 
 .actions-for-chat {
     box-sizing: border-box;
-    background-color: whitesmoke;
+    background-color: #cce0f2;
     color: #0066B2;
     border-radius: 12px; /* Rounded corners */
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
+    padding: 5px;
     position: sticky;
     top: 50px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    grid-template-rows: auto auto; /* first row auto height, second row auto height */
+    align-items: baseline;
+    font-size: 10px;
+}
+
+.ad-description {
+    grid-column: span 3; /* make it stretch across all 3 columns */
+    text-align: center;
 }
 
     .actions-for-chat button {
@@ -422,20 +436,23 @@ h1 {
         margin: 5px;
         border-radius: 6px; /* Rounded corners */
         border-style: none;
+        font-size: 10px;
     }
 
 
 .chat-send {
     box-sizing: border-box;
-    background-color: whitesmoke;
+    width: 100%;
+    background-color: #cce0f2;
     color: #0066B2;
     border-radius: 12px; /* Rounded corners */
     padding: 10px;
     display: grid;
     grid-template-columns: 80% 20%;
     align-items: baseline;
-    position: sticky;
+    position: absolute;
     bottom: 0;
+    left: 0;
 }
 
 .chat-input {
@@ -453,11 +470,13 @@ h1 {
 .message-block {
     height: 100%;
     padding: 20px;
+    margin-bottom: 20px;
+    overflow-y: auto;
 }
 
 .message-right {
     box-sizing: border-box;
-    background-color: #cce0f2;
+    background-color: whitesmoke;
     color: #0066B2;
     border-radius: 12px; /* Rounded corners */
     padding: 10px;
@@ -470,7 +489,7 @@ h1 {
 
 .message-left {
     box-sizing: border-box;
-    background-color: #cce0f2;
+    background-color: whitesmoke;
     color: #0066B2;
     border-radius: 12px; /* Rounded corners */
     padding: 10px;
@@ -479,6 +498,12 @@ h1 {
     margin-right: 200px;
     margin-top: 30px;
     margin-bottom: 30px;
+}
+
+.from-user {
+    color: #0066B2;
+    text-align: left;
+    font-size: 10px;
 }
 
 .message {

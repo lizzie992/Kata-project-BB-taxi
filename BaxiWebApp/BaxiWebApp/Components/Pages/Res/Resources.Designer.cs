@@ -776,6 +776,16 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In this conversation you are talking to {0} to arrange a ride {1}, from/to {2}, on {3}, including {4} passengers..
+        /// </summary>
+        public static string In_this_conversation_you_are_talking_to__0__to_arrange_a_ride__1__from_to__2__on__3__including__4__passengers {
+            get {
+                return ResourceManager.GetString("In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_" +
+                        "{3}_including_{4}_passengers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inactive.
         /// </summary>
         public static string Inactive {
@@ -954,6 +964,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Modify_ad {
             get {
                 return ResourceManager.GetString("Modify_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More.
+        /// </summary>
+        public static string More {
+            get {
+                return ResourceManager.GetString("More", resourceCulture);
             }
         }
         

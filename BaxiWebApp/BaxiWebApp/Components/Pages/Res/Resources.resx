@@ -691,4 +691,11 @@ Or your routes will meet somewhere on the way and could be convenient for both o
   <data name="Welcome_text" xml:space="preserve">
     <value>Getting to Baierbrunn is something we all rely on - but when train service is disrupted, it can be a real challenge. Baxi offers a smart and reliable solution by connecting drivers and passengers with the same destination. Together, we make the journey smoother, more efficient, and more community-driven. Welcome aboard!</value>
   </data>
+  <data name="More" xml:space="preserve">
+    <value>More</value>
+    <comment>&#x8;</comment>
+  </data>
+  <data name="In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers" xml:space="preserve">
+    <value>In this conversation you are talking to {0} to arrange a ride {1}, from/to {2}, on {3}, including {4} passengers.</value>
+  </data>
 </root>
