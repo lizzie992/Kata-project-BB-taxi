@@ -89,6 +89,44 @@
 										</TemplateColumn>
 									</QuickGrid>
 								</div>
+								<div class="card-container-for-grid">
+									@foreach (Ad ad in adListForGrid)
+									{
+										<div class="card">
+											<table>
+												<tr>
+													<th style="text-align: left">@localizer["Ad_type"]</th>
+													<th style="text-align: right">@localizer[@ad.AdType.ToString()]</th>
+												</tr>
+												<tr>
+													<th style="text-align: left">@localizer["Ad_owner"]</th>
+													<th style="text-align: right">@DataService.showUserNameWithStatus(ad.AdOwner)</th>
+												</tr>
+												<tr>
+													<th style="text-align: left">@localizer["Ad_direction"]</th>
+													<th style="text-align: right">@localizer[ad.AdDirection.ToString()]</th>
+												</tr>
+												<tr>
+													<th style="text-align: left">@localizer["From/to_this_address"]</th>
+													<th style="text-align: right">@ad.PickUpDropOffLocation</th>
+												</tr>
+												<tr>
+													<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+													<th style="text-align: right">@ad.PickUpDateAndTime.ToString("g")</th>
+												</tr>
+												<tr>
+													<th style="text-align: left">@localizer["Number_of_seats"]</th>
+													<th style="text-align: right">@ad.NumberOfSeats</th>
+												</tr>
+												<tr>
+													<th style="text-align: left">@localizer["Specific_requests"]</th>
+													<th style="text-align: right">@ad.SpecificRequests</th>
+												</tr>
+											</table>
+											<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
+										</div>
+									}
+								</div>
 							</div>
 						</div>
 					</div>

@@ -125,52 +125,119 @@
 
 		<div class="row">
 			<div class="col">
-				<p style="text-align:center">@localizer["Click_on_the_title_of_the_column_to_sort_it"]</p>
-				<div class="div-block">
-					<QuickGrid Items="UserList" @ref="grid">
-						<PropertyColumn Title=@localizer["Role"] Property="@(User => localizer[getRole(User).ToString()])" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title=@localizer["Status"] Property="@(User => localizer[getStatus(User)])" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title=@localizer["Email_address"] Property="@(User => User.Email)" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title=@localizer["First_name"] Property="@(User => User.FirstName)" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title=@localizer["Last_name"] Property="@(User => User.LastName)" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title=@localizer["Department"] Property="@(User => localizer[@User.Department.ToString()])" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title=@localizer["Preferred_language"] Property="@(User => localizer[@User.PreferredLanguage.ToString()])" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title=@localizer["Rating"] Property="@(User => User.Rating)" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title=@localizer["Number_of_warnings"] Property="@(User => User.NumberOfWarnings)" Sortable="true">
-						</PropertyColumn>
-						<PropertyColumn Title=@localizer["Contact"] Property="@(User => User.Contact)" Sortable="true">
-						</PropertyColumn>
-						<TemplateColumn Title=@localizer["Make_user_an_admin"] Context="User">
-							@if (User.isActive == true && UserManager.GetRolesAsync(User).Result.First() == "Regular")
+				<div class="grid-wrapper">
+					<p style="text-align:center">@localizer["Click_on_the_title_of_the_column_to_sort_it"]</p>
+					<div class="div-block">
+						<QuickGrid Items="UserList" @ref="grid">
+							<PropertyColumn Title=@localizer["Role"] Property="@(User => localizer[getRole(User).ToString()])" Sortable="true">
+							</PropertyColumn>
+							<PropertyColumn Title=@localizer["Status"] Property="@(User => localizer[getStatus(User)])" Sortable="true">
+							</PropertyColumn>
+							<PropertyColumn Title=@localizer["Email_address"] Property="@(User => User.Email)" Sortable="true">
+							</PropertyColumn>
+							<PropertyColumn Title=@localizer["First_name"] Property="@(User => User.FirstName)" Sortable="true">
+							</PropertyColumn>
+							<PropertyColumn Title=@localizer["Last_name"] Property="@(User => User.LastName)" Sortable="true">
+							</PropertyColumn>
+							<PropertyColumn Title=@localizer["Department"] Property="@(User => localizer[@User.Department.ToString()])" Sortable="true">
+							</PropertyColumn>
+							<PropertyColumn Title=@localizer["Preferred_language"] Property="@(User => localizer[@User.PreferredLanguage.ToString()])" Sortable="true">
+							</PropertyColumn>
+							<PropertyColumn Title=@localizer["Rating"] Property="@(User => User.Rating)" Sortable="true">
+							</PropertyColumn>
+							<PropertyColumn Title=@localizer["Number_of_warnings"] Property="@(User => User.NumberOfWarnings)" Sortable="true">
+							</PropertyColumn>
+							<PropertyColumn Title=@localizer["Contact"] Property="@(User => User.Contact)" Sortable="true">
+							</PropertyColumn>
+							<TemplateColumn Title=@localizer["Make_user_an_admin"] Context="User">
+								@if (User.isActive == true && UserManager.GetRolesAsync(User).Result.First() == "Regular")
+								{
+									<button @onclick="() => showPopUpForMakeUserAdmin(User)">@localizer["Give_this_user_admin_rights"]</button>
+								}
+							</TemplateColumn>
+							<TemplateColumn Title=@localizer["Warning"] Context="User">
+								@if (User.isActive == true)
+								{
+									<button @onclick="() => showPopUpForWarning(User)">@localizer["Give_a_warning"]</button>
+								}
+							</TemplateColumn>
+							<TemplateColumn Title=@localizer["Change_status"] Context="User">
+								@if (User.isActive == true)
+								{
+									<button @onclick="() => showPopUpForDeactivatingUser(User)">@localizer["Deactivate_user"]</button>
+								}
+								@if (User.isActive == false)
+								{
+									<button @onclick="() => showPopUpForReactivatingUser(User)">@localizer["Reactivate_user"]</button>
+								}
+							</TemplateColumn>
+						</QuickGrid>
+					</div>
+				</div>
+				<div class="card-container-for-grid">
+					@foreach (User user in UserList)
+					{
+						<div class="card">
+							<table>
+								<tr>
+									<th style="text-align: left">@localizer["Role"]</th>
+									<th style="text-align: right">@localizer[getRole(user).ToString()]</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["Status"]</th>
+									<th style="text-align: right">@localizer[getStatus(user)]</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["Email_address"]</th>
+									<th style="text-align: right">@user.Email</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["First_name"]</th>
+									<th style="text-align: right">@user.FirstName</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["Last_name"]</th>
+									<th style="text-align: right">@user.LastName</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["Department"]</th>
+									<th style="text-align: right">@localizer[@user.Department.ToString()]</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["Preferred_language"]</th>
+									<th style="text-align: right">@localizer[@user.PreferredLanguage.ToString()]</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["Rating"]</th>
+									<th style="text-align: right">@user.Rating</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["Number_of_warnings"]</th>
+									<th style="text-align: right">@user.NumberOfWarnings</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["Contact"]</th>
+									<th style="text-align: right">@user.Contact</th>
+								</tr>
+							</table>
+							@if (user.isActive == true && UserManager.GetRolesAsync(user).Result.First() == "Regular")
 							{
-								<button @onclick="() => showPopUpForMakeUserAdmin(User)">@localizer["Give_this_user_admin_rights"]</button>
+								<button @onclick="() => showPopUpForMakeUserAdmin(user)">@localizer["Give_this_user_admin_rights"]</button>
 							}
-						</TemplateColumn>
-						<TemplateColumn Title=@localizer["Warning"] Context="User">
-							@if (User.isActive == true)
+							@if (user.isActive == true)
 							{
-								<button @onclick="() => showPopUpForWarning(User)">@localizer["Give_a_warning"]</button>
+								<button @onclick="() => showPopUpForWarning(user)">@localizer["Give_a_warning"]</button>
 							}
-						</TemplateColumn>
-						<TemplateColumn Title=@localizer["Change_status"] Context="User">
-							@if (User.isActive == true)
+							@if (user.isActive == true)
 							{
-								<button @onclick="() => showPopUpForDeactivatingUser(User)">@localizer["Deactivate_user"]</button>
+								<button @onclick="() => showPopUpForDeactivatingUser(user)">@localizer["Deactivate_user"]</button>
 							}
-							@if (User.isActive == false)
+							@if (user.isActive == false)
 							{
-								<button @onclick="() => showPopUpForReactivatingUser(User)">@localizer["Reactivate_user"]</button>
+								<button @onclick="() => showPopUpForReactivatingUser(user)">@localizer["Reactivate_user"]</button>
 							}
-						</TemplateColumn>
-					</QuickGrid>
+						</div>
+					}
 				</div>
 			</div>
 		</div>

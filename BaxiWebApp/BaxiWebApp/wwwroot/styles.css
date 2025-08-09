@@ -266,9 +266,45 @@ h1 {
         width: 90%;
         padding: 5px;
         margin: 5px;
+        display: flex;
+    }
+
+    .card-container-for-grid {
+        display: flex;
+        background-color: whitesmoke;
+        flex-wrap: wrap;
+        border-radius: 12px; /* Rounded corners */
+        justify-content: space-around;
+        gap: 10px;
+    }
+
+        .card-container-for-grid button {
+            background-color: #0066B2;
+            color: #FFFFFF;
+            margin: 5px;
+            border-radius: 6px; /* Rounded corners */
+            border-style: none;
+            white-space: normal; /* allow wrapping */
+            word-wrap: break-word; /* break long words if needed */
+            overflow-wrap: break-word;
+            text-align: center;
+        }
+
+
+    .grid-wrapper {
+        display: none;
+    }
+
+    .quickgrid {
+        display: none;
     }
 }
 
+@media (min-width: 575.98px) {
+    .card-container-for-grid {
+        display: none;
+    }
+}
 
 
 .grid-wrapper {
