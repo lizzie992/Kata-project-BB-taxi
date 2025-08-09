@@ -31,10 +31,8 @@
 
 			<p style="text-align:center">@localizer["Show_me_the_following_users"]</p>
 
-			<div class="col">
-
-				<div class="div-block">
-
+			<div class="col-12 col-md-6">
+				<div class="div-block-centered">
 					<div class="input-block">
 						<p>@localizer["Role"]</p>
 						<InputSelect class="input" @bind-Value="_role" id="_role">
@@ -45,7 +43,6 @@
 							}
 						</InputSelect>
 					</div>
-
 					<div class="input-block">
 						<p>@localizer["Status"]</p>
 						<InputSelect class="input" @bind-Value="_status" id="_status">
@@ -57,36 +54,27 @@
 
 					<div class="input-block">
 						<p>@localizer["Email_address_contains"]</p>
-						<div class="search-box">
-							<input type="search" class="input" autofocus @bind="_searchEmail" @bind:event="oninput" placeholder=@localizer["Email"] />
-						</div>
+						<input type="search" class="input" autofocus @bind="_searchEmail" @bind:event="oninput" placeholder=@localizer["Email"] />
 					</div>
 
 					<div class="input-block">
 						<p>@localizer["First_name"]</p>
-						<div class="search-box">
-							<input type="search" class="input" autofocus @bind="_searchFirstName" @bind:event="oninput" placeholder=@localizer["First_name"] />
-						</div>
+						<input type="search" class="input" autofocus @bind="_searchFirstName" @bind:event="oninput" placeholder=@localizer["First_name"] />
 					</div>
 
 
 					<div class="input-block">
 						<p>@localizer["Last_name"]</p>
-						<div class="search-box">
-							<input type="search" class="input" autofocus @bind="_searchLastName" @bind:event="oninput" placeholder=@localizer["Last_name"] />
-						</div>
+						<input type="search" class="input" autofocus @bind="_searchLastName" @bind:event="oninput" placeholder=@localizer["Last_name"] />
 					</div>
 				</div>
 			</div>
 
-			<div class="col">
-				<div class="div-block">
-
+			<div class="col-12 col-md-6">
+				<div class="div-block-centered">
 					<div class="input-block">
 						<p>@localizer["Contact"]</p>
-						<div class="search-box">
-							<input type="search" class="input" autofocus @bind="_contact" @bind:event="oninput" placeholder=@localizer["Contact"] />
-						</div>
+						<input type="search" class="input" autofocus @bind="_contact" @bind:event="oninput" placeholder=@localizer["Contact"] />
 					</div>
 
 					<div class="input-block">
@@ -131,7 +119,6 @@
 							<option value="2">2</option>
 						</InputSelect>
 					</div>
-
 				</div>
 			</div>
 		</div>

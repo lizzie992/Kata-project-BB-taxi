@@ -179,8 +179,8 @@ h1 {
     display: flex;
     gap: 10px; /**/ /* Adds spacing between all items */
     flex-direction: column;
-    justify-content: flex-start; /* 👈 Aligns items to the left horizontally */
-    align-items: flex-start; /* 👈 Aligns items to the center vertically */
+    justify-content: flex-start; /* Aligns items to the left horizontally */
+    align-items: flex-start; /* Aligns items to the center vertically */
 }
 
     .div-block button {
@@ -194,6 +194,21 @@ h1 {
         vertical-align: top; /* optional: align top for multi-line */
     }
 
+
+.div-block-centered {
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #cce0f2;
+    color: #0066B2;
+    border-radius: 12px; /* Rounded corners */
+    padding: 20px;
+    display: flex;
+    gap: 10px; /**/ /* Adds spacing between all items */
+    flex-direction: column;
+    align-items: center; /* horizontal center in column layout */
+    justify-content: center; /* vertical center */
+    text-align: center;
+}
 
 @media (max-width: 575.98px) { /*phone size*/
 
