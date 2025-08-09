@@ -7,7 +7,6 @@ img {
     border-radius: 12px; /* Rounded corners */
 }
 
-
 body {
     background-color: #e6f0f9;
     color: #0066B2;
@@ -50,9 +49,6 @@ h1 {
     width: 600px;
     height: 450px;
 }
-
-
-
 
 .modal-dialog {
     border: 1px ridge #0066B2;
@@ -129,12 +125,10 @@ h1 {
     margin: 0;
 }
 
-
 .row {
     padding: 10px;
     width: 100%;
 }
-
 
 .col-12 {
     padding-bottom: 10px;
@@ -150,14 +144,11 @@ h1 {
     flex-direction: column;
 }
 
-
 .input {
     color: #0066B2;
     border-radius: 6px; /* Rounded corners */
     float: right;
 }
-
-
 
 .input-block {
     display: flex;
@@ -194,7 +185,6 @@ h1 {
         vertical-align: top; /* optional: align top for multi-line */
     }
 
-
 .div-block-centered {
     height: 100%;
     box-sizing: border-box;
@@ -209,6 +199,60 @@ h1 {
     justify-content: center; /* vertical center */
     text-align: center;
 }
+
+.grid-wrapper {
+    /*padding: 10px;*/
+    overflow: hidden; /* Important to clip the corners */
+    border-radius: 12px; /*Rounded corners */
+    background-color: #cce0f2;
+    color: #0066B2;
+    width: 100%;
+}
+
+.quickgrid {
+    width: 100%;
+    color: #0066B2;
+    border-collapse: separate; /* Allows rounding */
+    border-spacing: 0; /* Removes inner gaps */
+    table-layout: fixed; /*Force columns to respect width */
+    align-items: center; /* vertically center */
+    justify-content: center; /* horizontally center */
+}
+
+    .quickgrid thead {
+        /*padding: 1px;*/
+        color: #0066B2;
+        white-space: normal; /* allow wrapping */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: break-word;
+        vertical-align: top; /*optional: align top for multi-line */
+        align-items: center; /* vertically center */
+        justify-content: center;
+        text-wrap-style: pretty;
+    }
+
+    .quickgrid th,
+    .quickgrid td {
+        padding: 1px;
+        color: #0066B2;
+        white-space: normal; /* allow wrapping */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: break-word;
+        vertical-align: top; /* optional: align top for multi-line */
+        align-items: center; /* vertically center */
+        justify-content: left;
+    }
+
+    .quickgrid button {
+        border-radius: 6px; /* Rounded corners */
+        background-color: whitesmoke;
+        color: #0066B2;
+        border-style: none;
+        white-space: normal; /* allow wrapping */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: break-word;
+        vertical-align: top; /* optional: align top for multi-line */
+    }
 
 @media (max-width: 575.98px) { /*phone size*/
 
@@ -307,56 +351,126 @@ h1 {
 }
 
 
-.grid-wrapper {
-    /*padding: 10px;*/
-    overflow: hidden; /* Important to clip the corners */
-    border-radius: 12px; /*Rounded corners */
+
+.col-all-convos {
+    height: 100%;
+    border-radius: 12px; /* Rounded corners */
+    background-color: #0066B2;
+    color: whitesmoke;
+    gap: 10px; /* Adds spacing between all items */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.convo-preview {
+    box-sizing: border-box;
     background-color: #cce0f2;
     color: #0066B2;
-    width: 100%;
+    border-radius: 12px; /* Rounded corners */
+    padding: 20px;
+    display: flex;
+    gap: 10px; /**/ /* Adds spacing between all items */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
 }
 
-.quickgrid {
-    width: 100%;
+.col-chat {
+    height: 100%;
+    border-radius: 12px; /* Rounded corners */
+    background-color: #0066B2;
+    color: whitesmoke;
+    gap: 10px; /* Adds spacing between all items */
+}
+
+.actions-for-chat {
+    box-sizing: border-box;
+    background-color: whitesmoke;
     color: #0066B2;
-    border-collapse: separate; /* Allows rounding */
-    border-spacing: 0; /* Removes inner gaps */
-    table-layout: fixed;  /*Force columns to respect width */
-    align-items: center; /* vertically center */
-    justify-content: center; /* horizontally center */
+    border-radius: 12px; /* Rounded corners */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 50px;
 }
 
-    .quickgrid thead {
-        /*padding: 1px;*/
-        color: #0066B2;
-        white-space: normal; /* allow wrapping */
-        word-wrap: break-word; /* break long words if needed */
-        overflow-wrap: break-word;
-        vertical-align: top; /*optional: align top for multi-line */
-        align-items: center; /* vertically center */
-        justify-content: center; 
-        text-wrap-style: pretty;
-    }
-
-    .quickgrid th,
-    .quickgrid td {
-        padding: 1px;
-        color: #0066B2;
-        white-space: normal; /* allow wrapping */
-        word-wrap: break-word; /* break long words if needed */
-        overflow-wrap: break-word;
-        vertical-align: top; /* optional: align top for multi-line */
-        align-items: center; /* vertically center */
-        justify-content: left; 
-    }
-
-    .quickgrid button {
+    .actions-for-chat button {
+        background-color: #0066B2;
+        color: whitesmoke;
+        margin: 5px;
         border-radius: 6px; /* Rounded corners */
-        background-color: whitesmoke;
-        color: #0066B2;
         border-style: none;
-        white-space: normal; /* allow wrapping */
-        word-wrap: break-word; /* break long words if needed */
-        overflow-wrap: break-word;
-        vertical-align: top; /* optional: align top for multi-line */
     }
+
+
+.chat-send {
+    box-sizing: border-box;
+    background-color: whitesmoke;
+    color: #0066B2;
+    border-radius: 12px; /* Rounded corners */
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 1rem;
+    position: sticky;
+    bottom: 0;
+}
+
+.chat-input {
+    width: 80%;
+}
+
+.chat-button {
+    background-color: #0066B2;
+    color: whitesmoke;
+    margin: 5px;
+    border-radius: 6px; /* Rounded corners */
+    border-style: none;
+}
+
+.message-block {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.message-right {
+    box-sizing: border-box;
+    background-color: #cce0f2;
+    color: #0066B2;
+    border-radius: 12px; /* Rounded corners */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 200px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.message-left {
+    box-sizing: border-box;
+    background-color: #cce0f2;
+    color: #0066B2;
+    border-radius: 12px; /* Rounded corners */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 200px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.message {
+    color: #0066B2;
+    text-align: left;
+}
+
+.timestamp {
+    color: #0066B2;
+    font-size: 10px;
+    text-align: right;
+}

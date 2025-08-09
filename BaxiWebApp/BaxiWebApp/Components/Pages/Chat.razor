@@ -22,129 +22,125 @@
 @inject IStringLocalizer<Resources> localizer
 
 
-@* <h3>Chat</h3> *@
+<header>
+	<link rel="stylesheet" href="styles.css" />
+</header>
 
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<style>
-		* {
-			box-sizing: border-box;
-		}
-
-		column {
-			float: left;
-			padding: 10px;
-		}
-
-		.left {
-			width: 25%;
-		}
-
-		.right {
-			width: 75%;
-		}
-
-
-		.clickable-div {
-			width: 100%;
-			height: 150px;
-			background-color: lightblue;
-			cursor: pointer;
-			text-align: center;
-			line-height: 150px;
-			border-width: 1px;
-			border-style: solid;
-			border-color: #E70000;
-		}
-
-		a {
-			text-decoration: none;
-			display: block;
-			width: 100%;
-			height: 100%;
-		}
-
-	</style>
-</head>
 <body>
-
-
 	<div class="row">
-		<div class="column left" style="background-color:#aaa;">
-			<h2>@localizer["All_chat_conversations"]</h2>
-			@if (ConvoList == null || ConvoList.Count == 0)
-			{
-				<p>@localizer["No_conversations_yet"]</p>
-			}
-			else
-			{
-				foreach (Conversation C in ConvoList)
+		<div class="col-4">
+			<div class="col-all-convos">
+				<h2 style="text-align: center">@localizer["All_chat_conversations"]</h2>
+				@if (ConvoList == null || ConvoList.Count == 0)
 				{
-					<div class="clickable-div">
-						@if (C.MostRecentMessage is not null)
-						{
-							string title = $"{C.MostRecentMessage.messageText.ToString()}, {C.MostRecentMessage.timeStamp.ToString("g")}";
-							<a href="Chat/@C.ID">@title</a>
-						}
-						else
-						{
-							<a href="Chat/@C.ID">@localizer["New_conversation"]</a>
-						}
-					</div>
-
-				}
-			}
-		</div>
-		<div class="column right" style="background-color:#bbb;">
-			<h2>@localizer["Chat"]</h2>
-			<p>
-				@if (CurrentConversation is null)
-				{
-				<p>@localizer["Click_on_a_chat"]</p>
-			}
-			else
-			{
-				@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
-				{
-					Ad ad = GetAd(CurrentConversation);
-					<div class="Ad">
-						<p>@localizer["Ad_owner"] @DataService.showUserNameWithStatus(ad.AdOwner)</p>
-						<p>@localizer["Ad_type"] @localizer[@ad.AdType.ToString()]</p>
-						<p>@localizer["Ad_direction"] @localizer[@ad.AdDirection.ToString()]</p>
-						<p>@localizer["From/to_this_address"] @ad.PickUpDropOffLocation</p>
-						<p>@localizer["Pick_up_date_and_time"] @ad.PickUpDateAndTime.ToString("g")</p>
-						<p>@localizer["Number_of_seats"] @ad.NumberOfSeats</p>
-						<p>@localizer["Specific_requests"] @ad.SpecificRequests</p>
-						<br>
-						<br>
-						<br>
-					</div>
-					@foreach (Message M in CurrentConversation.messages)
-					{
-						<div class="Message">
-							<p>@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</p>
-							<p>@localizer["To"] @DataService.showUserNameWithStatus(M.toUser)</p>
-							<p>@localizer["Message"] @M.messageText</p>
-							<p>@localizer["Timestamp"] @M.timeStamp.ToString("g")</p>
-						</div>
-						<br>
-					}
-					@if (currentlyLoggedInUser.isActive == true)
-					{
-						<InputText @bind-Value="TextMessage"></InputText>
-						<button class="btn btn-primary" @onclick="SendMessage">@localizer["Send"]</button>
-					}
-					<br>
-					<br>
-					<button class="btn btn-primary" @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button>
-					<button class="btn btn-primary" @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button>
+					<p>@localizer["No_conversations_yet"]</p>
 				}
 				else
 				{
-					<p>@localizer["Looks_like_you_are_lost_please_navigate_back_to_the_chat_using_the_navigation_menu_on_the_left"]</p>
+					foreach (Conversation C in ConvoList)
+					{
+						<a href="Chat/@C.ID">
+							<div class="convo-preview">
+								@if (C.MostRecentMessage is not null)
+								{
+									string title = $"{C.MostRecentMessage.messageText.ToString()}, {C.MostRecentMessage.timeStamp.ToString("g")}";
+									<p>@title</p>
+								}
+								else
+								{
+									<p>@localizer["New_conversation"]</p>
+								}
+							</div>
+						</a>
+					}
 				}
-			}
-			</p>
+			</div>
+		</div>
+		<div class="col-8">
+			<div class="col-chat">
+				@* <h2 style="text-align: center">@localizer["Chat"]</h2> *@
+				@if (CurrentConversation is null)
+				{
+					<p style="text-align: center">@localizer["Click_on_a_chat"]</p>
+				}
+				else
+				{
+					@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
+					{
+						Ad ad = GetAd(CurrentConversation);
+						<div class="actions-for-chat">
+							<table>
+								<tr>
+									<th style="text-align: left">@localizer["Ad_owner"]</th>
+									<th style="text-align: right">@DataService.showUserNameWithStatus(ad.AdOwner)</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["Ad_type"]</th>
+									<th style="text-align: right">@localizer[@ad.AdType.ToString()]</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["Ad_direction"]</th>
+									<th style="text-align: right">@localizer[ad.AdDirection.ToString()]</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["From/to_this_address"]</th>
+									<th style="text-align: right">@ad.PickUpDropOffLocation</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+									<th style="text-align: right">@ad.PickUpDateAndTime.ToString("g")</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["Number_of_seats"]</th>
+									<th style="text-align: right">@ad.NumberOfSeats</th>
+								</tr>
+								<tr>
+									<th style="text-align: left">@localizer["Specific_requests"]</th>
+									<th style="text-align: right">@ad.SpecificRequests</th>
+								</tr>
+							</table>
+							<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
+							<button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button>
+							<button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button>
+						</div>
+						<div class="message-block">
+							@foreach (Message M in CurrentConversation.messages)
+							{
+								if (currentlyLoggedInUser == M.fromUser)
+								{
+									<div class="message-right">
+										@* <p>@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</p>
+										<p>@localizer["To"] @DataService.showUserNameWithStatus(M.toUser)</p> *@
+										<div class="message">@M.messageText</div>
+										<div class="timestamp">@M.timeStamp.ToString("g")</div>
+									</div>
+								}
+								if (currentlyLoggedInUser == M.toUser)
+								{
+									<div class="message-left">
+										@* <p>@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</p>
+										<p>@localizer["To"] @DataService.showUserNameWithStatus(M.toUser)</p> *@
+										<div class="message">@M.messageText</div>
+										<div class="timestamp">@M.timeStamp.ToString("g")</div>
+									</div>
+								}
+							}
+						</div>
+						@if (currentlyLoggedInUser.isActive == true)
+						{
+							<div class="chat-send">
+								<InputText class="chat-input" @bind-Value="TextMessage"></InputText>
+								<button class="chat-button" @onclick="SendMessage">@localizer["Send"]</button>
+							</div>
+						}
+					}
+					else
+					{
+						<p>@localizer["Looks_like_you_are_lost_please_navigate_back_to_the_chat_using_the_navigation_menu_on_the_left"]</p>
+					}
+				}
+
+			</div>
 		</div>
 	</div>
 </body>
@@ -238,7 +234,15 @@
 	});
 	}
 
-
+	/// <summary>
+	/// Redirects the user to a new page showing the one specific ad they want to see
+	/// </summary>
+	/// <param name="ad">Ad</param>
+	public void showAd(Ad ad)
+	{
+		int id = ad.ID;
+		NavigationManager.NavigateTo("ShowAd/" + id);
+	}
 
 	protected override void OnParametersSet()
 	{
