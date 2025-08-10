@@ -27,7 +27,8 @@
 </header>
 
 <body>
-	<div class="row-chat">
+	@* desktop mode *@
+	<div class="row-chat-laptop">
 		<div class="col">
 			<div class="col-all-convos">
 				<h2 style="text-align: center">@localizer["All_chat_conversations"]</h2>
@@ -65,7 +66,6 @@
 				}
 				else
 				{
-					<button class="chat-back-button" @onclick="backToChat">@localizer["Back_to_the_chat"]</button>
 					@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
 					{
 						Ad ad = GetAd(CurrentConversation);
@@ -113,6 +113,90 @@
 			</div>
 		</div>
 	</div>
+
+	@* phone mode *@
+	<div class="row-chat-mobile">
+		@if (CurrentConversation is null)
+		{
+			<div class="col-all-convos">
+				<h2 style="text-align: center">@localizer["All_chat_conversations"]</h2>
+				@if (ConvoList == null || ConvoList.Count == 0)
+				{
+					<p>@localizer["No_conversations_yet"]</p>
+				}
+				else
+				{
+					foreach (Conversation C in ConvoList)
+					{
+						<a href="Chat/@C.ID">
+							<div class="convo-preview">
+								@if (C.MostRecentMessage is not null)
+								{
+									<div class="convo-other-user">@DataService.showUserNameWithStatus(getOtherUser(C))</div>
+									<div class="convo-last-message">@C.MostRecentMessage.messageText.ToString()</div>
+									<div class="convo-timestamp">@C.MostRecentMessage.timeStamp.ToString("g")</div>
+								}
+								else
+								{
+									<p>@localizer["New_conversation"]</p>
+								}
+							</div>
+						</a>
+					}
+				}
+			</div>
+		}
+		else
+		{
+			<button class="chat-back-button" @onclick="backToChat">@localizer["Back_to_the_chat"]</button>
+			<div class="col-chat">
+				@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
+				{
+					Ad ad = GetAd(CurrentConversation);
+					<div class="actions-for-chat">
+						<div class="ad-description">@localizer["In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers", DataService.showUserNameWithStatus(ad.AdOwner), localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats]</div>
+						<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
+						<button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button>
+						<button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button>
+					</div>
+					<div class="message-block">
+						@foreach (Message M in CurrentConversation.messages)
+						{
+							if (currentlyLoggedInUser == M.fromUser)
+							{
+								<div class="message-right">
+									<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
+									<div class="message">@M.messageText</div>
+									<div class="timestamp">@M.timeStamp.ToString("g")</div>
+								</div>
+							}
+							if (currentlyLoggedInUser == M.toUser)
+							{
+								<div class="message-left">
+									<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
+									<div class="message">@M.messageText</div>
+									<div class="timestamp">@M.timeStamp.ToString("g")</div>
+								</div>
+							}
+						}
+					</div>
+				}
+				else
+				{
+					<p>@localizer["Looks_like_you_are_lost_please_navigate_back_to_the_chat_using_the_navigation_menu_on_the_left"]</p>
+				}
+				@if (currentlyLoggedInUser.isActive == true)
+				{
+					<div class="chat-send">
+						<InputText class="chat-input" @bind-Value="TextMessage"></InputText>
+						<button class="chat-button" @onclick="SendMessage">@localizer["Send"]</button>
+					</div>
+				}
+			</div>
+		}
+	</div>
+
+
 </body>
 
 

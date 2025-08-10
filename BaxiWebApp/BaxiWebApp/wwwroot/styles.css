@@ -343,8 +343,72 @@ h1 {
         display: none;
     }
 
-    .chat-back-button {
+
+
+    .row-chat-laptop {
+        display: none;
+    }
+
+    .row-chat-mobile {
+        max-width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        gap: 10px; /* Adds spacing between all items */
+    }
+
+    .col-all-convos {
+        height: 100%;
+        border-radius: 12px; /* Rounded corners */
+        background-color: #0066B2;
+        color: whitesmoke;
+        gap: 10px; /* Adds spacing between all items */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        /*max-height: 80vh;
+        overflow-y: auto;*/
+    }
+
+    .convo-preview {
+        box-sizing: border-box;
         background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 10px;
+        display: flex;
+        gap: 10px; /**/ /* Adds spacing between all items */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+        white-space: nowrap; /* Prevents text from wrapping */
+        overflow: hidden; /* Hides the overflowing text */
+        text-overflow: ellipsis; /* Shows "..." when text is cut off */
+        text-decoration: none;
+    }
+
+    .convo-other-user,
+    .convo-last-message,
+    .convo-timestamp {
+        width: 80%;
+        white-space: nowrap; /* Prevents text from wrapping */
+        overflow: hidden; /* Hides the overflowing text */
+        text-overflow: ellipsis; /* Shows "..." when text is cut off */
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .convo-timestamp {
+        font-size: 10px;
+    }
+
+    .chat-back-button {
+        width: 95%;
+        background-color: #0066B2;
         color: whitesmoke;
         margin: 5px;
         border-radius: 6px; /* Rounded corners */
@@ -352,120 +416,41 @@ h1 {
         font-size: 10px;
     }
 
-    .row-chat {
-        max-width : 100vw;
+    .col-chat {
+        width: 95%;
+        border-radius: 12px; /* Rounded corners */
+        background-color: #0066B2;
+        color: whitesmoke;
+        gap: 10px; /* Adds spacing between all items */
+        /*position: relative;*/
+        /*max-height: 80vh;*/
         display: flex;
         flex-direction: column;
-        padding: 20px;
-        gap: 20px; /* Adds spacing between all items */
+        justify-content: center;
+        align-items: center;
+        /*padding: 10px;*/
     }
 
-   
-}
-
-@media (min-width: 575.98px) {
-    .card-container-for-grid {
-        display: none;
-    }
-
-    .chat-back-button {
-        display: none;
-    }
-
-    .row-chat {
-        width: 100%;
+    .actions-for-chat {
+        box-sizing: border-box;
+        height: max-content;
+        background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 5px;
+        position: sticky;
+        top: 5px;
         display: grid;
-        grid-template-columns: 30% 70%;
-        padding: 20px;
-        gap: 20px; /* Adds spacing between all items */
+        grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+        grid-template-rows: auto auto; /* first row auto height, second row auto height */
+        align-items: baseline;
+        font-size: 10px;
     }
 
-    
-}
-
-
-
-.col-all-convos {
-    height: 100%;
-    border-radius: 12px; /* Rounded corners */
-    background-color: #0066B2;
-    color: whitesmoke;
-    gap: 10px; /* Adds spacing between all items */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    max-height: 80vh;
-    overflow-y: auto;
-}
-
-.convo-preview {
-    box-sizing: border-box;
-    background-color: #cce0f2;
-    color: #0066B2;
-    border-radius: 12px; /* Rounded corners */
-    padding: 20px;
-    display: flex;
-    gap: 10px; /**/ /* Adds spacing between all items */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-    white-space: nowrap; /* Prevents text from wrapping */
-    overflow: hidden; /* Hides the overflowing text */
-    text-overflow: ellipsis; /* Shows "..." when text is cut off */
-    text-decoration: none;
-}
-
-.convo-other-user,
-.convo-last-message,
-.convo-timestamp {
-    width: 80%;
-    white-space: nowrap; /* Prevents text from wrapping */
-    overflow: hidden; /* Hides the overflowing text */
-    text-overflow: ellipsis; /* Shows "..." when text is cut off */
-    text-align: center;
-    text-decoration: none;
-}
-
-.convo-timestamp {
-    font-size: 10px;
-}
-
-
-
-.col-chat {
-    height: 100%;
-    border-radius: 12px; /* Rounded corners */
-    background-color: #0066B2;
-    color: whitesmoke;
-    gap: 10px; /* Adds spacing between all items */
-    position: relative;
-    max-height: 80vh;
-    display: grid;
-    grid-template-rows: 10% 80% 10%;
-}
-
-.actions-for-chat {
-    box-sizing: border-box;
-    height: max-content;
-    background-color: #cce0f2;
-    color: #0066B2;
-    border-radius: 12px; /* Rounded corners */
-    padding: 5px;
-    position: sticky;
-    top: 50px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
-    grid-template-rows: auto auto; /* first row auto height, second row auto height */
-    align-items: baseline;
-    font-size: 10px;
-}
-
-.ad-description {
-    grid-column: span 3; /* make it stretch across all 3 columns */
-    text-align: center;
-}
+    .ad-description {
+        grid-column: span 3; /* make it stretch across all 3 columns */
+        text-align: center;
+    }
 
     .actions-for-chat button {
         background-color: #0066B2;
@@ -477,79 +462,285 @@ h1 {
     }
 
 
-.chat-send {
-    box-sizing: border-box;
-    width: 100%;
-    background-color: #cce0f2;
-    color: #0066B2;
-    border-radius: 12px; /* Rounded corners */
-    padding: 10px;
-    display: grid;
-    grid-template-columns: 80% 20%;
-    align-items: baseline;
-    position: absolute;
-    bottom: 0;
-    left: 0;
+    .chat-send {
+        box-sizing: border-box;
+        width: 100%;
+        background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 5px;
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        justify-items: center;
+        position: sticky;
+        bottom: 5px;
+        height: max-content;
+    }
+
+    .chat-input {
+        border-radius: 6px; /* Rounded corners */
+        margin: 5px;
+    }
+
+    .chat-button {
+        background-color: #0066B2;
+        width: max-content;
+        color: whitesmoke;
+        margin: 5px;
+        border-radius: 6px; /* Rounded corners */
+        border-style: none;
+    }
+
+    .message-block {
+        height: 500px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        /*padding: 10px;*/
+        width: 95%;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message-right {
+        width: 60%;
+        align-self: flex-end; /* Stick to right side */
+        margin-left: auto; /* push rest of space to the left */
+        margin-right: 0; /* no extra space on right */
+        background-color: whitesmoke;
+        color: #0066B2;
+        margin: 5px;
+        border-radius: 6px; /* Rounded corners */
+        height: auto; /* grow naturally */
+        max-height: none; /* no forced cap */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: anywhere; /* break words anywhere if very long */
+        padding: 5px;
+    }
+
+    .message-left {
+        width: 60%;
+        align-self: flex-start; /* Stick to left side */
+        margin-left: 0; /* no extra space on left */
+        margin-right: auto; /* push rest of space to the right */
+        background-color: whitesmoke;
+        color: #0066B2;
+        margin: 5px;
+        border-radius: 6px; /* Rounded corners */
+        height: auto; /* grow naturally */
+        max-height: none; /* no forced cap */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: anywhere; /* break words anywhere if very long */
+        padding: 5px;
+    }
+
+    .from-user {
+        color: #0066B2;
+        text-align: left;
+        font-size: 10px;
+    }
+
+    .message {
+        color: #0066B2;
+        text-align: left;
+    }
+
+    .timestamp {
+        color: #0066B2;
+        font-size: 10px;
+        text-align: right;
+    }
 }
 
-.chat-input {
-    border-radius: 6px; /* Rounded corners */
-}
 
-.chat-button {
-    background-color: #0066B2;
-    color: whitesmoke;
-    margin: 5px;
-    border-radius: 6px; /* Rounded corners */
-    border-style: none;
-}
+@media (min-width: 575.98px) { /*laptop size*/
+    .card-container-for-grid {
+        display: none;
+    }
 
-.message-block {
-    height: 100%;
-    padding: 20px;
-    margin-bottom: 20px;
-    overflow-y: auto;
-}
+    .chat-back-button {
+        display: none;
+    }
 
-.message-right {
-    box-sizing: border-box;
-    background-color: whitesmoke;
-    color: #0066B2;
-    border-radius: 12px; /* Rounded corners */
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    margin-left: 200px;
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
+    .row-chat-laptop {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 30% 70%;
+        padding: 20px;
+        gap: 20px; /* Adds spacing between all items */
+    }
 
-.message-left {
-    box-sizing: border-box;
-    background-color: whitesmoke;
-    color: #0066B2;
-    border-radius: 12px; /* Rounded corners */
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    margin-right: 200px;
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
+    .row-chat-mobile {
+        display: none;
+    }
 
-.from-user {
-    color: #0066B2;
-    text-align: left;
-    font-size: 10px;
-}
+    .col-all-convos {
+        height: 100%;
+        border-radius: 12px; /* Rounded corners */
+        background-color: #0066B2;
+        color: whitesmoke;
+        gap: 10px; /* Adds spacing between all items */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
 
-.message {
-    color: #0066B2;
-    text-align: left;
-}
+    .convo-preview {
+        box-sizing: border-box;
+        background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 20px;
+        display: flex;
+        gap: 10px; /**/ /* Adds spacing between all items */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+        white-space: nowrap; /* Prevents text from wrapping */
+        overflow: hidden; /* Hides the overflowing text */
+        text-overflow: ellipsis; /* Shows "..." when text is cut off */
+        text-decoration: none;
+    }
 
-.timestamp {
-    color: #0066B2;
-    font-size: 10px;
-    text-align: right;
+    .convo-other-user,
+    .convo-last-message,
+    .convo-timestamp {
+        width: 80%;
+        white-space: nowrap; /* Prevents text from wrapping */
+        overflow: hidden; /* Hides the overflowing text */
+        text-overflow: ellipsis; /* Shows "..." when text is cut off */
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .convo-timestamp {
+        font-size: 10px;
+    }
+
+
+
+    .col-chat {
+        height: 100%;
+        border-radius: 12px; /* Rounded corners */
+        background-color: #0066B2;
+        color: whitesmoke;
+        gap: 10px; /* Adds spacing between all items */
+        position: relative;
+        max-height: 80vh;
+        display: grid;
+        grid-template-rows: 10% 80% 10%;
+    }
+
+    .actions-for-chat {
+        box-sizing: border-box;
+        height: max-content;
+        background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 5px;
+        position: sticky;
+        top: 50px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+        grid-template-rows: auto auto; /* first row auto height, second row auto height */
+        align-items: baseline;
+        font-size: 10px;
+    }
+
+    .ad-description {
+        grid-column: span 3; /* make it stretch across all 3 columns */
+        text-align: center;
+    }
+
+    .actions-for-chat button {
+        background-color: #0066B2;
+        color: whitesmoke;
+        margin: 5px;
+        border-radius: 6px; /* Rounded corners */
+        border-style: none;
+        font-size: 10px;
+    }
+
+
+    .chat-send {
+        box-sizing: border-box;
+        width: 100%;
+        background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 10px;
+        display: grid;
+        grid-template-columns: 80% 20%;
+        align-items: baseline;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+    .chat-input {
+        border-radius: 6px; /* Rounded corners */
+    }
+
+    .chat-button {
+        background-color: #0066B2;
+        color: whitesmoke;
+        margin: 5px;
+        border-radius: 6px; /* Rounded corners */
+        border-style: none;
+    }
+
+    .message-block {
+        height: 100%;
+        padding: 20px;
+        margin-bottom: 20px;
+        overflow-y: auto;
+    }
+
+    .message-right {
+        box-sizing: border-box;
+        background-color: whitesmoke;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        margin-left: 200px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .message-left {
+        box-sizing: border-box;
+        background-color: whitesmoke;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        margin-right: 200px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .from-user {
+        color: #0066B2;
+        text-align: left;
+        font-size: 10px;
+    }
+
+    .message {
+        color: #0066B2;
+        text-align: left;
+    }
+
+    .timestamp {
+        color: #0066B2;
+        font-size: 10px;
+        text-align: right;
+    }
 }
