@@ -520,6 +520,10 @@ namespace BaxiWebApp.Data
                 message.timeStamp = DateTime.Now;
                 CurrentConversation.messages.Add(message);
                 context.SaveChanges();
+                string emailMessage = $"You just received a new message from {message.fromUser}!\r\n Go and check it out: http://localhost:5049/Chat/{CurrentConversation.ID} !";
+                string emailAddress = "gulyaskata99@gmail.com";
+                string subject = "You received a new message!";
+                sendEmail(emailAddress, subject, emailMessage);
                 ChatChanged?.Invoke(this, CurrentConversation.ID);
             }
 
