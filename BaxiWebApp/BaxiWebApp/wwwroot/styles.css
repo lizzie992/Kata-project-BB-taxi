@@ -699,9 +699,12 @@ h1 {
         padding: 20px;
         margin-bottom: 20px;
         overflow-y: auto;
+        display: flex;
+        flex-direction: column;
     }
 
     .message-right {
+        width: 60%;
         box-sizing: border-box;
         background-color: whitesmoke;
         color: #0066B2;
@@ -709,12 +712,15 @@ h1 {
         padding: 10px;
         display: flex;
         flex-direction: column;
-        margin-left: 200px;
-        margin-top: 30px;
-        margin-bottom: 30px;
+        align-self: flex-end; /* Stick to right side */
+        margin-left: auto; /* push rest of space to the left */
+        margin-right: 0; /* no extra space on right */
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 
     .message-left {
+        width: 60%;
         box-sizing: border-box;
         background-color: whitesmoke;
         color: #0066B2;
@@ -722,9 +728,11 @@ h1 {
         padding: 10px;
         display: flex;
         flex-direction: column;
-        margin-right: 200px;
-        margin-top: 30px;
-        margin-bottom: 30px;
+        align-self: flex-start; /* Stick to left side */
+        margin-left: 0; /* no extra space on left */
+        margin-right: auto; /* push rest of space to the right */
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 
     .from-user {
