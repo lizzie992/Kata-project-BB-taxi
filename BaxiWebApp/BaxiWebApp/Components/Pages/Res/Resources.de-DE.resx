@@ -433,7 +433,7 @@
     <value>Und die möglicherweise dazu passenden Anzeigen:</value>
   </data>
   <data name="User_management_page" xml:space="preserve">
-    <value>Benutzerverwaltungsseite</value>
+    <value>Benutzer</value>
   </data>
   <data name="Show_me_the_following_users" xml:space="preserve">
     <value>Zeigen Sie mir die folgenden Benutzer:</value>
@@ -600,13 +600,13 @@ Oder Ihre Routen kreuzen sich irgendwo auf dem Weg und könnten für Sie beide g
     <value>Startseite</value>
   </data>
   <data name="Create_an_ad" xml:space="preserve">
-    <value>Erstellen Sie eine Anzeige!</value>
+    <value>Neue Anzeige!</value>
   </data>
   <data name="All_ads" xml:space="preserve">
     <value>Alle Anzeigen</value>
   </data>
   <data name="Recommend_me_ads" xml:space="preserve">
-    <value>Empfehlen Sie mir Anzeigen</value>
+    <value>Empfehlungen</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profil</value>

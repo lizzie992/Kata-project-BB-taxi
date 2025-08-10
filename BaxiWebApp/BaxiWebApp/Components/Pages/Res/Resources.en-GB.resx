@@ -433,7 +433,7 @@
     <value>And the possibly matching ads:</value>
   </data>
   <data name="User_management_page" xml:space="preserve">
-    <value>User Management Page</value>
+    <value>Users</value>
   </data>
   <data name="Show_me_the_following_users" xml:space="preserve">
     <value>Show me the following users:</value>
@@ -599,13 +599,13 @@ Or your routes will meet somewhere on the way and could be convenient for both o
     <value>Home</value>
   </data>
   <data name="Create_an_ad" xml:space="preserve">
-    <value>Create an ad!</value>
+    <value>New Ad!</value>
   </data>
   <data name="All_ads" xml:space="preserve">
     <value>All Ads</value>
   </data>
   <data name="Recommend_me_ads" xml:space="preserve">
-    <value>Recommend me Ads</value>
+    <value>Recommendations</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
