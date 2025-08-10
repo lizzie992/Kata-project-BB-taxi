@@ -262,6 +262,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change password.
+        /// </summary>
+        public static string Change_password {
+            get {
+                return ResourceManager.GetString("Change_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change status:.
         /// </summary>
         public static string Change_status {
@@ -1013,6 +1022,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New password.
+        /// </summary>
+        public static string New_password {
+            get {
+                return ResourceManager.GetString("New_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No conversations yet!.
         /// </summary>
         public static string No_conversations_yet {
@@ -1100,6 +1118,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Number_of_warnings {
             get {
                 return ResourceManager.GetString("Number_of_warnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Old password.
+        /// </summary>
+        public static string Old_password {
+            get {
+                return ResourceManager.GetString("Old_password", resourceCulture);
             }
         }
         

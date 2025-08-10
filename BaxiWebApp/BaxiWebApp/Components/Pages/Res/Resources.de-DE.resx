@@ -704,4 +704,13 @@ Schön, dass Sie dabei sind!</value>
   <data name="Back_to_the_chat" xml:space="preserve">
     <value>Zurück zum Chat</value>
   </data>
+  <data name="Change_password" xml:space="preserve">
+    <value>Kennwort ändern</value>
+  </data>
+  <data name="Old_password" xml:space="preserve">
+    <value>Altes Passwort</value>
+  </data>
+  <data name="New_password" xml:space="preserve">
+    <value>Neues Passwort</value>
+  </data>
 </root>

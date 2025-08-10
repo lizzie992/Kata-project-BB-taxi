@@ -49,3 +49,763 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+
+
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    border-radius: 12px; /* Rounded corners */
+}
+
+body {
+    background-color: #e6f0f9;
+    color: #0066B2;
+    width: 100%;
+}
+
+h1 {
+    color: #0066B2;
+}
+
+.welcome {
+    color: #0066B2;
+    margin: 25px;
+}
+
+.map-frame {
+    position: relative;
+    /*height: 100%;
+    width: 100%;*/
+    padding-bottom: 56.25%; /*16:9 Aspect Ratio (height / width * 100) */
+    height: 0;
+    overflow: hidden;
+}
+
+.framed-map {
+    border-radius: 12px; /* Rounded corners */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.map-frame-for-showad {
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
+    position: relative;
+    border-radius: 12px; /* Rounded corners */
+    width: 600px;
+    height: 450px;
+}
+
+.modal-dialog {
+    border: 1px ridge #0066B2;
+    border-radius: 12px; /* Rounded corners */
+    text-align: center;
+    color: #0066B2;
+    max-width: 700px;
+    margin: 2rem auto;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    align-items: center; /* horizontal center in column layout */
+    justify-content: center; /* vertical center */
+}
+
+.modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 1rem;
+}
+
+    .modal-header h3 {
+        margin: 0;
+        text-align: center;
+        flex-grow: 1;
+        font-size: 18px;
+    }
+
+    .modal-header button {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        background-color: #0066B2;
+        color: #FFFFFF;
+        border-radius: 4px; /* Rounded corners */
+        border-style: none;
+    }
+
+.modal-body button {
+    background-color: #0066B2;
+    color: #FFFFFF;
+    margin: 5px;
+    border-radius: 6px; /* Rounded corners */
+    border-style: none;
+}
+
+.inputText {
+    border-radius: 6px;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 12px; /* Rounded corners */
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.card {
+    background-color: #cce0f2;
+    border: 1px ridge #0066B2;
+    color: #0066B2;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    width: 40%;
+    padding: 5px;
+    margin: 5px;
+}
+
+.table, th, td {
+    font-size: 12px;
+}
+
+.container {
+    margin: 0;
+}
+
+.row {
+    padding: 10px;
+    width: 100%;
+}
+
+.col-12 {
+    padding-bottom: 10px;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    border-radius: 12px; /* Rounded corners */
+    position: static;
+    overflow: hidden;
+    min-height: 300px;
+    flex-direction: column;
+}
+
+.input {
+    color: #0066B2;
+    border-radius: 6px; /* Rounded corners */
+    float: right;
+}
+
+.input-block {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 1rem;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 2px;
+}
+
+.div-block {
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #cce0f2;
+    color: #0066B2;
+    border-radius: 12px; /* Rounded corners */
+    padding: 20px;
+    display: flex;
+    gap: 10px; /**/ /* Adds spacing between all items */
+    flex-direction: column;
+    justify-content: flex-start; /* Aligns items to the left horizontally */
+    align-items: flex-start; /* Aligns items to the center vertically */
+}
+
+    .div-block button {
+        border-radius: 6px; /* Rounded corners */
+        background-color: whitesmoke;
+        color: #0066B2;
+        border-style: none;
+        white-space: normal; /* allow wrapping */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: break-word;
+        vertical-align: top; /* optional: align top for multi-line */
+    }
+
+.div-block-centered {
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #cce0f2;
+    color: #0066B2;
+    border-radius: 12px; /* Rounded corners */
+    padding: 20px;
+    display: flex;
+    gap: 10px; /**/ /* Adds spacing between all items */
+    flex-direction: column;
+    align-items: center; /* horizontal center in column layout */
+    justify-content: center; /* vertical center */
+    text-align: center;
+}
+
+.grid-wrapper {
+    /*padding: 10px;*/
+    overflow: hidden; /* Important to clip the corners */
+    border-radius: 12px; /*Rounded corners */
+    background-color: #cce0f2;
+    color: #0066B2;
+    width: 100%;
+}
+
+.quickgrid {
+    width: 100%;
+    color: #0066B2;
+    border-collapse: separate; /* Allows rounding */
+    border-spacing: 0; /* Removes inner gaps */
+    table-layout: fixed; /*Force columns to respect width */
+    align-items: center; /* vertically center */
+    justify-content: center; /* horizontally center */
+}
+
+    .quickgrid thead {
+        /*padding: 1px;*/
+        color: #0066B2;
+        white-space: normal; /* allow wrapping */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: break-word;
+        vertical-align: top; /*optional: align top for multi-line */
+        align-items: center; /* vertically center */
+        justify-content: center;
+        text-wrap-style: pretty;
+    }
+
+    .quickgrid th,
+    .quickgrid td {
+        padding: 1px;
+        color: #0066B2;
+        white-space: normal; /* allow wrapping */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: break-word;
+        vertical-align: top; /* optional: align top for multi-line */
+        align-items: center; /* vertically center */
+        justify-content: left;
+    }
+
+    .quickgrid button {
+        border-radius: 6px; /* Rounded corners */
+        background-color: whitesmoke;
+        color: #0066B2;
+        border-style: none;
+        white-space: normal; /* allow wrapping */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: break-word;
+        vertical-align: top; /* optional: align top for multi-line */
+    }
+
+/*phone size*/
+@media (max-width: 575.98px) { 
+
+    .input-block {
+        /*width: 100%;*/
+        /*border-radius: 6px;*/ /* Rounded corners */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem; /* optional: adds space between the items */
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 2px;
+    }
+
+    .div-block {
+        box-sizing: border-box;
+        background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 20px;
+        display: flex;
+        gap: 10px; /**/ /* Adds spacing between all items */
+        flex-direction: column;
+        align-items: center; /* horizontal center in column layout */
+        justify-content: center; /* vertical center */
+        text-align: center;
+    }
+
+        .div-block button {
+            border-radius: 6px; /* Rounded corners */
+            background-color: whitesmoke;
+            color: #0066B2;
+            border-style: none;
+            white-space: normal; /* allow wrapping */
+            word-wrap: break-word; /* break long words if needed */
+            overflow-wrap: break-word;
+            vertical-align: top; /* optional: align top for multi-line */
+        }
+
+    .map-frame-for-showad {
+        display: flex;
+        /*justify-content: center;*/ /* Horizontal centering */
+        /*align-items: center;*/ /* Vertical centering */
+        /*position: relative;*/
+        border-radius: 12px; /* Rounded corners */
+        width: 90%;
+    }
+
+    .card {
+        background-color: #cce0f2;
+        border: 1px ridge #0066B2;
+        color: #0066B2;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        width: 90%;
+        padding: 5px;
+        margin: 5px;
+        display: flex;
+    }
+
+    .card-container-for-grid {
+        display: flex;
+        background-color: whitesmoke;
+        flex-wrap: wrap;
+        border-radius: 12px; /* Rounded corners */
+        justify-content: space-around;
+        gap: 10px;
+    }
+
+        .card-container-for-grid button {
+            background-color: #0066B2;
+            color: #FFFFFF;
+            margin: 5px;
+            border-radius: 6px; /* Rounded corners */
+            border-style: none;
+            white-space: normal; /* allow wrapping */
+            word-wrap: break-word; /* break long words if needed */
+            overflow-wrap: break-word;
+            text-align: center;
+        }
+
+
+    .grid-wrapper {
+        display: none;
+    }
+
+    .quickgrid {
+        display: none;
+    }
+
+
+
+    .row-chat-laptop {
+        display: none;
+    }
+
+    .row-chat-mobile {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        gap: 10px; /* Adds spacing between all items */
+    }
+
+    .col-all-convos {
+        height: 100%;
+        width: 100%;
+        border-radius: 12px; /* Rounded corners */
+        background-color: #0066B2;
+        color: whitesmoke;
+        gap: 10px; /* Adds spacing between all items */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        /*max-height: 80vh;*/
+        overflow-y: auto;
+    }
+
+    .convo-preview {
+        box-sizing: border-box;
+        background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 10px;
+        display: flex;
+        gap: 10px; /**/ /* Adds spacing between all items */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+        white-space: nowrap; /* Prevents text from wrapping */
+        overflow: hidden; /* Hides the overflowing text */
+        text-overflow: ellipsis; /* Shows "..." when text is cut off */
+        text-decoration: none;
+    }
+
+    .convo-other-user,
+    .convo-last-message,
+    .convo-timestamp {
+        width: 80%;
+        white-space: nowrap; /* Prevents text from wrapping */
+        overflow: hidden; /* Hides the overflowing text */
+        text-overflow: ellipsis; /* Shows "..." when text is cut off */
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .convo-timestamp {
+        font-size: 10px;
+    }
+
+    .chat-back-button {
+        width: 95%;
+        height: 30px;
+        background-color: #0066B2;
+        color: whitesmoke;
+        margin: 5px;
+        border-radius: 6px; /* Rounded corners */
+        border-style: none;
+        font-size: 10px;
+    }
+
+    .col-chat {
+        width: 95%;
+        border-radius: 12px; /* Rounded corners */
+        background-color: #0066B2;
+        color: whitesmoke;
+        gap: 10px; /* Adds spacing between all items */
+        /*position: relative;*/
+        /*max-height: 80vh;*/
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        /*padding: 10px;*/
+    }
+
+    .actions-for-chat {
+        box-sizing: border-box;
+        height: max-content;
+        background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 5px;
+        position: sticky;
+        top: 5px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+        grid-template-rows: auto auto; /* first row auto height, second row auto height */
+        align-items: baseline;
+        font-size: 10px;
+    }
+
+    .ad-description {
+        grid-column: span 3; /* make it stretch across all 3 columns */
+        text-align: center;
+    }
+
+    .actions-for-chat button {
+        background-color: #0066B2;
+        color: whitesmoke;
+        margin: 5px;
+        border-radius: 6px; /* Rounded corners */
+        border-style: none;
+        font-size: 10px;
+    }
+
+
+    .chat-send {
+        box-sizing: border-box;
+        width: 100%;
+        background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 5px;
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        justify-items: center;
+        position: sticky;
+        bottom: 5px;
+        height: max-content;
+    }
+
+    .chat-input {
+        border-radius: 6px; /* Rounded corners */
+        margin: 5px;
+    }
+
+    .chat-button {
+        background-color: #0066B2;
+        width: max-content;
+        color: whitesmoke;
+        margin: 5px;
+        border-radius: 6px; /* Rounded corners */
+        border-style: none;
+    }
+
+    .message-block {
+        height: 500px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        /*padding: 10px;*/
+        width: 95%;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message-right {
+        width: 60%;
+        align-self: flex-end; /* Stick to right side */
+        margin-left: auto; /* push rest of space to the left */
+        margin-right: 0; /* no extra space on right */
+        background-color: whitesmoke;
+        color: #0066B2;
+        margin: 5px;
+        border-radius: 6px; /* Rounded corners */
+        height: auto; /* grow naturally */
+        max-height: none; /* no forced cap */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: anywhere; /* break words anywhere if very long */
+        padding: 5px;
+    }
+
+    .message-left {
+        width: 60%;
+        align-self: flex-start; /* Stick to left side */
+        margin-left: 0; /* no extra space on left */
+        margin-right: auto; /* push rest of space to the right */
+        background-color: whitesmoke;
+        color: #0066B2;
+        margin: 5px;
+        border-radius: 6px; /* Rounded corners */
+        height: auto; /* grow naturally */
+        max-height: none; /* no forced cap */
+        word-wrap: break-word; /* break long words if needed */
+        overflow-wrap: anywhere; /* break words anywhere if very long */
+        padding: 5px;
+    }
+
+    .from-user {
+        color: #0066B2;
+        text-align: left;
+        font-size: 10px;
+    }
+
+    .message {
+        color: #0066B2;
+        text-align: left;
+    }
+
+    .timestamp {
+        color: #0066B2;
+        font-size: 10px;
+        text-align: right;
+    }
+}
+
+/*laptop size*/
+@media (min-width: 575.98px) { 
+    .card-container-for-grid {
+        display: none;
+    }
+
+    .chat-back-button {
+        display: none;
+    }
+
+    .row-chat-laptop {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 30% 70%;
+        padding: 20px;
+        gap: 20px; /* Adds spacing between all items */
+    }
+
+    .row-chat-mobile {
+        display: none;
+    }
+
+    .col-all-convos {
+        height: 100%;
+        border-radius: 12px; /* Rounded corners */
+        background-color: #0066B2;
+        color: whitesmoke;
+        gap: 10px; /* Adds spacing between all items */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .convo-preview {
+        box-sizing: border-box;
+        background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 20px;
+        display: flex;
+        gap: 10px; /**/ /* Adds spacing between all items */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+        white-space: nowrap; /* Prevents text from wrapping */
+        overflow: hidden; /* Hides the overflowing text */
+        text-overflow: ellipsis; /* Shows "..." when text is cut off */
+        text-decoration: none;
+    }
+
+    .convo-other-user,
+    .convo-last-message,
+    .convo-timestamp {
+        width: 80%;
+        white-space: nowrap; /* Prevents text from wrapping */
+        overflow: hidden; /* Hides the overflowing text */
+        text-overflow: ellipsis; /* Shows "..." when text is cut off */
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .convo-timestamp {
+        font-size: 10px;
+    }
+
+
+
+    .col-chat {
+        height: 100%;
+        border-radius: 12px; /* Rounded corners */
+        background-color: #0066B2;
+        color: whitesmoke;
+        gap: 10px; /* Adds spacing between all items */
+        position: relative;
+        max-height: 80vh;
+        display: grid;
+        grid-template-rows: 10% 80% 10%;
+    }
+
+    .actions-for-chat {
+        box-sizing: border-box;
+        height: max-content;
+        background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 5px;
+        position: sticky;
+        top: 50px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+        grid-template-rows: auto auto; /* first row auto height, second row auto height */
+        align-items: baseline;
+        font-size: 10px;
+    }
+
+    .ad-description {
+        grid-column: span 3; /* make it stretch across all 3 columns */
+        text-align: center;
+    }
+
+    .actions-for-chat button {
+        background-color: #0066B2;
+        color: whitesmoke;
+        margin: 5px;
+        border-radius: 6px; /* Rounded corners */
+        border-style: none;
+        font-size: 10px;
+    }
+
+
+    .chat-send {
+        box-sizing: border-box;
+        width: 100%;
+        background-color: #cce0f2;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 10px;
+        display: grid;
+        grid-template-columns: 80% 20%;
+        align-items: baseline;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+    .chat-input {
+        border-radius: 6px; /* Rounded corners */
+    }
+
+    .chat-button {
+        background-color: #0066B2;
+        color: whitesmoke;
+        margin: 5px;
+        border-radius: 6px; /* Rounded corners */
+        border-style: none;
+    }
+
+    .message-block {
+        height: 100%;
+        padding: 20px;
+        margin-bottom: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message-right {
+        width: 60%;
+        box-sizing: border-box;
+        background-color: whitesmoke;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-self: flex-end; /* Stick to right side */
+        margin-left: auto; /* push rest of space to the left */
+        margin-right: 0; /* no extra space on right */
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .message-left {
+        width: 60%;
+        box-sizing: border-box;
+        background-color: whitesmoke;
+        color: #0066B2;
+        border-radius: 12px; /* Rounded corners */
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-self: flex-start; /* Stick to left side */
+        margin-left: 0; /* no extra space on left */
+        margin-right: auto; /* push rest of space to the right */
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .from-user {
+        color: #0066B2;
+        text-align: left;
+        font-size: 10px;
+    }
+
+    .message {
+        color: #0066B2;
+        text-align: left;
+    }
+
+    .timestamp {
+        color: #0066B2;
+        font-size: 10px;
+        text-align: right;
+    }
+}

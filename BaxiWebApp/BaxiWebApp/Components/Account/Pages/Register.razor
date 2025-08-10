@@ -22,78 +22,71 @@
 @using System.Globalization;
 @using Components.Pages.Res;
 
-<PageTitle>Register</PageTitle>
+@* <PageTitle>Register</PageTitle>
 
-<h1>Register</h1>
+<h1>Register</h1> *@
 
 <div class="row">
-	<div class="col-md-4">
+	<div class="col-md-8">
 		<StatusMessage Message="@Message" />
-		<EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
+		<EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register" class="div-block">
 			<DataAnnotationsValidator />
 			<h2>@localizer["Create_a_new_account"]</h2>
 			<hr />
 			<ValidationSummary class="text-danger" role="alert" />
-			<div class="form-floating mb-3">
-				<InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder=@localizer["name_example_com"] />
+			<div class="input-block">
 				<label for="email">@localizer["Email_address"]</label>
+				<InputText @bind-Value="Input.Email" class="input" autocomplete="username" aria-required="true" placeholder=@localizer["name_example_com"] />
 				<ValidationMessage For="() => Input.Email" class="text-danger" />
 			</div>
-			<div class="form-floating mb-3">
-				<InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder=@localizer["Password"] />
+			<div class="input-block">
 				<label for="password">@localizer["Password"]</label>
+				<InputText type="password" @bind-Value="Input.Password" class="input" autocomplete="new-password" aria-required="true" placeholder=@localizer["Password"] />
 				<ValidationMessage For="() => Input.Password" class="text-danger" />
 			</div>
-			<div class="form-floating mb-3">
-				<InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder=@localizer["Password"] />
+			<div class="input-block">
 				<label for="confirm-password">@localizer["Confirm_password"]</label>
+				<InputText type="password" @bind-Value="Input.ConfirmPassword" class="input" autocomplete="new-password" aria-required="true" placeholder=@localizer["Password"] />
 				<ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
 			</div>
-			<div class="form-floating mb-3">
-				<InputText @bind-Value="Input.FirstName" class="form-control" autocomplete="firstName" aria-required="true" placeholder=@localizer["First_name"] />
+			<div class="input-block">
 				<label for="First name">@localizer["First_name"]</label>
+				<InputText @bind-Value="Input.FirstName" class="input" autocomplete="firstName" aria-required="true" placeholder=@localizer["First_name"] />
 			</div>
-			<div class="form-floating mb-3">
-				<InputText @bind-Value="Input.LastName" class="form-control" autocomplete="lastName" aria-required="true" placeholder=@localizer["Last_name"] />
+			<div class="input-block">
 				<label for="Last name">@localizer["Last_name"]</label>
+				<InputText @bind-Value="Input.LastName" class="input" autocomplete="lastName" aria-required="true" placeholder=@localizer["Last_name"] />
 			</div>
-			<div class="form-floating mb-3">
-				@localizer["Department"]
-				<br>
-				<InputSelect @bind-Value="Input.Department" id="department">
+			<div class="input-block">
+				<label for="Department">@localizer["Department"]</label>
+				<InputSelect @bind-Value="Input.Department" id="department" class="input">
 					@foreach (var value in Enum.GetValues<Department>())
 					{
 						<option value="@value">@localizer[@value.ToString()]</option>
 					}
 				</InputSelect>
-				<label for="Department"></label>
 			</div>
-			<div class="form-floating mb-3">
-				@localizer["Preferred_language"]
-				<br>
-				<InputSelect @bind-Value="Input.PreferredLanguage" id="preferredLanguage">
+			<div class="input-block">
+				<label for="preferredLanguage">@localizer["Preferred_language"]</label>
+				<InputSelect @bind-Value="Input.PreferredLanguage" id="preferredLanguage" class="input">
 					@foreach (var value in Enum.GetValues<PreferredLanguage>())
 					{
 						<option value="@value">@localizer[@value.ToString()]</option>
 					}
 				</InputSelect>
-				<label for="preferredLanguage"></label>
 			</div>
-			<div class="form-floating mb-3">
-				@localizer["Contact"] (@localizer["Not_mandatory_field"])
-				<br>
-				<InputText @bind-Value="Input.Contact" class="form-control" autocomplete="contact" aria-required="true" placeholder=@localizer["Contact"] />
-				<label for="Contact"></label>
+			<div class="input-block">
+				<label for="Contact">@localizer["Contact"] (@localizer["Not_mandatory_field"])</label>
+				<InputText @bind-Value="Input.Contact" class="input" autocomplete="contact" aria-required="true" placeholder=@localizer["Contact"] />
 			</div>
 
 
-			<div class="form-floating mb-3">
+			<div class="input-block">
 				@localizer["Below_you_can_add_some_additional_data_that_will_make_your_life_easier_when_creating_ads_in_the_application_this_is_not_mandatory_and_can_be_always_changed_deleted_in_your_profile"]
-				<br>
-				<br>
-				@localizer["I_am_a"]
-				<br>
-				<InputSelect @bind-Value="Input.DefaultAdType" id="DefaultAdType">
+			</div>
+			<div class="input-block">
+				<label for="Ad Type">@localizer["I_am_a"]</label>
+				<InputSelect @bind-Value="Input.DefaultAdType" id="DefaultAdType" class="input">
 					@foreach (var value in Enum.GetValues<AdType>())
 					{
 						if (value == AdType.SelectAll)
@@ -106,19 +99,17 @@
 						}
 					}
 				</InputSelect>
-				<label for="Ad Type"></label>
 			</div>
-			<div class="form-floating mb-3">
-				@localizer["Default_pick_up_drop_off_location"]
+			<div class="input-block">
 				@localizer["You_can_add_an_address_or_location_where_you_can_usually_pick_up_drop_off_passengers_where_you_want_to_be_picked_up"]
-				<br>
-				<InputText @bind-Value="Input.DefaultPickUpAddress" class="form-control" autocomplete="Default Address" aria-required="true" placeholder=@localizer["From/to_this_address"] />
-				<label for="DefaultPickUpAddress"></label>
 			</div>
-			<div class="form-group">
-				<br>
+			<div class="input-block">
+				<label for="DefaultPickUpAddress">@localizer["Default_pick_up_drop_off_location"]</label>
+				<InputText @bind-Value="Input.DefaultPickUpAddress" class="input" autocomplete="Default Address" aria-required="true" placeholder=@localizer["From/to_this_address"] />
+			</div>
+			<div class="input-block">
 				<label for="NumberOfSeats">@localizer["Number_of_seats"]</label>
-				<InputSelect @bind-Value="Input.DefaultNumberOfSeats" class="form-control" id="DefaultNumberOfSeats">
+				<InputSelect @bind-Value="Input.DefaultNumberOfSeats" class="input" id="DefaultNumberOfSeats">
 					<option value="1">1</option>
 					<option value="2">2</option>
 					<option value="3">3</option>
@@ -126,29 +117,28 @@
 					<option value="5">5</option>
 					<option value="6">6</option>
 				</InputSelect>
-				<br>
 			</div>
-			<div class="form-floating mb-3">
-				@localizer["Specific_requests"]
+			<div class="input-block">
 				@localizer["If_you_have_the_same_requests_regarding_the_ride_such_as_no_smokers_please_or_no_loud_music_etc_please_write_them_here"]
-				<br>
-				<InputText @bind-Value="Input.DefaultSpecificRequests" class="form-control" autocomplete="Default Requests" aria-required="true" placeholder=@localizer["Specific_requests"] />
-				<label for="DefaultSpecificRequests"></label>
 			</div>
-			<div class="form-floating mb-3">
-				@localizer["Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", @Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS, @Constants.TIME_LIMIT_FOR_NOTIFICATIONS]
-				<InputCheckbox @bind-Value="Input.notificationsOn" />
+			<div class="input-block">
+				<label for="DefaultSpecificRequests">@localizer["Specific_requests"]</label>
+				<InputText @bind-Value="Input.DefaultSpecificRequests" class="input" autocomplete="Default Requests" aria-required="true" placeholder=@localizer["Specific_requests"] />
 			</div>
-			<button type="submit" class="w-100 btn btn-lg btn-primary">@localizer["Register"]</button>
+			<div class="input-block">
+				<label for="notificationsOn">@localizer["Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", @Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS, @Constants.TIME_LIMIT_FOR_NOTIFICATIONS]</label>
+				<InputCheckbox @bind-Value="Input.notificationsOn" class="input" />
+			</div>
+			<button type="submit" class="div-block button">@localizer["Register"]</button>
 		</EditForm>
 	</div>
-	<div class="col-md-6 col-md-offset-2">
+	@* <div class="col-md-6 col-md-offset-2">
 		<section>
 			<h3>@localizer["Use_another_service_to_register"]</h3>
 			<hr />
 			<ExternalLoginPicker />
 		</section>
-	</div>
+	</div> *@
 </div>
 
 

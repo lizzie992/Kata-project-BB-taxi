@@ -701,4 +701,13 @@ Or your routes will meet somewhere on the way and could be convenient for both o
   <data name="Back_to_the_chat" xml:space="preserve">
     <value>Back to the chat</value>
   </data>
+  <data name="Change_password" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="Old_password" xml:space="preserve">
+    <value>Old password</value>
+  </data>
+  <data name="New_password" xml:space="preserve">
+    <value>New password</value>
+  </data>
 </root>

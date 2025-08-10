@@ -18,34 +18,33 @@
 
 <PageTitle>@localizer["Log_in"]</PageTitle>
 
-<h1>Log in</h1>
 <div class="row">
-	<div class="col-md-4">
+	<div class="col-12">
 		<section>
 			<StatusMessage Message=@errorMessage />
-			<EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
+			<EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login" class="div-block">
 				<DataAnnotationsValidator />
 				<h2>@localizer["Use_a_local_account_to_log_in"]</h2>
 				<hr />
 				<ValidationSummary class="text-danger" role="alert" />
-				<div class="form-floating mb-3">
-					<InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder=@localizer["email_example"] />
-					<label for="email" class="form-label">@localizer["Email_address"]</label>
+				<div class="input-block">
+					<label for="email" class="input">@localizer["Email_address"]</label>
+					<InputText @bind-Value="Input.Email" class="input" autocomplete="username" aria-required="true" placeholder=@localizer["email_example"] />
 					<ValidationMessage For="() => Input.Email" class="text-danger" />
 				</div>
-				<div class="form-floating mb-3">
-					<InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder=@localizer["Password"] />
-					<label for="password" class="form-label">@localizer["Password"]</label>
+				<div class="input-block">
+					<label for="password" class="input">@localizer["Password"]</label>
+					<InputText type="password" @bind-Value="Input.Password" class="input" autocomplete="current-password" aria-required="true" placeholder=@localizer["Password"] />
 					<ValidationMessage For="() => Input.Password" class="text-danger" />
 				</div>
-				<div class="checkbox mb-3">
-					<label class="form-label">
-						<InputCheckbox @bind-Value="Input.RememberMe" class="darker-border-checkbox form-check-input" />
+				<div class="input-block">
+					<label class="input">
 						@localizer["Remember_me"]
+						<InputCheckbox @bind-Value="Input.RememberMe" class="darker-border-checkbox form-check-input" />
 					</label>
 				</div>
-				<div>
-					<button type="submit" class="w-100 btn btn-lg btn-primary">@localizer["Log_in"]</button>
+				<div class="input-block">
+					<button type="submit" class="div-block button" style="height: auto">@localizer["Log_in"]</button>
 				</div>
 				<div>
 					<p>
@@ -61,13 +60,13 @@
 			</EditForm>
 		</section>
 	</div>
-	<div class="col-md-6 col-md-offset-2">
+@* 	<div class="col-md-6 col-md-offset-2">
 		<section>
 			<h3>@localizer["Use_another_service_to_log_in"]</h3>
 			<hr />
 			<ExternalLoginPicker />
 		</section>
-	</div>
+	</div> *@
 </div>
 
 

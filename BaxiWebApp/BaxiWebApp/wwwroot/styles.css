@@ -13,7 +13,9 @@ body {
     width: 100%;
 }
 
-h1 {
+h1,
+h2,
+h3{
     color: #0066B2;
 }
 
@@ -555,7 +557,6 @@ h1 {
     }
 }
 
-
 @media (min-width: 575.98px) { /*laptop size*/
     .card-container-for-grid {
         display: none;
@@ -754,3 +755,5 @@ h1 {
         text-align: right;
     }
 }
+
+
