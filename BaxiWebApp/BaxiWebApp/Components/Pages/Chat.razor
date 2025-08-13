@@ -20,7 +20,7 @@
 @using System.Linq;
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Resources> localizer
-
+@inject IJSRuntime JSRuntime;
 
 <body>
 	@* desktop mode *@
@@ -54,8 +54,10 @@
 				}
 			</div>
 		</div>
+
 		<div class="col">
 			<div class="col-chat">
+
 				@if (CurrentConversation is null)
 				{
 					<div style="text-align: center">@localizer["Click_on_a_chat"]</div>
@@ -155,7 +157,7 @@
 						<button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button>
 						<button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button>
 					</div>
-					<div class="message-block">
+					<div class="message-block-phone">
 						@foreach (Message M in CurrentConversation.messages)
 						{
 							if (currentlyLoggedInUser == M.fromUser)
@@ -191,8 +193,6 @@
 			</div>
 		}
 	</div>
-
-
 </body>
 
 
@@ -233,8 +233,8 @@
 			</div>
 		</div>
 	</div>
-
 }
+
 
 
 
@@ -262,13 +262,21 @@
 		});
 	}
 
+
+
 	protected override async Task OnAfterRenderAsync(bool firstrender)
 	{
 		if (firstrender)
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
 		}
+		if (CurrentConversation is not null)
+		{
+			await JSRuntime.InvokeVoidAsync("scrollToBottom");
+			await JSRuntime.InvokeVoidAsync("scrollToBottomPhone");
+		}
 	}
+
 
 
 	/// <summary>
