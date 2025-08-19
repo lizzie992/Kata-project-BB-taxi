@@ -761,4 +761,29 @@ http://localhost:5049/ShowAd/{3}</value>
   <data name="An_ad_was_just_reported_to_you" xml:space="preserve">
     <value>An ad was just reported to you</value>
   </data>
+  <data name="You_received_a_warning_on_the_baxi_app" xml:space="preserve">
+    <value>You received a warning on the Baxi app!</value>
+  </data>
+  <data name="Dear_{0}_you_have_received_a_warning_from_one_of_our_admins_reason_for_the_warning_is_{1}_your_current_number_of_warnings_is_{2}_please_be_aware_that_as_soon_as_you_reach_{3}_warnings_your_account_will_be_automatically_inactivated" xml:space="preserve">
+    <value>Dear {0} 
+You have received a warning from one of our admins. 
+Reason for the warning is:  {1} 
+Your current number of warnings is: {2} 
+Please be aware that as soon as you reach {3} warnings your account will be automatically inactivated!</value>
+  </data>
+  <data name="You_have_reached_3_warnings" xml:space="preserve">
+    <value>You have reached 3 warnings!</value>
+  </data>
+  <data name="Your_baxi_account_has_been_deactivated" xml:space="preserve">
+    <value>Your Baxi accout has been deactivated!</value>
+  </data>
+  <data name="Dear_{0}_your_account_has_been_deactivated_the_reason_is_{1}_please_contact_the_admin_team_about_the_possible_reactivation" xml:space="preserve">
+    <value>Dear {0} Your account has been deactivated! The reason is: {1} Please contact the admin team about the possible reactivation!</value>
+  </data>
+  <data name="Your_baxi_account_has_been_reactivated" xml:space="preserve">
+    <value>Your Baxi accout has been reactivated!</value>
+  </data>
+  <data name="Dear_{0}_your_account_has_been_reactivated_you_can_now_use_all_functions_again" xml:space="preserve">
+    <value>Dear {0} Your account has been reactivated! You can now use all functions again.</value>
+  </data>
 </root>

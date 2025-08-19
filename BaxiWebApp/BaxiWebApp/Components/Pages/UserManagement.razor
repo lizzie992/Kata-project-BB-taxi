@@ -439,7 +439,19 @@
 	/// <param name="reasonForWarning">String</param>
 	public void giveUserAWarning(User user, string reasonForWarning)
 	{
-		DataService.giveUserAWarning(user, reasonForWarning);
+		user.NumberOfWarnings++;
+		context.Update(user);
+		context.SaveChanges();
+		string emailAddress = "gulyaskata99@gmail.com";
+		string subject = localizer["You_received_a_warning_on_the_baxi_app"];
+		string text = localizer["Dear_{0}_you_have_received_a_warning_from_one_of_our_admins_reason_for_the_warning_is_{1}_your_current_number_of_warnings_is_{2}_please_be_aware_that_as_soon_as_you_reach_{3}_warnings_your_account_will_be_automatically_inactivated", DataService.showUserNameWithStatus(user), reasonForWarning, user.NumberOfWarnings, Constants.MAX_NUMBER_OF_WARNINGS];
+		DataService.sendEmail(emailAddress, subject, text);
+		if (user.NumberOfWarnings == Constants.MAX_NUMBER_OF_WARNINGS)
+		{
+			string reason = localizer["You_have_reached_3_warnings"];
+			deactivateUser(user, reason);
+			context.SaveChanges();
+		}
 		reasonForWarning = "";
 		closePopUpForWarning();
 		grid.RefreshDataAsync();
@@ -452,19 +464,30 @@
 	/// <param name="reasonForDeactivating">String</param>
 	public void deactivateUser(User user, string reasonForDeactivating)
 	{
-		DataService.deactivateUser(user, reasonForDeactivating);
-		reasonForDeactivating = "";
+		user.isActive = false;
+		context.Update(user);
+		context.SaveChanges();
+		string text = localizer["Dear_{0}_your_account_has_been_deactivated_the_reason_is_{1}_please_contact_the_admin_team_about_the_possible_reactivation", DataService.showUserNameWithStatus(user), reasonForDeactivating];
+		string emailAddress = "gulyaskata99@gmail.com";
+		string subject = localizer["Your_baxi_account_has_been_deactivated"];
+		DataService.sendEmail(emailAddress, subject, text);
 		closePopUpForDeactivatingUser();
 		grid.RefreshDataAsync();
 	}
 
 	/// <summary>
 	/// Triggers the database method to reactivate selected user
-	/// </summary>
-	/// <param name="user">User</param>
+	/// </sumMAX_NUMBER_OF_WARNINGSname="user">User</param>
 	public void reactivateUser(User user)
 	{
-		DataService.reactivateUser(user);
+		user.isActive = true;
+		user.NumberOfWarnings = 0;
+		context.Update(user);
+		context.SaveChanges();
+		string text = localizer["Dear_{0}_your_account_has_been_reactivated_you_can_now_use_all_functions_again", DataService.showUserNameWithStatus(user)];
+		string subject = localizer["Your_baxi_account_has_been_reactivated"];
+		string emailAddress = "gulyaskata99@gmail.com";
+		DataService.sendEmail(emailAddress, subject, text);
 		closePopUpForReactivatingUser();
 		grid.RefreshDataAsync();
 	}

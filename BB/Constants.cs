@@ -49,5 +49,8 @@ namespace BB
         public static int DISTANCE_LIMIT_FOR_NOTIFICATIONS = 5000; //METERS, NOT KILOMETERS, this is the limit of how many meters we calculate the notificaions for
         public static int TIME_LIMIT_FOR_NOTIFICATIONS = 1; //HOURS this is to define what is the max difference in time between the 2 ads so that they can be relevant to each other
         public static int TIME_LIMIT_FOR_MATCHING_ROUTE = 2;
+
+        public static int MAX_NUMBER_OF_WARNINGS = 3;
+
     }
 }

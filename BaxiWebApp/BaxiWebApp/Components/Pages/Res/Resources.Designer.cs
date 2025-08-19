@@ -449,6 +449,40 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dear {0} 
+        ///You have received a warning from one of our admins. 
+        ///Reason for the warning is:  {1} 
+        ///Your current number of warnings is: {2} 
+        ///Please be aware that as soon as you reach {3} warnings your account will be automatically inactivated!.
+        /// </summary>
+        public static string Dear__0__you_have_received_a_warning_from_one_of_our_admins_reason_for_the_warning_is__1__your_current_number_of_warnings_is__2__please_be_aware_that_as_soon_as_you_reach__3__warnings_your_account_will_be_automatically_inactivated {
+            get {
+                return ResourceManager.GetString("Dear_{0}_you_have_received_a_warning_from_one_of_our_admins_reason_for_the_warnin" +
+                        "g_is_{1}_your_current_number_of_warnings_is_{2}_please_be_aware_that_as_soon_as_" +
+                        "you_reach_{3}_warnings_your_account_will_be_automatically_inactivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dear {0} Your account has been deactivated! The reason is: {1} Please contact the admin team about the possible reactivation!.
+        /// </summary>
+        public static string Dear__0__your_account_has_been_deactivated_the_reason_is__1__please_contact_the_admin_team_about_the_possible_reactivation {
+            get {
+                return ResourceManager.GetString("Dear_{0}_your_account_has_been_deactivated_the_reason_is_{1}_please_contact_the_a" +
+                        "dmin_team_about_the_possible_reactivation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dear {0} Your account has been reactivated! You can now use all functions again..
+        /// </summary>
+        public static string Dear__0__your_account_has_been_reactivated_you_can_now_use_all_functions_again {
+            get {
+                return ResourceManager.GetString("Dear_{0}_your_account_has_been_reactivated_you_can_now_use_all_functions_again", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dear {0}
         ///Your ad has been removed by the admins for reasons: {1}
         ///
@@ -1873,6 +1907,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have reached 3 warnings!.
+        /// </summary>
+        public static string You_have_reached_3_warnings {
+            get {
+                return ResourceManager.GetString("You_have_reached_3_warnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have to select Driver or Passenger!.
         /// </summary>
         public static string You_have_to_select_driver_or_passenger {
@@ -1897,6 +1940,33 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string You_received_a_new_message {
             get {
                 return ResourceManager.GetString("You_received_a_new_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You received a warning on the Baxi app!.
+        /// </summary>
+        public static string You_received_a_warning_on_the_baxi_app {
+            get {
+                return ResourceManager.GetString("You_received_a_warning_on_the_baxi_app", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your Baxi accout has been deactivated!.
+        /// </summary>
+        public static string Your_baxi_account_has_been_deactivated {
+            get {
+                return ResourceManager.GetString("Your_baxi_account_has_been_deactivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your Baxi accout has been reactivated!.
+        /// </summary>
+        public static string Your_baxi_account_has_been_reactivated {
+            get {
+                return ResourceManager.GetString("Your_baxi_account_has_been_reactivated", resourceCulture);
             }
         }
         
