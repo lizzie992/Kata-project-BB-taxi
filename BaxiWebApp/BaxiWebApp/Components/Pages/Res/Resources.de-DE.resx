@@ -719,4 +719,19 @@ Schön, dass Sie dabei sind!</value>
   <data name="You_received_a_new_message" xml:space="preserve">
     <value>Sie haben eine neue Nachricht erhalten!</value>
   </data>
+  <data name="Dear_{0}_your_ad_has_been_removed_by_the_admins_for_reasons_{1}_ad_ad_type_{2}_ad_direction_{3}_address_{4}_on_{5}_available_seats_{6}_any_specific_requests_{7}" xml:space="preserve">
+    <value>Sehr geehrter {0}
+Ihre Anzeige wurde von den Administratoren aus folgenden Gründen entfernt: {1}
+
+Anzeige:
+Anzeigetyp: {2}
+Anzeigenrichtung: {3}
+Adresse: {4}
+Am {5}
+Verfügbare Plätze: {6}
+Besondere Wünsche: {7}</value>
+  </data>
+  <data name="Your_Baxi_ad_is_deleted" xml:space="preserve">
+    <value>Ihre Baxi-Anzeige wurde gelöscht!</value>
+  </data>
 </root>

@@ -415,6 +415,25 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dear {0}
+        ///Your ad has been removed by the admins for reasons: {1}
+        ///
+        ///Ad:
+        ///Ad type: {2}
+        ///Ad Direction: {3}
+        ///Address: {4}
+        ///On {5}
+        ///Available seats: {6}
+        ///Any specific requests: {7}.
+        /// </summary>
+        public static string Dear__0__your_ad_has_been_removed_by_the_admins_for_reasons__1__ad_ad_type__2__ad_direction__3__address__4__on__5__available_seats__6__any_specific_requests__7_ {
+            get {
+                return ResourceManager.GetString("Dear_{0}_your_ad_has_been_removed_by_the_admins_for_reasons_{1}_ad_ad_type_{2}_ad" +
+                        "_direction_{3}_address_{4}_on_{5}_available_seats_{6}_any_specific_requests_{7}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default ad type:.
         /// </summary>
         public static string Default_ad_type {
@@ -1815,6 +1834,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string You_received_a_new_message {
             get {
                 return ResourceManager.GetString("You_received_a_new_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your Baxi ad is deleted!.
+        /// </summary>
+        public static string Your_Baxi_ad_is_deleted {
+            get {
+                return ResourceManager.GetString("Your_Baxi_ad_is_deleted", resourceCulture);
             }
         }
         

@@ -402,9 +402,9 @@
 	/// <param name="reasonForDeleting">string</param>
 	public void deleteAd(Ad ad, string reasonForDeleting)
 	{
-		string text = $"Dear {DataService.showUserNameWithStatus(ad.AdOwner)}\r\nYour ad has been removed by the admins for reasons: {reasonForDeleting}\r\n\r\nAd:\r\nAd type: {@localizer[@ad.AdType.ToString()]}\r\nAd Direction: {@localizer[ad.AdDirection.ToString()]}\r\nAddress: {ad.PickUpDropOffLocation}\r\n On {ad.PickUpDateAndTime.ToString("g")}\r\n Available seats: {ad.NumberOfSeats}\r\n Any speicifc requests: {ad.SpecificRequests}\r\n)";
+		string text = localizer["Dear_{0}_your_ad_has_been_removed_by_the_admins_for_reasons_{1}_ad_ad_type_{2}_ad_direction_{3}_address_{4}_on_{5}_available_seats_{6}_any_specific_requests_{7}", DataService.showUserNameWithStatus(ad.AdOwner), reasonForDeleting, localizer[@ad.AdType.ToString()], localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats, ad.SpecificRequests];
 		string emailAddress = "gulyaskata99@gmail.com";
-		string subject = "Your Baxi ad is deleted!";
+		string subject = localizer["Your_Baxi_ad_is_deleted"];
 		DataService.sendEmail(emailAddress, subject, text);
 		context.Remove(ad);
 		context.SaveChanges();

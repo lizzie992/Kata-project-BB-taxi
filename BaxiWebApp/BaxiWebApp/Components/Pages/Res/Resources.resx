@@ -716,4 +716,19 @@ Or your routes will meet somewhere on the way and could be convenient for both o
   <data name="You_received_a_new_message" xml:space="preserve">
     <value>You received a new message!</value>
   </data>
+  <data name="Dear_{0}_your_ad_has_been_removed_by_the_admins_for_reasons_{1}_ad_ad_type_{2}_ad_direction_{3}_address_{4}_on_{5}_available_seats_{6}_any_specific_requests_{7}" xml:space="preserve">
+    <value>Dear {0}
+Your ad has been removed by the admins for reasons: {1}
+
+Ad:
+Ad type: {2}
+Ad Direction: {3}
+Address: {4}
+On {5}
+Available seats: {6}
+Any specific requests: {7}</value>
+  </data>
+  <data name="Your_Baxi_ad_is_deleted" xml:space="preserve">
+    <value>Your Baxi ad is deleted!</value>
+  </data>
 </root>
