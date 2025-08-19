@@ -744,4 +744,26 @@ Besondere Wünsche: {7}</value>
 Nachrichten:
 {2}</value>
   </data>
+  <data name="Ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}" xml:space="preserve">
+    <value>Anzeigeninhaber: {0}
+Anzeigetyp: {1}
+Anzeigenrichtung: {2}
+Adresse: {3}
+Abholdatum und -uhrzeit: {4}
+Anzahl der Plätze: {5}
+Besondere Wünsche: {6}</value>
+  </data>
+  <data name="Please_check_out_the_following_ad_below_that_{0}_reported_to_you_{1}_the_reason_for_reporting_is_{2}_open_the_ad_here_http_localhost_5049_ShowAd_{3}" xml:space="preserve">
+    <value>Bitte sehen Sie sich die folgende Anzeige an, die Ihnen von {0} gemeldet wurde:  
+{1}  
+
+Der Grund für die Meldung ist:  
+{2}  
+
+Öffnen Sie die Anzeige hier:  
+http://localhost:5049/ShowAd/{3}</value>
+  </data>
+  <data name="An_ad_was_just_reported_to_you" xml:space="preserve">
+    <value>Eine Anzeige wurde Ihnen gerade gemeldet</value>
+  </data>
 </root>

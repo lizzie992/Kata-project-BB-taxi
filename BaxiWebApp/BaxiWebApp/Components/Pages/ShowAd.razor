@@ -277,7 +277,11 @@
 	/// <param name="reasonForReporting">string</param>
 	public void reportAd(Ad ad, string reasonForReporting)
 	{
-		DataService.reportAd(ad, currentlyLoggedInUser, reasonForReporting);
+		string adDetails = localizer["Ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}", DataService.showUserNameWithStatus(ad.AdOwner), ad.AdType, ad.AdDirection, ad.PickUpDropOffLocation, ad.PickUpDateAndTime, ad.NumberOfSeats, ad.SpecificRequests];
+		string emailAddress = "gulyaskata99@gmail.com";
+		string subject = localizer["An_ad_was_just_reported_to_you"];
+		string text = localizer["Please_check_out_the_following_ad_below_that_{0}_reported_to_you_{1}_the_reason_for_reporting_is_{2}_open_the_ad_here_http_localhost_5049_ShowAd_{3}", DataService.showUserNameWithStatus(currentlyLoggedInUser), adDetails, reasonForReporting, ad.ID];
+		DataService.sendEmail(emailAddress, subject, text);
 		closePopUpForReportAd();
 	}
 

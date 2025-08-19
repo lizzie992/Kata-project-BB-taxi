@@ -607,22 +607,6 @@ namespace BaxiWebApp.Data
         }
 
 
-        /// <summary>
-        /// Sends the ad with all parameters in an email to the admins
-        /// </summary>
-        /// <param name="ad">Ad object</param>
-        /// <param name="currentlyLoggedInUser">User who is reporting the conversation</param>
-        /// <param name="reasonForReporting">String</param>
-        public void reportAd(Ad ad, User currentlyLoggedInUser, string reasonForReporting)
-        {
-            string adDetails = $"Ad owner: {showUserNameWithStatus(ad.AdOwner)}\r\nAd type: {ad.AdType}\r\nAd Direction: {ad.AdDirection}\r\nAddress: {ad.PickUpDropOffLocation}\r\nPick up date and time: {ad.PickUpDateAndTime}\r\nNumber of seats: {ad.NumberOfSeats}\r\nSpecific requests: {ad.SpecificRequests}\r\n";
-
-            string emailAddress = "gulyaskata99@gmail.com";
-            string subject = "An ad was just reported to you";
-            string text = $"Please check out the following ad below that {showUserNameWithStatus(currentlyLoggedInUser)} reported to you: \r\n{adDetails}\r\nThe reason for reporting is: {reasonForReporting}\r\nOpen the ad here: LINK";
-            sendEmail(emailAddress, subject, text);
-
-        }
 
 
         int maxNumberOfWarnings = 3;

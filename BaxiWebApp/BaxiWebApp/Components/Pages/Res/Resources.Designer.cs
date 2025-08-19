@@ -106,6 +106,22 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ad owner: {0}
+        ///Ad type: {1}
+        ///Ad Direction: {2}
+        ///Address: {3}
+        ///Pick up date and time: {4}
+        ///Number of seats: {5}
+        ///Specific requests: {6}.
+        /// </summary>
+        public static string Ad_owner__0__ad_type__1__ad_direction__2__address__3__pick_up_date_and_time__4__number_of_seats__5__specific_requests__6_ {
+            get {
+                return ResourceManager.GetString("Ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_n" +
+                        "umber_of_seats_{5}_specific_requests_{6}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ad type:.
         /// </summary>
         public static string Ad_type {
@@ -156,6 +172,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string All_chat_conversations {
             get {
                 return ResourceManager.GetString("All_chat_conversations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An ad was just reported to you.
+        /// </summary>
+        public static string An_ad_was_just_reported_to_you {
+            get {
+                return ResourceManager.GetString("An_ad_was_just_reported_to_you", resourceCulture);
             }
         }
         
@@ -1200,6 +1225,23 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Pick_up_date_and_time {
             get {
                 return ResourceManager.GetString("Pick_up_date_and_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check out the following ad below that {0} reported to you:  
+        ///{1} 
+        ///
+        ///The reason for reporting is: 
+        ///{2} 
+        ///
+        ///Open the ad here:  
+        ///http://localhost:5049/ShowAd/{3}.
+        /// </summary>
+        public static string Please_check_out_the_following_ad_below_that__0__reported_to_you__1__the_reason_for_reporting_is__2__open_the_ad_here_http_localhost_5049_ShowAd__3_ {
+            get {
+                return ResourceManager.GetString("Please_check_out_the_following_ad_below_that_{0}_reported_to_you_{1}_the_reason_f" +
+                        "or_reporting_is_{2}_open_the_ad_here_http_localhost_5049_ShowAd_{3}", resourceCulture);
             }
         }
         
