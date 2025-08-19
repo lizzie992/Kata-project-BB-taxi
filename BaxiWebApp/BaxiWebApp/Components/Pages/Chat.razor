@@ -395,7 +395,26 @@
 	/// <param name="reasonForReporting">String</param>
 	public void ReportConversation(Conversation C, User currentlyLoggedInUser, string reasonForReporting)
 	{
-		DataService.ReportConversation(C, currentlyLoggedInUser, reasonForReporting);
+		IEnumerable<Message> messagesToReport = context.Messages.Include(m => m.fromUser).Include(m => m.toUser).ToList<Message>().AsEnumerable();
+		messagesToReport = messagesToReport.Where(m => m.ConversationID == C.ID).OrderBy(c => c.timeStamp); 
+		StringBuilder message = new StringBuilder();
+		foreach (Message m in messagesToReport)
+		{
+			message.Append(localizer["From"]);
+			message.Append($"{DataService.showUserNameWithStatus(m.fromUser)}\r\n");
+			message.Append(localizer["To"]);
+			message.Append($"{DataService.showUserNameWithStatus(m.toUser)}\r\n");
+			message.Append(localizer["Message"]);
+			message.Append($"{m.messageText.ToString()}\r\n");
+			message.Append(localizer["Timestamp"]);
+			message.Append($"{m.timeStamp.ToString()}\r\n\r\n");
+		}
+		string output = message.ToString();
+		string emailAddress = "gulyaskata99@gmail.com";
+		string subject = localizer["A_conversation_was_just_reported_to_you"];
+		string text = localizer["Please_check_out_the_following_conversation_below_that_{0}_reported_to_you_with_the_following_reason_{1}_messages_{2}", currentlyLoggedInUser, reasonForReporting, message];
+		DataService.sendEmail(emailAddress, subject, text);
+
 		reasonForReporting = "";
 		closePopUpForReportConversation();
 	}

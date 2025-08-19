@@ -61,6 +61,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A conversation was just reported to you.
+        /// </summary>
+        public static string A_conversation_was_just_reported_to_you {
+            get {
+                return ResourceManager.GetString("A_conversation_was_just_reported_to_you", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active.
         /// </summary>
         public static string Active {
@@ -1191,6 +1200,18 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Pick_up_date_and_time {
             get {
                 return ResourceManager.GetString("Pick_up_date_and_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check out the following conversation below that {0} reported to you, with the following reason: {1}
+        ///Messages:
+        ///{2}.
+        /// </summary>
+        public static string Please_check_out_the_following_conversation_below_that__0__reported_to_you_with_the_following_reason__1__messages__2_ {
+            get {
+                return ResourceManager.GetString("Please_check_out_the_following_conversation_below_that_{0}_reported_to_you_with_t" +
+                        "he_following_reason_{1}_messages_{2}", resourceCulture);
             }
         }
         

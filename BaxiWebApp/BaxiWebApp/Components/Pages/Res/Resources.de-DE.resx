@@ -734,4 +734,14 @@ Besondere Wünsche: {7}</value>
   <data name="Your_Baxi_ad_is_deleted" xml:space="preserve">
     <value>Ihre Baxi-Anzeige wurde gelöscht!</value>
   </data>
+  <data name="A_conversation_was_just_reported_to_you" xml:space="preserve">
+    <value>Ihnen wurde gerade eine Unterhaltung gemeldet</value>
+  </data>
+  <data name="Please_check_out_the_following_conversation_below_that_{0}_reported_to_you_with_the_following_reason_{1}_messages_{2}" xml:space="preserve">
+    <value>Bitte sehen Sie sich die folgende Konversation an, die {0} Ihnen mit folgendem Grund gemeldet hat: 
+{1}
+
+Nachrichten:
+{2}</value>
+  </data>
 </root>

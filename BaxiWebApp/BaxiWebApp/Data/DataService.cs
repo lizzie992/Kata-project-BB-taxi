@@ -606,36 +606,6 @@ namespace BaxiWebApp.Data
             client.Send(mailMessage);
         }
 
-        /// <summary>
-        /// Sends the whole conversation including messages, users and timestamps to the email address of the admins
-        /// </summary>
-        /// <param name="C">Conversation object</param>
-        /// <param name="currentlyLoggedInUser">User who is reporting the conversation</param>
-        /// <param name="reasonForReporting">String</param>
-        public void ReportConversation(Conversation C, User currentlyLoggedInUser, string reasonForReporting)
-        {
-            using (var context = _dbcFactory.CreateDbContext())
-            {
-                IEnumerable<Message> messagesToReport = context.Messages.Include(m => m.fromUser).Include(m => m.toUser).ToList<Message>().AsEnumerable();
-                messagesToReport = messagesToReport.Where(m => m.ConversationID == C.ID).OrderBy(c => c.timeStamp); ;
-                StringBuilder message = new StringBuilder($"Messages: \r\n\r\n");
-                foreach (Message m in messagesToReport)
-                {
-                    message.Append($"From: {showUserNameWithStatus(m.fromUser)}\r\n");
-                    message.Append($"To: {showUserNameWithStatus(m.toUser)}\r\n");
-                    message.Append($"Message: {m.messageText.ToString()}\r\n");
-                    message.Append($"Timestamp: {m.timeStamp.ToString()}\r\n\r\n");
-                }
-                string output = message.ToString();
-
-                string emailAddress = "gulyaskata99@gmail.com";
-                string subject = "A conversation was just reported to you";
-                string text = $"Please check out the following conversation below that {currentlyLoggedInUser} reported to you, with the following reason: {reasonForReporting}\r\n{message}";
-
-                sendEmail(emailAddress, subject, text);
-
-            }
-        }
 
         /// <summary>
         /// Sends the ad with all parameters in an email to the admins

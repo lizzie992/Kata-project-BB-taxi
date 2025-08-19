@@ -733,4 +733,14 @@ Any specific requests: {7}</value>
   <data name="Your_Baxi_ad_is_deleted" xml:space="preserve">
     <value>Your Baxi ad is deleted!</value>
   </data>
+  <data name="A_conversation_was_just_reported_to_you" xml:space="preserve">
+    <value>A conversation was just reported to you</value>
+  </data>
+  <data name="Please_check_out_the_following_conversation_below_that_{0}_reported_to_you_with_the_following_reason_{1}_messages_{2}" xml:space="preserve">
+    <value>Please check out the following conversation below that {0} reported to you, with the following reason: 
+{1}
+
+Messages:
+{2}</value>
+  </data>
 </root>
