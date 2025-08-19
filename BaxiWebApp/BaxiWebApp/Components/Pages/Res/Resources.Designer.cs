@@ -1800,6 +1800,25 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You just received a new message from {0} ! Go and check it out: http://localhost:5049/Chat/{1}.
+        /// </summary>
+        public static string You_just_received_a_new_message_from__0__Go_and_check_it_out_http_localhost_5049_Chat__1_ {
+            get {
+                return ResourceManager.GetString("You_just_received_a_new_message_from_{0}_Go_and_check_it_out_http_localhost_5049_" +
+                        "Chat_{1}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You received a new message!.
+        /// </summary>
+        public static string You_received_a_new_message {
+            get {
+                return ResourceManager.GetString("You_received_a_new_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your default pick up / drop off location on the map:.
         /// </summary>
         public static string Your_default_pick_up_drop_off_location_on_the_map {

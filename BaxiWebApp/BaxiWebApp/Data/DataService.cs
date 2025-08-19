@@ -110,7 +110,7 @@ namespace BaxiWebApp.Data
 
 
         /// <summary>
-        /// Takes the coordinates of 2 ads, calculates the routes to Baiebrunn and checks if there is any match there
+        /// Takes the coordinates of 2 ads, calculates the routes to Baierbrunn and checks if there is any match there
         /// </summary>
         /// <param name="coordinate1"></param>
         /// <param name="coordinate2"></param>
@@ -486,11 +486,32 @@ namespace BaxiWebApp.Data
                 ad.adConversations.Add(conversation);
                 // savechanges
                 context.SaveChanges();
+                User fromUser = getOtherUser(conversation, currentlyLoggedInUser);
                 SendChatMessage(conversation, currentlyLoggedInUser, message, conversation.ID);
                 context.SaveChanges();
                 return conversation;
             }
         }
+
+        /// <summary>
+        /// defines who is the other participant in the conversation
+        /// </summary>
+        /// <param name="C">Conversation</param>
+        /// <returns>User</returns>
+        public User getOtherUser(Conversation C, User currentlyLoggedInUser)
+        {
+            User otherUser = new User();
+            if (currentlyLoggedInUser == C.contactingUser)
+            {
+                otherUser = C.adOwnerUser;
+            }
+            if (currentlyLoggedInUser == C.adOwnerUser)
+            {
+                otherUser = C.contactingUser;
+            }
+            return otherUser;
+        }
+
 
         public event EventHandler<int> ChatChanged;
 
@@ -520,10 +541,7 @@ namespace BaxiWebApp.Data
                 message.timeStamp = DateTime.Now;
                 CurrentConversation.messages.Add(message);
                 context.SaveChanges();
-                string emailMessage = $"You just received a new message from {message.fromUser}!\r\n Go and check it out: http://localhost:5049/Chat/{CurrentConversation.ID} !";
-                string emailAddress = "gulyaskata99@gmail.com";
-                string subject = "You received a new message!";
-                sendEmail(emailAddress, subject, emailMessage);
+                
                 ChatChanged?.Invoke(this, CurrentConversation.ID);
             }
 

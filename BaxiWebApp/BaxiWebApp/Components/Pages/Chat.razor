@@ -40,7 +40,7 @@
 							<div class="convo-preview">
 								@if (C.MostRecentMessage is not null)
 								{
-									<div class="convo-other-user">@DataService.showUserNameWithStatus(getOtherUser(C))</div>
+									<div class="convo-other-user">@DataService.showUserNameWithStatus(DataService.getOtherUser(C, currentlyLoggedInUser))</div>
 									<div class="convo-last-message">@C.MostRecentMessage.messageText.ToString()</div>
 									<div class="convo-timestamp">@C.MostRecentMessage.timeStamp.ToString("g")</div>
 								}
@@ -130,7 +130,7 @@
 							<div class="convo-preview">
 								@if (C.MostRecentMessage is not null)
 								{
-									<div class="convo-other-user">@DataService.showUserNameWithStatus(getOtherUser(C))</div>
+									<div class="convo-other-user">@DataService.showUserNameWithStatus(DataService.getOtherUser(C, currentlyLoggedInUser))</div>
 									<div class="convo-last-message">@C.MostRecentMessage.messageText.ToString()</div>
 									<div class="convo-timestamp">@C.MostRecentMessage.timeStamp.ToString("g")</div>
 								}
@@ -359,24 +359,7 @@
 
 	}
 
-	/// <summary>
-	/// defines who is the other participant in the conversation
-	/// </summary>
-	/// <param name="C">Conversation</param>
-	/// <returns>User</returns>
-	public User getOtherUser(Conversation C)
-	{
-		User otherUser = new User();
-		if (currentlyLoggedInUser == C.contactingUser)
-		{
-			otherUser = C.adOwnerUser;
-		}
-		if (currentlyLoggedInUser == C.adOwnerUser)
-		{
-			otherUser = C.contactingUser;
-		}
-		return otherUser;
-	}
+
 
 
 	/// <summary>
@@ -384,7 +367,12 @@
 	/// </summary>
 	public void SendMessage()
 	{
+		User fromUser = DataService.getOtherUser(CurrentConversation, currentlyLoggedInUser);
+		string emailMessage = localizer["You_just_received_a_new_message_from_{0}_Go_and_check_it_out_http_localhost_5049_Chat_{1}", DataService.showUserNameWithStatus(fromUser), CurrentConversation.ID];
+		string emailAddress = "gulyaskata99@gmail.com";
+		string subject = localizer["You_received_a_new_message"];
 		DataService.SendChatMessage(CurrentConversation, currentlyLoggedInUser, TextMessage, CurrentConversation.ID);
+		DataService.sendEmail(emailAddress, subject, emailMessage);
 		TextMessage = "";
 	}
 

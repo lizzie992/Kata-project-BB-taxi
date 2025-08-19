@@ -261,6 +261,10 @@
 	public void createChat(Ad ad)
 	{
 		Conversation conversation = DataService.createConvo(ad, currentlyLoggedInUser, message);
+		string emailMessage = localizer["You_just_received_a_new_message_from_{0}_Go_and_check_it_out_http_localhost_5049_Chat_{1}", DataService.showUserNameWithStatus(ad.AdOwner), conversation.ID];
+		string emailAddress = "gulyaskata99@gmail.com";
+		string subject = localizer["You_received_a_new_message"];
+		DataService.sendEmail(emailAddress, subject, emailMessage);
 		int id = conversation.ID;
 		NavigationManager.NavigateTo("Chat/" + id);
 	}

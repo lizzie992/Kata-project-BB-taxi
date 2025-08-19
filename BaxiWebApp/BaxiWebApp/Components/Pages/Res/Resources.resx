@@ -710,4 +710,10 @@ Or your routes will meet somewhere on the way and could be convenient for both o
   <data name="New_password" xml:space="preserve">
     <value>New password</value>
   </data>
+  <data name="You_just_received_a_new_message_from_{0}_Go_and_check_it_out_http_localhost_5049_Chat_{1}" xml:space="preserve">
+    <value>You just received a new message from {0} ! Go and check it out: http://localhost:5049/Chat/{1}</value>
+  </data>
+  <data name="You_received_a_new_message" xml:space="preserve">
+    <value>You received a new message!</value>
+  </data>
 </root>
