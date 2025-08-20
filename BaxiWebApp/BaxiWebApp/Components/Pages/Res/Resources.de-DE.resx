@@ -796,4 +796,20 @@ Bitte kontaktieren Sie das Administratorenteam bezüglich einer möglichen Reakt
 Ihr Konto wurde reaktiviert! 
 Sie können nun wieder alle Funktionen nutzen.</value>
   </data>
+  <data name="This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}" xml:space="preserve">
+    <value>Diese Anzeige könnte für Sie interessant sein:  
+Anzeigeninhaber: {0}  
+Anzeigetyp: {1}  
+Anzeigenrichtung: {2}  
+Adresse: {3}  
+Abholdatum und -uhrzeit: {4}  
+Anzahl der Plätze: {5}  
+Besondere Wünsche: {6}  
+
+Öffnen Sie die Anzeige hier:  
+http://localhost:5049/ShowAd/{7}</value>
+  </data>
+  <data name="Check_out_this_ad" xml:space="preserve">
+    <value>Schau dir diese Anzeige an</value>
+  </data>
 </root>

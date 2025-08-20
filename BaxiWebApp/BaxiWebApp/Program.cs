@@ -1,11 +1,16 @@
 using BaxiWebApp.Components;
 using BaxiWebApp.Components.Account;
+using BaxiWebApp.Components.Pages.Res;
 using BaxiWebApp.Data;
 using BB;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using System.Globalization;
 
 namespace BaxiWebApp

@@ -1,4 +1,5 @@
-﻿using BB;
+﻿using BaxiWebApp.Components.Account.Pages;
+using BB;
 using GoogleApi.Entities.Search.Common;
 using GoogleMapsApi;
 using GoogleMapsApi.Entities.Common;
@@ -12,6 +13,7 @@ using GoogleMapsApi.StaticMaps.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using System.Globalization;
 using System.Net;
 using System.Net.Mail;
@@ -20,13 +22,24 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Timers;
-using BaxiWebApp.Components.Account.Pages;
+using BaxiWebApp.Components.Pages.Res;
 
 
 namespace BaxiWebApp.Data
 {
     public class DataService
     {
+        private IStringLocalizer<Resources> _localizer;
+
+        private IDbContextFactory<BaxiWebAppContext> _dbcFactory;
+        public DataService(IDbContextFactory<BaxiWebAppContext> dbcFactory, IStringLocalizer<Resources> localizer) //dependency injection of the DbContextFactory and the localizer
+        {
+            _dbcFactory = dbcFactory;
+            _localizer = localizer;
+        }
+
+
+
         public event EventHandler<CultureInfo> CultureChanged;
 
         /// <summary>
@@ -276,16 +289,16 @@ namespace BaxiWebApp.Data
                 {
                     if (oldAd.AdOwner.AreNotificationsOn == true)
                     {
-                        string messageNewAd = $"You might be interested in this new Ad:\r\n Ad type: {newAd.AdType}\r\nAd Direction: {newAd.AdDirection}\r\nAddress: {newAd.PickUpDropOffLocation}\r\n On {newAd.PickUpDateAndTime}\r\n Available seats: {newAd.NumberOfSeats}\r\n Any speicifc requests: {newAd.SpecificRequests}\r\n";
+                        string messageNewAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", newAd.AdOwner, newAd.AdType, newAd.AdDirection, newAd.PickUpDropOffLocation, newAd.PickUpDateAndTime, newAd.NumberOfSeats, newAd.SpecificRequests, newAd.ID];
                         string emailAddress = "gulyaskata99@gmail.com";
-                        string subject = "Check out this new ad: ";
+                        string subject = _localizer["Check_out_this_ad"];
                         sendEmail(emailAddress, subject, messageNewAd);
                     }
                     if (newAd.AdOwner.AreNotificationsOn == true)
                     {
-                        string messageOldAd = $"You might be interested in this new Ad:\r\n Ad type: {oldAd.AdType}\r\nAd Direction: {oldAd.AdDirection}\r\nAddress: {oldAd.PickUpDropOffLocation}\r\n On {oldAd.PickUpDateAndTime}\r\n Available seats: {oldAd.NumberOfSeats}\r\n Any speicifc requests: {oldAd.SpecificRequests}\r\n";
+                        string messageOldAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", oldAd.AdOwner, oldAd.AdType, oldAd.AdDirection, oldAd.PickUpDropOffLocation, oldAd.PickUpDateAndTime, oldAd.NumberOfSeats, oldAd.SpecificRequests, oldAd.ID];
                         string emailAddress = "gulyaskata99@gmail.com";
-                        string subject = "Check out this new ad: ";
+                        string subject = _localizer["Check_out_this_ad"];
                         sendEmail(emailAddress, subject, messageOldAd);
                     }
                 }
@@ -293,16 +306,16 @@ namespace BaxiWebApp.Data
                 {
                     if (oldAd.AdOwner.AreNotificationsOn == true)
                     {
-                        string messageNewAd = $"You might be interested in this new Ad:\r\n Ad type: {newAd.AdType}\r\nAd Direction: {newAd.AdDirection}\r\nAddress: {newAd.PickUpDropOffLocation}\r\n On {newAd.PickUpDateAndTime}\r\n Available seats: {newAd.NumberOfSeats}\r\n Any speicifc requests: {newAd.SpecificRequests}\r\n";
+                        string messageNewAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", newAd.AdOwner, newAd.AdType, newAd.AdDirection, newAd.PickUpDropOffLocation, newAd.PickUpDateAndTime, newAd.NumberOfSeats, newAd.SpecificRequests, newAd.ID];
                         string emailAddress = "gulyaskata99@gmail.com";
-                        string subject = "Check out this new ad: ";
+                        string subject = _localizer["Check_out_this_ad"];
                         sendEmail(emailAddress, subject, messageNewAd);
                     }
                     if (newAd.AdOwner.AreNotificationsOn == true)
                     {
-                        string messageOldAd = $"You might be interested in this new Ad:\r\n Ad type: {oldAd.AdType}\r\nAd Direction: {oldAd.AdDirection}\r\nAddress: {oldAd.PickUpDropOffLocation}\r\n On {oldAd.PickUpDateAndTime}\r\n Available seats: {oldAd.NumberOfSeats}\r\n Any speicifc requests: {oldAd.SpecificRequests}\r\n";
+                        string messageOldAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", oldAd.AdOwner, oldAd.AdType, oldAd.AdDirection, oldAd.PickUpDropOffLocation, oldAd.PickUpDateAndTime, oldAd.NumberOfSeats, oldAd.SpecificRequests, oldAd.ID];
                         string emailAddress = "gulyaskata99@gmail.com";
-                        string subject = "Check out this new ad: ";
+                        string subject = _localizer["Check_out_this_ad"];
                         sendEmail(emailAddress, subject, messageOldAd);
                     }
                 }
@@ -325,14 +338,14 @@ namespace BaxiWebApp.Data
                 //TO Baierbrunn, passenger looking for drivers
                 if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Passenger)
                 {
-                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats);
+                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
                     await CheckDistanceAndSendNotification(newAd, adList.ToList());
                 }
 
                 //TO Baierbrunn, driver looking for passengers
                 if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Driver)
                 {
-                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats);
+                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
                     await CheckDistanceAndSendNotification(newAd, adList.ToList());
                 }
 
@@ -340,14 +353,14 @@ namespace BaxiWebApp.Data
                 //FROM Baierbrunn, passenger looking for drivers
                 if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Passenger)
                 {
-                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats);
+                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
                     await CheckDistanceAndSendNotification(newAd, adList.ToList());
                 }
 
                 //FROM Baierbrunn, driver looking for passengers
                 if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Driver)
                 {
-                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats);
+                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
                     await CheckDistanceAndSendNotification(newAd, adList.ToList());
                 }
             }
@@ -386,12 +399,7 @@ namespace BaxiWebApp.Data
             return (location.Latitude, location.Longitude);
         }
 
-        IDbContextFactory<BaxiWebAppContext> _dbcFactory;
-        public DataService(IDbContextFactory<BaxiWebAppContext> dbcFactory) //dependency injection of the DbContextFactory
-        {
-            _dbcFactory = dbcFactory;
-        }
-
+        
 
         /// <summary>
         /// Checks the selected ad against the currently existing ads, if any of them has the same legs in the route, and collects them in a list of ads
@@ -477,18 +485,17 @@ namespace BaxiWebApp.Data
         {
             using (var context = _dbcFactory.CreateDbContext())
             {
-                Conversation conversation = new();
+                context.Attach(ad);
+                context.Attach(ad.AdOwner);
+                context.Attach(currentlyLoggedInUser);
+                Conversation conversation = new Conversation();
                 conversation.adOwnerUser = ad.AdOwner;
                 conversation.contactingUser = currentlyLoggedInUser;
                 conversation.messages = new List<Message>();
-                //in service
-                //add new conversation boject to context
                 ad.adConversations.Add(conversation);
-                // savechanges
                 context.SaveChanges();
                 User fromUser = getOtherUser(conversation, currentlyLoggedInUser);
                 SendChatMessage(conversation, currentlyLoggedInUser, message, conversation.ID);
-                context.SaveChanges();
                 return conversation;
             }
         }
@@ -541,7 +548,6 @@ namespace BaxiWebApp.Data
                 message.timeStamp = DateTime.Now;
                 CurrentConversation.messages.Add(message);
                 context.SaveChanges();
-                
                 ChatChanged?.Invoke(this, CurrentConversation.ID);
             }
 

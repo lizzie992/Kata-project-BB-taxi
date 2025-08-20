@@ -332,6 +332,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check out this ad.
+        /// </summary>
+        public static string Check_out_this_ad {
+            get {
+                return ResourceManager.GetString("Check_out_this_ad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chinese.
         /// </summary>
         public static string Chinese {
@@ -1730,6 +1739,27 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string This_ad_is_in_the_past {
             get {
                 return ResourceManager.GetString("This_ad_is_in_the_past", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This ad might be interesting for you:  
+        ///Ad owner: {0} 
+        ///Ad type: {1} 
+        ///Ad Direction: {2} 
+        ///Address: {3} 
+        ///Pick up date and time: {4} 
+        ///Number of seats: {5} 
+        ///Specific requests: {6} 
+        ///
+        ///Open the ad here:   
+        ///http://localhost:5049/ShowAd/{7}.
+        /// </summary>
+        public static string This_ad_might_be_interesting_for_you_ad_owner__0__ad_type__1__ad_direction__2__address__3__pick_up_date_and_time__4__number_of_seats__5__specific_requests__6__open_the_ad_here_http_localhost_5049_ShowAd__7_ {
+            get {
+                return ResourceManager.GetString("This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_ad" +
+                        "dress_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_op" +
+                        "en_the_ad_here_http_localhost_5049_ShowAd_{7}", resourceCulture);
             }
         }
         

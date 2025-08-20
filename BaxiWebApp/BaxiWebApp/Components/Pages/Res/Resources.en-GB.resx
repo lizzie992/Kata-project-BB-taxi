@@ -795,4 +795,20 @@ Please contact the admin team about the possible reactivation!</value>
 Your account has been reactivated! 
 You can now use all functions again.</value>
   </data>
+  <data name="This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}" xml:space="preserve">
+    <value>This ad might be interesting for you:  
+Ad owner: {0} 
+Ad type: {1} 
+Ad Direction: {2} 
+Address: {3} 
+Pick up date and time: {4} 
+Number of seats: {5} 
+Specific requests: {6} 
+
+Open the ad here:   
+http://localhost:5049/ShowAd/{7}</value>
+  </data>
+  <data name="Check_out_this_ad" xml:space="preserve">
+    <value>Check out this ad</value>
+  </data>
 </root>
