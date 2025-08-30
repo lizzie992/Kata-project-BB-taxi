@@ -1,5 +1,10 @@
 ﻿async function initMapForAdList(adListForMap) {
 
+    //let map = new Map();
+
+    //map["Driver"] = "Driver";
+    //map["Driver"] = "Fahrer";
+
     // Request needed libraries.
     const { Map, InfoWindow } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
@@ -136,5 +141,3 @@ function getLatitude() {
 function getLongitude() {
     return longitude;
 }
-
-
