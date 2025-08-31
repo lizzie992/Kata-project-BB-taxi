@@ -498,8 +498,8 @@
   <data name="Ad_not_found" xml:space="preserve">
     <value>Anzeige nicht gefunden</value>
   </data>
-  <data name="Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you" xml:space="preserve">
-    <value>Benachrichtigungen: Wenn Sie dieses Kontrollkästchen aktivieren, erhalten Sie automatisch eine E-Mail-Benachrichtigung, wenn ein anderer Nutzer eine Anzeige veröffentlicht, die Ihren Anforderungen entspricht:
+  <data name="If_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you" xml:space="preserve">
+    <value>Wenn Sie dieses Kontrollkästchen aktivieren, erhalten Sie automatisch eine E-Mail-Benachrichtigung, wenn ein anderer Nutzer eine Anzeige veröffentlicht, die Ihren Anforderungen entspricht:
 Sie ist weniger als {0} km von Ihnen entfernt und hat weniger als {1} Stunden Unterschied.
 Oder Ihre Routen kreuzen sich irgendwo auf dem Weg und könnten für Sie beide günstig sein.</value>
   </data>

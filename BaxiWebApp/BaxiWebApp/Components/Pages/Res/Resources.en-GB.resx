@@ -498,8 +498,8 @@
   <data name="Ad_not_found" xml:space="preserve">
     <value>Ad not Found</value>
   </data>
-  <data name="Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you" xml:space="preserve">
-    <value>Notifications: if you check this box, you will automatically receive an email notification when another user posts an ad that would be matching your needs: It is less than {0} km away from you and less than {1} hour(s) different,
+  <data name="If_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you" xml:space="preserve">
+    <value>If you check this box, you will automatically receive an email notification when another user posts an ad that would be matching your needs: It is less than {0} km away from you and less than {1} hour(s) different,
 Or your routes will meet somewhere on the way and could be convenient for both of you.</value>
   </data>
   <data name="Confirm_email" xml:space="preserve">

@@ -880,6 +880,16 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If you check this box, you will automatically receive an email notification when another user posts an ad that would be matching your needs: It is less than {0} km away from you and less than {1} hour(s) different,
+        ///Or your routes will meet somewhere on the way and could be convenient for both of you..
+        /// </summary>
+        public static string If_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than__0__km_away_from_you_and_less_than__1__hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you {
+            get {
+                return ResourceManager.GetString(@"If_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If you have the same requests regarding the ride (such as &quot;No smokers Please&quot; or &quot;No loud music&quot; etc...) please write them here:.
         /// </summary>
         public static string If_you_have_the_same_requests_regarding_the_ride_such_as_no_smokers_please_or_no_loud_music_etc_please_write_them_here {
@@ -1186,16 +1196,6 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Notifications {
             get {
                 return ResourceManager.GetString("Notifications", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Notifications: if you check this box, you will automatically receive an email notification when another user posts an ad that would be matching your needs: It is less than {0} km away from you and less than {1} hour(s) different,
-        ///Or your routes will meet somewhere on the way and could be convenient for both of you..
-        /// </summary>
-        public static string Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than__0__km_away_from_you_and_less_than__1__hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you {
-            get {
-                return ResourceManager.GetString(@"Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", resourceCulture);
             }
         }
         
