@@ -569,7 +569,7 @@ h3 {
     .row-chat-laptop {
         width: 100%;
         display: grid;
-        grid-template-columns: 30% 70%;
+        grid-template-columns: 20% 80%;
         padding: 20px;
         gap: 20px; /* Adds spacing between all items */
     }
@@ -593,13 +593,14 @@ h3 {
     }
 
     .convo-preview {
+        height: min-content;
         box-sizing: border-box;
         background-color: #cce0f2;
         color: #0066B2;
         border-radius: 12px; /* Rounded corners */
-        padding: 20px;
+        padding: 5px;
         display: flex;
-        gap: 10px; /**/ /* Adds spacing between all items */
+        gap: 5px; /**/ /* Adds spacing between all items */
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -657,6 +658,7 @@ h3 {
 
     .ad-description {
         grid-column: span 3; /* make it stretch across all 3 columns */
+        font-size: 14px;
         text-align: center;
     }
 

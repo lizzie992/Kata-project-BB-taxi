@@ -9,7 +9,8 @@
 @using System.Net
 @using System.IO
 @using System.Text;
-@using System.Globalization
+@using System.Globalization;
+@using System.Windows.Input;
 @inject Data.BaxiWebAppContext context;
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
@@ -21,6 +22,8 @@
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Resources> localizer
 @inject IJSRuntime JSRuntime;
+
+
 
 <body>
 	@* desktop mode *@
@@ -103,7 +106,7 @@
 					@if (currentlyLoggedInUser.isActive == true)
 					{
 						<div class="chat-send">
-							<InputText class="chat-input" @bind-Value="TextMessage"></InputText>
+							<input class="chat-input" @bind="TextMessage" @bind:event="oninput" @onkeydown="Enter"></input>
 							<button class="chat-button" @onclick="SendMessage">@localizer["Send"]</button>
 						</div>
 					}
@@ -186,7 +189,7 @@
 				@if (currentlyLoggedInUser.isActive == true)
 				{
 					<div class="chat-send">
-						<InputText class="chat-input" @bind-Value="TextMessage"></InputText>
+						<input class="chat-input" @bind="TextMessage" @bind:event="oninput" @onkeydown="Enter"></input>
 						<button class="chat-button" @onclick="SendMessage">@localizer["Send"]</button>
 					</div>
 				}
@@ -263,6 +266,18 @@
 	}
 
 
+
+	public void Enter(KeyboardEventArgs e)
+	{
+		if (e.Key == "Shift" && e.Code == "Enter")
+		{
+			TextMessage = $"{TextMessage}\r\n\r\n";
+		}
+		else if (e.Code == "Enter" || e.Code == "NumpadEnter")
+		{
+			SendMessage();
+		}
+	}
 
 	protected override async Task OnAfterRenderAsync(bool firstrender)
 	{
@@ -396,7 +411,7 @@
 	public void ReportConversation(Conversation C, User currentlyLoggedInUser, string reasonForReporting)
 	{
 		IEnumerable<Message> messagesToReport = context.Messages.Include(m => m.fromUser).Include(m => m.toUser).ToList<Message>().AsEnumerable();
-		messagesToReport = messagesToReport.Where(m => m.ConversationID == C.ID).OrderBy(c => c.timeStamp); 
+		messagesToReport = messagesToReport.Where(m => m.ConversationID == C.ID).OrderBy(c => c.timeStamp);
 		StringBuilder message = new StringBuilder();
 		foreach (Message m in messagesToReport)
 		{
