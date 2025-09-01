@@ -811,4 +811,10 @@ http://localhost:5049/ShowAd/{7}</value>
   <data name="Check_out_this_ad" xml:space="preserve">
     <value>Check out this ad</value>
   </data>
+  <data name="Pin_dropped_at" xml:space="preserve">
+    <value>Pin dropped at:</value>
+  </data>
+  <data name="Beautiful_baierbrunn" xml:space="preserve">
+    <value>Beautiful Baierbrunn</value>
+  </data>
 </root>

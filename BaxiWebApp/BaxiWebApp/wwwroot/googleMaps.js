@@ -1,4 +1,4 @@
-﻿async function initMapForAdList(adListForMap) {
+﻿async function initMapForAdList(adListForMap, beautifulBaierbrunn, toBaierbrunn, fromBaierbrunn, noType, driver, passenger, adData, direction, type, pickUp, location, seats, clickHere) {
 
     //let map = new Map();
 
@@ -20,41 +20,41 @@
         [
             {
                 position: { lat: 48.0206345131560, lng: 11.482919688669709 },
-                title: "Beautiful Baierbrunn",
+                title: beautifulBaierbrunn,
             },
         ];
 
     adListForMap.forEach(ad => {
 
-        let direction = "";
+        let adDirection = "";
         if (ad.adDirection === 0) {
-            direction = "To Baierbrunn";
+            adDirection = toBaierbrunn;
         }
         if (ad.adDirection === 1) {
-            direction = "From Baierbrunn";
+            adDirection = fromBaierbrunn;
         }
 
-        let type = "";
+        let adType = "";
         if (ad.adType === 0) {
-            type = "No";
+            adType = noType;
         }
         if (ad.adType === 1) {
-            type = "Driver";
+            adType = driver;
         }
         if (ad.adType === 2) {
-            type = "Passenger";
+            adType = passenger;
         }
 
         const html = `
   <div>
-    <h3>Ad Overview</h3>
+    <h3>${adData}</h3>
     <ul>
-      <li>Direction: ${direction}</li>
-      <li>Type: ${type}</li>
-      <li>Pickup: ${ad.pickUpDateAndTime}</li>
-      <li>Location: ${ad.pickUpDropOffLocation}</li>
-      <li>Seats: ${ad.numberOfSeats}</li>
-      <li><a href="http://localhost:5049/ShowAd/${ad.id}" target="_blank">Click here...</a></li>
+      <li>${direction} ${adDirection}</li>
+      <li>${type} ${adType}</li>
+      <li>${pickUp} ${ad.pickUpDateAndTime}</li>
+      <li>${location} ${ad.pickUpDropOffLocation}</li>
+      <li>${seats} ${ad.numberOfSeats}</li>
+      <li><a href="http://localhost:5049/ShowAd/${ad.id}" target="_blank">${clickHere}</a></li>
     </ul>
   </div>
 `;
@@ -106,7 +106,7 @@
 let latitude = 0;
 let longitude = 0;
 
-async function initMapForCreatingAd(lat, long) {
+async function initMapForCreatingAd(lat, long, instruction, pinDroppedAt) {
     // Request needed libraries.
     const { Map, InfoWindow } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
@@ -120,14 +120,14 @@ async function initMapForCreatingAd(lat, long) {
         map,
         position: { lat: lat, lng: long },
         gmpDraggable: true,
-        title: "Please move this marker to the exact pick up / drop off location",
+        title: instruction,
     });
 
     draggableMarker.addListener("dragend", (event) => {
         const position = draggableMarker.position;
 
         infoWindow.close();
-        infoWindow.setContent(`Pin dropped at: ${position.lat}, ${position.lng}`);
+        infoWindow.setContent(`${pinDroppedAt} ${position.lat}, ${position.lng}`);
         infoWindow.open(draggableMarker.map, draggableMarker);
         latitude = position.lat;
         longitude = position.lng;

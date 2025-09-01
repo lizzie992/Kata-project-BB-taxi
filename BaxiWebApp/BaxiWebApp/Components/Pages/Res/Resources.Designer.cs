@@ -267,6 +267,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Beautiful Baierbrunn.
+        /// </summary>
+        public static string Beautiful_baierbrunn {
+            get {
+                return ResourceManager.GetString("Beautiful_baierbrunn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Below you can add some additional data that will make your life easier when creating Ads in the application. This is not mandatory and can be always changed / deleted in your profile!.
         /// </summary>
         public static string Below_you_can_add_some_additional_data_that_will_make_your_life_easier_when_creating_ads_in_the_application_this_is_not_mandatory_and_can_be_always_changed_deleted_in_your_profile {
@@ -1268,6 +1277,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Pick_up_date_and_time {
             get {
                 return ResourceManager.GetString("Pick_up_date_and_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pin dropped at:.
+        /// </summary>
+        public static string Pin_dropped_at {
+            get {
+                return ResourceManager.GetString("Pin_dropped_at", resourceCulture);
             }
         }
         

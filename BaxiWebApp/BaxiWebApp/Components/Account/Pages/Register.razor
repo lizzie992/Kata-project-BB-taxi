@@ -7,6 +7,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 @using BaxiWebApp.Data
+@using BaxiWebApp.Components.Pages
 
 @inject UserManager<User> UserManager
 @inject IUserStore<User> UserStore
@@ -15,12 +16,26 @@
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
-@inject Data.BaxiWebAppContext context;
-@inject Data.DataService DataService
-@using Microsoft.Extensions.Localization
-@inject IStringLocalizer<Resources> localizer
 @using System.Globalization;
 @using Components.Pages.Res;
+
+@using GoogleMapsApi;
+@using GoogleMapsApi.Entities.Common;
+@using GoogleMapsApi.Entities.Directions.Request;
+@using GoogleMapsApi.Entities.Directions.Response;
+@using GoogleMapsApi.Entities.Geocoding.Request;
+@using GoogleMapsApi.Entities.Geocoding.Response;
+@using GoogleMapsApi.StaticMaps;
+@using GoogleMapsApi.StaticMaps.Entities;
+@using Microsoft.EntityFrameworkCore;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Resources> localizer
+@inject AuthenticationStateProvider AuthStateProvider;
+@inject UserManager<User> UserManager;
+@inject NavigationManager NavigationManager
+@inject Data.DataService DataService
+@inject Data.BaxiWebAppContext context;
+
 
 @* <PageTitle>Register</PageTitle>
 
@@ -150,6 +165,18 @@
 
 
 @code {
+
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+		await InvokeAsync(() =>
+	{
+		StateHasChanged();
+	});
+	}
+
+
 	private IEnumerable<IdentityError>? identityErrors;
 
 	[SupplyParameterFromForm]
@@ -323,16 +350,7 @@
 
 	}
 
-
-	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
-
-	public async void OnCultureChanged(object sender, CultureInfo culture)
-	{
-		await InvokeAsync(() =>
-	{
-		StateHasChanged();
-	});
-	}
+	
 
 
 

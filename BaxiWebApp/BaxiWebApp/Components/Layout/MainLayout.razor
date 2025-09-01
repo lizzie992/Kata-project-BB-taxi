@@ -23,7 +23,7 @@
 	
 		<div class="top-row px-4">
 			<div class="languageSelection">
-				<select @onchange ="(e) => DataService.ChangeCulture(e, currentlyLoggedInUser)" value="@culture">
+				<select @onchange="(e) => DataService.ChangeCulture(e, currentlyLoggedInUser)">
 					<option value="de-DE">@localizer["German"]</option>
 					<option value="en-GB">@localizer["English"]</option>
 				</select>
@@ -73,18 +73,6 @@
 		if (firstrender)
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
-		}
-	}
-
-	public string culture
-	{
-		get
-		{
-			if (currentlyLoggedInUser is not null)
-			{
-				return currentlyLoggedInUser.Culture;
-			}
-			return "de-DE";
 		}
 	}
 

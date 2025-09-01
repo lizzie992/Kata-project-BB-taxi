@@ -157,7 +157,7 @@
 		}
 		if (user.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
 		{
-			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", user.DefaultLatitude, user.DefaultLongitude);
+			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", user.DefaultLatitude, user.DefaultLongitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
 		}
 	}
 

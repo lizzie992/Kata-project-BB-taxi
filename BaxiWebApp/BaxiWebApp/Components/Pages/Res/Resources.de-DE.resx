@@ -812,4 +812,10 @@ http://localhost:5049/ShowAd/{7}</value>
   <data name="Check_out_this_ad" xml:space="preserve">
     <value>Schau dir diese Anzeige an</value>
   </data>
+  <data name="Pin_dropped_at" xml:space="preserve">
+    <value>Pin gesetzt bei:</value>
+  </data>
+  <data name="Beautiful_baierbrunn" xml:space="preserve">
+    <value>Wunderschönes Baierbrunn</value>
+  </data>
 </root>
