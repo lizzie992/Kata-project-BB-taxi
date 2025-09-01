@@ -1,11 +1,5 @@
 ﻿async function initMapForAdList(adListForMap, beautifulBaierbrunn, toBaierbrunn, fromBaierbrunn, noType, driver, passenger, adData, direction, type, pickUp, location, seats, clickHere) {
 
-    //let map = new Map();
-
-    //map["Driver"] = "Driver";
-    //map["Driver"] = "Fahrer";
-
-    // Request needed libraries.
     const { Map, InfoWindow } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
         "marker",

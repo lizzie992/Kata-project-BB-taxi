@@ -127,7 +127,8 @@
 
 
 							<div class="input-block">
-								@localizer["Notifications_if_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", @Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS, @Constants.TIME_LIMIT_FOR_NOTIFICATIONS]
+								@localizer["Notifications"]
+								@localizer["If_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", @Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS, @Constants.TIME_LIMIT_FOR_NOTIFICATIONS]
 								@if (user.AreNotificationsOn == true)
 								{
 									<input type="checkbox" class="input" checked @bind-value="@user.AreNotificationsOn">

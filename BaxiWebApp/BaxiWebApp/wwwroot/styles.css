@@ -42,6 +42,10 @@ h3 {
     height: 100%;
 }
 
+.framed-map-profile {
+    height: 100%;
+}
+
 .map-frame-for-showad {
     display: flex;
     justify-content: center; /* Horizontal centering */
