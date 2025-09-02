@@ -52,6 +52,16 @@
 		base.OnParametersSet();
 	}
 
+	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+
+	public async void OnCultureChanged(object sender, CultureInfo culture)
+	{
+
+		await InvokeAsync(() =>
+		{
+			StateHasChanged();
+		});
+	}
 
 	public static User? currentlyLoggedInUser;
 	/// <summary>

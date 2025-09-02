@@ -1,28 +1,16 @@
-﻿using BaxiWebApp.Components.Account.Pages;
+﻿using BaxiWebApp.Components.Pages.Res;
 using BB;
-using GoogleApi.Entities.Search.Common;
 using GoogleMapsApi;
 using GoogleMapsApi.Entities.Common;
 using GoogleMapsApi.Entities.Directions.Request;
 using GoogleMapsApi.Entities.Directions.Response;
 using GoogleMapsApi.Entities.Geocoding.Request;
-using GoogleMapsApi.Entities.Geocoding.Request;
-using GoogleMapsApi.Entities.Geocoding.Response;
-using GoogleMapsApi.StaticMaps;
-using GoogleMapsApi.StaticMaps.Entities;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System.Globalization;
 using System.Net;
 using System.Net.Mail;
-using System.Runtime.InteropServices.Marshalling;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Timers;
-using BaxiWebApp.Components.Pages.Res;
 
 
 namespace BaxiWebApp.Data
