@@ -482,6 +482,21 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dear {0}!
+        ///You received this email because you registered to the Baxi app!
+        ///Please click on the link below to confirm your account.
+        ///{1}
+        ///If it was not you, please, ignore this email!.
+        /// </summary>
+        public static string Dear__0__you_received_this_email_because_you_registered_to_the_baxi_app_please_click_on_the_link_below_to_confirm_your_account__1__if_it_was_not_you_please_ignore_this_email {
+            get {
+                return ResourceManager.GetString("Dear_{0}_you_received_this_email_because_you_registered_to_the_baxi_app_please_cl" +
+                        "ick_on_the_link_below_to_confirm_your_account_{1}_if_it_was_not_you_please_ignor" +
+                        "e_this_email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dear {0} Your account has been deactivated! The reason is: {1} Please contact the admin team about the possible reactivation!.
         /// </summary>
         public static string Dear__0__your_account_has_been_deactivated_the_reason_is__1__please_contact_the_admin_team_about_the_possible_reactivation {
@@ -633,6 +648,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Email_address_contains {
             get {
                 return ResourceManager.GetString("Email_address_contains", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email confirmation for Baxi app.
+        /// </summary>
+        public static string Email_confirmation_for_baxi_app {
+            get {
+                return ResourceManager.GetString("Email_confirmation_for_baxi_app", resourceCulture);
             }
         }
         
@@ -1518,6 +1542,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Register confirmation.
+        /// </summary>
+        public static string Register_confirmation {
+            get {
+                return ResourceManager.GetString("Register_confirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Regular User .
         /// </summary>
         public static string Regular {
@@ -1721,6 +1754,16 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Thank_you_for_confirming_your_email {
             get {
                 return ResourceManager.GetString("Thank_you_for_confirming_your_email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thank you for your registration on the Baxi app! A confirmation email was just sent to you, please, click on the link to confirm your email address!.
+        /// </summary>
+        public static string Thank_you_for_your_registration_on_the_baxi_app_a_confirmation_email_was_just_sent_to_you_please_click_on_the_link_to_confirm_your_email_address {
+            get {
+                return ResourceManager.GetString("Thank_you_for_your_registration_on_the_baxi_app_a_confirmation_email_was_just_sen" +
+                        "t_to_you_please_click_on_the_link_to_confirm_your_email_address", resourceCulture);
             }
         }
         

@@ -818,4 +818,21 @@ http://localhost:5049/ShowAd/{7}</value>
   <data name="Beautiful_baierbrunn" xml:space="preserve">
     <value>Wunderschönes Baierbrunn</value>
   </data>
+  <data name="Thank_you_for_your_registration_on_the_baxi_app_a_confirmation_email_was_just_sent_to_you_please_click_on_the_link_to_confirm_your_email_address" xml:space="preserve">
+    <value>Vielen Dank für Ihre Registrierung in der Baxi-App!  
+Eine Bestätigungs-E-Mail wurde soeben an Sie gesendet. Bitte klicken Sie auf den Link, um Ihre E-Mail-Adresse zu bestätigen!</value>
+  </data>
+  <data name="Dear_{0}_you_received_this_email_because_you_registered_to_the_baxi_app_please_click_on_the_link_below_to_confirm_your_account_{1}_if_it_was_not_you_please_ignore_this_email" xml:space="preserve">
+    <value>Sehr geehrter {0}!  
+Sie haben diese E-Mail erhalten, weil Sie sich in der Baxi-App registriert haben!  
+Bitte klicken Sie auf den untenstehenden Link, um Ihr Konto zu bestätigen.  
+{1}  
+Falls Sie es nicht waren, ignorieren Sie bitte diese E-Mail!</value>
+  </data>
+  <data name="Email_confirmation_for_baxi_app" xml:space="preserve">
+    <value>E-Mail-Bestätigung für die Baxi-App</value>
+  </data>
+  <data name="Register_confirmation" xml:space="preserve">
+    <value>Registrierungsbestätigung</value>
+  </data>
 </root>

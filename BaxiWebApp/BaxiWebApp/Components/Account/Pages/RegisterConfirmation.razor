@@ -5,65 +5,73 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 @using BaxiWebApp.Data
-
+@inject Data.DataService DataService
 @inject UserManager<User> UserManager
 @inject IEmailSender<User> EmailSender
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@using Microsoft.Extensions.Localization
+@using System.Globalization
+@inject IStringLocalizer<Resources> localizer
+@using BaxiWebApp.Components.Pages.Res;
 
-<PageTitle>Register confirmation</PageTitle>
+<PageTitle>@localizer["Register_confirmation"]</PageTitle>
 
-<h1>Register confirmation</h1>
+<h1>@localizer["Register_confirmation"]</h1>
 
 <StatusMessage Message="@statusMessage" />
 
 @if (emailConfirmationLink is not null)
 {
-    <p>
-        This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-        Normally this would be emailed: <a href="@emailConfirmationLink">Click here to confirm your account</a>
-    </p>
+	<p>
+		@* This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
+		Normally this would be emailed: <a href="@emailConfirmationLink">Click here to confirm your account</a> *@
+		@localizer["Thank_you_for_your_registration_on_the_baxi_app_a_confirmation_email_was_just_sent_to_you_please_click_on_the_link_to_confirm_your_email_address"]
+	</p>
 }
 else
 {
-    <p>Please check your email to confirm your account.</p>
+	<p>Please check your email to confirm your account.</p>
 }
 
 @code {
-    private string? emailConfirmationLink;
-    private string? statusMessage;
+	private string? emailConfirmationLink;
+	private string? statusMessage;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+	[CascadingParameter]
+	private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromQuery]
-    private string? Email { get; set; }
+	[SupplyParameterFromQuery]
+	private string? Email { get; set; }
 
-    [SupplyParameterFromQuery]
-    private string? ReturnUrl { get; set; }
+	[SupplyParameterFromQuery]
+	private string? ReturnUrl { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (Email is null)
-        {
-            RedirectManager.RedirectTo("");
-        }
+	protected override async Task OnInitializedAsync()
+	{
+		if (Email is null)
+		{
+			RedirectManager.RedirectTo("");
+		}
 
-        var user = await UserManager.FindByEmailAsync(Email);
-        if (user is null)
-        {
-            HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-            statusMessage = "Error finding user for unspecified email";
-        }
-        else if (EmailSender is IdentityNoOpEmailSender)
-        {
-            // Once you add a real email sender, you should remove this code that lets you confirm the account
-            var userId = await UserManager.GetUserIdAsync(user);
-            var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            emailConfirmationLink = NavigationManager.GetUriWithQueryParameters(
-                NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
-                new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
-        }
-    }
+		var user = await UserManager.FindByEmailAsync(Email);
+		if (user is null)
+		{
+			HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+			statusMessage = "Error finding user for unspecified email";
+		}
+		else if (EmailSender is IdentityNoOpEmailSender)
+		{
+			// Once you add a real email sender, you should remove this code that lets you confirm the account
+			var userId = await UserManager.GetUserIdAsync(user);
+			var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+			code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+			emailConfirmationLink = NavigationManager.GetUriWithQueryParameters(
+				NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
+				new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
+
+			string emailText = localizer["Dear_{0}_you_received_this_email_because_you_registered_to_the_baxi_app_please_click_on_the_link_below_to_confirm_your_account_{1}_if_it_was_not_you_please_ignore_this_email", DataService.showUserNameWithStatus(user), emailConfirmationLink];
+			DataService.sendEmail("gulyaskata99@gmail.com", localizer["Email_confirmation_for_baxi_app"], emailText);
+		}
+	}
 }
