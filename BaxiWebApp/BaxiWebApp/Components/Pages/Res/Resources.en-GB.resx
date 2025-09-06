@@ -834,4 +834,11 @@ If it was not you, please, ignore this email!</value>
   <data name="Register_confirmation" xml:space="preserve">
     <value>Register confirmation</value>
   </data>
+  <data name="Did_you_forget_your_password_change_it_here_{0}" xml:space="preserve">
+    <value>Did you forget your password? Change it here: 
+{0}</value>
+  </data>
+  <data name="Reset_password_for_baxi" xml:space="preserve">
+    <value>Reset password for Baxi</value>
+  </data>
 </root>

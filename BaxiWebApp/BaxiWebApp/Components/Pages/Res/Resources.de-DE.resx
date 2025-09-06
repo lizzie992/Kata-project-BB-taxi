@@ -835,4 +835,11 @@ Falls Sie es nicht waren, ignorieren Sie bitte diese E-Mail!</value>
   <data name="Register_confirmation" xml:space="preserve">
     <value>Registrierungsbestätigung</value>
   </data>
+  <data name="Did_you_forget_your_password_change_it_here_{0}" xml:space="preserve">
+    <value>Haben Sie Ihr Passwort vergessen? Ändern Sie es hier: 
+{0}</value>
+  </data>
+  <data name="Reset_password_for_baxi" xml:space="preserve">
+    <value>&#x8;Passwort für Baxi zurücksetzen</value>
+  </data>
 </root>

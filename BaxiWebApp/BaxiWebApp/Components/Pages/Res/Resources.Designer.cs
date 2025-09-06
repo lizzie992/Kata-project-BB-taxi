@@ -598,6 +598,16 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Did you forget your password? Change it here: 
+        ///{0}.
+        /// </summary>
+        public static string Did_you_forget_your_password_change_it_here__0_ {
+            get {
+                return ResourceManager.GetString("Did_you_forget_your_password_change_it_here_{0}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Direction:.
         /// </summary>
         public static string Direction {
@@ -1619,6 +1629,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Reset_password_confirmation {
             get {
                 return ResourceManager.GetString("Reset_password_confirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset password for Baxi.
+        /// </summary>
+        public static string Reset_password_for_baxi {
+            get {
+                return ResourceManager.GetString("Reset_password_for_baxi", resourceCulture);
             }
         }
         
