@@ -56,17 +56,18 @@ h3 {
     height: 450px;
 }
 
-/*.modal-dialog {
+.modal-dialog {
     border: 1px ridge #0066B2;
-    border-radius: 12px;*/ /* Rounded corners */
-/*text-align: center;
+    border-radius: 12px;
+    Rounded corners text-align: center;
     color: #0066B2;
     max-width: 700px;
     margin: 2rem auto;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    align-items: center;*/ /* horizontal center in column layout */
-/*justify-content: center;*/ /* vertical center */
-/*}
+    align-items: center;
+    horizontal center in column layout justify-content: center;
+    vertical center
+}
 
 .modal-header {
     display: flex;
@@ -89,17 +90,17 @@ h3 {
         top: 1rem;
         background-color: #0066B2;
         color: #FFFFFF;
-        border-radius: 4px;*/ /* Rounded corners */
-/*border-style: none;
+        border-radius: 4px;
+        Rounded corners border-style: none;
     }
 
 .modal-body button {
     background-color: #0066B2;
     color: #FFFFFF;
     margin: 5px;
-    border-radius: 6px;*/ /* Rounded corners */
-/*border-style: none;
-}*/
+    border-radius: 6px;
+    Rounded corners border-style: none;
+}
 
 .inputText {
     border-radius: 6px;
@@ -762,6 +763,3 @@ h3 {
         text-align: right;
     }
 }
-
-
-
