@@ -19,7 +19,7 @@
 @inject NavigationManager NavigationManager
 @inject Data.DataService DataService
 @inject Data.BaxiWebAppContext context;
-
+@inject IJSRuntime JSRuntime
 
 <body>
 	<PageTitle>Home</PageTitle>
@@ -39,10 +39,66 @@
 	</div>
 </body>
 
-@if (currentlyLoggedInUser != null && recommendedAds.Count != 0 && showPopUpRecommendedAds == true)
+@if (currentlyLoggedInUser != null && recommendedAds.Count != 0)
 {
+	<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">@localizer["These_might_be_interesting_for_you"]</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="card-container">
+						@foreach (var ad in recommendedAds)
+						{
+							<div class="card">
+								<table>
+									<tr>
+										<th style="text-align: left">@localizer["Ad_type"]</th>
+										<th style="text-align: right">@localizer[@ad.AdType.ToString()]</th>
+									</tr>
+									<tr>
+										<th style="text-align: left">@localizer["Ad_owner"]</th>
+										<th style="text-align: right">@DataService.showUserNameWithStatus(ad.AdOwner)</th>
+									</tr>
+									<tr>
+										<th style="text-align: left">@localizer["Ad_direction"]</th>
+										<th style="text-align: right">@localizer[ad.AdDirection.ToString()]</th>
+									</tr>
+									<tr>
+										<th style="text-align: left">@localizer["From/to_this_address"]</th>
+										<th style="text-align: right">@ad.PickUpDropOffLocation</th>
+									</tr>
+									<tr>
+										<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+										<th style="text-align: right">@ad.PickUpDateAndTime.ToString("g")</th>
+									</tr>
+									<tr>
+										<th style="text-align: left">@localizer["Number_of_seats"]</th>
+										<th style="text-align: right">@ad.NumberOfSeats</th>
+									</tr>
+									<tr>
+										<th style="text-align: left">@localizer["Specific_requests"]</th>
+										<th style="text-align: right">@ad.SpecificRequests</th>
+									</tr>
+								</table>
+								<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
+							</div>
+						}
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" style="margin: 25px; position: center" class="close" @onclick="navigateToRecommendedAds">@localizer["Show_me_all_recommendations"]</button>
+					<button type="button" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 	{
-		<div class="modal" tabindex="-1" style="display:block" role="dialog">
+		@* <div class="modal" tabindex="-1" style="display:block" role="dialog">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -93,7 +149,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> *@
 	}
 }
 
@@ -129,6 +185,10 @@
 		if (firstrender)
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
+		}
+		if (currentlyLoggedInUser != null && recommendedAds.Count != 0)
+		{
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "myModal");
 		}
 	}
 
