@@ -162,7 +162,10 @@
 										}
 										@if (UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
 										{
-											<button @onclick="() => showPopUpForDeletingAd(ad)">@localizer["Delete_ad"]</button>
+											@* <button @onclick="() => showPopUpForDeletingAd(ad)">@localizer["Delete_ad"]</button> *@
+											<button type="button" data-bs-toggle="modal" data-bs-target="#myModalDeleteAd">
+												@localizer["Delete_ad"]
+											</button>
 										}
 									</div>
 								}
@@ -171,9 +174,26 @@
 					</div>
 				</div>
 
+				//new pop up for deleting ads:
+				<div class="modal fade" id="myModalDeleteAd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">@localizer["Delete_ad"]</h5>
+								<button type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<p>@localizer["Please_write_here_the_reason_for_deleting_this_ad"]</p>
+								<InputText class="inputText" @bind-Value="reasonForDeleting"></InputText>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="close" @onclick="() => deleteAd(selectedAd, reasonForDeleting)">@localizer["Delete_ad"]</button>
+							</div>
+						</div>
+					</div>
+				</div>
 
-
-				@if (popUpForDeletingAd)
+				@* @if (popUpForDeletingAd)
 				{
 					<div class="modal" tabindex="-1" style="display:block" role="dialog">
 						<div class="modal-dialog">
@@ -192,9 +212,30 @@
 					</div>
 
 				}
+ *@
 
 
-				@if (popUpForNewConversation)
+				//new pop up for new conversation starter:
+				<div class="modal fade" id="myModalNewConversation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">@localizer["Please_write_your_first_message_here"]</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<p>@localizer["Your_first_message"]</p>
+								<InputText class="inputText" @bind-Value="message"></InputText>
+							</div>
+							<div class="modal-footer">
+								<button type="button" @onclick="() => createChat(selectedAd)">@localizer["Send"]</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				@* @if (popUpForNewConversation)
 				{
 					<div class="modal" tabindex="-1" style="display:block" role="dialog">
 						<div class="modal-dialog">
@@ -212,7 +253,7 @@
 						</div>
 					</div>
 
-				}
+				} *@
 
 			}
 
@@ -331,7 +372,7 @@
 	/// If there is no such a conversation, it opens the pop up window for the first message to be sent (using createChat method)
 	/// </summary>
 	/// <param name="ad">Ad</param>
-	public void openChat(Ad ad)
+	public async void openChat(Ad ad)
 	{
 		List<Conversation> previousConversations = DataService.findPreviousConvo(ad, currentlyLoggedInUser);
 		if (previousConversations.ToList().Count != 0)
@@ -341,7 +382,8 @@
 		}
 		else        //if not found, create new conversasion (+id)
 		{
-			showPopUpForNewConversation(ad);
+			// showPopUpForNewConversation(ad);
+			 await JSRuntime.InvokeVoidAsync("blazorModal.show", "myModalNewConversation");
 		}
 	}
 
