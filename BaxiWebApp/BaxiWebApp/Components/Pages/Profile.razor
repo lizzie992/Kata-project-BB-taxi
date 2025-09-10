@@ -107,7 +107,26 @@
 			</div>
 		</body>
 
-		@if (popUpForDeletingUser)
+
+		@* //new pop up for deleting user: *@
+		<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">@localizer["Delete_my_profile"]</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>@localizer["Are_you_sure_you_want_to_delete_our_profile_if_you_delete_it_you_cannot_reactivate_it_again"]</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-bs-dismiss="modal" class="close" @onclick="() => deleteUser()">@localizer["Delete_my_profile"]</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		@* @if (popUpForDeletingUser)
 		{
 			<div class="modal" tabindex="-1" style="display:block" role="dialog">
 				<div class="modal-dialog">
@@ -118,14 +137,12 @@
 						</div>
 						<div class="modal-body">
 							<p>@localizer["Are_you_sure_you_want_to_delete_our_profile_if_you_delete_it_you_cannot_reactivate_it_again"]</p>
-							<br>
 							<button type="button" class="close" @onclick="() => deleteUser()">@localizer["Delete_my_profile"]</button>
 						</div>
 					</div>
 				</div>
 			</div>
-
-		}
+		} *@
 
 
 	</Authorized>
@@ -201,9 +218,9 @@
 	/// <summary>
 	/// Opens pop up window to confirm if user wants to delete their profile
 	/// </summary>
-	public void showPopUpForDeletingUser(User user)
+	public async void showPopUpForDeletingUser(User user)
 	{
-		popUpForDeletingUser = true;
+		await JSRuntime.InvokeVoidAsync("blazorModal.show", "deleteUserModal");
 	}
 
 	/// <summary>
