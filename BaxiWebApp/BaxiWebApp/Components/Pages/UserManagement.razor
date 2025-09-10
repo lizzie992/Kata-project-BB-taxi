@@ -14,8 +14,7 @@
 @inject UserManager<User> UserManager;
 @inject Data.BaxiWebAppContext context;
 @inject Data.DataService DataService
-
-
+@inject IJSRuntime JSRuntime
 
 
 
@@ -239,7 +238,27 @@
 		</div>
 	</body>
 
-	@if (popUpForWarning)
+
+	@* //new pop up for warning: *@
+	<div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">@localizer["Warning"]</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>@localizer["Please_write_here_the_reason_for_the_warning"]</p>
+					<InputText @bind-Value="reasonForWarning"></InputText>
+				</div>
+				<div class="modal-footer">
+					<button type="button" data-bs-dismiss="modal" @onclick="() => giveUserAWarning(selectedUser, reasonForWarning)">@localizer["Give_a_warning"]</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	@* @if (popUpForWarning)
 	{
 		<div class="modal" tabindex="-1" style="display:block" role="dialog">
 			<div class="modal-dialog">
@@ -257,13 +276,27 @@
 				</div>
 			</div>
 		</div>
+	} *@
 
+	@* //new pop up for giving admin rights: *@
+	<div class="modal fade" id="adminRightsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">@localizer["Make_user_an_admin"]</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>@localizer["Are_you_sure_you_want_to_make_this_user_an_admin_it_cannot_be_revoked_anymore"]</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" data-bs-dismiss="modal" @onclick="() => makeUserAdmin(selectedUser)">@localizer["Give_this_user_admin_rights"]</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-	}
-
-
-
-	@if (popUpForMakeUserAdmin)
+	@* @if (popUpForMakeUserAdmin)
 	{
 		<div class="modal" tabindex="-1" style="display:block" role="dialog">
 			<div class="modal-dialog">
@@ -280,10 +313,29 @@
 				</div>
 			</div>
 		</div>
+	} *@
 
-	}
 
-	@if (popUpForDeactivatingUser)
+	@* //new pop up for deactivation: *@
+	<div class="modal fade" id="deactivatingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">@localizer["Deactivate_user"]</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>@localizer["Please_write_here_the_reason_for_the_deactivation"]</p>
+					<InputText @bind-Value="reasonForDeactivating"></InputText>
+				</div>
+				<div class="modal-footer">
+					<button type="button" data-bs-dismiss="modal" @onclick="() => deactivateUser(selectedUser, reasonForDeactivating)">@localizer["Deactivate_user"]</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	@* @if (popUpForDeactivatingUser)
 	{
 		<div class="modal" tabindex="-1" style="display:block" role="dialog">
 			<div class="modal-dialog">
@@ -300,10 +352,28 @@
 				</div>
 			</div>
 		</div>
+	} *@
 
-	}
 
-	@if (popUpForReactivatingUser)
+	@* //new pop up for reactivation: *@
+	<div class="modal fade" id="reactivatingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">@localizer["Reactivate_user"]</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>@localizer["Are_you_sure_you_want_to_reactivate_this_user"]</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" data-bs-dismiss="modal" @onclick="() => reactivateUser(selectedUser)">@localizer["Reactivate_user"]</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+@* 	@if (popUpForReactivatingUser)
 	{
 		<div class="modal" tabindex="-1" style="display:block" role="dialog">
 			<div class="modal-dialog">
@@ -320,8 +390,7 @@
 				</div>
 			</div>
 		</div>
-
-	}
+	} *@
 
 </AuthorizeView>
 
@@ -566,9 +635,10 @@
 	/// Opens pop up window to show confirmation message about giving a warning to a user
 	/// </summary>
 	/// <param name="user">User</param>
-	public void showPopUpForWarning(User user)
+	public async void showPopUpForWarning(User user)
 	{
 		selectedUser = user;
+		await JSRuntime.InvokeVoidAsync("blazorModal.show", "warningModal");
 		popUpForWarning = true;
 	}
 
@@ -587,9 +657,10 @@
 	/// Opens pop up window to show confirmation message about making a selected user an admin
 	/// </summary>
 	/// <param name="user">User</param>
-	public void showPopUpForMakeUserAdmin(User user)
+	public async void showPopUpForMakeUserAdmin(User user)
 	{
 		selectedUser = user;
+		await JSRuntime.InvokeVoidAsync("blazorModal.show", "adminRightsModal");
 		popUpForMakeUserAdmin = true;
 	}
 
@@ -601,15 +672,17 @@
 	/// </summary>
 	public void closePopUpForDeactivatingUser()
 	{
+		reasonForDeactivating = "";
 		popUpForDeactivatingUser = false;
 	}
 	/// <summary>
 	/// Opens pop up window to show confirmation message about deacticvating a selected user
 	/// </summary>
 	/// <param name="user">User</param>
-	public void showPopUpForDeactivatingUser(User user)
+	public async void showPopUpForDeactivatingUser(User user)
 	{
 		selectedUser = user;
+		await JSRuntime.InvokeVoidAsync("blazorModal.show", "deactivatingModal");
 		popUpForDeactivatingUser = true;
 	}
 
@@ -626,9 +699,10 @@
 	/// Opens pop up window to show confirmation message about reacticvating a selected user
 	/// </summary>
 	/// <param name="user">User</param>
-	public void showPopUpForReactivatingUser(User user)
+	public async void showPopUpForReactivatingUser(User user)
 	{
 		selectedUser = user;
+		await JSRuntime.InvokeVoidAsync("blazorModal.show", "reactivatingModal");
 		popUpForReactivatingUser = true;
 	}
 }
