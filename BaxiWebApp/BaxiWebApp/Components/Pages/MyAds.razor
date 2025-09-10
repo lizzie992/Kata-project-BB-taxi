@@ -14,7 +14,7 @@
 @inject IStringLocalizer<Resources> localizer
 @inject Data.DataService DataService
 @using System.Globalization;
-
+@inject IJSRuntime JSRuntime
 
 <AuthorizeView Context="authContext">
 	<Authorized>
@@ -83,14 +83,34 @@
 							</table>
 							<button @onclick="() => ModifyAd(ad)">@localizer["Modify_ad"]</button>
 							<button @onclick="() => showPopUpForDeletingAd(ad)">@localizer["Delete_ad"]</button>
+							@* <button type="button" data-bs-toggle="modal" data-bs-target="#deleteAdModal">
+								@localizer["Delete_ad"]
+							</button> *@
 						</div>
 					}
 				</div>
 			}
 		</body>
 
+		@* //new pop up for deleting ads: *@
+		<div class="modal fade" id="deleteAdModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">@localizer["Delete_ad"]</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>@localizer["Are_you_sure_you_want_to_delete_it"]</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-bs-dismiss="modal" class="close" @onclick="() => DeleteAd(selectedAd)">@localizer["Delete_ad"]</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-		@if (popUpForDeletingAd)
+		@* @if (popUpForDeletingAd)
 		{
 			<div class="modal" tabindex="-1" style="display:block" role="dialog">
 				<div class="modal-dialog">
@@ -107,7 +127,7 @@
 				</div>
 			</div>
 
-		}
+		} *@
 
 	</Authorized>
 </AuthorizeView>
@@ -204,9 +224,10 @@
 	/// <summary>
 	/// Opens pop up window to confirm ad deletion
 	/// </summary>
-	public void showPopUpForDeletingAd(Ad ad)
+	public async void showPopUpForDeletingAd(Ad ad)
 	{
 		selectedAd = ad;
+		await JSRuntime.InvokeVoidAsync("blazorModal.show", "deleteAdModal");
 		popUpForDeletingAd = true;
 	}
 
