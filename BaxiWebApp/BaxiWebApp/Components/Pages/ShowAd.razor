@@ -27,7 +27,7 @@
 @inject UserManager<User> UserManager;
 @inject NavigationManager NavigationManager
 @inject Data.DataService DataService
-
+@inject IJSRuntime JSRuntime
 
 <body>
 	@if (CurrentAd is null)
@@ -126,9 +126,26 @@
 
 
 
+		//new pop up for reporting ads:
+		<div class="modal fade" id="reportAdModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">@localizer["Report_ad"]</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>@localizer["Please_write_here_the_reason_for_the_reporting_this_ad"]</p>
+						<InputText @bind-Value="reasonForReporting"></InputText>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-bs-dismiss="modal" class="close" @onclick="() => reportAd(selectedAd, reasonForReporting)">@localizer["Report_ad"]</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-
-		@if (popUpForReportAd)
+		@* @if (popUpForReportAd)
 		{
 			<div class="modal" tabindex="-1" style="display:block" role="dialog">
 				<div class="modal-dialog">
@@ -145,10 +162,29 @@
 					</div>
 				</div>
 			</div>
+		} *@
 
-		}
 
-		@if (popUpForNewConversation)
+		//new pop up for new conversation starter:
+		<div class="modal fade" id="conversationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">@localizer["Please_write_your_first_message_here"]</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>@localizer["Your_first_message"]</p>
+						<InputText class="inputText" @bind-Value="message"></InputText>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-bs-dismiss="modal" @onclick="() => createChat(selectedAd)">@localizer["Send"]</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		@* @if (popUpForNewConversation)
 		{
 			<div class="modal" tabindex="-1" style="display:block" role="dialog">
 				<div class="modal-dialog">
@@ -165,8 +201,7 @@
 					</div>
 				</div>
 			</div>
-
-		}
+		} *@
 
 	}
 </body>
@@ -299,9 +334,10 @@
 	/// <summary>
 	/// Opens pop up window to show confirmation message about reporting the ad
 	/// </summary>
-	public void showPopUpForReportAd(Ad ad)
+	public async void showPopUpForReportAd(Ad ad)
 	{
 		selectedAd = ad;
+		await JSRuntime.InvokeVoidAsync("blazorModal.show", "reportAdModal");
 		popUpForReportAd = true;
 	}
 
@@ -319,9 +355,10 @@
 	/// <summary>
 	/// Opens pop up window regarding new conversation
 	/// </summary>
-	public void showPopUpForNewConversation(Ad ad)
+	public async void showPopUpForNewConversation(Ad ad)
 	{
 		selectedAd = ad;
+		await JSRuntime.InvokeVoidAsync("blazorModal.show", "conversationModal");
 		popUpForNewConversation = true;
 	}
 
