@@ -162,10 +162,10 @@
 										}
 										@if (UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
 										{
-											@* <button @onclick="() => showPopUpForDeletingAd(ad)">@localizer["Delete_ad"]</button> *@
-											<button type="button" data-bs-toggle="modal" data-bs-target="#myModalDeleteAd">
+											<button @onclick="() => showPopUpForDeletingAd(ad)">@localizer["Delete_ad"]</button>
+											@* <button type="button" data-bs-toggle="modal" data-bs-target="#deleteAdModal">
 												@localizer["Delete_ad"]
-											</button>
+											</button> *@
 										}
 									</div>
 								}
@@ -175,12 +175,12 @@
 				</div>
 
 				//new pop up for deleting ads:
-				<div class="modal fade" id="myModalDeleteAd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade" id="deleteAdModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title" id="exampleModalLabel">@localizer["Delete_ad"]</h5>
-								<button type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
 								<p>@localizer["Please_write_here_the_reason_for_deleting_this_ad"]</p>
@@ -216,7 +216,7 @@
 
 
 				//new pop up for new conversation starter:
-				<div class="modal fade" id="myModalNewConversation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade" id="conversationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -382,8 +382,9 @@
 		}
 		else        //if not found, create new conversasion (+id)
 		{
+			selectedAd = ad;
 			// showPopUpForNewConversation(ad);
-			 await JSRuntime.InvokeVoidAsync("blazorModal.show", "myModalNewConversation");
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "conversationModal");
 		}
 	}
 
@@ -465,9 +466,10 @@
 	/// <summary>
 	/// Opens pop up window regarding deleting the ad
 	/// </summary>
-	public void showPopUpForDeletingAd(Ad ad)
+	public async void showPopUpForDeletingAd(Ad ad)
 	{
 		selectedAd = ad;
+		await JSRuntime.InvokeVoidAsync("blazorModal.show", "deleteAdModal");
 		popUpForDeletingAd = true;
 	}
 
