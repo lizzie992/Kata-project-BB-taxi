@@ -146,7 +146,28 @@
 			}
 		</body>
 
-		@if (popUpForTooClose)
+
+
+
+		@* //new pop up for location being too close to BB: *@
+		<div class="modal fade" id="tooCloseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">@localizer["Are_you_already_in_baierbrunn"]</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>@localizer["Looks_like_your_ad_is_very_close_to_baierbrunn"]</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-bs-dismiss="modal" class="close">@localizer["Go_back_to_edit_the_location"]</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		@* @if (popUpForTooClose)
 		{
 			<div class="modal" tabindex="-1" style="display:block" role="dialog">
 				<div class="modal-dialog">
@@ -162,9 +183,28 @@
 					</div>
 				</div>
 			</div>
-		}
+		} *@
 
-		@if (popUpForTooFar)
+
+		@* //new pop up for location being too far from BB: *@
+		<div class="modal fade" id="tooFarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">@localizer["Are_you_trying_to_reach_baierbrunn_from_the_moon"]</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>@localizer["Looks_like_your_ad_is_very_far_away_from_baierbrunn"]</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-bs-dismiss="modal" class="close">@localizer["Go_back_to_edit_the_location"]</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		@* @if (popUpForTooFar)
 		{
 			<div class="modal" tabindex="-1" style="display:block" role="dialog">
 				<div class="modal-dialog">
@@ -180,9 +220,28 @@
 					</div>
 				</div>
 			</div>
-		}
+		} *@
 
-		@if (popUpForTimeIsInPast)
+
+		@* //new pop up for the time being in the past: *@
+		<div class="modal fade" id="tooLateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">@localizer["Your_pick_up_time_is_in_the_past"]</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>@localizer["The_pick_up_time_you_added_is_in_the_past_please_go_back_and_correct_it"]</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-bs-dismiss="modal" class="close">@localizer["I_will_correct_it"]</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		@* @if (popUpForTimeIsInPast)
 		{
 			<div class="modal" tabindex="-1" style="display:block" role="dialog">
 				<div class="modal-dialog">
@@ -198,10 +257,27 @@
 					</div>
 				</div>
 			</div>
-		}
+		} *@
 
+		@* //new pop up for invalid address: *@
+		<div class="modal fade" id="incorrectAddressModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">@localizer["Please_give_me_a_correct_address"]</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>@localizer["Looks_like_the_location_you_wrote_is_not_correct_please_give_me_a_valid_address"]</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-bs-dismiss="modal" class="close">@localizer["I_will_correct_it"]</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-		@if (popUpForWrongCoordinates)
+		@* @if (popUpForWrongCoordinates)
 		{
 			<div class="modal" tabindex="-1" style="display:block" role="dialog">
 				<div class="modal-dialog">
@@ -217,11 +293,27 @@
 					</div>
 				</div>
 			</div>
-		}
+		} *@
 
+		@* //new pop up for invalid route: *@
+		<div class="modal fade" id="incorrectRouteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">@localizer["Please_give_me_a_correct_address"]</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>@localizer["Looks_like_there_is_no_route_between_your_location_and_baierbrunn"]</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-bs-dismiss="modal" class="close">@localizer["I_will_correct_it"]</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-
-		@if (popUpForInvalidRoute)
+		@* @if (popUpForInvalidRoute)
 		{
 			<div class="modal" tabindex="-1" style="display:block" role="dialog">
 				<div class="modal-dialog">
@@ -237,9 +329,28 @@
 					</div>
 				</div>
 			</div>
-		}
+		} *@
 
-		@if (popUpForInvalidAdType)
+
+		@* //new pop up for invalid ad type: *@
+		<div class="modal fade" id="incorrectAdTypeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">@localizer["Please_give_me_a_correct_ad_type"]</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>@localizer["You_have_to_select_driver_or_passenger"]</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-bs-dismiss="modal" class="close">@localizer["I_will_correct_it"]</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		@* @if (popUpForInvalidAdType)
 		{
 			<div class="modal" tabindex="-1" style="display:block" role="dialog">
 				<div class="modal-dialog">
@@ -255,7 +366,7 @@
 					</div>
 				</div>
 			</div>
-		}
+		} *@
 
 
 
@@ -360,7 +471,8 @@
 		if (distance == Constants.INVALID_ROUTE)
 		{
 			showMap = false;
-			ShowPopUpForInvalidRoute();
+			// ShowPopUpForInvalidRoute();
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectRouteModal");
 			await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -369,7 +481,8 @@
 		else if (ad.Latitude == null || ad.Longitude == null)
 		{
 			showMap = false;
-			ShowPopUpForWrongCoordinates();
+			// ShowPopUpForWrongCoordinates();
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectAddressModal");
 			await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -378,7 +491,8 @@
 		else if (await DataService.IsItTooCloseToBB(distance))
 		{
 			showMap = false;
-			ShowPopUpForTooClose();
+			// ShowPopUpForTooClose();
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooCloseModal");
 			await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -387,7 +501,8 @@
 		else if (await DataService.IsItTooFarFromBB(distance))
 		{
 			showMap = false;
-			ShowPopUpForTooFar();
+			// ShowPopUpForTooFar();
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooFarModal");
 			await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -556,32 +671,38 @@
 		int distance = await DataService.GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
 		if (ad.PickUpDateAndTime <= DateTime.Now)
 		{
-			ShowPopUpForTimeIsInPast();
+			// ShowPopUpForTimeIsInPast();
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooLateModal");
 			StateHasChanged();
 		}
 		else if (distance == Constants.NULL_COORDINATES)
 		{
-			ShowPopUpForWrongCoordinates();
+			// ShowPopUpForWrongCoordinates();
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectAddressModal");
 			StateHasChanged();
 		}
 		else if (distance == Constants.INVALID_ROUTE)
 		{
-			ShowPopUpForInvalidRoute();
+			// ShowPopUpForInvalidRoute();
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectRouteModal");
 			StateHasChanged();
 		}
 		else if (await DataService.IsItTooCloseToBB(distance))
 		{
-			ShowPopUpForTooClose();
+			// ShowPopUpForTooClose();
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooCloseModal");
 			StateHasChanged();
 		}
 		else if (await DataService.IsItTooFarFromBB(distance))
 		{
-			ShowPopUpForTooFar();
+			// ShowPopUpForTooFar();
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooFarModal");
 			StateHasChanged();
 		}
 		else if (ad.AdType == AdType.SelectAll)
 		{
-			ShowPopUpForInvalidAdType();
+			// ShowPopUpForInvalidAdType();
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectAdTypeModal");
 			StateHasChanged();
 		}
 		else
