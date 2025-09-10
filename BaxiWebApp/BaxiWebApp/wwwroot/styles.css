@@ -102,6 +102,14 @@ h3 {
     Rounded corners border-style: none;
 }
 
+.modal button {
+    background-color: #0066B2;
+    color: #FFFFFF;
+    margin: 5px;
+    border-radius: 6px;
+    Rounded corners border-style: none;
+}
+
 .inputText {
     border-radius: 6px;
 }

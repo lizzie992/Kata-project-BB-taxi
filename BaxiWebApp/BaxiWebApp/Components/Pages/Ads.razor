@@ -188,7 +188,7 @@
 								<InputText class="inputText" @bind-Value="reasonForDeleting"></InputText>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="close" @onclick="() => deleteAd(selectedAd, reasonForDeleting)">@localizer["Delete_ad"]</button>
+								<button type="button" data-bs-dismiss="modal" class="close" @onclick="() => deleteAd(selectedAd, reasonForDeleting)">@localizer["Delete_ad"]</button>
 							</div>
 						</div>
 					</div>
@@ -229,7 +229,7 @@
 								<InputText class="inputText" @bind-Value="message"></InputText>
 							</div>
 							<div class="modal-footer">
-								<button type="button" @onclick="() => createChat(selectedAd)">@localizer["Send"]</button>
+								<button type="button" data-bs-dismiss="modal" @onclick="() => createChat(selectedAd)">@localizer["Send"]</button>
 							</div>
 						</div>
 					</div>

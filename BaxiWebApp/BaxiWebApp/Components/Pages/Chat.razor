@@ -73,8 +73,14 @@
 						<div class="actions-for-chat">
 							<div class="ad-description">@localizer["In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers", DataService.showUserNameWithStatus(ad.AdOwner), localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats]</div>
 							<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
-							<button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button>
-							<button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button>
+							@* <button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button> *@
+							<button type="button" data-bs-toggle="modal" data-bs-target="#deleteConvoModal">
+								@localizer["Delete_conversation"]
+							</button>
+							@* <button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button> *@
+							<button type="button" data-bs-toggle="modal" data-bs-target="#reportConvoModal">
+								@localizer["Report_conversation"]
+							</button>
 						</div>
 						<div class="message-block">
 							@foreach (Message M in CurrentConversation.messages)
@@ -157,8 +163,14 @@
 					<div class="actions-for-chat">
 						<div class="ad-description">@localizer["In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers", DataService.showUserNameWithStatus(ad.AdOwner), localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats]</div>
 						<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
-						<button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button>
-						<button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button>
+						@* <button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button> *@
+						<button type="button" data-bs-toggle="modal" data-bs-target="#deleteConvoModal">
+							@localizer["Delete_conversation"]
+						</button>
+						@* <button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button> *@
+						<button type="button" data-bs-toggle="modal" data-bs-target="#reportConvoModal">
+							@localizer["Report_conversation"]
+						</button>
 					</div>
 					<div class="message-block-phone">
 						@foreach (Message M in CurrentConversation.messages)
@@ -199,7 +211,25 @@
 </body>
 
 
-@if (popUpForDeletingConversation)
+@* //new pop up for deleting convos: *@
+<div class="modal fade" id="deleteConvoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">@localizer["Delete_conversation"]</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>@localizer["Are_you_sure_you_want_to_delete_it"]</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" data-bs-dismiss="modal" class="close" @onclick="() => DeleteConversation(CurrentConversation)">@localizer["Delete_conversation"]</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+@* @if (popUpForDeletingConversation)
 {
 	<div class="modal" tabindex="-1" style="display:block" role="dialog">
 		<div class="modal-dialog">
@@ -215,11 +245,28 @@
 			</div>
 		</div>
 	</div>
+} *@
 
-}
+@* //new pop up for reporting convos: *@
+<div class="modal fade" id="reportConvoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">@localizer["Report_this_conversations_to_the_admins"]</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>@localizer["Please_write_here_the_reason_for_the_report"]</p>
+				<InputText @bind-Value="reasonForReporting"></InputText>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="close" data-bs-dismiss="modal" @onclick="() => ReportConversation(CurrentConversation, currentlyLoggedInUser, reasonForReporting)">@localizer["Report_conversation"]</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-
-@if (popUpForReportConversation)
+@* @if (popUpForReportConversation)
 {
 	<div class="modal" tabindex="-1" style="display:block" role="dialog">
 		<div class="modal-dialog">
@@ -236,7 +283,7 @@
 			</div>
 		</div>
 	</div>
-}
+} *@
 
 
 
