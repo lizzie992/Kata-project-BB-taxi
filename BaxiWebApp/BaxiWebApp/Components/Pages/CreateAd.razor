@@ -30,8 +30,13 @@
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Resources> localizer
 
+
+<PageTitle>@localizer["Create_a_new_ad"]</PageTitle>
+
+
 <AuthorizeView Context="authContext">
 	<Authorized>
+		
 
 		<body>
 			@if (_currentlyLoggedInUser.isActive == false)
@@ -40,8 +45,6 @@
 			}
 			else
 			{
-
-				<PageTitle>@localizer["Create_a_new_ad"]</PageTitle>
 
 
 				<div class="row">

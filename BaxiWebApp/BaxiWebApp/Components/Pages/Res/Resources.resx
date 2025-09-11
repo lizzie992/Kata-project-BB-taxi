@@ -831,4 +831,7 @@ If it was not you, please, ignore this email!</value>
   <data name="Reset_password_for_baxi" xml:space="preserve">
     <value>Reset password for Baxi</value>
   </data>
+  <data name="Homepage" xml:space="preserve">
+    <value>Homepage</value>
+  </data>
 </root>

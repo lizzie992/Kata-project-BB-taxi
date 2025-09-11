@@ -842,4 +842,7 @@ Falls Sie es nicht waren, ignorieren Sie bitte diese E-Mail!</value>
   <data name="Reset_password_for_baxi" xml:space="preserve">
     <value>&#x8;Passwort für Baxi zurücksetzen</value>
   </data>
+  <data name="Homepage" xml:space="preserve">
+    <value>Startseite</value>
+  </data>
 </root>
