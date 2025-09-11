@@ -112,7 +112,7 @@
 					@if (currentlyLoggedInUser.isActive == true)
 					{
 						<div class="chat-send">
-							<input class="chat-input" @bind="TextMessage" @bind:event="oninput" @onkeydown="Enter"></input>
+							<textarea class="chat-input" @bind="TextMessage" @bind:event="oninput" @onkeydown="Enter"></textarea>
 							<button class="chat-button" @onclick="SendMessage">@localizer["Send"]</button>
 						</div>
 					}
@@ -201,7 +201,7 @@
 				@if (currentlyLoggedInUser.isActive == true)
 				{
 					<div class="chat-send">
-						<input class="chat-input" @bind="TextMessage" @bind:event="oninput" @onkeydown="Enter"></input>
+						<textarea class="chat-input" @bind="TextMessage" @bind:event="oninput" @onkeydown="Enter"></textarea>
 						<button class="chat-button" @onclick="SendMessage">@localizer["Send"]</button>
 					</div>
 				}
@@ -316,9 +316,9 @@
 
 	public void Enter(KeyboardEventArgs e)
 	{
-		if (e.Key == "Shift" && e.Code == "Enter")
+		if (e.Code == "Enter" && e.ShiftKey is true)
 		{
-			TextMessage = $"{TextMessage}\r\n\r\n";
+			TextMessage = $"{TextMessage}\r\n";
 		}
 		else if (e.Code == "Enter" || e.Code == "NumpadEnter")
 		{

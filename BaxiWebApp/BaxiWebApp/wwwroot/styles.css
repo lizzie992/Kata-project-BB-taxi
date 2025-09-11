@@ -499,6 +499,7 @@ h3 {
     .chat-input {
         border-radius: 6px; /* Rounded corners */
         margin: 5px;
+        word-break: break-word;
     }
 
     .chat-button {
@@ -535,6 +536,7 @@ h3 {
         word-wrap: break-word; /* break long words if needed */
         overflow-wrap: anywhere; /* break words anywhere if very long */
         padding: 5px;
+        word-break: break-word;
     }
 
     .message-left {
@@ -551,6 +553,7 @@ h3 {
         word-wrap: break-word; /* break long words if needed */
         overflow-wrap: anywhere; /* break words anywhere if very long */
         padding: 5px;
+        word-break: break-word;
     }
 
     .from-user {
@@ -562,6 +565,7 @@ h3 {
     .message {
         color: #0066B2;
         text-align: left;
+        white-space: pre;
     }
 
     .timestamp {
@@ -716,10 +720,10 @@ h3 {
     .message-block {
         height: 100%;
         padding: 20px;
-        margin-bottom: 20px;
         overflow-y: auto;
         display: flex;
         flex-direction: column;
+        margin-bottom: 50px;
     }
 
     .message-right {
@@ -763,6 +767,7 @@ h3 {
     .message {
         color: #0066B2;
         text-align: left;
+        white-space: pre;
     }
 
     .timestamp {

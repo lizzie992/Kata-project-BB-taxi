@@ -185,10 +185,10 @@
 		if (firstrender)
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
-		}
-		if (currentlyLoggedInUser != null && recommendedAds.Count != 0)
-		{
-			await JSRuntime.InvokeVoidAsync("blazorModal.show", "myModal");
+			if (currentlyLoggedInUser != null && recommendedAds.Count != 0)
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "myModal");
+			}
 		}
 	}
 
