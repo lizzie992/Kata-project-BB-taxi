@@ -71,19 +71,34 @@
 				{
 					@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
 					{
-						Ad ad = GetAd(CurrentConversation);
-						<div class="actions-for-chat">
-							<div class="ad-description">@localizer["In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers", DataService.showUserNameWithStatus(ad.AdOwner), localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats]</div>
-							<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
-							@* <button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button> *@
-							<button type="button" data-bs-toggle="modal" data-bs-target="#deleteConvoModal">
-								@localizer["Delete_conversation"]
-							</button>
-							@* <button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button> *@
-							<button type="button" data-bs-toggle="modal" data-bs-target="#reportConvoModal">
-								@localizer["Report_conversation"]
-							</button>
-						</div>
+						Ad? ad = GetAd(CurrentConversation);
+						@if (ad is null)
+						{
+							<div class="actions-for-chat">
+								<p style="text-align:center">@localizer["This_ad_must_have_been_deleted"]</p>
+								<button type="button" data-bs-toggle="modal" data-bs-target="#deleteConvoModal">
+									@localizer["Delete_conversation"]
+								</button>
+								<button type="button" data-bs-toggle="modal" data-bs-target="#reportConvoModal">
+									@localizer["Report_conversation"]
+								</button>
+							</div>
+						}
+						else
+						{
+							<div class="actions-for-chat">
+								<div class="ad-description">@localizer["In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers", DataService.showUserNameWithStatus(ad.AdOwner), localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats]</div>
+								<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
+								@* <button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button> *@
+								<button type="button" data-bs-toggle="modal" data-bs-target="#deleteConvoModal">
+									@localizer["Delete_conversation"]
+								</button>
+								@* <button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button> *@
+								<button type="button" data-bs-toggle="modal" data-bs-target="#reportConvoModal">
+									@localizer["Report_conversation"]
+								</button>
+							</div>
+						}
 						<div class="message-block">
 							@foreach (Message M in CurrentConversation.messages)
 							{
@@ -161,19 +176,34 @@
 			<div class="col-chat">
 				@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
 				{
-					Ad ad = GetAd(CurrentConversation);
-					<div class="actions-for-chat">
-						<div class="ad-description">@localizer["In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers", DataService.showUserNameWithStatus(ad.AdOwner), localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats]</div>
-						<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
-						@* <button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button> *@
-						<button type="button" data-bs-toggle="modal" data-bs-target="#deleteConvoModal">
-							@localizer["Delete_conversation"]
-						</button>
-						@* <button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button> *@
-						<button type="button" data-bs-toggle="modal" data-bs-target="#reportConvoModal">
-							@localizer["Report_conversation"]
-						</button>
-					</div>
+					Ad? ad = GetAd(CurrentConversation);
+					@if (ad is null)
+					{
+						<div class="actions-for-chat">
+							<p style="text-align:center">@localizer["This_ad_must_have_been_deleted"]</p>
+							<button type="button" data-bs-toggle="modal" data-bs-target="#deleteConvoModal">
+								@localizer["Delete_conversation"]
+							</button>
+							<button type="button" data-bs-toggle="modal" data-bs-target="#reportConvoModal">
+								@localizer["Report_conversation"]
+							</button>
+						</div>
+					}
+					else
+					{
+						<div class="actions-for-chat">
+							<div class="ad-description">@localizer["In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers", DataService.showUserNameWithStatus(ad.AdOwner), localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats]</div>
+							<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
+							@* <button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button> *@
+							<button type="button" data-bs-toggle="modal" data-bs-target="#deleteConvoModal">
+								@localizer["Delete_conversation"]
+							</button>
+							@* <button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button> *@
+							<button type="button" data-bs-toggle="modal" data-bs-target="#reportConvoModal">
+								@localizer["Report_conversation"]
+							</button>
+						</div>
+					}
 					<div class="message-block-phone">
 						@foreach (Message M in CurrentConversation.messages)
 						{
@@ -490,7 +520,16 @@
 	/// <returns>Ad object</returns>
 	public Ad GetAd(Conversation C)
 	{
-		Ad ad = context.Ads.Where(a => a.adConversations.Contains(C)).First();
+		Ad? ad = null;
+		List<Ad> adlist = context.Ads.ToList();
+		foreach (Ad a in adlist)
+		{
+			if (a.adConversations.Contains(C))
+			{
+				ad = a;
+				return ad;
+			}
+		}
 		return ad;
 	}
 

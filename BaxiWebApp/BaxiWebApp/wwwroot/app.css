@@ -53,13 +53,13 @@ h1:focus {
 
 
 
-img {
+/*img {
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 60%;
-    border-radius: 12px; /* Rounded corners */
-}
+    border-radius: 12px;*/ /* Rounded corners */
+/*}
 
 body {
     background-color: #e6f0f9;
@@ -77,17 +77,17 @@ h1 {
 }
 
 .map-frame {
-    position: relative;
+    position: relative;*/
     /*height: 100%;
     width: 100%;*/
-    padding-bottom: 56.25%; /*16:9 Aspect Ratio (height / width * 100) */
-    height: 0;
+    /*padding-bottom: 56.25%;*/ /*16:9 Aspect Ratio (height / width * 100) */
+    /*height: 0;
     overflow: hidden;
 }
 
 .framed-map {
-    border-radius: 12px; /* Rounded corners */
-    position: absolute;
+    border-radius: 12px;*/ /* Rounded corners */
+    /*position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -96,25 +96,25 @@ h1 {
 
 .map-frame-for-showad {
     display: flex;
-    justify-content: center; /* Horizontal centering */
-    align-items: center; /* Vertical centering */
-    position: relative;
-    border-radius: 12px; /* Rounded corners */
-    width: 600px;
+    justify-content: center;*/ /* Horizontal centering */
+    /*align-items: center;*/ /* Vertical centering */
+    /*position: relative;
+    border-radius: 12px;*/ /* Rounded corners */
+    /*width: 600px;
     height: 450px;
 }
 
 .modal-dialog {
     border: 1px ridge #0066B2;
-    border-radius: 12px; /* Rounded corners */
-    text-align: center;
+    border-radius: 12px;*/ /* Rounded corners */
+    /*text-align: center;
     color: #0066B2;
     max-width: 700px;
     margin: 2rem auto;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    align-items: center; /* horizontal center in column layout */
-    justify-content: center; /* vertical center */
-}
+    align-items: center;*/ /* horizontal center in column layout */
+    /*justify-content: center;*/ /* vertical center */
+/*}
 
 .modal-header {
     display: flex;
@@ -137,16 +137,16 @@ h1 {
         top: 1rem;
         background-color: #0066B2;
         color: #FFFFFF;
-        border-radius: 4px; /* Rounded corners */
-        border-style: none;
+        border-radius: 4px;*/ /* Rounded corners */
+        /*border-style: none;
     }
 
 .modal-body button {
     background-color: #0066B2;
     color: #FFFFFF;
     margin: 5px;
-    border-radius: 6px; /* Rounded corners */
-    border-style: none;
+    border-radius: 6px;*/ /* Rounded corners */
+    /*border-style: none;
 }
 
 .inputText {
@@ -156,8 +156,8 @@ h1 {
 .card-container {
     display: flex;
     flex-wrap: wrap;
-    border-radius: 12px; /* Rounded corners */
-    justify-content: space-around;
+    border-radius: 12px;*/ /* Rounded corners */
+    /*justify-content: space-around;
     gap: 10px;
 }
 
@@ -191,8 +191,8 @@ h1 {
 #map {
     height: 100%;
     width: 100%;
-    border-radius: 12px; /* Rounded corners */
-    position: static;
+    border-radius: 12px;*/ /* Rounded corners */
+    /*position: static;
     overflow: hidden;
     min-height: 300px;
     flex-direction: column;
@@ -200,8 +200,8 @@ h1 {
 
 .input {
     color: #0066B2;
-    border-radius: 6px; /* Rounded corners */
-    float: right;
+    border-radius: 6px;*/ /* Rounded corners */
+    /*float: right;
 }
 
 .input-block {
@@ -219,46 +219,46 @@ h1 {
     box-sizing: border-box;
     background-color: #cce0f2;
     color: #0066B2;
-    border-radius: 12px; /* Rounded corners */
-    padding: 20px;
+    border-radius: 12px;*/ /* Rounded corners */
+    /*padding: 20px;
     display: flex;
-    gap: 10px; /**/ /* Adds spacing between all items */
-    flex-direction: column;
-    justify-content: flex-start; /* Aligns items to the left horizontally */
-    align-items: flex-start; /* Aligns items to the center vertically */
-}
+    gap: 10px;*/ /**/ /* Adds spacing between all items */
+    /*flex-direction: column;
+    justify-content: flex-start;*/ /* Aligns items to the left horizontally */
+    /*align-items: flex-start;*/ /* Aligns items to the center vertically */
+/*}
 
     .div-block button {
-        border-radius: 6px; /* Rounded corners */
-        background-color: whitesmoke;
+        border-radius: 6px;*/ /* Rounded corners */
+        /*background-color: whitesmoke;
         color: #0066B2;
         border-style: none;
-        white-space: normal; /* allow wrapping */
-        word-wrap: break-word; /* break long words if needed */
-        overflow-wrap: break-word;
-        vertical-align: top; /* optional: align top for multi-line */
-    }
+        white-space: normal;*/ /* allow wrapping */
+        /*word-wrap: break-word;*/ /* break long words if needed */
+        /*overflow-wrap: break-word;
+        vertical-align: top;*/ /* optional: align top for multi-line */
+    /*}
 
 .div-block-centered {
     height: 100%;
     box-sizing: border-box;
     background-color: #cce0f2;
     color: #0066B2;
-    border-radius: 12px; /* Rounded corners */
-    padding: 20px;
+    border-radius: 12px;*/ /* Rounded corners */
+    /*padding: 20px;
     display: flex;
-    gap: 10px; /**/ /* Adds spacing between all items */
-    flex-direction: column;
-    align-items: center; /* horizontal center in column layout */
-    justify-content: center; /* vertical center */
-    text-align: center;
+    gap: 10px;*/ /**/ /* Adds spacing between all items */
+    /*flex-direction: column;
+    align-items: center;*/ /* horizontal center in column layout */
+    /*justify-content: center;*/ /* vertical center */
+    /*text-align: center;
 }
 
-.grid-wrapper {
+.grid-wrapper {*/
     /*padding: 10px;*/
-    overflow: hidden; /* Important to clip the corners */
-    border-radius: 12px; /*Rounded corners */
-    background-color: #cce0f2;
+    /*overflow: hidden;*/ /* Important to clip the corners */
+    /*border-radius: 12px;*/ /*Rounded corners */
+    /*background-color: #cce0f2;
     color: #0066B2;
     width: 100%;
 }
@@ -266,22 +266,22 @@ h1 {
 .quickgrid {
     width: 100%;
     color: #0066B2;
-    border-collapse: separate; /* Allows rounding */
-    border-spacing: 0; /* Removes inner gaps */
-    table-layout: fixed; /*Force columns to respect width */
-    align-items: center; /* vertically center */
-    justify-content: center; /* horizontally center */
-}
+    border-collapse: separate;*/ /* Allows rounding */
+    /*border-spacing: 0;*/ /* Removes inner gaps */
+    /*table-layout: fixed;*/ /*Force columns to respect width */
+    /*align-items: center;*/ /* vertically center */
+    /*justify-content: center;*/ /* horizontally center */
+/*}
 
-    .quickgrid thead {
+    .quickgrid thead {*/
         /*padding: 1px;*/
-        color: #0066B2;
-        white-space: normal; /* allow wrapping */
-        word-wrap: break-word; /* break long words if needed */
-        overflow-wrap: break-word;
-        vertical-align: top; /*optional: align top for multi-line */
-        align-items: center; /* vertically center */
-        justify-content: center;
+        /*color: #0066B2;
+        white-space: normal;*/ /* allow wrapping */
+        /*word-wrap: break-word;*/ /* break long words if needed */
+        /*overflow-wrap: break-word;
+        vertical-align: top;*/ /*optional: align top for multi-line */
+        /*align-items: center;*/ /* vertically center */
+        /*justify-content: center;
         text-wrap-style: pretty;
     }
 
@@ -289,36 +289,36 @@ h1 {
     .quickgrid td {
         padding: 1px;
         color: #0066B2;
-        white-space: normal; /* allow wrapping */
-        word-wrap: break-word; /* break long words if needed */
-        overflow-wrap: break-word;
-        vertical-align: top; /* optional: align top for multi-line */
-        align-items: center; /* vertically center */
-        justify-content: left;
+        white-space: normal;*/ /* allow wrapping */
+        /*word-wrap: break-word;*/ /* break long words if needed */
+        /*overflow-wrap: break-word;
+        vertical-align: top;*/ /* optional: align top for multi-line */
+        /*align-items: center;*/ /* vertically center */
+        /*justify-content: left;
     }
 
     .quickgrid button {
-        border-radius: 6px; /* Rounded corners */
-        background-color: whitesmoke;
+        border-radius: 6px;*/ /* Rounded corners */
+        /*background-color: whitesmoke;
         color: #0066B2;
         border-style: none;
-        white-space: normal; /* allow wrapping */
-        word-wrap: break-word; /* break long words if needed */
-        overflow-wrap: break-word;
-        vertical-align: top; /* optional: align top for multi-line */
-    }
+        white-space: normal;*/ /* allow wrapping */
+        /*word-wrap: break-word;*/ /* break long words if needed */
+        /*overflow-wrap: break-word;
+        vertical-align: top;*/ /* optional: align top for multi-line */
+    /*}*/
 
 /*phone size*/
-@media (max-width: 575.98px) { 
+/*@media (max-width: 575.98px) { 
 
-    .input-block {
+    .input-block {*/
         /*width: 100%;*/
         /*border-radius: 6px;*/ /* Rounded corners */
-        display: flex;
+        /*display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1rem; /* optional: adds space between the items */
-        margin-top: 10px;
+        gap: 1rem;*/ /* optional: adds space between the items */
+        /*margin-top: 10px;
         margin-bottom: 10px;
         padding: 2px;
     }
@@ -327,34 +327,34 @@ h1 {
         box-sizing: border-box;
         background-color: #cce0f2;
         color: #0066B2;
-        border-radius: 12px; /* Rounded corners */
-        padding: 20px;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*padding: 20px;
         display: flex;
-        gap: 10px; /**/ /* Adds spacing between all items */
-        flex-direction: column;
-        align-items: center; /* horizontal center in column layout */
-        justify-content: center; /* vertical center */
-        text-align: center;
+        gap: 10px;*/ /**/ /* Adds spacing between all items */
+        /*flex-direction: column;
+        align-items: center;*/ /* horizontal center in column layout */
+        /*justify-content: center;*/ /* vertical center */
+        /*text-align: center;
     }
 
         .div-block button {
-            border-radius: 6px; /* Rounded corners */
-            background-color: whitesmoke;
+            border-radius: 6px;*/ /* Rounded corners */
+            /*background-color: whitesmoke;
             color: #0066B2;
             border-style: none;
-            white-space: normal; /* allow wrapping */
-            word-wrap: break-word; /* break long words if needed */
-            overflow-wrap: break-word;
-            vertical-align: top; /* optional: align top for multi-line */
-        }
+            white-space: normal;*/ /* allow wrapping */
+            /*word-wrap: break-word;*/ /* break long words if needed */
+            /*overflow-wrap: break-word;
+            vertical-align: top;*/ /* optional: align top for multi-line */
+        /*}
 
     .map-frame-for-showad {
-        display: flex;
+        display: flex;*/
         /*justify-content: center;*/ /* Horizontal centering */
         /*align-items: center;*/ /* Vertical centering */
         /*position: relative;*/
-        border-radius: 12px; /* Rounded corners */
-        width: 90%;
+        /*border-radius: 12px;*/ /* Rounded corners */
+        /*width: 90%;
     }
 
     .card {
@@ -372,8 +372,8 @@ h1 {
         display: flex;
         background-color: whitesmoke;
         flex-wrap: wrap;
-        border-radius: 12px; /* Rounded corners */
-        justify-content: space-around;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*justify-content: space-around;
         gap: 10px;
     }
 
@@ -381,11 +381,11 @@ h1 {
             background-color: #0066B2;
             color: #FFFFFF;
             margin: 5px;
-            border-radius: 6px; /* Rounded corners */
-            border-style: none;
-            white-space: normal; /* allow wrapping */
-            word-wrap: break-word; /* break long words if needed */
-            overflow-wrap: break-word;
+            border-radius: 6px;*/ /* Rounded corners */
+            /*border-style: none;
+            white-space: normal;*/ /* allow wrapping */
+            /*word-wrap: break-word;*/ /* break long words if needed */
+            /*overflow-wrap: break-word;
             text-align: center;
         }
 
@@ -411,50 +411,50 @@ h1 {
         justify-content: center;
         align-items: center;
         padding: 10px;
-        gap: 10px; /* Adds spacing between all items */
-    }
+        gap: 10px;*/ /* Adds spacing between all items */
+    /*}
 
     .col-all-convos {
         height: 100%;
         width: 100%;
-        border-radius: 12px; /* Rounded corners */
-        background-color: #0066B2;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*background-color: #0066B2;
         color: whitesmoke;
-        gap: 10px; /* Adds spacing between all items */
-        flex-direction: column;
+        gap: 10px;*/ /* Adds spacing between all items */
+        /*flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 10px;
+        padding: 10px;*/
         /*max-height: 80vh;*/
-        overflow-y: auto;
+        /*overflow-y: auto;
     }
 
     .convo-preview {
         box-sizing: border-box;
         background-color: #cce0f2;
         color: #0066B2;
-        border-radius: 12px; /* Rounded corners */
-        padding: 10px;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*padding: 10px;
         display: flex;
-        gap: 10px; /**/ /* Adds spacing between all items */
-        flex-direction: column;
+        gap: 10px;*/ /**/ /* Adds spacing between all items */
+        /*flex-direction: column;
         justify-content: center;
         align-items: center;
         margin: 10px;
-        white-space: nowrap; /* Prevents text from wrapping */
-        overflow: hidden; /* Hides the overflowing text */
-        text-overflow: ellipsis; /* Shows "..." when text is cut off */
-        text-decoration: none;
+        white-space: nowrap;*/ /* Prevents text from wrapping */
+        /*overflow: hidden;*/ /* Hides the overflowing text */
+        /*text-overflow: ellipsis;*/ /* Shows "..." when text is cut off */
+        /*text-decoration: none;
     }
 
     .convo-other-user,
     .convo-last-message,
     .convo-timestamp {
         width: 80%;
-        white-space: nowrap; /* Prevents text from wrapping */
-        overflow: hidden; /* Hides the overflowing text */
-        text-overflow: ellipsis; /* Shows "..." when text is cut off */
-        text-align: center;
+        white-space: nowrap;*/ /* Prevents text from wrapping */
+        /*overflow: hidden;*/ /* Hides the overflowing text */
+        /*text-overflow: ellipsis;*/ /* Shows "..." when text is cut off */
+        /*text-align: center;
         text-decoration: none;
     }
 
@@ -468,53 +468,53 @@ h1 {
         background-color: #0066B2;
         color: whitesmoke;
         margin: 5px;
-        border-radius: 6px; /* Rounded corners */
-        border-style: none;
+        border-radius: 6px;*/ /* Rounded corners */
+        /*border-style: none;
         font-size: 10px;
     }
 
     .col-chat {
         width: 95%;
-        border-radius: 12px; /* Rounded corners */
-        background-color: #0066B2;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*background-color: #0066B2;
         color: whitesmoke;
-        gap: 10px; /* Adds spacing between all items */
+        gap: 10px;*/ /* Adds spacing between all items */
         /*position: relative;*/
         /*max-height: 80vh;*/
-        display: flex;
+        /*display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
+        align-items: center;*/
         /*padding: 10px;*/
-    }
+    /*}
 
     .actions-for-chat {
         box-sizing: border-box;
         height: max-content;
         background-color: #cce0f2;
         color: #0066B2;
-        border-radius: 12px; /* Rounded corners */
-        padding: 5px;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*padding: 5px;
         position: sticky;
         top: 5px;
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
-        grid-template-rows: auto auto; /* first row auto height, second row auto height */
-        align-items: baseline;
+        grid-template-columns: repeat(3, 1fr);*/ /* 3 equal columns */
+        /*grid-template-rows: auto auto;*/ /* first row auto height, second row auto height */
+        /*align-items: baseline;
         font-size: 10px;
     }
 
     .ad-description {
-        grid-column: span 3; /* make it stretch across all 3 columns */
-        text-align: center;
+        grid-column: span 3;*/ /* make it stretch across all 3 columns */
+        /*text-align: center;
     }
 
     .actions-for-chat button {
         background-color: #0066B2;
         color: whitesmoke;
         margin: 5px;
-        border-radius: 6px; /* Rounded corners */
-        border-style: none;
+        border-radius: 6px;*/ /* Rounded corners */
+        /*border-style: none;
         font-size: 10px;
     }
 
@@ -524,8 +524,8 @@ h1 {
         width: 100%;
         background-color: #cce0f2;
         color: #0066B2;
-        border-radius: 12px; /* Rounded corners */
-        padding: 5px;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*padding: 5px;
         display: flex;
         flex-direction: row;
         align-items: baseline;
@@ -536,8 +536,8 @@ h1 {
     }
 
     .chat-input {
-        border-radius: 6px; /* Rounded corners */
-        margin: 5px;
+        border-radius: 6px;*/ /* Rounded corners */
+        /*margin: 5px;
     }
 
     .chat-button {
@@ -545,16 +545,16 @@ h1 {
         width: max-content;
         color: whitesmoke;
         margin: 5px;
-        border-radius: 6px; /* Rounded corners */
-        border-style: none;
+        border-radius: 6px;*/ /* Rounded corners */
+        /*border-style: none;
     }
 
     .message-block {
         height: 500px;
         overflow-y: scroll;
-        overflow-x: hidden;
+        overflow-x: hidden;*/
         /*padding: 10px;*/
-        width: 95%;
+        /*width: 95%;
         overflow-y: scroll;
         display: flex;
         flex-direction: column;
@@ -562,34 +562,34 @@ h1 {
 
     .message-right {
         width: 60%;
-        align-self: flex-end; /* Stick to right side */
-        margin-left: auto; /* push rest of space to the left */
-        margin-right: 0; /* no extra space on right */
-        background-color: whitesmoke;
+        align-self: flex-end;*/ /* Stick to right side */
+        /*margin-left: auto;*/ /* push rest of space to the left */
+        /*margin-right: 0;*/ /* no extra space on right */
+        /*background-color: whitesmoke;
         color: #0066B2;
         margin: 5px;
-        border-radius: 6px; /* Rounded corners */
-        height: auto; /* grow naturally */
-        max-height: none; /* no forced cap */
-        word-wrap: break-word; /* break long words if needed */
-        overflow-wrap: anywhere; /* break words anywhere if very long */
-        padding: 5px;
+        border-radius: 6px;*/ /* Rounded corners */
+        /*height: auto;*/ /* grow naturally */
+        /*max-height: none;*/ /* no forced cap */
+        /*word-wrap: break-word;*/ /* break long words if needed */
+        /*overflow-wrap: anywhere;*/ /* break words anywhere if very long */
+        /*padding: 5px;
     }
 
     .message-left {
         width: 60%;
-        align-self: flex-start; /* Stick to left side */
-        margin-left: 0; /* no extra space on left */
-        margin-right: auto; /* push rest of space to the right */
-        background-color: whitesmoke;
+        align-self: flex-start;*/ /* Stick to left side */
+        /*margin-left: 0;*/ /* no extra space on left */
+        /*margin-right: auto;*/ /* push rest of space to the right */
+        /*background-color: whitesmoke;
         color: #0066B2;
         margin: 5px;
-        border-radius: 6px; /* Rounded corners */
-        height: auto; /* grow naturally */
-        max-height: none; /* no forced cap */
-        word-wrap: break-word; /* break long words if needed */
-        overflow-wrap: anywhere; /* break words anywhere if very long */
-        padding: 5px;
+        border-radius: 6px;*/ /* Rounded corners */
+        /*height: auto;*/ /* grow naturally */
+        /*max-height: none;*/ /* no forced cap */
+        /*word-wrap: break-word;*/ /* break long words if needed */
+        /*overflow-wrap: anywhere;*/ /* break words anywhere if very long */
+        /*padding: 5px;
     }
 
     .from-user {
@@ -608,10 +608,10 @@ h1 {
         font-size: 10px;
         text-align: right;
     }
-}
+}*/
 
 /*laptop size*/
-@media (min-width: 575.98px) { 
+/*@media (min-width: 575.98px) { 
     .card-container-for-grid {
         display: none;
     }
@@ -625,8 +625,8 @@ h1 {
         display: grid;
         grid-template-columns: 30% 70%;
         padding: 20px;
-        gap: 20px; /* Adds spacing between all items */
-    }
+        gap: 20px;*/ /* Adds spacing between all items */
+    /*}
 
     .row-chat-mobile {
         display: none;
@@ -634,11 +634,11 @@ h1 {
 
     .col-all-convos {
         height: 100%;
-        border-radius: 12px; /* Rounded corners */
-        background-color: #0066B2;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*background-color: #0066B2;
         color: whitesmoke;
-        gap: 10px; /* Adds spacing between all items */
-        flex-direction: column;
+        gap: 10px;*/ /* Adds spacing between all items */
+        /*flex-direction: column;
         justify-content: center;
         align-items: center;
         padding: 10px;
@@ -650,28 +650,28 @@ h1 {
         box-sizing: border-box;
         background-color: #cce0f2;
         color: #0066B2;
-        border-radius: 12px; /* Rounded corners */
-        padding: 20px;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*padding: 20px;
         display: flex;
-        gap: 10px; /**/ /* Adds spacing between all items */
-        flex-direction: column;
+        gap: 10px;*/ /**/ /* Adds spacing between all items */
+        /*flex-direction: column;
         justify-content: center;
         align-items: center;
         margin: 10px;
-        white-space: nowrap; /* Prevents text from wrapping */
-        overflow: hidden; /* Hides the overflowing text */
-        text-overflow: ellipsis; /* Shows "..." when text is cut off */
-        text-decoration: none;
+        white-space: nowrap;*/ /* Prevents text from wrapping */
+        /*overflow: hidden;*/ /* Hides the overflowing text */
+        /*text-overflow: ellipsis;*/ /* Shows "..." when text is cut off */
+        /*text-decoration: none;
     }
 
     .convo-other-user,
     .convo-last-message,
     .convo-timestamp {
         width: 80%;
-        white-space: nowrap; /* Prevents text from wrapping */
-        overflow: hidden; /* Hides the overflowing text */
-        text-overflow: ellipsis; /* Shows "..." when text is cut off */
-        text-align: center;
+        white-space: nowrap;*/ /* Prevents text from wrapping */
+        /*overflow: hidden;*/ /* Hides the overflowing text */
+        /*text-overflow: ellipsis;*/ /* Shows "..." when text is cut off */
+        /*text-align: center;
         text-decoration: none;
     }
 
@@ -683,11 +683,11 @@ h1 {
 
     .col-chat {
         height: 100%;
-        border-radius: 12px; /* Rounded corners */
-        background-color: #0066B2;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*background-color: #0066B2;
         color: whitesmoke;
-        gap: 10px; /* Adds spacing between all items */
-        position: relative;
+        gap: 10px;*/ /* Adds spacing between all items */
+        /*position: relative;
         max-height: 80vh;
         display: grid;
         grid-template-rows: 10% 80% 10%;
@@ -698,28 +698,28 @@ h1 {
         height: max-content;
         background-color: #cce0f2;
         color: #0066B2;
-        border-radius: 12px; /* Rounded corners */
-        padding: 5px;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*padding: 5px;
         position: sticky;
         top: 50px;
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
-        grid-template-rows: auto auto; /* first row auto height, second row auto height */
-        align-items: baseline;
+        grid-template-columns: repeat(3, 1fr);*/ /* 3 equal columns */
+        /*grid-template-rows: auto auto;*/ /* first row auto height, second row auto height */
+        /*align-items: baseline;
         font-size: 10px;
     }
 
     .ad-description {
-        grid-column: span 3; /* make it stretch across all 3 columns */
-        text-align: center;
+        grid-column: span 3;*/ /* make it stretch across all 3 columns */
+        /*text-align: center;
     }
 
     .actions-for-chat button {
         background-color: #0066B2;
         color: whitesmoke;
         margin: 5px;
-        border-radius: 6px; /* Rounded corners */
-        border-style: none;
+        border-radius: 6px;*/ /* Rounded corners */
+        /*border-style: none;
         font-size: 10px;
     }
 
@@ -729,8 +729,8 @@ h1 {
         width: 100%;
         background-color: #cce0f2;
         color: #0066B2;
-        border-radius: 12px; /* Rounded corners */
-        padding: 10px;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*padding: 10px;
         display: grid;
         grid-template-columns: 80% 20%;
         align-items: baseline;
@@ -740,15 +740,15 @@ h1 {
     }
 
     .chat-input {
-        border-radius: 6px; /* Rounded corners */
-    }
+        border-radius: 6px;*/ /* Rounded corners */
+    /*}
 
     .chat-button {
         background-color: #0066B2;
         color: whitesmoke;
         margin: 5px;
-        border-radius: 6px; /* Rounded corners */
-        border-style: none;
+        border-radius: 6px;*/ /* Rounded corners */
+        /*border-style: none;
     }
 
     .message-block {
@@ -765,14 +765,14 @@ h1 {
         box-sizing: border-box;
         background-color: whitesmoke;
         color: #0066B2;
-        border-radius: 12px; /* Rounded corners */
-        padding: 10px;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*padding: 10px;
         display: flex;
         flex-direction: column;
-        align-self: flex-end; /* Stick to right side */
-        margin-left: auto; /* push rest of space to the left */
-        margin-right: 0; /* no extra space on right */
-        margin-top: 10px;
+        align-self: flex-end;*/ /* Stick to right side */
+        /*margin-left: auto;*/ /* push rest of space to the left */
+        /*margin-right: 0;*/ /* no extra space on right */
+        /*margin-top: 10px;
         margin-bottom: 10px;
     }
 
@@ -781,14 +781,14 @@ h1 {
         box-sizing: border-box;
         background-color: whitesmoke;
         color: #0066B2;
-        border-radius: 12px; /* Rounded corners */
-        padding: 10px;
+        border-radius: 12px;*/ /* Rounded corners */
+        /*padding: 10px;
         display: flex;
         flex-direction: column;
-        align-self: flex-start; /* Stick to left side */
-        margin-left: 0; /* no extra space on left */
-        margin-right: auto; /* push rest of space to the right */
-        margin-top: 10px;
+        align-self: flex-start;*/ /* Stick to left side */
+        /*margin-left: 0;*/ /* no extra space on left */
+        /*margin-right: auto;*/ /* push rest of space to the right */
+        /*margin-top: 10px;
         margin-bottom: 10px;
     }
 
@@ -808,4 +808,4 @@ h1 {
         font-size: 10px;
         text-align: right;
     }
-}
+}*/
