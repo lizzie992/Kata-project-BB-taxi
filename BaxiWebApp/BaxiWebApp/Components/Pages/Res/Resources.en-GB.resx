@@ -694,9 +694,6 @@ Baxi offers a smart and reliable solution by connecting drivers and passengers w
 Together, we make the journey smoother, more efficient, and more community-driven. 
 Welcome aboard!</value>
   </data>
-  <data name="More" xml:space="preserve">
-    <value>More</value>
-  </data>
   <data name="In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers" xml:space="preserve">
     <value>In this conversation you are talking to {0} to arrange a ride {1}, from/to {2}, on {3}, including {4} passengers.</value>
   </data>
@@ -843,5 +840,11 @@ If it was not you, please, ignore this email!</value>
   </data>
   <data name="Homepage" xml:space="preserve">
     <value>Homepage</value>
+  </data>
+  <data name="Together_to_baierbrunn" xml:space="preserve">
+    <value>Together to Baierbrunn</value>
+  </data>
+  <data name="More" xml:space="preserve">
+    <value>More</value>
   </data>
 </root>

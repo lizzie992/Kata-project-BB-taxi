@@ -695,9 +695,6 @@ Baxi bietet eine clevere und verlässliche Lösung, indem es Fahrerinnen und Fah
 Gemeinsam gestalten wir die Fahrt einfacher, effizienter und gemeinschaftlicher. 
 Schön, dass Sie dabei sind!</value>
   </data>
-  <data name="More" xml:space="preserve">
-    <value>Mehr</value>
-  </data>
   <data name="In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers" xml:space="preserve">
     <value>In dieser Unterhaltung sprechen Sie mit {0}, um eine Fahrt {1} von/nach {2} am {3} mit {4} Passagieren zu vereinbaren.</value>
   </data>
@@ -844,5 +841,11 @@ Falls Sie es nicht waren, ignorieren Sie bitte diese E-Mail!</value>
   </data>
   <data name="Homepage" xml:space="preserve">
     <value>Startseite</value>
+  </data>
+  <data name="Together_to_baierbrunn" xml:space="preserve">
+    <value>Gemeinsam nach Baierbrunn</value>
+  </data>
+  <data name="More" xml:space="preserve">
+    <value>Mehr</value>
   </data>
 </root>

@@ -1889,6 +1889,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Together to Baierbrunn.
+        /// </summary>
+        public static string Together_to_baierbrunn {
+            get {
+                return ResourceManager.GetString("Together_to_baierbrunn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Turkish.
         /// </summary>
         public static string Turkish {
@@ -1953,7 +1962,10 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Getting to Baierbrunn is something we all rely on - but when train service is disrupted, it can be a real challenge. Baxi offers a smart and reliable solution by connecting drivers and passengers with the same destination. Together, we make the journey smoother, more efficient, and more community-driven. Welcome aboard!.
+        ///   Looks up a localized string similar to Getting to Baierbrunn is something we all rely on - but when train service is disrupted, it can be a real challenge. 
+        ///Baxi offers a smart and reliable solution by connecting drivers and passengers with the same destination. 
+        ///Together, we make the journey smoother, more efficient, and more community-driven. 
+        ///Welcome aboard!.
         /// </summary>
         public static string Welcome_text {
             get {
