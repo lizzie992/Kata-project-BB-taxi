@@ -461,12 +461,7 @@
 	/// </summary>
 	public void SendMessage()
 	{
-		User fromUser = DataService.getOtherUser(CurrentConversation, currentlyLoggedInUser);
-		string emailMessage = localizer["You_just_received_a_new_message_from_{0}_Go_and_check_it_out_http_localhost_5049_Chat_{1}", DataService.showUserNameWithStatus(fromUser), CurrentConversation.ID];
-		string emailAddress = "gulyaskata99@gmail.com";
-		string subject = localizer["You_received_a_new_message"];
 		DataService.SendChatMessage(CurrentConversation, currentlyLoggedInUser, TextMessage, CurrentConversation.ID);
-		DataService.sendEmail(emailAddress, subject, emailMessage);
 		TextMessage = "";
 	}
 
@@ -504,11 +499,16 @@
 			message.Append($"{m.timeStamp.ToString()}\r\n\r\n");
 		}
 		string output = message.ToString();
-		string emailAddress = "gulyaskata99@gmail.com";
-		string subject = localizer["A_conversation_was_just_reported_to_you"];
-		string text = localizer["Please_check_out_the_following_conversation_below_that_{0}_reported_to_you_with_the_following_reason_{1}_messages_{2}", currentlyLoggedInUser, reasonForReporting, message];
-		DataService.sendEmail(emailAddress, subject, text);
-
+		foreach (User u in context.Users.ToList<User>())
+		{
+			if (UserManager.GetRolesAsync(u).Result.First() == "Admin")
+			{
+				string emailAddress = u.Email.ToString();
+				string subject = localizer["A_conversation_was_just_reported_to_you"];
+				string text = localizer["Please_check_out_the_following_conversation_below_that_{0}_reported_to_you_with_the_following_reason_{1}_messages_{2}", currentlyLoggedInUser, reasonForReporting, message];
+				DataService.sendEmail(emailAddress, subject, text);
+			}
+		}
 		reasonForReporting = "";
 		closePopUpForReportConversation();
 	}

@@ -1,4 +1,5 @@
-﻿using BaxiWebApp.Components.Pages.Res;
+﻿using BaxiWebApp.Components.Pages;
+using BaxiWebApp.Components.Pages.Res;
 using BB;
 using GoogleMapsApi;
 using GoogleMapsApi.Entities.Common;
@@ -6,11 +7,14 @@ using GoogleMapsApi.Entities.Directions.Request;
 using GoogleMapsApi.Entities.Directions.Response;
 using GoogleMapsApi.Entities.Geocoding.Request;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using SQLitePCL;
 using System.Globalization;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 
 namespace BaxiWebApp.Data
@@ -20,6 +24,8 @@ namespace BaxiWebApp.Data
         private IStringLocalizer<Resources> _localizer;
 
         private IDbContextFactory<BaxiWebAppContext> _dbcFactory;
+
+ 
         public DataService(IDbContextFactory<BaxiWebAppContext> dbcFactory, IStringLocalizer<Resources> localizer) //dependency injection of the DbContextFactory and the localizer
         {
             _dbcFactory = dbcFactory;
@@ -278,14 +284,14 @@ namespace BaxiWebApp.Data
                     if (oldAd.AdOwner.AreNotificationsOn == true)
                     {
                         string messageNewAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", newAd.AdOwner, newAd.AdType, newAd.AdDirection, newAd.PickUpDropOffLocation, newAd.PickUpDateAndTime, newAd.NumberOfSeats, newAd.SpecificRequests, newAd.ID];
-                        string emailAddress = "gulyaskata99@gmail.com";
+                        string emailAddress = oldAd.AdOwner.Email.ToString();
                         string subject = _localizer["Check_out_this_ad"];
                         sendEmail(emailAddress, subject, messageNewAd);
                     }
                     if (newAd.AdOwner.AreNotificationsOn == true)
                     {
                         string messageOldAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", oldAd.AdOwner, oldAd.AdType, oldAd.AdDirection, oldAd.PickUpDropOffLocation, oldAd.PickUpDateAndTime, oldAd.NumberOfSeats, oldAd.SpecificRequests, oldAd.ID];
-                        string emailAddress = "gulyaskata99@gmail.com";
+                        string emailAddress = newAd.AdOwner.Email.ToString();
                         string subject = _localizer["Check_out_this_ad"];
                         sendEmail(emailAddress, subject, messageOldAd);
                     }
@@ -295,14 +301,14 @@ namespace BaxiWebApp.Data
                     if (oldAd.AdOwner.AreNotificationsOn == true)
                     {
                         string messageNewAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", newAd.AdOwner, newAd.AdType, newAd.AdDirection, newAd.PickUpDropOffLocation, newAd.PickUpDateAndTime, newAd.NumberOfSeats, newAd.SpecificRequests, newAd.ID];
-                        string emailAddress = "gulyaskata99@gmail.com";
+                        string emailAddress = oldAd.AdOwner.Email.ToString();
                         string subject = _localizer["Check_out_this_ad"];
                         sendEmail(emailAddress, subject, messageNewAd);
                     }
                     if (newAd.AdOwner.AreNotificationsOn == true)
                     {
                         string messageOldAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", oldAd.AdOwner, oldAd.AdType, oldAd.AdDirection, oldAd.PickUpDropOffLocation, oldAd.PickUpDateAndTime, oldAd.NumberOfSeats, oldAd.SpecificRequests, oldAd.ID];
-                        string emailAddress = "gulyaskata99@gmail.com";
+                        string emailAddress = newAd.AdOwner.Email.ToString();
                         string subject = _localizer["Check_out_this_ad"];
                         sendEmail(emailAddress, subject, messageOldAd);
                     }
@@ -536,6 +542,10 @@ namespace BaxiWebApp.Data
                 message.timeStamp = DateTime.Now;
                 CurrentConversation.messages.Add(message);
                 context.SaveChanges();
+                string emailMessage = _localizer["You_just_received_a_new_message_from_{0}_Go_and_check_it_out_http_localhost_5049_Chat_{1}", showUserNameWithStatus(message.fromUser), CurrentConversation.ID];
+                string emailAddress = message.toUser.Email.ToString();
+                string subject = _localizer["You_received_a_new_message"];
+                sendEmail(emailAddress, subject, emailMessage);
                 ChatChanged?.Invoke(this, CurrentConversation.ID);
             }
 
@@ -668,6 +678,9 @@ namespace BaxiWebApp.Data
                 return false;
             }
         }
+
+
+     
 
 
     }

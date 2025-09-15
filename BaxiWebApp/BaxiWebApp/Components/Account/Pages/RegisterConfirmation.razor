@@ -71,7 +71,7 @@ else
 				new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
 
 			string emailText = localizer["Dear_{0}_you_received_this_email_because_you_registered_to_the_baxi_app_please_click_on_the_link_below_to_confirm_your_account_{1}_if_it_was_not_you_please_ignore_this_email", DataService.showUserNameWithStatus(user), emailConfirmationLink];
-			DataService.sendEmail("gulyaskata99@gmail.com", localizer["Email_confirmation_for_baxi_app"], emailText);
+			DataService.sendEmail(user.Email.ToString(), localizer["Email_confirmation_for_baxi_app"], emailText);
 		}
 	}
 }
