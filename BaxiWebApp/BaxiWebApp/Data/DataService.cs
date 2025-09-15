@@ -601,7 +601,7 @@ namespace BaxiWebApp.Data
             client.EnableSsl = true;
             client.UseDefaultCredentials = false;
             string passw = Environment.GetEnvironmentVariable("BBtaxi_email_password");
-            client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", passw);
+            client.Credentials = new NetworkCredential("baierbrunntaxi@gmail.com", "nilf kwog hanb kwtb");
             MailMessage mailMessage = new MailMessage();
             mailMessage.From = new MailAddress("baierbrunntaxi@gmail.com");
             mailMessage.To.Add(emailAddress);
