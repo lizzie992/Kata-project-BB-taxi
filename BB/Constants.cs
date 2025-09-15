@@ -11,6 +11,21 @@ namespace BB
     
     public class Constants
     {
+
+
+        public static int NULL_COORDINATES = -1;
+        public static int INVALID_ROUTE = -2;
+
+        //parameters to be defined to check the notifications:
+        public static int DISTANCE_LIMIT_FOR_NOTIFICATIONS = 5000; //METERS, NOT KILOMETERS, this is the limit of how many meters we calculate the notificaions for
+        public static int TIME_LIMIT_FOR_NOTIFICATIONS = 1; //HOURS this is to define what is the max difference in time between the 2 ads so that they can be relevant to each other
+        public static int TIME_LIMIT_FOR_MATCHING_ROUTE = 2;
+
+        public static int MAX_NUMBER_OF_WARNINGS = 3;
+
+        public const string SECURITY_KEYWORD = "WirSindBaierbrunn";
+
+
         public static char SELECT_REGISTER = 'R';
         public static char SELECT_LOGIN = 'L';
         public static char SELECT_EXIT = 'X';
@@ -41,16 +56,6 @@ namespace BB
         public static string FILE_PATH_USERDATA = @"..\..\UserData.txt";
         public static string FILE_PATH_AD = @"..\..\Ads.txt";
         public static string COMPANY_NAME = "company";
-
-        public static int NULL_COORDINATES = -1;
-        public static int INVALID_ROUTE = -2;
-
-        //parameters to be defined to check the notifications:
-        public static int DISTANCE_LIMIT_FOR_NOTIFICATIONS = 5000; //METERS, NOT KILOMETERS, this is the limit of how many meters we calculate the notificaions for
-        public static int TIME_LIMIT_FOR_NOTIFICATIONS = 1; //HOURS this is to define what is the max difference in time between the 2 ads so that they can be relevant to each other
-        public static int TIME_LIMIT_FOR_MATCHING_ROUTE = 2;
-
-        public static int MAX_NUMBER_OF_WARNINGS = 3;
 
     }
 }

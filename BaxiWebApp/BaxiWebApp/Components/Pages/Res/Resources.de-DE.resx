@@ -848,4 +848,10 @@ Falls Sie es nicht waren, ignorieren Sie bitte diese E-Mail!</value>
   <data name="More" xml:space="preserve">
     <value>Mehr</value>
   </data>
+  <data name="Keyword" xml:space="preserve">
+    <value>Sicherheits-Schlüsselwort</value>
+  </data>
+  <data name="The_password_and_confirmation_password_do_not_match" xml:space="preserve">
+    <value>Das Passwort und das Bestätigungspasswort stimmen nicht überein.</value>
+  </data>
 </root>

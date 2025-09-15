@@ -998,6 +998,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keyword.
+        /// </summary>
+        public static string Keyword {
+            get {
+                return ResourceManager.GetString("Keyword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Korean.
         /// </summary>
         public static string Korean {
@@ -1792,6 +1801,15 @@ namespace BaxiWebApp.Components.Pages.Res {
             get {
                 return ResourceManager.GetString("Thank_you_for_your_registration_on_the_baxi_app_a_confirmation_email_was_just_sen" +
                         "t_to_you_please_click_on_the_link_to_confirm_your_email_address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The password and confirmation password do not match..
+        /// </summary>
+        public static string The_password_and_confirmation_password_do_not_match {
+            get {
+                return ResourceManager.GetString("The_password_and_confirmation_password_do_not_match", resourceCulture);
             }
         }
         

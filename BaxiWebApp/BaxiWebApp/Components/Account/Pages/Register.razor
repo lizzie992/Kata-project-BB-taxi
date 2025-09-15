@@ -35,6 +35,7 @@
 @inject NavigationManager NavigationManager
 @inject Data.DataService DataService
 @inject Data.BaxiWebAppContext context;
+@inject IJSRuntime JSRuntime;
 
 
 @* <PageTitle>Register</PageTitle>
@@ -64,6 +65,10 @@
 					<label for="confirm-password">@localizer["Confirm_password"]</label>
 					<InputText type="password" @bind-Value="Input.ConfirmPassword" class="input" autocomplete="new-password" aria-required="true" placeholder=@localizer["Password"] />
 					<ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
+				</div>
+				<div class="input-block">
+					<label for="Keyword">@localizer["Keyword"]</label>
+					<InputText @bind-Value="Input.Keyword" class="input" autocomplete="Keyword" aria-required="true" placeholder=@localizer["Keyword"] />
 				</div>
 				<div class="input-block">
 					<label for="First name">@localizer["First_name"]</label>
@@ -164,6 +169,8 @@
 </div>
 
 
+
+
 @code {
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
@@ -180,7 +187,7 @@
 	{
 		//read url parameter culture string
 
-		//set locaclizer language 
+		//set locaclizer language
 
 		base.OnParametersSet();
 	}
@@ -200,6 +207,8 @@
 	{
 		Input.notificationsOn = value;
 	}
+
+	bool showPopUp = false;
 
 	public async Task RegisterUser(EditContext editContext)
 	{
@@ -224,14 +233,15 @@
 		user.Culture = "de-DE";
 		user.isActive = true;
 		user.isDeleted = false;
-		if (user.Email.Contains("admin"))
-		{
-			UserManager.AddToRoleAsync(user, "Admin");
-		}
-		else
-		{
-			UserManager.AddToRoleAsync(user, "Regular");
-		}
+		UserManager.AddToRoleAsync(user, "Regular");
+		// if (user.Email.Contains("admin"))
+		// {
+		// 	UserManager.AddToRoleAsync(user, "Admin");
+		// }
+		// else
+		// {
+		// 	UserManager.AddToRoleAsync(user, "Regular");
+		// }
 
 		var result = await UserManager.CreateAsync(user, Input.Password);
 
@@ -265,9 +275,10 @@
 		await SignInManager.SignInAsync(user, isPersistent: false);
 		RedirectManager.RedirectTo(ReturnUrl);
 
-
-
 	}
+
+
+
 
 	private User CreateUser()
 	{
@@ -308,8 +319,13 @@
 
 		[DataType(DataType.Password)]
 		[Display(Name = "Confirm password")]
-		[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+		[Compare("Password", ErrorMessage = "Das Passwort und das Bestätigungspasswort stimmen nicht überein.")]
 		public string ConfirmPassword { get; set; } = "";
+
+		[Required]
+		[Display(Name = "Security keyword")]
+		[AllowedValues(BB.Constants.SECURITY_KEYWORD, ErrorMessage = "Das Schlüsselwort ist falsch. Bitte kontaktieren Sie jemanden, um das richtige Sicherheits-Schlüsselwort zu erhalten!")]
+		public string Keyword { get; set; } = "";
 
 		[Required]
 		[Display(Name = "First Name")]
@@ -359,7 +375,7 @@
 
 	}
 
-	
+
 
 
 

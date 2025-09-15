@@ -839,4 +839,10 @@ If it was not you, please, ignore this email!</value>
   <data name="More" xml:space="preserve">
     <value>More</value>
   </data>
+  <data name="Keyword" xml:space="preserve">
+    <value>Keyword</value>
+  </data>
+  <data name="The_password_and_confirmation_password_do_not_match" xml:space="preserve">
+    <value>The password and confirmation password do not match.</value>
+  </data>
 </root>
