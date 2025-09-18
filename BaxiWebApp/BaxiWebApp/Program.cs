@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using System.Globalization;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace BaxiWebApp
 {
@@ -20,9 +21,12 @@ namespace BaxiWebApp
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
             var connectionString = builder.Configuration.GetConnectionString("BaxiWebAppContext") ?? throw new InvalidOperationException("Connection string 'BaxiWebAppContextConnection' not found."); ;
 
-            builder.Services.AddDbContextFactory<BaxiWebAppContext>(options => options.UseSqlite(connectionString).EnableSensitiveDataLogging());
+            var serverVersion = new MySqlServerVersion(new Version(9, 4, 0));
+
+            builder.Services.AddDbContextFactory<BaxiWebAppContext>(options => options.UseMySql(connectionString, serverVersion));
 
             builder.Services.AddSingleton<DataService>();
 
