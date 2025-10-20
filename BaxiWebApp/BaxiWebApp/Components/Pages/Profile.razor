@@ -180,24 +180,26 @@
 		}
 	}
 
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? user { get; set; }
 
-	private User? user;
-	/// <summary>
-	/// Identifies the user who is currently logged in
-	/// </summary>
-	/// <returns>User</returns>
-	public async Task identifyLoggedInUser()
-	{
-		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+	// private User? user;
+	// /// <summary>
+	// /// Identifies the user who is currently logged in
+	// /// </summary>
+	// /// <returns>User</returns>
+	// public async Task identifyLoggedInUser()
+	// {
+	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-		var claims = authState.User;
+	// 	var claims = authState.User;
 
-		user = await UserManager.GetUserAsync(claims);
-	}
+	// 	user = await UserManager.GetUserAsync(claims);
+	// }
 
 	protected override async Task OnParametersSetAsync()
 	{
-		await identifyLoggedInUser();
+		// await identifyLoggedInUser();
 		base.OnParametersSet();
 	}
 

@@ -20,6 +20,7 @@
 @inject Data.DataService DataService
 @inject Data.BaxiWebAppContext context;
 @inject IJSRuntime JSRuntime
+@inherits LayoutComponentBase
 
 <body>
 	<PageTitle>@localizer["Homepage"]</PageTitle>
@@ -175,7 +176,7 @@
 
 	protected override async Task OnParametersSetAsync()
 	{
-		await identifyLoggedInUser();
+		@* await identifyLoggedInUser(); *@
 		recommendedAds = await getRecommendedAds();
 		showPopUpRecommendedAds = true;
 		base.OnParametersSet();
@@ -193,8 +194,10 @@
 		}
 	}
 
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? currentlyLoggedInUser { get; set; }
 
-	public static User? currentlyLoggedInUser;
+	@* public static User? currentlyLoggedInUser;
 	/// <summary>
 	/// Identifies the user who is currently logged in
 	/// </summary>
@@ -207,7 +210,7 @@
 
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 
-	}
+	} *@
 
 
 	bool showPopUpRecommendedAds = true;

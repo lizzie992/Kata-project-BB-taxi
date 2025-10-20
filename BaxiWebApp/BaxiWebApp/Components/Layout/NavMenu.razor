@@ -16,6 +16,7 @@
 @inject IStringLocalizer<Resources> localizer
 @inject Data.DataService DataService
 @inject IDbContextFactory<BaxiWebAppContext> DbContextFactory
+@inherits LayoutComponentBase
 
 <style>
 
@@ -144,25 +145,28 @@
 		NavigationManager.LocationChanged -= OnLocationChanged;
 	}
 
-	protected override async Task OnParametersSetAsync()  //use async variant
-	{
-		await identifyLoggedInUser();
-		base.OnParametersSet();
-	}
+	// protected override async Task OnParametersSetAsync()  //use async variant
+	// {
+	// 	await identifyLoggedInUser();
+	// 	base.OnParametersSet();
+	// }
+
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? currentlyLoggedInUser { get; set; }
 
 
-	public User? currentlyLoggedInUser;
-	public async Task identifyLoggedInUser()
-	{
-		using var context = DbContextFactory.CreateDbContext();
-		{
-			var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+	// public User? currentlyLoggedInUser;
+	// public async Task identifyLoggedInUser()
+	// {
+	// 	using var context = DbContextFactory.CreateDbContext();
+	// 	{
+	// 		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-			var claims = authState.User;
+	// 		var claims = authState.User;
 
-			currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
-		}
-	}
+	// 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+	// 	}
+	// }
 
 
 	public async void OnCultureChanged(object? sender, CultureInfo culture)
