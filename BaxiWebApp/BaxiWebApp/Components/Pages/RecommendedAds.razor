@@ -34,7 +34,7 @@
 	<Authorized>
 
 		<body>
-			@if (currentlyLoggedInUser == CurrentAd.AdOwner)
+			@if (CurrentAd != null && currentlyLoggedInUser == CurrentAd.AdOwner)
 			{
 				<h3 style="text-align:center">@localizer["Recommended_ads"]</h3>
 
@@ -143,7 +143,7 @@
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
-	public async void OnCultureChanged(object sender, CultureInfo culture)
+	public async void OnCultureChanged(object? sender, CultureInfo culture)
 	{
 
 		await InvokeAsync(() =>
@@ -181,7 +181,7 @@
 		}
 	}
 
-	public async Task<Ad> getCurrentAd(int ID)
+	public Ad? getCurrentAd(int ID)
 	{
 		var result = context.Ads.FirstOrDefault(ad => ad.ID == ID);
 		return result;
@@ -194,16 +194,16 @@
 	// 	await identifyLoggedInUser();
 	// 	await base.OnParametersSetAsync();
 	// }
-	protected override void OnParametersSet()
+	protected override async Task OnParametersSetAsync()
 	{
-		recommendedAds = Task.Run(async () => await DataService.collectRecommendedAds(CurrentAd, currentlyLoggedInUser)).Result;
-		identifyLoggedInUser().GetAwaiter().GetResult();
+		recommendedAds = await DataService.collectRecommendedAds(CurrentAd, currentlyLoggedInUser);
+		await identifyLoggedInUser();
 		base.OnParametersSet();
 	}
 
 
 
-	public User currentlyLoggedInUser;
+	public User? currentlyLoggedInUser;
 	/// <summary>
 	/// Identifies the user who is currently logged in
 	/// </summary>

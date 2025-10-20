@@ -22,7 +22,7 @@
 <AuthorizeView Context="authContext">
 	<Authorized>
 		<body>
-			@if (currentlyLoggedInUser.isActive == false)
+			@if (currentlyLoggedInUser?.isActive == false)
 			{
 				<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
 			}
@@ -115,7 +115,7 @@
 											<button @onclick="() => openChat(Ad)">@localizer["Contact_me"]!</button>
 										}
 									</TemplateColumn>
-									@if (UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
+									@if (currentlyLoggedInUser is not null && UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
 									{
 										<TemplateColumn Title="@localizer["Delete_ad"]" Context="Ad">
 											<button @onclick="() => showPopUpForDeletingAd(Ad)">@localizer["Delete_ad"]</button>
@@ -162,7 +162,7 @@
 										{
 											<button @onclick="() => openChat(ad)">@localizer["Contact_me"]!</button>
 										}
-										@if (UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
+										@if (currentlyLoggedInUser is not null && UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
 										{
 											<button @onclick="() => showPopUpForDeletingAd(ad)">@localizer["Delete_ad"]</button>
 											@* <button type="button" data-bs-toggle="modal" data-bs-target="#deleteAdModal">
@@ -270,7 +270,7 @@
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
-	public async void OnCultureChanged(object sender, CultureInfo culture)
+	public async void OnCultureChanged(object? sender, CultureInfo? culture)
 	{
 
 		await InvokeAsync(() =>
@@ -308,10 +308,10 @@
 
 	DateTime currentTime = DateTime.Now.AddMinutes(-30);
 
-	protected override void OnParametersSet()
+	protected override async Task OnParametersSetAsync()
 	{
 		AdList = context.Ads.ToList<Ad>();
-		identifyLoggedInUser().GetAwaiter().GetResult();
+		await identifyLoggedInUser();
 		base.OnParametersSet();
 	}
 
@@ -327,13 +327,13 @@
 
 
 
-	string? _searchAddress = "";
+	string _searchAddress = "";
 	int _requestedSeats = -1;
 
 	BB.AdType _adType = AdType.SelectAll;
 	BB.AdDirection _adDirection = AdDirection.SelectAll;
 
-	public static string allAdTypes;
+	public static string? allAdTypes;
 
 
 	DateTime _datetime1 = DateTime.Now;
@@ -376,11 +376,21 @@
 	/// <param name="ad">Ad</param>
 	public async void openChat(Ad ad)
 	{
-		List<Conversation> previousConversations = DataService.findPreviousConvo(ad, currentlyLoggedInUser);
-		if (previousConversations.ToList().Count != 0)
+		List<Conversation>? previousConversations = DataService.findPreviousConvo(ad, currentlyLoggedInUser);
+		if (previousConversations.ToList().Count > 0)
 		{
-			Conversation conversation = previousConversations.FirstOrDefault();
-			NavigationManager.NavigateTo("Chat/" + conversation.ID);  //find id of conversation    //navigate to chat page with conversation id
+			Conversation? conversation = new Conversation();
+			conversation = previousConversations.FirstOrDefault();
+			if (conversation is null)
+			{
+				selectedAd = ad;
+				// showPopUpForNewConversation(ad);
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "conversationModal");
+			}
+			else
+			{
+				NavigationManager.NavigateTo("Chat/" + conversation.ID);  //find id of conversation    //navigate to chat page with conversation id
+			}
 		}
 		else        //if not found, create new conversasion (+id)
 		{
@@ -406,7 +416,7 @@
 
 
 
-	public User currentlyLoggedInUser;
+	public User? currentlyLoggedInUser;
 	/// <summary>
 	/// Identifies the user who is currently logged in
 	/// </summary>
@@ -432,8 +442,8 @@
 
 
 
-	Ad selectedAd;
-	bool popUpForDeletingAd = false;
+	Ad selectedAd = new Ad();
+
 	string reasonForDeleting = "";
 
 	/// <summary>
@@ -443,17 +453,21 @@
 	/// <param name="reasonForDeleting">string</param>
 	public void deleteAd(Ad ad, string reasonForDeleting)
 	{
-		string text = localizer["Dear_{0}_your_ad_has_been_removed_by_the_admins_for_reasons_{1}_ad_ad_type_{2}_ad_direction_{3}_address_{4}_on_{5}_available_seats_{6}_any_specific_requests_{7}", DataService.showUserNameWithStatus(ad.AdOwner), reasonForDeleting, localizer[@ad.AdType.ToString()], localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats, ad.SpecificRequests];
-		string emailAddress = ad.AdOwner.Email.ToString();
-		string subject = localizer["Your_Baxi_ad_is_deleted"];
-		DataService.sendEmail(emailAddress, subject, text);
+		if (ad.AdOwner.Email is not null)
+		{
+			string text = localizer["Dear_{0}_your_ad_has_been_removed_by_the_admins_for_reasons_{1}_ad_ad_type_{2}_ad_direction_{3}_address_{4}_on_{5}_available_seats_{6}_any_specific_requests_{7}", DataService.showUserNameWithStatus(ad.AdOwner), reasonForDeleting, localizer[@ad.AdType.ToString()], localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats, ad.SpecificRequests];
+			string emailAddress = ad.AdOwner.Email.ToString();
+			string subject = localizer["Your_Baxi_ad_is_deleted"];
+			DataService.sendEmail(emailAddress, subject, text);
+		}
 		context.Remove(ad);
 		context.SaveChanges();
 		reasonForDeleting = "";
 		closePopUpForDeletingAd();
-		grid.RefreshDataAsync();
+		grid?.RefreshDataAsync();
 	}
 
+	bool popUpForDeletingAd = false;
 	/// <summary>
 	/// Closes pop up window regarding deleting the ad
 	/// </summary>
@@ -474,25 +488,25 @@
 
 
 
-	bool popUpForNewConversation = false;
+	// bool popUpForNewConversation = false;
 
 	/// <summary>
 	/// Closes pop up window regarding new conversation
 	/// </summary>
-	public void closePopUpForNewConversation()
-	{
-		popUpForNewConversation = false;
-		message = "";
-	}
+	// public void closePopUpForNewConversation()
+	// {
+	// 	popUpForNewConversation = false;
+	// 	message = "";
+	// }
 
 	/// <summary>
 	/// Opens pop up window regarding new conversation
 	/// </summary>
-	public void showPopUpForNewConversation(Ad ad)
-	{
-		selectedAd = ad;
-		popUpForNewConversation = true;
-	}
+	// public void showPopUpForNewConversation(Ad ad)
+	// {
+	// 	selectedAd = ad;
+	// 	popUpForNewConversation = true;
+	// }
 
 
 }

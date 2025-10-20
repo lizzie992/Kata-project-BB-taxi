@@ -40,7 +40,7 @@
 	</div>
 </body>
 
-@if (currentlyLoggedInUser != null && recommendedAds.Count != 0)
+@if (currentlyLoggedInUser != null && recommendedAds is not null)
 {
 	<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -160,12 +160,12 @@
 @code {
 
 
-	List<Ad> recommendedAds;
+	List<Ad>? recommendedAds;
 
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
-	public async void OnCultureChanged(object sender, CultureInfo culture)
+	public async void OnCultureChanged(object? sender, CultureInfo culture)
 	{
 		await InvokeAsync(() =>
 	{
@@ -175,21 +175,21 @@
 
 	protected override async Task OnParametersSetAsync()
 	{
-		identifyLoggedInUser().GetAwaiter().GetResult();
+		await identifyLoggedInUser();
 		recommendedAds = await getRecommendedAds();
 		showPopUpRecommendedAds = true;
 		base.OnParametersSet();
 	}
 
-	protected override async Task OnAfterRenderAsync(bool firstrender)
+	protected override void OnAfterRender(bool firstrender)
 	{
 		if (firstrender)
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
-			if (currentlyLoggedInUser != null && recommendedAds.Count != 0)
+			@* if (currentlyLoggedInUser != null && recommendedAds is not null)
 			{
 				await JSRuntime.InvokeVoidAsync("blazorModal.show", "myModal");
-			}
+			} *@
 		}
 	}
 
@@ -223,24 +223,32 @@
 	/// Collects a list of Ads that could be recommended to any ads of a specific user - sorts the ads by pick up date and time, and shows the first 3
 	/// </summary>
 	/// <returns>List of ads</returns>
-	public async Task<List<Ad>> getRecommendedAds()
+	public async Task<List<Ad>> getRecommendedAds() //TODO: make proper async mehtod
 	{
-		var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsQueryable();
-		result = result.Where(Ad => Ad.AdOwner == currentlyLoggedInUser);
-		List<Ad> recommendedAds = new List<Ad>();
-		if (result is null)
+		if (currentlyLoggedInUser is not null)
 		{
-			return recommendedAds;
+			var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsQueryable();
+			result = result.Where(Ad => Ad.AdOwner == currentlyLoggedInUser);
+			List<Ad> recommendedAds = new List<Ad>();
+			if (result is null)
+			{
+				return recommendedAds;
+			}
+			else
+			{
+				foreach (Ad ad in result)
+				{
+					List<Ad> list = await DataService.collectRecommendedAds(ad, currentlyLoggedInUser);
+					recommendedAds.AddRange(list);
+				}
+				recommendedAds = recommendedAds.OrderBy(a => a.PickUpDateAndTime).ToList();
+				recommendedAds = recommendedAds.Take(5).ToList();
+				return recommendedAds;
+			}
 		}
 		else
 		{
-			foreach (Ad ad in result)
-			{
-				List<Ad> list = Task.Run(async () => await DataService.collectRecommendedAds(ad, currentlyLoggedInUser)).Result;
-				recommendedAds.AddRange(list);
-			}
-			recommendedAds = recommendedAds.OrderBy(a => a.PickUpDateAndTime).ToList();
-			recommendedAds = recommendedAds.Take(5).ToList();
+			recommendedAds = new List<Ad>();
 			return recommendedAds;
 		}
 	}

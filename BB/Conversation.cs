@@ -25,16 +25,16 @@ namespace BB
         }
 
 
-        private User _adOwnerUser;
-        public User adOwnerUser
+        private User? _adOwnerUser;
+        public User? adOwnerUser
         {
             get { return _adOwnerUser; }
             set { _adOwnerUser = value; }
         }
 
 
-        private User _contactingUser;
-        public User contactingUser
+        private User? _contactingUser;
+        public User? contactingUser
         {
             get { return _contactingUser; }
             set { _contactingUser = value; }

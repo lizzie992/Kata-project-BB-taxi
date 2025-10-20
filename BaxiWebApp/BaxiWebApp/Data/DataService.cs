@@ -21,11 +21,12 @@ namespace BaxiWebApp.Data
 {
     public class DataService
     {
+
         private IStringLocalizer<Resources> _localizer;
 
-        private IDbContextFactory<BaxiWebAppContext> _dbcFactory;
+        private readonly IDbContextFactory<BaxiWebAppContext> _dbcFactory;
 
- 
+
         public DataService(IDbContextFactory<BaxiWebAppContext> dbcFactory, IStringLocalizer<Resources> localizer) //dependency injection of the DbContextFactory and the localizer
         {
             _dbcFactory = dbcFactory;
@@ -34,25 +35,28 @@ namespace BaxiWebApp.Data
 
 
 
-        public event EventHandler<CultureInfo> CultureChanged;
+        public event EventHandler<CultureInfo>? CultureChanged;
 
         /// <summary>
         /// Gets Culture input from UI, changes the current culture to this choice, and if the user is logged in, changes the user's culture property to this value
         /// </summary>
         /// <param name="e">Value from UI input</param>
         /// <param name="user">Logged in user</param>
-        public void ChangeCulture(ChangeEventArgs e, User user)
+        public void ChangeCulture(ChangeEventArgs e, User? user)
         {
-            var selectedCulture = e.Value.ToString();
-            setCulture(selectedCulture);
-            CultureChanged?.Invoke(this, CultureInfo.CurrentUICulture);
-            if (user is not null)
+            var selectedCulture = e.Value?.ToString();
+            if (selectedCulture is not null)
             {
-                using (var context = _dbcFactory.CreateDbContext())
+                setCulture(selectedCulture);
+                CultureChanged?.Invoke(this, CultureInfo.CurrentUICulture);
+                if (user is not null)
                 {
-                    context.Update(user);
-                    user.Culture = selectedCulture.ToString();
-                    context.SaveChanges();
+                    using (var context = _dbcFactory.CreateDbContext())
+                    {
+                        context.Update(user);
+                        user.Culture = selectedCulture.ToString();
+                        context.SaveChanges();
+                    }
                 }
             }
         }
@@ -73,7 +77,7 @@ namespace BaxiWebApp.Data
         /// Takes the culture property of a given user (if the user is not null) and changes the current culture to this value
         /// </summary>
         /// <param name="user">User</param>
-        public void loadCulture(User user)
+        public void loadCulture(User? user)
         {
             if (user is not null)
             {
@@ -92,7 +96,7 @@ namespace BaxiWebApp.Data
         /// </summary>
         /// <param name="distance">Distance</param>
         /// <returns>bool</returns>
-        public async Task<bool> IsItTooCloseToBB(int distance)
+        public bool IsItTooCloseToBB(int distance)
         {
             if (distance <= minDistanceLimit)
             {
@@ -106,7 +110,7 @@ namespace BaxiWebApp.Data
         /// </summary>
         /// <param name="distance">Distance</param>
         /// <returns>bool</returns>
-        public async Task<bool> IsItTooFarFromBB(int distance)
+        public bool IsItTooFarFromBB(int distance)
         {
             if (distance >= maxDistanceLimit)
             {
@@ -279,7 +283,7 @@ namespace BaxiWebApp.Data
         {
             foreach (Ad oldAd in adList)
             {
-                if (await CheckDistanceBetweenAds(newAd, oldAd))
+                if (await CheckDistanceBetweenAds(newAd, oldAd) && oldAd.AdOwner.Email is not null && newAd.AdOwner.Email is not null)
                 {
                     if (oldAd.AdOwner.AreNotificationsOn == true)
                     {
@@ -296,7 +300,7 @@ namespace BaxiWebApp.Data
                         sendEmail(emailAddress, subject, messageOldAd);
                     }
                 }
-                else if (await CheckMatchingRoutes(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude))
+                else if (await CheckMatchingRoutes(newAd.Latitude, newAd.Longitude, oldAd.Latitude, oldAd.Longitude) && oldAd.AdOwner.Email is not null && newAd.AdOwner.Email is not null)
                 {
                     if (oldAd.AdOwner.AreNotificationsOn == true)
                     {
@@ -323,21 +327,21 @@ namespace BaxiWebApp.Data
         /// </summary>
         /// <param name="newAd">Ad</param>
         /// <returns>bool</returns>
-        public async Task CheckAdsForNotification(Ad newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
+        public async Task CheckAdsForNotification(Ad? newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
         {
             using (var context = _dbcFactory.CreateDbContext())
             {
                 var adList = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
 
                 //TO Baierbrunn, passenger looking for drivers
-                if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Passenger)
+                if (newAd?.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Passenger)
                 {
                     adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
                     await CheckDistanceAndSendNotification(newAd, adList.ToList());
                 }
 
                 //TO Baierbrunn, driver looking for passengers
-                if (newAd.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Driver)
+                if (newAd?.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Driver)
                 {
                     adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
                     await CheckDistanceAndSendNotification(newAd, adList.ToList());
@@ -345,14 +349,14 @@ namespace BaxiWebApp.Data
 
 
                 //FROM Baierbrunn, passenger looking for drivers
-                if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Passenger)
+                if (newAd?.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Passenger)
                 {
                     adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
                     await CheckDistanceAndSendNotification(newAd, adList.ToList());
                 }
 
                 //FROM Baierbrunn, driver looking for passengers
-                if (newAd.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Driver)
+                if (newAd?.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Driver)
                 {
                     adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
                     await CheckDistanceAndSendNotification(newAd, adList.ToList());
@@ -381,7 +385,7 @@ namespace BaxiWebApp.Data
 
             var result = await GoogleMaps.Geocode.QueryAsync(request);
 
-            Location location = result.Results.FirstOrDefault()?.Geometry?.Location;
+            Location? location = result.Results.FirstOrDefault()?.Geometry?.Location;
 
             if (location == null)
             {
@@ -393,38 +397,40 @@ namespace BaxiWebApp.Data
             return (location.Latitude, location.Longitude);
         }
 
-        
+
 
         /// <summary>
         /// Checks the selected ad against the currently existing ads, if any of them has the same legs in the route, and collects them in a list of ads
         /// </summary>
         /// <param name="ad">Ad</param>
         /// <returns>List of ads</returns>
-        public async Task<List<Ad>> collectRecommendedAds(Ad ad, User currentlyLoggedInUser)
+        public async Task<List<Ad>> collectRecommendedAds(Ad? ad, User? currentlyLoggedInUser)
         {
             using (var context = _dbcFactory.CreateDbContext())
             {
+
+
                 List<Ad> adList = new List<Ad>();
                 var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
                 result = result.Where(oldAd => oldAd.PickUpDateAndTime >= DateTime.Now && oldAd.AdOwner != currentlyLoggedInUser);
 
                 //TO Baierbrunn, passenger looking for drivers
-                if (ad.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Passenger)
+                if (ad?.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Passenger)
                 {
                     result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= ad.NumberOfSeats);
                 }
                 //TO Baierbrunn, driver looking for passengers
-                if (ad.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Driver)
+                if (ad?.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Driver)
                 {
                     result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= ad.NumberOfSeats);
                 }
                 //FROM Baierbrunn, passenger looking for drivers
-                if (ad.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Passenger)
+                if (ad?.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Passenger)
                 {
                     result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= ad.NumberOfSeats);
                 }
                 //FROM Baierbrunn, driver looking for passengers
-                if (ad.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Driver)
+                if (ad?.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Driver)
                 {
                     result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= ad.NumberOfSeats);
                 }
@@ -435,14 +441,18 @@ namespace BaxiWebApp.Data
                     {
                         continue;
                     }
-                    int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpDateAndTime).TotalHours));
-                    if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                    if (ad is not null)
                     {
-                        if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                        int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpDateAndTime).TotalHours));
+                        if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
                         {
-                            adList.Add(v);
+                            if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                            {
+                                adList.Add(v);
+                            }
                         }
                     }
+
                 }
                 return adList;
             }
@@ -456,7 +466,7 @@ namespace BaxiWebApp.Data
         /// <param name="ad">Ad</param>
         /// <param name="currentlyLoggedInUser">User</param>
         /// <returns>List of Conversations</returns>
-        public List<Conversation> findPreviousConvo(Ad ad, User currentlyLoggedInUser)
+        public List<Conversation> findPreviousConvo(Ad ad, User? currentlyLoggedInUser)
         {
             using (var context = _dbcFactory.CreateDbContext())
             {
@@ -488,7 +498,7 @@ namespace BaxiWebApp.Data
                 conversation.messages = new List<Message>();
                 ad.adConversations.Add(conversation);
                 context.SaveChanges();
-                User fromUser = getOtherUser(conversation, currentlyLoggedInUser);
+                User? fromUser = getOtherUser(conversation, currentlyLoggedInUser);
                 SendChatMessage(conversation, currentlyLoggedInUser, message, conversation.ID);
                 return conversation;
             }
@@ -499,9 +509,9 @@ namespace BaxiWebApp.Data
         /// </summary>
         /// <param name="C">Conversation</param>
         /// <returns>User</returns>
-        public User getOtherUser(Conversation C, User currentlyLoggedInUser)
+        public User? getOtherUser(Conversation C, User? currentlyLoggedInUser)
         {
-            User otherUser = new User();
+            User? otherUser = new User();
             if (currentlyLoggedInUser == C.contactingUser)
             {
                 otherUser = C.adOwnerUser;
@@ -514,7 +524,7 @@ namespace BaxiWebApp.Data
         }
 
 
-        public event EventHandler<int> ChatChanged;
+        public event EventHandler<int>? ChatChanged;
 
         /// <summary>
         /// Sends a message in a given chat conversation and also fires a ChatChanged event
@@ -527,7 +537,7 @@ namespace BaxiWebApp.Data
         {
             using (var context = _dbcFactory.CreateDbContext())
             {
-                Conversation CurrentConversation = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).FirstOrDefault(conversation => conversation.ID == ID);
+                Conversation? CurrentConversation = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).FirstOrDefault(conversation => conversation.ID == ID);
                 Message message = new Message();
                 message.fromUser = context.Users.Find(currentlyLoggedInUser.Id);
                 if (currentlyLoggedInUser.Id == CurrentConversation.contactingUser.Id)
@@ -618,20 +628,23 @@ namespace BaxiWebApp.Data
         /// </summary>
         /// <param name="user">User object</param>
         /// <returns>String</returns>
-        public string showUserNameWithStatus(User user)
+        public string showUserNameWithStatus(User? user)
         {
             string name = "";
-            if (user.isDeleted == true)
+            if (user != null)
             {
-                name = "Deleted user";
-            }
-            if (user.isActive == true)
-            {
-                name = $"{user.FirstName} {user.LastName}";
-            }
-            if (user.isActive == false)
-            {
-                name = $"{user.FirstName} {user.LastName} - INACTIVATED";
+                if (user.isDeleted == true)
+                {
+                    name = "Deleted user";
+                }
+                if (user.isActive == true)
+                {
+                    name = $"{user.FirstName} {user.LastName}";
+                }
+                if (user.isActive == false)
+                {
+                    name = $"{user.FirstName} {user.LastName} - INACTIVATED";
+                }
             }
             return name;
         }
@@ -640,22 +653,25 @@ namespace BaxiWebApp.Data
         /// Sets name and other identifying parameters of the user to "Deleted user", sets the isDeleted parameter to true and inactivates the user as well so they cannot use the app anymore
         /// </summary>
         /// <param name="user">User object</param>
-        public void deleteUser(User user)
+        public void deleteUser(User? user)
         {
-            using (var context = _dbcFactory.CreateDbContext())
+            if (user is not null)
             {
-                user.isDeleted = true;
-                user.isActive = false;
-                user.FirstName = "Deleted user";
-                user.LastName = "Deleted user";
-                user.Contact = "Deleted user";
-                user.Department = Department.SelectAll;
-                user.PreferredLanguage = PreferredLanguage.SelectAll;
-                user.Rating = 0;
-                user.NumberOfWarnings = 0;
-                user.LockoutEnd = DateTime.MaxValue;
-                context.Update(user);
-                context.SaveChanges();
+                using (var context = _dbcFactory.CreateDbContext())
+                {
+                    user.isDeleted = true;
+                    user.isActive = false;
+                    user.FirstName = "Deleted user";
+                    user.LastName = "Deleted user";
+                    user.Contact = "Deleted user";
+                    user.Department = Department.SelectAll;
+                    user.PreferredLanguage = PreferredLanguage.SelectAll;
+                    user.Rating = 0;
+                    user.NumberOfWarnings = 0;
+                    user.LockoutEnd = DateTime.MaxValue;
+                    context.Update(user);
+                    context.SaveChanges();
+                }
             }
         }
 
@@ -680,7 +696,7 @@ namespace BaxiWebApp.Data
         }
 
 
-     
+
 
 
     }

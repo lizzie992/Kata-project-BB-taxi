@@ -100,23 +100,30 @@
 							</div>
 						}
 						<div class="message-block">
-							@foreach (Message M in CurrentConversation.messages)
+							@if (CurrentConversation.messages is null)
 							{
-								if (currentlyLoggedInUser == M.fromUser)
+								<p>@localizer["New_conversation"]</p>
+							}
+							else
+							{
+								@foreach (Message M in CurrentConversation.messages)
 								{
-									<div class="message-right">
-										<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
-										<div class="message">@M.messageText</div>
-										<div class="timestamp">@M.timeStamp.ToString("g")</div>
-									</div>
-								}
-								if (currentlyLoggedInUser == M.toUser)
-								{
-									<div class="message-left">
-										<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
-										<div class="message">@M.messageText</div>
-										<div class="timestamp">@M.timeStamp.ToString("g")</div>
-									</div>
+									if (currentlyLoggedInUser == M.fromUser)
+									{
+										<div class="message-right">
+											<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
+											<div class="message">@M.messageText</div>
+											<div class="timestamp">@M.timeStamp.ToString("g")</div>
+										</div>
+									}
+									if (currentlyLoggedInUser == M.toUser)
+									{
+										<div class="message-left">
+											<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
+											<div class="message">@M.messageText</div>
+											<div class="timestamp">@M.timeStamp.ToString("g")</div>
+										</div>
+									}
 								}
 							}
 
@@ -126,7 +133,7 @@
 					{
 						<p>@localizer["Looks_like_you_are_lost_please_navigate_back_to_the_chat_using_the_navigation_menu_on_the_left"]</p>
 					}
-					@if (currentlyLoggedInUser.isActive == true)
+					@if (currentlyLoggedInUser?.isActive == true)
 					{
 						<div class="chat-send">
 							<textarea class="chat-input" @bind="TextMessage" @bind:event="oninput" @onkeydown="Enter"></textarea>
@@ -205,23 +212,30 @@
 						</div>
 					}
 					<div class="message-block-phone">
-						@foreach (Message M in CurrentConversation.messages)
+						@if (CurrentConversation.messages is null)
 						{
-							if (currentlyLoggedInUser == M.fromUser)
+							<p>@localizer["New_conversation"]</p>
+						}
+						else
+						{
+							@foreach (Message M in CurrentConversation.messages)
 							{
-								<div class="message-right">
-									<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
-									<div class="message">@M.messageText</div>
-									<div class="timestamp">@M.timeStamp.ToString("g")</div>
-								</div>
-							}
-							if (currentlyLoggedInUser == M.toUser)
-							{
-								<div class="message-left">
-									<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
-									<div class="message">@M.messageText</div>
-									<div class="timestamp">@M.timeStamp.ToString("g")</div>
-								</div>
+								if (currentlyLoggedInUser == M.fromUser)
+								{
+									<div class="message-right">
+										<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
+										<div class="message">@M.messageText</div>
+										<div class="timestamp">@M.timeStamp.ToString("g")</div>
+									</div>
+								}
+								if (currentlyLoggedInUser == M.toUser)
+								{
+									<div class="message-left">
+										<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
+										<div class="message">@M.messageText</div>
+										<div class="timestamp">@M.timeStamp.ToString("g")</div>
+									</div>
+								}
 							}
 						}
 					</div>
@@ -230,7 +244,7 @@
 				{
 					<p>@localizer["Looks_like_you_are_lost_please_navigate_back_to_the_chat_using_the_navigation_menu_on_the_left"]</p>
 				}
-				@if (currentlyLoggedInUser.isActive == true)
+				@if (currentlyLoggedInUser?.isActive == true)
 				{
 					<div class="chat-send">
 						<textarea class="chat-input" @bind="TextMessage" @bind:event="oninput" @onkeydown="Enter"></textarea>
@@ -326,8 +340,8 @@
 
 	[Parameter]
 	public int? ID { get; set; }
-	Conversation selectedConvo;
-	private string TextMessage { get; set; }
+	Conversation? selectedConvo;
+	private string TextMessage = "";
 	string reasonForReporting = "";
 
 	protected override void OnInitialized()
@@ -336,7 +350,7 @@
 		DataService.CultureChanged += OnCultureChanged;
 	}
 
-	public async void OnCultureChanged(object sender, CultureInfo culture)
+	public async void OnCultureChanged(object? sender, CultureInfo culture)
 	{
 		await InvokeAsync(() =>
 		{
@@ -378,7 +392,7 @@
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="contactID"></param>
-	public async void OnChatChanged(object sender, int contactID)
+	public async void OnChatChanged(object? sender, int contactID)
 	{
 		await InvokeAsync(() =>
 	{
@@ -406,9 +420,9 @@
 
 
 
-	protected override void OnParametersSet()
+	protected override async Task OnParametersSetAsync()
 	{
-		IdentifyLoggedInUser().GetAwaiter().GetResult();
+		await IdentifyLoggedInUser();
 		base.OnParametersSet();
 	}
 
@@ -416,7 +430,7 @@
 	/// Identifies the user who is currently logged in
 	/// </summary>
 	/// <returns>User</returns>
-	public User currentlyLoggedInUser;
+	public User? currentlyLoggedInUser;
 	public async Task IdentifyLoggedInUser()
 	{
 		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
@@ -426,28 +440,36 @@
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	}
 
-	public Conversation? CurrentConversation
+	public Conversation CurrentConversation
 	{
 		get
 		{
 			var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).FirstOrDefault(conversation => conversation.ID == ID);
-			return result;
+			if (result is null)
+			{
+				result = new Conversation();
+				return result;
+			}
+			else
+			{
+				return result;
+			}
 		}
 	}
 
-	public List<Conversation> ConvoList
+	public List<Conversation>? ConvoList
 	{
 		get
 		{
 			List<Conversation> result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).ToList();
 			result = result
-		.Where(c => c.adOwnerUser.Id == currentlyLoggedInUser.Id || c.contactingUser.Id == currentlyLoggedInUser.Id)
+		.Where(c => c.adOwnerUser.Id == currentlyLoggedInUser?.Id || c.contactingUser.Id == currentlyLoggedInUser?.Id)
 		.ToList();
 			if (result.Count() == 0)
 			{
 				return null;
 			}
-			result = result.OrderByDescending(c => c.MostRecentMessage.timeStamp).ToList();
+			result = result.OrderByDescending(c => c.MostRecentMessage?.timeStamp).ToList();
 			return result.ToList();
 		}
 
@@ -469,11 +491,15 @@
 	/// Triggers the dataservice method to delete the conversation object and redirects the user to the main chat page
 	/// </summary>
 	/// <param name="C"></param>
-	public void DeleteConversation(Conversation C)
+	public void DeleteConversation(Conversation? C)
 	{
-		DataService.DeleteConversation(C);
-		closePopUpForDeletingConversation();
-		NavigationManager.NavigateTo("Chat");
+		if (C is not null)
+		{
+			DataService.DeleteConversation(C);
+			closePopUpForDeletingConversation();
+			NavigationManager.NavigateTo("Chat");
+		}
+
 	}
 
 	/// <summary>
@@ -482,35 +508,38 @@
 	/// <param name="C">Conversation object</param>
 	/// <param name="currentlyLoggedInUser">User object</param>
 	/// <param name="reasonForReporting">String</param>
-	public void ReportConversation(Conversation C, User currentlyLoggedInUser, string reasonForReporting)
+	public void ReportConversation(Conversation? C, User? currentlyLoggedInUser, string reasonForReporting)
 	{
-		IEnumerable<Message> messagesToReport = context.Messages.Include(m => m.fromUser).Include(m => m.toUser).ToList<Message>().AsEnumerable();
-		messagesToReport = messagesToReport.Where(m => m.ConversationID == C.ID).OrderBy(c => c.timeStamp);
-		StringBuilder message = new StringBuilder();
-		foreach (Message m in messagesToReport)
+		if (C is not null)
 		{
-			message.Append(localizer["From"]);
-			message.Append($"{DataService.showUserNameWithStatus(m.fromUser)}\r\n");
-			message.Append(localizer["To"]);
-			message.Append($"{DataService.showUserNameWithStatus(m.toUser)}\r\n");
-			message.Append(localizer["Message"]);
-			message.Append($"{m.messageText.ToString()}\r\n");
-			message.Append(localizer["Timestamp"]);
-			message.Append($"{m.timeStamp.ToString()}\r\n\r\n");
-		}
-		string output = message.ToString();
-		foreach (User u in context.Users.ToList<User>())
-		{
-			if (UserManager.GetRolesAsync(u).Result.First() == "Admin")
+			IEnumerable<Message> messagesToReport = context.Messages.Include(m => m.fromUser).Include(m => m.toUser).ToList<Message>().AsEnumerable();
+			messagesToReport = messagesToReport.Where(m => m.ConversationID == C.ID).OrderBy(c => c.timeStamp);
+			StringBuilder message = new StringBuilder();
+			foreach (Message m in messagesToReport)
 			{
-				string emailAddress = u.Email.ToString();
-				string subject = localizer["A_conversation_was_just_reported_to_you"];
-				string text = localizer["Please_check_out_the_following_conversation_below_that_{0}_reported_to_you_with_the_following_reason_{1}_messages_{2}", currentlyLoggedInUser, reasonForReporting, message];
-				DataService.sendEmail(emailAddress, subject, text);
+				message.Append(localizer["From"]);
+				message.Append($"{DataService.showUserNameWithStatus(m.fromUser)}\r\n");
+				message.Append(localizer["To"]);
+				message.Append($"{DataService.showUserNameWithStatus(m.toUser)}\r\n");
+				message.Append(localizer["Message"]);
+				message.Append($"{m.messageText.ToString()}\r\n");
+				message.Append(localizer["Timestamp"]);
+				message.Append($"{m.timeStamp.ToString()}\r\n\r\n");
 			}
+			string output = message.ToString();
+			foreach (User u in context.Users.ToList<User>())
+			{
+				if (UserManager.GetRolesAsync(u).Result.First() == "Admin" && u.Email is not null && currentlyLoggedInUser is not null)
+				{
+					string emailAddress = u.Email.ToString();
+					string subject = localizer["A_conversation_was_just_reported_to_you"];
+					string text = localizer["Please_check_out_the_following_conversation_below_that_{0}_reported_to_you_with_the_following_reason_{1}_messages_{2}", currentlyLoggedInUser, reasonForReporting, message];
+					DataService.sendEmail(emailAddress, subject, text);
+				}
+			}
+			reasonForReporting = "";
+			closePopUpForReportConversation();
 		}
-		reasonForReporting = "";
-		closePopUpForReportConversation();
 	}
 
 	/// <summary>
@@ -518,7 +547,7 @@
 	/// </summary>
 	/// <param name="C">Conversation object</param>
 	/// <returns>Ad object</returns>
-	public Ad GetAd(Conversation C)
+	public Ad? GetAd(Conversation C)
 	{
 		Ad? ad = null;
 		List<Ad> adlist = context.Ads.ToList();

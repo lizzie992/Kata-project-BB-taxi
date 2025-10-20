@@ -175,7 +175,7 @@
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
-	public async void OnCultureChanged(object sender, CultureInfo culture)
+	public async void OnCultureChanged(object? sender, CultureInfo culture)
 	{
 		await InvokeAsync(() =>
 	{
@@ -225,15 +225,21 @@
 		user.PreferredLanguage = Input.PreferredLanguage;
 		user.Contact = Input.Contact;
 		user.DefaultAdType = Input.DefaultAdType;
-		user.DefaultPickUpAddress = Input.DefaultPickUpAddress;
 		user.DefaultNumberOfSeats = Input.DefaultNumberOfSeats;
-		user.DefaultSpecificRequests = Input.DefaultSpecificRequests;
-		(user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
+		if (Input.DefaultSpecificRequests is not null)
+		{
+			user.DefaultSpecificRequests = Input.DefaultSpecificRequests;			
+		}
+		if (Input.DefaultPickUpAddress is not null)
+		{
+			user.DefaultPickUpAddress = Input.DefaultPickUpAddress;
+			(user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
+		}
 		user.AreNotificationsOn = Input.notificationsOn;
 		user.Culture = "de-DE";
 		user.isActive = true;
 		user.isDeleted = false;
-		UserManager.AddToRoleAsync(user, "Regular");
+		
 		// if (user.Email.Contains("admin"))
 		// {
 		// 	UserManager.AddToRoleAsync(user, "Admin");
@@ -244,7 +250,7 @@
 		// }
 
 		var result = await UserManager.CreateAsync(user, Input.Password);
-
+		await UserManager.AddToRoleAsync(user, "Regular");
 
 		if (!result.Succeeded)
 		{

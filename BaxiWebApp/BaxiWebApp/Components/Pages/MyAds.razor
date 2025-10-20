@@ -137,7 +137,7 @@
 
 @code {
 	int adId { get; set; }
-	public User user;
+	public User? user;
 	/// <summary>
 	/// Identifies the user who is currently logged in
 	/// </summary>
@@ -152,7 +152,7 @@
 	}
 
 
-	protected override async Task OnAfterRenderAsync(bool firstrender)
+	protected override void OnAfterRender(bool firstrender)
 	{
 		if (firstrender)
 		{
@@ -162,7 +162,7 @@
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
-	public async void OnCultureChanged(object sender, CultureInfo culture)
+	public async void OnCultureChanged(object? sender, CultureInfo culture)
 	{
 
 		await InvokeAsync(() =>
@@ -172,9 +172,9 @@
 	}
 
 	public static List<Ad> AdList = new List<Ad>();
-	protected override void OnParametersSet()
+	protected override async Task OnParametersSetAsync()
 	{
-		identifyLoggedInUser();
+		await identifyLoggedInUser();
 		AdList = context.Ads.ToList<Ad>();
 		base.OnParametersSet();
 	}
@@ -205,15 +205,18 @@
 	/// Removes the selected ad from the database
 	/// </summary>
 	/// <param name="ad">Ad</param>
-	private void DeleteAd(Ad ad)
+	private void DeleteAd(Ad? ad)
 	{
-		context.Ads.Remove(ad);
-		context.SaveChanges();
-		closePopUpForDeletingAd();
-		grid.RefreshDataAsync();
+		if (ad is not null)
+		{
+			context.Ads.Remove(ad);
+			context.SaveChanges();
+			closePopUpForDeletingAd();
+			grid?.RefreshDataAsync();
+		}
 	}
 
-	Ad selectedAd;
+	Ad? selectedAd { get; set; }
 	bool popUpForDeletingAd = false;
 	/// <summary>
 	/// Closes pop up window to confirm ad deletion

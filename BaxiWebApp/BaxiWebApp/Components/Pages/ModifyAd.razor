@@ -22,7 +22,7 @@
 	<Authorized>
 
 		<body>
-			@if (currentlyLoggedInUser.isActive == false)
+			@if (currentlyLoggedInUser?.isActive == false)
 			{
 				<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
 			}
@@ -362,8 +362,10 @@
 </AuthorizeView>
 
 @code {
+
 	[Parameter]
 	public int ID { get; set; }
+
 
 	Ad ad
 	{
@@ -389,7 +391,7 @@
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
-	public async void OnCultureChanged(object sender, CultureInfo culture)
+	public async void OnCultureChanged(object? sender, CultureInfo culture)
 	{
 
 		await InvokeAsync(() =>
@@ -409,7 +411,7 @@
 		NavigationManager.NavigateTo("MyAds");
 	}
 
-	private User currentlyLoggedInUser;
+	private User? currentlyLoggedInUser;
 	/// <summary>
 	/// Identifies the user who is currently logged in
 	/// </summary>
@@ -424,9 +426,9 @@
 	}
 
 
-	protected override void OnParametersSet()
+	protected override async Task OnParametersSetAsync()
 	{
-		identifyLoggedInUser().GetAwaiter().GetResult();
+		await identifyLoggedInUser();
 
 		timerObj = new Timer(1500);
 		timerObj.Elapsed += onTimer;
@@ -440,13 +442,13 @@
 		if (firstrender)
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
-			if (showMap = true)
+			if (showMap == true)
 			{
 				await InvokeAsync(() =>
 			{
 				StateHasChanged();
 			});
-				await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad.Latitude, ad.Longitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
+				await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad?.Latitude, ad?.Longitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
 			}
 		}
 	}
@@ -468,9 +470,9 @@
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="e"></param>
-	public void onTimer(object? sender, ElapsedEventArgs e)
+	public async void onTimer(object? sender, ElapsedEventArgs e)
 	{
-		showMapWithAddress();
+		await showMapWithAddress();
 	}
 
 	/// <summary>
@@ -502,7 +504,7 @@
 				StateHasChanged();
 			});
 		}
-		else if (await DataService.IsItTooCloseToBB(distance))
+		else if (DataService.IsItTooCloseToBB(distance))
 		{
 			showMap = false;
 			// ShowPopUpForTooClose();
@@ -512,7 +514,7 @@
 				StateHasChanged();
 			});
 		}
-		else if (await DataService.IsItTooFarFromBB(distance))
+		else if (DataService.IsItTooFarFromBB(distance))
 		{
 			showMap = false;
 			// ShowPopUpForTooFar();
@@ -586,13 +588,13 @@
 			await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectRouteModal");
 			StateHasChanged();
 		}
-		else if (await DataService.IsItTooCloseToBB(distance))
+		else if (DataService.IsItTooCloseToBB(distance))
 		{
 			// ShowPopUpForTooClose();
 			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooCloseModal");
 			StateHasChanged();
 		}
-		else if (await DataService.IsItTooFarFromBB(distance))
+		else if (DataService.IsItTooFarFromBB(distance))
 		{
 			// ShowPopUpForTooFar();
 			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooFarModal");

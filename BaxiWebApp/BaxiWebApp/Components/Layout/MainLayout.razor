@@ -48,13 +48,13 @@
 
 	protected override async Task OnParametersSetAsync()
 	{
-		identifyLoggedInUser().GetAwaiter().GetResult();
+		await identifyLoggedInUser();
 		base.OnParametersSet();
 	}
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
-	public async void OnCultureChanged(object sender, CultureInfo culture)
+	public async void OnCultureChanged(object? sender, CultureInfo culture)
 	{
 
 		await InvokeAsync(() =>
@@ -78,7 +78,7 @@
 
 	}
 
-	protected override async Task OnAfterRenderAsync(bool firstrender)
+	protected override void OnAfterRender(bool firstrender)
 	{
 		if (firstrender)
 		{

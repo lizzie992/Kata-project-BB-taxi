@@ -16,7 +16,7 @@
 <PageTitle>@localizer["Confirm_email"]</PageTitle>
 
 <h1>@localizer["Confirm_email"]</h1>
-<StatusMessage Message=@localizer[@statusMessage, UserId] />
+<StatusMessage Message=statusMessage />
 
 @code {
     private string? statusMessage;
@@ -52,7 +52,7 @@
     }
     protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
-    public async void OnCultureChanged(object sender, CultureInfo culture)
+    public async void OnCultureChanged(object? sender, CultureInfo culture)
     {
 
         await InvokeAsync(() =>

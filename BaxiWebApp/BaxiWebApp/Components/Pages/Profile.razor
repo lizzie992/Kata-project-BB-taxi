@@ -22,7 +22,6 @@
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Resources> localizer
 @inject Data.DataService DataService
-@using System.Globalization;
 @using Pages.Res;
 @inject Data.BaxiWebAppContext context;
 
@@ -33,81 +32,85 @@
 	<Authorized>
 
 		<body>
-			
 
-			<div class="row">
-				<div class="col-12 col-md-6">
-					<div class="div-block">
-						<p>@localizer["Email_address"] @user.Email</p>
-						<p>@localizer["Name:"] @DataService.showUserNameWithStatus(user)</p>
-						<p>@localizer["Department"] @localizer[@user.Department.ToString()]</p>
-						<p>@localizer["Preferred_language"] @localizer[@user.PreferredLanguage.ToString()]</p>
-						<p>@localizer["Contact"] @user.Contact</p>
-						@* <p>@localizer["Rating"] @user.Rating</p> *@
-						<p>@localizer["Number_of_warnings"] @user.NumberOfWarnings</p>
-						<p>@localizer["Default_data_for_creating_ads"]</p>
-						<p>
-							@localizer["Default_ad_type"]
-							@if (user.DefaultAdType == AdType.SelectAll)
-							{
-								@localizer["No_default_type"]
-							}
-							else
-							{
-								@localizer[@user.DefaultAdType.ToString()]
-							}
-						</p>
-						<p>@localizer["From/to_this_address"] @user.DefaultPickUpAddress</p>
-						<p>@localizer["Number_of_seats"] @user.DefaultNumberOfSeats</p>
-						<p>@localizer["Specific_requests"] @user.DefaultSpecificRequests</p>
-						<p>
-							@localizer["Notifications"]
-							@if (user.AreNotificationsOn == true)
-							{
-								@localizer["Yes_you_will_get_notifications"]
-							}
-							@if (user.AreNotificationsOn == false)
-							{
-								@localizer["No_notifications_for_you"]
-							}
-						</p>
-						<a href="ProfileDataChange">
-							<button>@localizer["Click_here_to_change_your_profile_data"]</button>
-						</a>
-						<a href="/Account/Manage/ChangePassword">
-							<button>@localizer["Click_here_to_change_your_password"]</button>
-						</a>
-						<button @onclick="() => showPopUpForDeletingUser(user)">@localizer["Delete_my_profile"]</button>
-					</div>
-				</div>
+			@if (user is not null)
+			{
 
 
-				@if (user.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
-				{
+				<div class="row">
 					<div class="col-12 col-md-6">
-						@* <div id="map">
+						<div class="div-block">
+							<p>@localizer["Email_address"] @user.Email</p>
+							<p>@localizer["Name:"] @DataService.showUserNameWithStatus(user)</p>
+							<p>@localizer["Department"] @localizer[@user.Department.ToString()]</p>
+							<p>@localizer["Preferred_language"] @localizer[@user.PreferredLanguage.ToString()]</p>
+							<p>@localizer["Contact"] @user.Contact</p>
+							@* <p>@localizer["Rating"] @user.Rating</p> *@
+							<p>@localizer["Number_of_warnings"] @user.NumberOfWarnings</p>
+							<p>@localizer["Default_data_for_creating_ads"]</p>
+							<p>
+								@localizer["Default_ad_type"]
+								@if (user.DefaultAdType == AdType.SelectAll)
+								{
+									@localizer["No_default_type"]
+								}
+								else
+								{
+									@localizer[@user.DefaultAdType.ToString()]
+								}
+							</p>
+							<p>@localizer["From/to_this_address"] @user.DefaultPickUpAddress</p>
+							<p>@localizer["Number_of_seats"] @user.DefaultNumberOfSeats</p>
+							<p>@localizer["Specific_requests"] @user.DefaultSpecificRequests</p>
+							<p>
+								@localizer["Notifications"]
+								@if (user.AreNotificationsOn == true)
+								{
+									@localizer["Yes_you_will_get_notifications"]
+								}
+								@if (user.AreNotificationsOn == false)
+								{
+									@localizer["No_notifications_for_you"]
+								}
+							</p>
+							<a href="ProfileDataChange">
+								<button>@localizer["Click_here_to_change_your_profile_data"]</button>
+							</a>
+							<a href="/Account/Manage/ChangePassword">
+								<button>@localizer["Click_here_to_change_your_password"]</button>
+							</a>
+							<button @onclick="() => showPopUpForDeletingUser(user)">@localizer["Delete_my_profile"]</button>
+						</div>
+					</div>
+
+
+					@if (user.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
+					{
+						<div class="col-12 col-md-6">
+							@* <div id="map">
 						</div>
 						<script>
 							(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
 							({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script> *@
-						@* <p style="text-align:center">@localizer["Your_default_pick_up_drop_off_location_on_the_map"]</p> *@
-						 <p style="height: 100%">
-							 <iframe class="framed-map-profile"
-									width="600"
-									height="450"
-									loading="lazy"
-									src="https://www.google.com/maps/embed/v1/directions
-																		?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
-																		&origin=@user.DefaultLatitude?.ToString("F8", CultureInfo.InvariantCulture), @user.DefaultLongitude?.ToString("F8", CultureInfo.InvariantCulture)
-																		&destination=Givaudan,Baierbrunn+Germany
-																		&avoid=tolls">
-							</iframe> 
-						</p> 
+							@* <p style="text-align:center">@localizer["Your_default_pick_up_drop_off_location_on_the_map"]</p> *@
+							<p style="height: 100%">
+								<iframe class="framed-map-profile"
+										width="600"
+										height="450"
+										loading="lazy"
+										src="https://www.google.com/maps/embed/v1/directions
+																				?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
+																				&origin=@user.DefaultLatitude?.ToString("F8", CultureInfo.InvariantCulture), @user.DefaultLongitude?.ToString("F8", CultureInfo.InvariantCulture)
+																				&destination=Givaudan,Baierbrunn+Germany
+																				&avoid=tolls">
+								</iframe>
+							</p>
 
-					</div>
+						</div>
 
-				}
-			</div>
+					}
+				</div>
+			}
 		</body>
 
 
@@ -155,7 +158,7 @@
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
-	public async void OnCultureChanged(object sender, CultureInfo culture)
+	public async void OnCultureChanged(object? sender, CultureInfo culture)
 	{
 
 		await InvokeAsync(() =>
@@ -165,20 +168,20 @@
 	}
 
 
-	protected override async Task OnAfterRenderAsync(bool firstrender)
+	protected override void OnAfterRender(bool firstrender)
 	{
 		if (firstrender)
 		{
 			DataService.loadCulture(user);
 		}
-		if (user.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
+		if (user?.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
 		{
 			// await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", user.DefaultLatitude, user.DefaultLongitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
 		}
 	}
 
 
-	private User user;
+	private User? user;
 	/// <summary>
 	/// Identifies the user who is currently logged in
 	/// </summary>
@@ -192,9 +195,9 @@
 		user = await UserManager.GetUserAsync(claims);
 	}
 
-	protected override void OnParametersSet()
+	protected override async Task OnParametersSetAsync()
 	{
-		identifyLoggedInUser().GetAwaiter().GetResult();
+		await identifyLoggedInUser();
 		base.OnParametersSet();
 	}
 
@@ -230,7 +233,7 @@
 	/// Triggers the dataservice method to delete this user from the database
 	/// </summary>
 	/// <returns></returns>
-	public async Task deleteUser()
+	public void deleteUser()
 	{
 		DataService.deleteUser(user);
 		NavigationManager.NavigateTo("/Logout", forceLoad: true);

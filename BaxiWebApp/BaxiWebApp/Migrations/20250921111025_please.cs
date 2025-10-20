@@ -5,6 +5,7 @@ using MySql.EntityFrameworkCore.Metadata;
 #nullable disable
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+#pragma warning disable CS8981
 
 namespace BaxiWebApp.Migrations
 {

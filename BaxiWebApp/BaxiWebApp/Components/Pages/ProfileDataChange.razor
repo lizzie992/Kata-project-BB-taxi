@@ -21,7 +21,6 @@
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Resources> localizer
 @inject Data.DataService DataService
-@using System.Globalization;
 @using Pages.Res;
 @inject Data.BaxiWebAppContext context;
 
@@ -32,142 +31,150 @@
 
 
 		<body>
-			<h1 style="text-align:center;">@localizer["Change_your_profile_data"]</h1>
 
-			<div class="row">
-				<div class="col-12 col-md-6">
-					<div class="div-block">
-						<EditForm Model="@user" OnValidSubmit="Save">
+			@if (user is not null)
+			{
 
-							<div class="input-block">
-								@localizer["First_name"]
-								<InputText class="input" @bind-Value="user.FirstName"></InputText><br>
-							</div>
 
-							<div class="input-block">
-								@localizer["Last_name"]
-								<InputText class="input" @bind-Value="user.LastName"></InputText><br>
-							</div>
 
-							<div class="input-block">
-								@localizer["Department"]
-								<InputSelect class="input" @bind-Value="user.Department" id="department">
-									@foreach (var value in Enum.GetValues<Department>())
-									{
-										@if (@value == Department.SelectAll)
+				<h1 style="text-align:center;">@localizer["Change_your_profile_data"]</h1>
+
+				<div class="row">
+					<div class="col-12 col-md-6">
+						<div class="div-block">
+							<EditForm Model="@user" OnValidSubmit="Save">
+
+								<div class="input-block">
+									@localizer["First_name"]
+									<InputText class="input" @bind-Value="user.FirstName"></InputText><br>
+								</div>
+
+								<div class="input-block">
+									@localizer["Last_name"]
+									<InputText class="input" @bind-Value="user.LastName"></InputText><br>
+								</div>
+
+								<div class="input-block">
+									@localizer["Department"]
+									<InputSelect class="input" @bind-Value="user.Department" id="department">
+										@foreach (var value in Enum.GetValues<Department>())
 										{
-											continue;
+											@if (@value == Department.SelectAll)
+											{
+												continue;
+											}
+											<option value="@value">@localizer[@value.ToString()]</option>
 										}
-										<option value="@value">@localizer[@value.ToString()]</option>
-									}
-								</InputSelect>
-							</div>
+									</InputSelect>
+								</div>
 
-							<div class="input-block">
-								@localizer["Preferred_language"]
-								<InputSelect class="input" @bind-Value="user.PreferredLanguage" id="preferredLanguage">
-									@foreach (var value in Enum.GetValues<PreferredLanguage>())
-									{
-										<option value="@value">@localizer[@value.ToString()]</option>
-									}
-								</InputSelect>
-							</div>
-
-							<div class="input-block">
-								@localizer["Contact"]
-								<InputText class="input" @bind-Value="user.Contact"></InputText><br>
-							</div>
-
-							<div class="input-block">
-								@localizer["Default_data_for_creating_ads"]
-							</div>
-
-							<div class="input-block">
-								@localizer["Default_ad_type"]
-								<InputSelect class="input" @bind-Value="user.DefaultAdType" id="DefaultAdType">
-									@foreach (var value in Enum.GetValues<AdType>())
-									{
-										if (value == AdType.SelectAll)
-										{
-											<option value="@value">@localizer["No_default_type"]</option>
-										}
-										else
+								<div class="input-block">
+									@localizer["Preferred_language"]
+									<InputSelect class="input" @bind-Value="user.PreferredLanguage" id="preferredLanguage">
+										@foreach (var value in Enum.GetValues<PreferredLanguage>())
 										{
 											<option value="@value">@localizer[@value.ToString()]</option>
 										}
+									</InputSelect>
+								</div>
+
+								<div class="input-block">
+									@localizer["Contact"]
+									<InputText class="input" @bind-Value="user.Contact"></InputText><br>
+								</div>
+
+								<div class="input-block">
+									@localizer["Default_data_for_creating_ads"]
+								</div>
+
+								<div class="input-block">
+									@localizer["Default_ad_type"]
+									<InputSelect class="input" @bind-Value="user.DefaultAdType" id="DefaultAdType">
+										@foreach (var value in Enum.GetValues<AdType>())
+										{
+											if (value == AdType.SelectAll)
+											{
+												<option value="@value">@localizer["No_default_type"]</option>
+											}
+											else
+											{
+												<option value="@value">@localizer[@value.ToString()]</option>
+											}
+										}
+									</InputSelect>
+								</div>
+
+								<div class="input-block">
+									<div>@localizer["On_the_map_you_can_specify_the_exact_pick_up_drop_off_location"]</div>
+									<div>@localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
+								</div>
+
+								<div class="input-block">
+									@localizer["From/to_this_address"]
+									<input @bind="user.DefaultPickUpAddress" class="input" id="DefaultPickUpAddress"
+										   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
+								</div>
+
+								<div class="input-block">
+									@localizer["Number_of_seats"]
+									<InputSelect @bind-Value="user.DefaultNumberOfSeats" class="input" id="DefaultNumberOfSeats">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+									</InputSelect>
+								</div>
+
+								<div class="input-block">
+									@localizer["Specific_requests"]
+									<InputText class="input" @bind-Value="user.DefaultSpecificRequests"></InputText><br>
+								</div>
+
+
+								<div class="input-block">
+									@localizer["Notifications"]
+									@localizer["If_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", @Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS, @Constants.TIME_LIMIT_FOR_NOTIFICATIONS]
+									@if (user.AreNotificationsOn == true)
+									{
+										<input type="checkbox" class="input" checked @bind-value="@user.AreNotificationsOn">
 									}
-								</InputSelect>
+									@if (user.AreNotificationsOn == false)
+									{
+										<input type="checkbox" class="input" @bind-value="@user.AreNotificationsOn">
+									}
+								</div>
+
+								<div class="input-block">
+									<a href="Profile">
+										<button @onclick="Save">@localizer["Save"]</button>
+									</a>
+								</div>
+
+							</EditForm>
+						</div>
+					</div>
+
+					<div class="col-12 col-md-6">
+
+						@if (showMap)
+						{
+							<div id="map">
 							</div>
+							<script>
+								(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+								({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+						}
+						else
+						{
+							<img src="/images/bb.jpeg" alt="Baierbrunn" style="width:600px;height:337px;">
+						}
 
-							<div class="input-block">
-								<div>@localizer["On_the_map_you_can_specify_the_exact_pick_up_drop_off_location"]</div>
-								<div>@localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
-							</div>
-
-							<div class="input-block">
-								@localizer["From/to_this_address"]
-								<input @bind="user.DefaultPickUpAddress" class="input" id="DefaultPickUpAddress"
-									   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
-							</div>
-
-							<div class="input-block">
-								@localizer["Number_of_seats"]
-								<InputSelect @bind-Value="user.DefaultNumberOfSeats" class="input" id="DefaultNumberOfSeats">
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-									<option value="6">6</option>
-								</InputSelect>
-							</div>
-
-							<div class="input-block">
-								@localizer["Specific_requests"]
-								<InputText class="input" @bind-Value="user.DefaultSpecificRequests"></InputText><br>
-							</div>
-
-
-							<div class="input-block">
-								@localizer["Notifications"]
-								@localizer["If_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", @Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS, @Constants.TIME_LIMIT_FOR_NOTIFICATIONS]
-								@if (user.AreNotificationsOn == true)
-								{
-									<input type="checkbox" class="input" checked @bind-value="@user.AreNotificationsOn">
-								}
-								@if (user.AreNotificationsOn == false)
-								{
-									<input type="checkbox" class="input" @bind-value="@user.AreNotificationsOn">
-								}
-							</div>
-
-							<div class="input-block">
-								<a href="Profile">
-									<button @onclick="Save">@localizer["Save"]</button>
-								</a>
-							</div>
-
-						</EditForm>
 					</div>
 				</div>
+			}
 
-				<div class="col-12 col-md-6">
-
-					@if (showMap)
-					{
-						<div id="map">
-						</div>
-						<script>
-							(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-							({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
-					}
-					else
-					{
-						<img src="/images/bb.jpeg" alt="Baierbrunn" style="width:600px;height:337px;">
-					}
-
-				</div>
-			</div>
 		</body>
 
 
@@ -324,7 +331,7 @@
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
-	public async void OnCultureChanged(object sender, CultureInfo culture)
+	public async void OnCultureChanged(object? sender, CultureInfo culture)
 	{
 
 		await InvokeAsync(() =>
@@ -336,7 +343,7 @@
 
 
 
-	public static User user;
+	public static User? user;
 	int distanceLimit = Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS / 1000;
 	//coordinates of Baierbrunn
 	public double latitudeBB = 48.0206345131560;
@@ -357,9 +364,9 @@
 
 	Timer timerObj = new();
 
-	protected override void OnParametersSet()
+	protected override async Task OnParametersSetAsync()
 	{
-		identifyLoggedInUser();
+		await identifyLoggedInUser();
 		timerObj = new Timer(1500);
 		timerObj.Elapsed += onTimer;
 		timerObj.AutoReset = false;
@@ -372,7 +379,7 @@
 		if (firstrender)
 		{
 			DataService.loadCulture(user);
-			if (user.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
+			if (user?.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
 			{
 				showMap = true;
 				await InvokeAsync(() =>
@@ -394,15 +401,18 @@
 	/// <returns></returns>
 	public async Task Save()
 	{
-		if (user.DefaultPickUpAddress == "")
+		if (user?.DefaultPickUpAddress == "")
 		{
 			user.DefaultLatitude = 0;
 			user.DefaultLongitude = 0;
 		}
 		else
 		{
-			user.DefaultLatitude = await GetLatitude();
-			user.DefaultLongitude = await GetLongitude();
+			if (user is not null)
+			{
+				user.DefaultLatitude = await GetLatitude();
+				user.DefaultLongitude = await GetLongitude();
+			}
 		}
 		// await UserManager.UpdateAsync(user);
 		await context.SaveChangesAsync();
@@ -427,9 +437,9 @@
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="e"></param>
-	public void onTimer(object? sender, ElapsedEventArgs e)
+	public async void onTimer(object? sender, ElapsedEventArgs e)
 	{
-		showMapWithAddress();
+		await showMapWithAddress();
 	}
 
 
@@ -474,52 +484,11 @@
 	/// <returns>bool</returns>
 	public async Task showMapWithAddress()
 	{
-		if (user.DefaultPickUpAddress == "")
+		if (user is not null)
 		{
-			showMap = false;
-			await InvokeAsync(() =>
-			{
-				StateHasChanged();
-			});
-		}
-		else
-		{
-			(user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
-			int distance = await DataService.GetDistance(latitudeBB, longitudeBB, user.DefaultLatitude, user.DefaultLongitude);
-			if (user.DefaultLatitude == null || user.DefaultLongitude == null)
+			if (user.DefaultPickUpAddress == "")
 			{
 				showMap = false;
-				// ShowPopUpForWrongCoordinates();
-				await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectAddressModal");
-				await InvokeAsync(() =>
-				{
-					StateHasChanged();
-				});
-			}
-			else if (distance == Constants.INVALID_ROUTE)
-			{
-				// ShowPopUpForInvalidRoute();
-				await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectRouteModal");
-				await InvokeAsync(() =>
-				{
-					StateHasChanged();
-				});
-			}
-			else if (await DataService.IsItTooCloseToBB(distance))
-			{
-				showMap = false;
-				// ShowPopUpForTooClose();
-				await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooCloseModal");
-				await InvokeAsync(() =>
-				{
-					StateHasChanged();
-				});
-			}
-			else if (await DataService.IsItTooFarFromBB(distance))
-			{
-				showMap = false;
-				// ShowPopUpForTooFar();
-				await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooFarModal");
 				await InvokeAsync(() =>
 				{
 					StateHasChanged();
@@ -527,12 +496,56 @@
 			}
 			else
 			{
-				showMap = true;
-				await InvokeAsync(() =>
+				(user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
+				int distance = await DataService.GetDistance(latitudeBB, longitudeBB, user.DefaultLatitude, user.DefaultLongitude);
+				if (user.DefaultLatitude == null || user.DefaultLongitude == null)
 				{
-					StateHasChanged();
-				});
-				await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", user.DefaultLatitude, user.DefaultLongitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
+					showMap = false;
+					// ShowPopUpForWrongCoordinates();
+					await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectAddressModal");
+					await InvokeAsync(() =>
+					{
+						StateHasChanged();
+					});
+				}
+				else if (distance == Constants.INVALID_ROUTE)
+				{
+					// ShowPopUpForInvalidRoute();
+					await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectRouteModal");
+					await InvokeAsync(() =>
+					{
+						StateHasChanged();
+					});
+				}
+				else if (DataService.IsItTooCloseToBB(distance))
+				{
+					showMap = false;
+					// ShowPopUpForTooClose();
+					await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooCloseModal");
+					await InvokeAsync(() =>
+					{
+						StateHasChanged();
+					});
+				}
+				else if (DataService.IsItTooFarFromBB(distance))
+				{
+					showMap = false;
+					// ShowPopUpForTooFar();
+					await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooFarModal");
+					await InvokeAsync(() =>
+					{
+						StateHasChanged();
+					});
+				}
+				else
+				{
+					showMap = true;
+					await InvokeAsync(() =>
+					{
+						StateHasChanged();
+					});
+					await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", user.DefaultLatitude, user.DefaultLongitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
+				}
 			}
 		}
 	}

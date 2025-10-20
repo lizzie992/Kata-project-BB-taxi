@@ -39,7 +39,7 @@
 		
 
 		<body>
-			@if (_currentlyLoggedInUser.isActive == false)
+			@if (_currentlyLoggedInUser?.isActive == false)
 			{
 				<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
 			}
@@ -382,7 +382,7 @@
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
-	public async void OnCultureChanged(object sender, CultureInfo culture)
+	public async void OnCultureChanged(object? sender, CultureInfo culture)
 	{
 
 		await InvokeAsync(() =>
@@ -398,19 +398,22 @@
 
 	Timer timerObj = new();
 
-	protected override void OnParametersSet()
+	protected override async Task OnParametersSetAsync()
 	{
-		IdentifyLoggedInUser().GetAwaiter().GetResult();
-		ad = new Ad();
-		ad.AdOwner = _currentlyLoggedInUser;
-		ad.AdType = _currentlyLoggedInUser.DefaultAdType;
-		ad.AdDirection = CreateAd.ad.AdDirection;
-		ad.PickUpDropOffLocation = _currentlyLoggedInUser.DefaultPickUpAddress;
-		ad.PickUpDateAndTime = DateTime.Today.AddDays(1);
-		ad.PickUpDateAndTime = CreateAd.ad.PickUpDateAndTime;
-		ad.NumberOfSeats = _currentlyLoggedInUser.DefaultNumberOfSeats;
-		ad.SpecificRequests = _currentlyLoggedInUser.DefaultSpecificRequests;
-
+		await IdentifyLoggedInUser();
+		if (_currentlyLoggedInUser is not null)
+		{
+			ad = new Ad();
+			ad.AdOwner = _currentlyLoggedInUser;
+			ad.AdType = _currentlyLoggedInUser.DefaultAdType;
+			ad.AdDirection = CreateAd.ad.AdDirection;
+			ad.PickUpDropOffLocation = _currentlyLoggedInUser.DefaultPickUpAddress;
+			ad.PickUpDateAndTime = DateTime.Today.AddDays(1);
+			ad.PickUpDateAndTime = CreateAd.ad.PickUpDateAndTime;
+			ad.NumberOfSeats = _currentlyLoggedInUser.DefaultNumberOfSeats;
+			ad.SpecificRequests = _currentlyLoggedInUser.DefaultSpecificRequests;
+		}
+		
 		timerObj = new Timer(1500);
 		timerObj.Elapsed += onTimer;
 		timerObj.AutoReset = false;
@@ -423,7 +426,7 @@
 		if (firstrender)
 		{
 			DataService.loadCulture(_currentlyLoggedInUser);
-			if (_currentlyLoggedInUser.DefaultLatitude >= 1 && _currentlyLoggedInUser.DefaultLongitude >= 1)
+			if (_currentlyLoggedInUser?.DefaultLatitude >= 1 && _currentlyLoggedInUser.DefaultLongitude >= 1)
 			{
 				showMap = true;
 				await InvokeAsync(() =>
@@ -452,9 +455,9 @@
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="e"></param>
-	public void onTimer(object? sender, ElapsedEventArgs e)
+	public async void onTimer(object? sender, ElapsedEventArgs e)
 	{
-		showMapWithAddress();
+		await showMapWithAddress();
 	}
 
 
@@ -491,7 +494,7 @@
 				StateHasChanged();
 			});
 		}
-		else if (await DataService.IsItTooCloseToBB(distance))
+		else if (DataService.IsItTooCloseToBB(distance))
 		{
 			showMap = false;
 			// ShowPopUpForTooClose();
@@ -501,7 +504,7 @@
 				StateHasChanged();
 			});
 		}
-		else if (await DataService.IsItTooFarFromBB(distance))
+		else if (DataService.IsItTooFarFromBB(distance))
 		{
 			showMap = false;
 			// ShowPopUpForTooFar();
@@ -518,7 +521,7 @@
 			{
 				StateHasChanged();
 			});
-			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", _currentlyLoggedInUser.DefaultLatitude, _currentlyLoggedInUser.DefaultLongitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"], localizer["Pin_dropped_at"]);
+			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", _currentlyLoggedInUser?.DefaultLatitude, _currentlyLoggedInUser?.DefaultLongitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"], localizer["Pin_dropped_at"]);
 		}
 	}
 
@@ -545,7 +548,7 @@
 	/// Identifies the user who is currently logged in
 	/// </summary>
 	/// <returns>User</returns>
-	private User _currentlyLoggedInUser;
+	private User? _currentlyLoggedInUser;
 	public async Task IdentifyLoggedInUser()
 	{
 		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
@@ -690,13 +693,13 @@
 			await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectRouteModal");
 			StateHasChanged();
 		}
-		else if (await DataService.IsItTooCloseToBB(distance))
+		else if (DataService.IsItTooCloseToBB(distance))
 		{
 			// ShowPopUpForTooClose();
 			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooCloseModal");
 			StateHasChanged();
 		}
-		else if (await DataService.IsItTooFarFromBB(distance))
+		else if (DataService.IsItTooFarFromBB(distance))
 		{
 			// ShowPopUpForTooFar();
 			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooFarModal");
@@ -721,7 +724,7 @@
 	async Task WriteData()
 	{
 		context.Ads.Add(ad);
-		if (ad.SpecificRequests is null)
+		if (ad.SpecificRequests is null || ad.SpecificRequests == "")
 		{
 			ad.SpecificRequests = "No Specific requests";
 		}

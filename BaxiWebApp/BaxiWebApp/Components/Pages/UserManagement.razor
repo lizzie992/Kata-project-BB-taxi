@@ -202,7 +202,7 @@
 									<th style="text-align: left">@localizer["Preferred_language"]</th>
 									<th style="text-align: right">@localizer[@user.PreferredLanguage.ToString()]</th>
 								</tr>
-@* 								<tr>
+								@* 								<tr>
 									<th style="text-align: left">@localizer["Rating"]</th>
 									<th style="text-align: right">@user.Rating</th>
 								</tr> *@
@@ -373,7 +373,7 @@
 		</div>
 	</div>
 
-@* 	@if (popUpForReactivatingUser)
+	@* 	@if (popUpForReactivatingUser)
 	{
 		<div class="modal" tabindex="-1" style="display:block" role="dialog">
 			<div class="modal-dialog">
@@ -402,7 +402,7 @@
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
-	public async void OnCultureChanged(object sender, CultureInfo culture)
+	public async void OnCultureChanged(object? sender, CultureInfo culture)
 	{
 
 		await InvokeAsync(() =>
@@ -427,15 +427,15 @@
 
 	string reasonForWarning = "";
 	string reasonForDeactivating = "";
-	User selectedUser;
+	User? selectedUser;
 
-	protected override void OnParametersSet()
+	protected async override Task OnParametersSetAsync()
 	{
-		identifyLoggedInUser();
+		await identifyLoggedInUser();
 		base.OnParametersSet();
 	}
 
-	protected override async Task OnAfterRenderAsync(bool firstrender)
+	protected override void OnAfterRender(bool firstrender)
 	{
 		if (firstrender)
 		{
@@ -506,24 +506,30 @@
 	/// </summary>
 	/// <param name="user">User</param>
 	/// <param name="reasonForWarning">String</param>
-	public void giveUserAWarning(User user, string reasonForWarning)
+	public void giveUserAWarning(User? user, string reasonForWarning)
 	{
-		user.NumberOfWarnings++;
-		context.Update(user);
-		context.SaveChanges();
-		string emailAddress = user.Email.ToString();
-		string subject = localizer["You_received_a_warning_on_the_baxi_app"];
-		string text = localizer["Dear_{0}_you_have_received_a_warning_from_one_of_our_admins_reason_for_the_warning_is_{1}_your_current_number_of_warnings_is_{2}_please_be_aware_that_as_soon_as_you_reach_{3}_warnings_your_account_will_be_automatically_inactivated", DataService.showUserNameWithStatus(user), reasonForWarning, user.NumberOfWarnings, Constants.MAX_NUMBER_OF_WARNINGS];
-		DataService.sendEmail(emailAddress, subject, text);
-		if (user.NumberOfWarnings == Constants.MAX_NUMBER_OF_WARNINGS)
+		if (user is not null)
 		{
-			string reason = localizer["You_have_reached_3_warnings"];
-			deactivateUser(user, reason);
+			user.NumberOfWarnings++;
+			context.Update(user);
 			context.SaveChanges();
+			if (user.Email is not null)
+			{
+				string emailAddress = user.Email.ToString();
+				string subject = localizer["You_received_a_warning_on_the_baxi_app"];
+				string text = localizer["Dear_{0}_you_have_received_a_warning_from_one_of_our_admins_reason_for_the_warning_is_{1}_your_current_number_of_warnings_is_{2}_please_be_aware_that_as_soon_as_you_reach_{3}_warnings_your_account_will_be_automatically_inactivated", DataService.showUserNameWithStatus(user), reasonForWarning, user.NumberOfWarnings, Constants.MAX_NUMBER_OF_WARNINGS];
+				DataService.sendEmail(emailAddress, subject, text);
+			}
+			if (user.NumberOfWarnings == Constants.MAX_NUMBER_OF_WARNINGS)
+			{
+				string reason = localizer["You_have_reached_3_warnings"];
+				deactivateUser(user, reason);
+				context.SaveChanges();
+			}
+			reasonForWarning = "";
+			closePopUpForWarning();
+			grid?.RefreshDataAsync();
 		}
-		reasonForWarning = "";
-		closePopUpForWarning();
-		grid.RefreshDataAsync();
 	}
 
 	/// <summary>
@@ -531,53 +537,65 @@
 	/// </summary>
 	/// <param name="user">User</param>
 	/// <param name="reasonForDeactivating">String</param>
-	public void deactivateUser(User user, string reasonForDeactivating)
+	public void deactivateUser(User? user, string reasonForDeactivating)
 	{
-		user.isActive = false;
-		context.Update(user);
-		context.SaveChanges();
-		string text = localizer["Dear_{0}_your_account_has_been_deactivated_the_reason_is_{1}_please_contact_the_admin_team_about_the_possible_reactivation", DataService.showUserNameWithStatus(user), reasonForDeactivating];
-		string emailAddress = user.Email.ToString();
-		string subject = localizer["Your_baxi_account_has_been_deactivated"];
-		DataService.sendEmail(emailAddress, subject, text);
-		closePopUpForDeactivatingUser();
-		grid.RefreshDataAsync();
+		if (user is not null)
+		{
+			user.isActive = false;
+			context.Update(user);
+			context.SaveChanges();
+			if (user.Email is not null)
+			{
+				string text = localizer["Dear_{0}_your_account_has_been_deactivated_the_reason_is_{1}_please_contact_the_admin_team_about_the_possible_reactivation", DataService.showUserNameWithStatus(user), reasonForDeactivating];
+				string emailAddress = user.Email.ToString();
+				string subject = localizer["Your_baxi_account_has_been_deactivated"];
+				DataService.sendEmail(emailAddress, subject, text);
+			}
+			closePopUpForDeactivatingUser();
+			grid?.RefreshDataAsync();
+		}
 	}
 
 	/// <summary>
 	/// Triggers the database method to reactivate selected user
 	/// </sumMAX_NUMBER_OF_WARNINGSname="user">User</param>
-	public void reactivateUser(User user)
+	public void reactivateUser(User? user)
 	{
-		user.isActive = true;
-		user.NumberOfWarnings = 0;
-		context.Update(user);
-		context.SaveChanges();
-		string text = localizer["Dear_{0}_your_account_has_been_reactivated_you_can_now_use_all_functions_again", DataService.showUserNameWithStatus(user)];
-		string subject = localizer["Your_baxi_account_has_been_reactivated"];
-		string emailAddress = user.Email.ToString();
-		DataService.sendEmail(emailAddress, subject, text);
-		closePopUpForReactivatingUser();
-		grid.RefreshDataAsync();
+		if (user is not null)
+		{
+			user.isActive = true;
+			user.NumberOfWarnings = 0;
+			context.Update(user);
+			context.SaveChanges();
+			if (user.Email is not null)
+			{
+				string text = localizer["Dear_{0}_your_account_has_been_reactivated_you_can_now_use_all_functions_again", DataService.showUserNameWithStatus(user)];
+				string subject = localizer["Your_baxi_account_has_been_reactivated"];
+				string emailAddress = user.Email.ToString();
+				DataService.sendEmail(emailAddress, subject, text);
+			}
+			closePopUpForReactivatingUser();
+			grid?.RefreshDataAsync();
+		}
 	}
 
 	/// <summary>
 	/// Changes the user's role to Admin
 	/// </summary>
 	/// <param name="user">User</param>
-	public void makeUserAdmin(User user)
+	public void makeUserAdmin(User? user)
 	{
-		if (UserManager.GetRolesAsync(user).Result.First() == "Regular")
+		if (user is not null && UserManager.GetRolesAsync(user).Result.First() == "Regular")
 		{
 			UserManager.RemoveFromRoleAsync(user, "Regular");
 			UserManager.AddToRoleAsync(user, "Admin");
 			context.SaveChanges();
 			closePopUpForMakeUserAdmin();
-			grid.RefreshDataAsync();
+			grid?.RefreshDataAsync();
 		}
 	}
 
-	public User currentlyLoggedInUser;
+	public User? currentlyLoggedInUser;
 	/// <summary>
 	/// Identifies the user who is currently logged in
 	/// </summary>
