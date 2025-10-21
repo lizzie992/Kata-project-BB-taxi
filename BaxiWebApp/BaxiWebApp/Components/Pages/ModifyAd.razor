@@ -411,24 +411,27 @@
 		NavigationManager.NavigateTo("MyAds");
 	}
 
-	private User? currentlyLoggedInUser;
-	/// <summary>
-	/// Identifies the user who is currently logged in
-	/// </summary>
-	/// <returns>User</returns>
-	public async Task identifyLoggedInUser()
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? currentlyLoggedInUser { get; set; }
+
+	// private User? currentlyLoggedInUser;
+	// /// <summary>
+	// /// Identifies the user who is currently logged in
+	// /// </summary>
+	// /// <returns>User</returns>
+	// public async Task identifyLoggedInUser()
+	// {
+	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+	// 	var claims = authState.User;
+
+	// 	currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+	// }
+
+
+	protected override void OnParametersSet()
 	{
-		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-
-		var claims = authState.User;
-
-		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
-	}
-
-
-	protected override async Task OnParametersSetAsync()
-	{
-		await identifyLoggedInUser();
+		// await identifyLoggedInUser();
 
 		timerObj = new Timer(1500);
 		timerObj.Elapsed += onTimer;

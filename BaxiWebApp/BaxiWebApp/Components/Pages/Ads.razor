@@ -308,10 +308,10 @@
 
 	DateTime currentTime = DateTime.Now.AddMinutes(-30);
 
-	protected override async Task OnParametersSetAsync()
+	protected override void OnParametersSet()
 	{
 		AdList = context.Ads.ToList<Ad>();
-		await identifyLoggedInUser();
+		// await identifyLoggedInUser();
 		base.OnParametersSet();
 	}
 
@@ -414,21 +414,22 @@
 		NavigationManager.NavigateTo("Chat/" + id);
 	}
 
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? currentlyLoggedInUser { get; set; }
 
+	// public User? currentlyLoggedInUser;
+	// /// <summary>
+	// /// Identifies the user who is currently logged in
+	// /// </summary>
+	// /// <returns>User</returns>
+	// public async Task identifyLoggedInUser()
+	// {
+	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-	public User? currentlyLoggedInUser;
-	/// <summary>
-	/// Identifies the user who is currently logged in
-	/// </summary>
-	/// <returns>User</returns>
-	public async Task identifyLoggedInUser()
-	{
-		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+	// 	var claims = authState.User;
 
-		var claims = authState.User;
-
-		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
-	}
+	// 	currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+	// }
 
 	/// <summary>
 	/// Redirects the user to a new page showing the one specific ad they want to see

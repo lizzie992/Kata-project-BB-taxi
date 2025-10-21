@@ -39,7 +39,7 @@
 		
 
 		<body>
-			@if (_currentlyLoggedInUser?.isActive == false)
+			@if (currentlyLoggedInUser?.isActive == false)
 			{
 				<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
 			}
@@ -398,20 +398,20 @@
 
 	Timer timerObj = new();
 
-	protected override async Task OnParametersSetAsync()
+	protected override void OnParametersSet()
 	{
-		await IdentifyLoggedInUser();
-		if (_currentlyLoggedInUser is not null)
+		// await IdentifyLoggedInUser();
+		if (currentlyLoggedInUser is not null)
 		{
 			ad = new Ad();
-			ad.AdOwner = _currentlyLoggedInUser;
-			ad.AdType = _currentlyLoggedInUser.DefaultAdType;
+			ad.AdOwner = currentlyLoggedInUser;
+			ad.AdType = currentlyLoggedInUser.DefaultAdType;
 			ad.AdDirection = CreateAd.ad.AdDirection;
-			ad.PickUpDropOffLocation = _currentlyLoggedInUser.DefaultPickUpAddress;
+			ad.PickUpDropOffLocation = currentlyLoggedInUser.DefaultPickUpAddress;
 			ad.PickUpDateAndTime = DateTime.Today.AddDays(1);
 			ad.PickUpDateAndTime = CreateAd.ad.PickUpDateAndTime;
-			ad.NumberOfSeats = _currentlyLoggedInUser.DefaultNumberOfSeats;
-			ad.SpecificRequests = _currentlyLoggedInUser.DefaultSpecificRequests;
+			ad.NumberOfSeats = currentlyLoggedInUser.DefaultNumberOfSeats;
+			ad.SpecificRequests = currentlyLoggedInUser.DefaultSpecificRequests;
 		}
 		
 		timerObj = new Timer(1500);
@@ -425,15 +425,15 @@
 	{
 		if (firstrender)
 		{
-			DataService.loadCulture(_currentlyLoggedInUser);
-			if (_currentlyLoggedInUser?.DefaultLatitude >= 1 && _currentlyLoggedInUser.DefaultLongitude >= 1)
+			DataService.loadCulture(currentlyLoggedInUser);
+			if (currentlyLoggedInUser?.DefaultLatitude >= 1 && currentlyLoggedInUser.DefaultLongitude >= 1)
 			{
 				showMap = true;
 				await InvokeAsync(() =>
 			{
 				StateHasChanged();
 			});
-				await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", _currentlyLoggedInUser.DefaultLatitude, _currentlyLoggedInUser.DefaultLongitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
+				await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", currentlyLoggedInUser.DefaultLatitude, currentlyLoggedInUser.DefaultLongitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
 			}
 		}
 	}
@@ -521,7 +521,7 @@
 			{
 				StateHasChanged();
 			});
-			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", _currentlyLoggedInUser?.DefaultLatitude, _currentlyLoggedInUser?.DefaultLongitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"], localizer["Pin_dropped_at"]);
+			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", currentlyLoggedInUser?.DefaultLatitude, currentlyLoggedInUser?.DefaultLongitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"], localizer["Pin_dropped_at"]);
 		}
 	}
 
@@ -544,19 +544,22 @@
 		return longitude;
 	}
 
-	/// <summary>
-	/// Identifies the user who is currently logged in
-	/// </summary>
-	/// <returns>User</returns>
-	private User? _currentlyLoggedInUser;
-	public async Task IdentifyLoggedInUser()
-	{
-		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? currentlyLoggedInUser { get; set; }
 
-		var claims = authState.User;
+	// /// <summary>
+	// /// Identifies the user who is currently logged in
+	// /// </summary>
+	// /// <returns>User</returns>
+	// private User? _currentlyLoggedInUser;
+	// public async Task IdentifyLoggedInUser()
+	// {
+	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-		_currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
-	}
+	// 	var claims = authState.User;
+
+	// 	_currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+	// }
 
 
 

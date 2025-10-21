@@ -420,25 +420,28 @@
 
 
 
-	protected override async Task OnParametersSetAsync()
-	{
-		await IdentifyLoggedInUser();
-		base.OnParametersSet();
-	}
+	// protected override async Task OnParametersSetAsync()
+	// {
+	// 	// await IdentifyLoggedInUser();
+	// 	base.OnParametersSet();
+	// }
 
-	/// <summary>
-	/// Identifies the user who is currently logged in
-	/// </summary>
-	/// <returns>User</returns>
-	public User? currentlyLoggedInUser;
-	public async Task IdentifyLoggedInUser()
-	{
-		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? currentlyLoggedInUser { get; set; }
 
-		var claims = authState.User;
+	// /// <summary>
+	// /// Identifies the user who is currently logged in
+	// /// </summary>
+	// /// <returns>User</returns>
+	// public User? currentlyLoggedInUser;
+	// public async Task IdentifyLoggedInUser()
+	// {
+	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
-	}
+	// 	var claims = authState.User;
+
+	// 	currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+	// }
 
 	public Conversation CurrentConversation
 	{

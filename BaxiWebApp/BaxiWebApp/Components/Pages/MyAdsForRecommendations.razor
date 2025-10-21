@@ -124,25 +124,29 @@
 		}
 	}
 
-	public User? user;
-	/// <summary>
-	/// Identifies the user who is currently logged in
-	/// </summary>
-	/// <returns>User</returns>
-	public async Task identifyLoggedInUser()
-	{
-		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-		var claims = authState.User;
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? user { get; set; }
 
-		user = await UserManager.GetUserAsync(claims);
-	}
+	// public User? user;
+	// /// <summary>
+	// /// Identifies the user who is currently logged in
+	// /// </summary>
+	// /// <returns>User</returns>
+	// public async Task identifyLoggedInUser()
+	// {
+	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+	// 	var claims = authState.User;
+
+	// 	user = await UserManager.GetUserAsync(claims);
+	// }
 
 
 	public static List<Ad> AdList = new List<Ad>();
-	protected override async Task OnParametersSetAsync()
+	protected override void OnParametersSet()
 	{
-		await identifyLoggedInUser();
+		// await identifyLoggedInUser();
 		AdList = context.Ads.ToList<Ad>();
 		base.OnParametersSet();
 	}

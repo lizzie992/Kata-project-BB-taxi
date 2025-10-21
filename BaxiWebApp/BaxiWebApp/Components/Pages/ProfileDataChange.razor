@@ -343,30 +343,33 @@
 
 
 
-	public static User? user;
+	// public static User? user;
 	int distanceLimit = Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS / 1000;
 	//coordinates of Baierbrunn
 	public double latitudeBB = 48.0206345131560;
 	public double longitudeBB = 11.482919688669709;
 
-	/// <summary>
-	/// Identifies the user who is currently logged in
-	/// </summary>
-	/// <returns>User</returns>
-	public async Task identifyLoggedInUser()
-	{
-		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+	// /// <summary>
+	// /// Identifies the user who is currently logged in
+	// /// </summary>
+	// /// <returns>User</returns>
+	// public async Task identifyLoggedInUser()
+	// {
+	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-		var claims = authState.User;
+	// 	var claims = authState.User;
 
-		user = await UserManager.GetUserAsync(claims);
-	}
+	// 	user = await UserManager.GetUserAsync(claims);
+	// }
+
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? user { get; set; }
 
 	Timer timerObj = new();
 
-	protected override async Task OnParametersSetAsync()
+	protected override void OnParametersSet()
 	{
-		await identifyLoggedInUser();
+		// await identifyLoggedInUser();
 		timerObj = new Timer(1500);
 		timerObj.Elapsed += onTimer;
 		timerObj.AutoReset = false;

@@ -429,11 +429,11 @@
 	string reasonForDeactivating = "";
 	User? selectedUser;
 
-	protected async override Task OnParametersSetAsync()
-	{
-		await identifyLoggedInUser();
-		base.OnParametersSet();
-	}
+	// protected async override Task OnParametersSetAsync()
+	// {
+	// 	// await identifyLoggedInUser();
+	// 	base.OnParametersSet();
+	// }
 
 	protected override void OnAfterRender(bool firstrender)
 	{
@@ -595,17 +595,20 @@
 		}
 	}
 
-	public User? currentlyLoggedInUser;
-	/// <summary>
-	/// Identifies the user who is currently logged in
-	/// </summary>
-	/// <returns>User</returns>
-	public async Task identifyLoggedInUser()
-	{
-		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-		var claims = authState.User;
-		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
-	}
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? currentlyLoggedInUser { get; set; }
+
+	// public User? currentlyLoggedInUser;
+	// /// <summary>
+	// /// Identifies the user who is currently logged in
+	// /// </summary>
+	// /// <returns>User</returns>
+	// public async Task identifyLoggedInUser()
+	// {
+	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+	// 	var claims = authState.User;
+	// 	currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
+	// }
 
 	/// <summary>
 	/// Finds the role of the selected user (Regular or Admin)
