@@ -149,7 +149,7 @@
 							<PropertyColumn Title=@localizer["Contact"] Property="@(User => User.Contact)">
 							</PropertyColumn>
 							<TemplateColumn Title=@localizer["Make_user_an_admin"] Context="User">
-								@if (User.isActive == true && UserManager.GetRolesAsync(User).Result.First() == "Regular")
+								@if (User.isActive == true && !isUserAdmin(User))
 								{
 									<button @onclick="() => showPopUpForMakeUserAdmin(User)">@localizer["Give_this_user_admin_rights"]</button>
 								}
@@ -219,7 +219,7 @@
 									<th style="text-align: right">@user.Contact</th>
 								</tr>
 							</table>
-							@if (user.isActive == true && UserManager.GetRolesAsync(user).Result.First() == "Regular")
+							@if (user.isActive == true && !isUserAdmin(user))
 							{
 								<button @onclick="() => showPopUpForMakeUserAdmin(user)">@localizer["Give_this_user_admin_rights"]</button>
 							}
@@ -415,6 +415,17 @@
 		});
 	}
 
+	public bool isUserAdmin(User user)
+	{
+		using var context = DbContextFactory.CreateDbContext();
+		IList<string> list = Task.Run(() => UserManager.GetRolesAsync(user)).Result;
+		if (list.Contains("Admin"))
+		{
+			return true;
+		}
+		return false;
+	}
+
 
 	BB.UserType _userType = UserType.SelectAll;
 	string _searchEmail = "";
@@ -592,7 +603,7 @@
 	/// <param name="user">User</param>
 	public void makeUserAdmin(User? user)
 	{
-		if (user is not null && UserManager.GetRolesAsync(user).Result.First() == "Regular")
+		if (user is not null && isUserAdmin(user))
 		{
 			using var context = DbContextFactory.CreateDbContext();
 			UserManager.RemoveFromRoleAsync(user, "Regular");
@@ -625,7 +636,7 @@
 	/// <returns>Regular or Admin</returns>
 	public string getRole(User user)
 	{
-		var list = UserManager.GetRolesAsync(user).Result;
+		var list = Task.Run(() => UserManager.GetRolesAsync(user)).Result;
 		return list.First();
 	}
 

@@ -332,7 +332,7 @@
 		using var context = DbContextFactory.CreateDbContext();
 		foreach (User u in context.Users.ToList<User>())
 		{
-			if (UserManager.GetRolesAsync(u).Result.First() == "Admin")
+			if (isUserAdmin())
 			{
 				if (u.Email is not null && ad is not null)
 				{
@@ -347,6 +347,17 @@
 		closePopUpForReportAd();
 	}
 
+
+	public bool isUserAdmin()
+	{
+		using var context = DbContextFactory.CreateDbContext();
+		IList<string> list = Task.Run(() => UserManager.GetRolesAsync(currentlyLoggedInUser)).Result;
+		if (list.Contains("Admin"))
+		{
+			return true;
+		}
+		return false;
+	}
 
 	Ad? selectedAd;
 

@@ -538,7 +538,7 @@
 			string output = message.ToString();
 			foreach (User u in context.Users.ToList<User>())
 			{
-				if (UserManager.GetRolesAsync(u).Result.First() == "Admin" && u.Email is not null && currentlyLoggedInUser is not null)
+				if (isUserAdmin() && u.Email is not null && currentlyLoggedInUser is not null)
 				{
 					string emailAddress = u.Email.ToString();
 					string subject = localizer["A_conversation_was_just_reported_to_you"];
@@ -550,6 +550,18 @@
 			closePopUpForReportConversation();
 		}
 	}
+
+	public bool isUserAdmin()
+	{
+		using var context = DbContextFactory.CreateDbContext();
+		IList<string> list = Task.Run(() => UserManager.GetRolesAsync(currentlyLoggedInUser)).Result;
+		if (list.Contains("Admin"))
+		{
+			return true;
+		}
+		return false;
+	}
+
 
 	/// <summary>
 	/// Find the Ad which the given conversation belongs to in the database
