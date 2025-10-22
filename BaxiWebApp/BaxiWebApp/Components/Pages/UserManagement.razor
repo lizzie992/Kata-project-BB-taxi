@@ -678,7 +678,15 @@
 	public async void showPopUpForWarning(User user)
 	{
 		selectedUser = user;
-		await JSRuntime.InvokeVoidAsync("blazorModal.show", "warningModal");
+		try
+		{
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "warningModal");
+		}
+		catch (ArgumentException e)
+		{
+			Console.WriteLine($"Modal failed to display: {e.Message}");
+		}
+		
 		popUpForWarning = true;
 	}
 
@@ -700,7 +708,15 @@
 	public async void showPopUpForMakeUserAdmin(User user)
 	{
 		selectedUser = user;
-		await JSRuntime.InvokeVoidAsync("blazorModal.show", "adminRightsModal");
+		try
+		{
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "adminRightsModal");
+		}
+		catch (ArgumentException e)
+		{
+			Console.WriteLine($"Modal failed to display: {e.Message}");
+		}
+		
 		popUpForMakeUserAdmin = true;
 	}
 
@@ -722,7 +738,14 @@
 	public async void showPopUpForDeactivatingUser(User user)
 	{
 		selectedUser = user;
-		await JSRuntime.InvokeVoidAsync("blazorModal.show", "deactivatingModal");
+		try
+		{
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "deactivatingModal");
+		}
+		catch (ArgumentException e)
+		{
+			Console.WriteLine($"Modal failed to display: {e.Message}");
+		}
 		popUpForDeactivatingUser = true;
 	}
 
@@ -742,7 +765,15 @@
 	public async void showPopUpForReactivatingUser(User user)
 	{
 		selectedUser = user;
-		await JSRuntime.InvokeVoidAsync("blazorModal.show", "reactivatingModal");
+		try
+		{
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "reactivatingModal");
+		}
+		catch (ArgumentException e)
+		{
+			Console.WriteLine($"Modal failed to display: {e.Message}");
+		}
+		
 		popUpForReactivatingUser = true;
 	}
 }

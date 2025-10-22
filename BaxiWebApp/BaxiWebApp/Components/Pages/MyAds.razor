@@ -245,7 +245,14 @@
 	public async void showPopUpForDeletingAd(Ad ad)
 	{
 		selectedAd = ad;
-		await JSRuntime.InvokeVoidAsync("blazorModal.show", "deleteAdModal");
+		try
+		{
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "deleteAdModal");
+		}
+		catch (ArgumentException e)
+		{
+			Console.WriteLine($"Modal failed to display: {e.Message}");
+		}
 		popUpForDeletingAd = true;
 	}
 

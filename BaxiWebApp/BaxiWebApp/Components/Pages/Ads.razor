@@ -348,7 +348,16 @@
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
 		}
-		await JSRuntime.InvokeVoidAsync("initMapForAdList", adListForMap, localizer["Beautiful_baierbrunn"].ToString(), localizer["ToBaierbrunn"].ToString(), localizer["FromBaierbrunn"].ToString(), localizer["No_default_type"].ToString(), localizer["Driver"].ToString(), localizer["Passenger"].ToString(), localizer["Show_me_the_ad"].ToString(), localizer["Direction"].ToString(), localizer["Ad_type"].ToString(), localizer["Pick_up_date_and_time"].ToString(), localizer["From/to_this_address"].ToString(), localizer["Number_of_seats"].ToString(), localizer["Show_me_the_ad"].ToString());
+
+		try
+		{
+			await JSRuntime.InvokeVoidAsync("initMapForAdList", adListForMap, localizer["Beautiful_baierbrunn"].ToString(), localizer["ToBaierbrunn"].ToString(), localizer["FromBaierbrunn"].ToString(), localizer["No_default_type"].ToString(), localizer["Driver"].ToString(), localizer["Passenger"].ToString(), localizer["Show_me_the_ad"].ToString(), localizer["Direction"].ToString(), localizer["Ad_type"].ToString(), localizer["Pick_up_date_and_time"].ToString(), localizer["From/to_this_address"].ToString(), localizer["Number_of_seats"].ToString(), localizer["Show_me_the_ad"].ToString());
+
+		}
+		catch (ArgumentException e)
+		{
+			Console.WriteLine($"Map failed to display: {e.Message}");
+		}
 	}
 
 
@@ -414,7 +423,14 @@
 			{
 				selectedAd = ad;
 				// showPopUpForNewConversation(ad);
-				await JSRuntime.InvokeVoidAsync("blazorModal.show", "conversationModal");
+				try
+				{
+					await JSRuntime.InvokeVoidAsync("blazorModal.show", "conversationModal");
+				}
+				catch (ArgumentException e)
+				{
+					Console.WriteLine($"Modal failed to display: {e.Message}");
+				}
 			}
 			else
 			{
@@ -425,7 +441,16 @@
 		{
 			selectedAd = ad;
 			// showPopUpForNewConversation(ad);
-			await JSRuntime.InvokeVoidAsync("blazorModal.show", "conversationModal");
+
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "conversationModal");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Modal failed to display: {e.Message}");
+			}
+			
 		}
 	}
 
@@ -512,7 +537,14 @@
 	public async void showPopUpForDeletingAd(Ad ad)
 	{
 		selectedAd = ad;
-		await JSRuntime.InvokeVoidAsync("blazorModal.show", "deleteAdModal");
+		try
+		{
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "deleteAdModal");
+		}
+		catch (ArgumentException e)
+		{
+			Console.WriteLine($"Modal failed to display: {e.Message}");
+		}
 		popUpForDeletingAd = true;
 	}
 

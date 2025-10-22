@@ -375,7 +375,15 @@
 	public async void showPopUpForReportAd(Ad ad)
 	{
 		selectedAd = ad;
-		await JSRuntime.InvokeVoidAsync("blazorModal.show", "reportAdModal");
+		try
+		{
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "reportAdModal");
+		}
+		catch (ArgumentException e)
+		{
+			Console.WriteLine($"Modal failed to display: {e.Message}");
+		}
+		
 		popUpForReportAd = true;
 	}
 
@@ -396,7 +404,15 @@
 	public async void showPopUpForNewConversation(Ad ad)
 	{
 		selectedAd = ad;
-		await JSRuntime.InvokeVoidAsync("blazorModal.show", "conversationModal");
+		try
+		{
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "conversationModal");
+		}
+		catch (ArgumentException e)
+		{
+			Console.WriteLine($"Modal failed to display: {e.Message}");
+		}
+		
 		popUpForNewConversation = true;
 	}
 

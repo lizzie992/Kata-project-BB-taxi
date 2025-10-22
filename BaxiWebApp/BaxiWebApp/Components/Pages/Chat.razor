@@ -383,8 +383,15 @@
 		}
 		if (CurrentConversation is not null)
 		{
-			await JSRuntime.InvokeVoidAsync("scrollToBottom");
-			await JSRuntime.InvokeVoidAsync("scrollToBottomPhone");
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("scrollToBottom");
+				await JSRuntime.InvokeVoidAsync("scrollToBottomPhone");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Conversation cannot be scrolled to bottom for reason: {e.Message}");
+			}
 		}
 	}
 

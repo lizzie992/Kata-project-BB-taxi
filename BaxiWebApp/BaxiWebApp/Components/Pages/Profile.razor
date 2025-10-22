@@ -231,7 +231,15 @@
 	/// </summary>
 	public async void showPopUpForDeletingUser(User user)
 	{
-		await JSRuntime.InvokeVoidAsync("blazorModal.show", "deleteUserModal");
+		try
+		{
+			await JSRuntime.InvokeVoidAsync("blazorModal.show", "deleteUserModal");
+		}
+		catch (ArgumentException e)
+		{
+			Console.WriteLine($"Modal failed to display: {e.Message}");
+		}
+		
 	}
 
 	/// <summary>

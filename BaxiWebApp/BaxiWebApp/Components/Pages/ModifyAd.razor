@@ -457,7 +457,15 @@
 			{
 				StateHasChanged();
 			});
-				await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad?.Latitude, ad?.Longitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
+				try
+				{
+					await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad?.Latitude, ad?.Longitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
+
+				}
+				catch (ArgumentException e)
+				{
+					Console.WriteLine($"Map failed to display: {e.Message}");
+				}
 			}
 		}
 	}
@@ -497,7 +505,15 @@
 		{
 			showMap = false;
 			// ShowPopUpForInvalidRoute();
-			await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectRouteModal");
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectRouteModal");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Modal failed to display: {e.Message}");
+			}
+			
 			await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -507,7 +523,15 @@
 		{
 			showMap = false;
 			// ShowPopUpForWrongCoordinates();
-			await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectAddressModal");
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectAddressModal");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Modal failed to display: {e.Message}");
+			}
+			
 			await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -517,7 +541,15 @@
 		{
 			showMap = false;
 			// ShowPopUpForTooClose();
-			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooCloseModal");
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooCloseModal");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Modal failed to display: {e.Message}");
+			}
+			
 			await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -527,7 +559,16 @@
 		{
 			showMap = false;
 			// ShowPopUpForTooFar();
-			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooFarModal");
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooFarModal");
+
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Modal failed to display: {e.Message}");
+			}
+
 			await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -540,7 +581,15 @@
 			{
 				StateHasChanged();
 			});
-			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad.Latitude, ad.Longitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad.Latitude, ad.Longitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
+
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Map failed to display: {e.Message}");
+			}
 		}
 	}
 
@@ -582,37 +631,85 @@
 		if (ad.PickUpDateAndTime <= DateTime.Now)
 		{
 			// ShowPopUpForTimeIsInPast();
-			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooLateModal");
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooLateModal");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Modal failed to display: {e.Message}");
+			}
+			
 			StateHasChanged();
 		}
 		else if (distance == Constants.NULL_COORDINATES)
 		{
 			// ShowPopUpForWrongCoordinates();
-			await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectAddressModal");
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectAddressModal");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Modal failed to display: {e.Message}");
+			}
+			
 			StateHasChanged();
 		}
 		else if (distance == Constants.INVALID_ROUTE)
 		{
 			// ShowPopUpForInvalidRoute();
-			await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectRouteModal");
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectRouteModal");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Modal failed to display: {e.Message}");
+			}
+			
 			StateHasChanged();
 		}
 		else if (DataService.IsItTooCloseToBB(distance))
 		{
 			// ShowPopUpForTooClose();
-			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooCloseModal");
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooCloseModal");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Modal failed to display: {e.Message}");
+			}
+			
 			StateHasChanged();
 		}
 		else if (DataService.IsItTooFarFromBB(distance))
 		{
 			// ShowPopUpForTooFar();
-			await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooFarModal");
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "tooFarModal");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Modal failed to display: {e.Message}");
+			}
+			
 			StateHasChanged();
 		}
 		else if (ad.AdType == AdType.SelectAll)
 		{
 			// ShowPopUpForInvalidAdType();
-			await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectAdTypeModal");
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectAdTypeModal");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Modal failed to display: {e.Message}");
+			}
+			
 			StateHasChanged();
 		}
 		else

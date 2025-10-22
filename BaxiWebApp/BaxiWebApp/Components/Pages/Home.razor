@@ -181,8 +181,8 @@
 	protected override async Task OnParametersSetAsync()
 	{
 		@* await identifyLoggedInUser(); *@
-		recommendedAds = await getRecommendedAds();
-		showPopUpRecommendedAds = true;
+		@* recommendedAds = await getRecommendedAds();
+		showPopUpRecommendedAds = true; *@
 		base.OnParametersSet();
 	}
 
@@ -191,10 +191,19 @@
 		if (firstrender)
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
-			@* if (currentlyLoggedInUser != null && recommendedAds is not null)
+			recommendedAds = await getRecommendedAds();
+			showPopUpRecommendedAds = true;
+			if (currentlyLoggedInUser != null && recommendedAds.Count > 0)
 			{
-				await JSRuntime.InvokeVoidAsync("blazorModal.show", "myModal");
-			} *@
+				try
+				{
+					await JSRuntime.InvokeVoidAsync("blazorModal.show", "myModal");
+				}
+				catch (ArgumentException e)
+				{
+					Console.WriteLine($"Modal failed to display: {e.Message}");
+				}
+			}
 		}
 	}
 
