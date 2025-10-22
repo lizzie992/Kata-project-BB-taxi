@@ -21,6 +21,10 @@
 @inject Data.BaxiWebAppContext context;
 @inject IJSRuntime JSRuntime
 @inherits LayoutComponentBase
+@using BaxiWebApp.Data
+@inject IDbContextFactory<BaxiWebAppContext> DbContextFactory
+
+
 
 <body>
 	<PageTitle>@localizer["Homepage"]</PageTitle>
@@ -230,6 +234,7 @@
 	{
 		if (currentlyLoggedInUser is not null)
 		{
+			using var context = DbContextFactory.CreateDbContext();
 			var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsQueryable();
 			result = result.Where(Ad => Ad.AdOwner == currentlyLoggedInUser);
 			List<Ad> recommendedAds = new List<Ad>();

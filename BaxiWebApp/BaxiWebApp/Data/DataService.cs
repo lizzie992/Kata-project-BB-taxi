@@ -51,12 +51,12 @@ namespace BaxiWebApp.Data
                 CultureChanged?.Invoke(this, CultureInfo.CurrentUICulture);
                 if (user is not null)
                 {
-                    using (var context = _dbcFactory.CreateDbContext())
-                    {
-                        context.Update(user);
-                        user.Culture = selectedCulture.ToString();
-                        context.SaveChanges();
-                    }
+                    using var context = _dbcFactory.CreateDbContext();
+
+                    context.Update(user);
+                    user.Culture = selectedCulture.ToString();
+                    context.SaveChanges();
+
                 }
             }
         }
@@ -329,39 +329,39 @@ namespace BaxiWebApp.Data
         /// <returns>bool</returns>
         public async Task CheckAdsForNotification(Ad? newAd) //newAd is the ad that was just added, the oldAd is the ad that already existed - both will be subject of notifications, so if there is a match, both adowners will be notified
         {
-            using (var context = _dbcFactory.CreateDbContext())
+            using var context = _dbcFactory.CreateDbContext();
+
+            var adList = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
+
+            //TO Baierbrunn, passenger looking for drivers
+            if (newAd?.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Passenger)
             {
-                var adList = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
-
-                //TO Baierbrunn, passenger looking for drivers
-                if (newAd?.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Passenger)
-                {
-                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
-                    await CheckDistanceAndSendNotification(newAd, adList.ToList());
-                }
-
-                //TO Baierbrunn, driver looking for passengers
-                if (newAd?.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Driver)
-                {
-                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
-                    await CheckDistanceAndSendNotification(newAd, adList.ToList());
-                }
-
-
-                //FROM Baierbrunn, passenger looking for drivers
-                if (newAd?.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Passenger)
-                {
-                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
-                    await CheckDistanceAndSendNotification(newAd, adList.ToList());
-                }
-
-                //FROM Baierbrunn, driver looking for passengers
-                if (newAd?.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Driver)
-                {
-                    adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
-                    await CheckDistanceAndSendNotification(newAd, adList.ToList());
-                }
+                adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
+                await CheckDistanceAndSendNotification(newAd, adList.ToList());
             }
+
+            //TO Baierbrunn, driver looking for passengers
+            if (newAd?.AdDirection == AdDirection.ToBaierbrunn && newAd.AdType == AdType.Driver)
+            {
+                adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
+                await CheckDistanceAndSendNotification(newAd, adList.ToList());
+            }
+
+
+            //FROM Baierbrunn, passenger looking for drivers
+            if (newAd?.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Passenger)
+            {
+                adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
+                await CheckDistanceAndSendNotification(newAd, adList.ToList());
+            }
+
+            //FROM Baierbrunn, driver looking for passengers
+            if (newAd?.AdDirection == AdDirection.FromBaierbrunn && newAd.AdType == AdType.Driver)
+            {
+                adList = adList.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= newAd.NumberOfSeats && Math.Abs((int)Math.Round((oldAd.PickUpDateAndTime - newAd.PickUpDateAndTime).TotalHours)) <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE);
+                await CheckDistanceAndSendNotification(newAd, adList.ToList());
+            }
+
         }
 
         /// <summary>
@@ -406,56 +406,54 @@ namespace BaxiWebApp.Data
         /// <returns>List of ads</returns>
         public async Task<List<Ad>> collectRecommendedAds(Ad? ad, User? currentlyLoggedInUser)
         {
-            using (var context = _dbcFactory.CreateDbContext())
+            using var context = _dbcFactory.CreateDbContext();
+
+            List<Ad> adList = new List<Ad>();
+            var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
+            result = result.Where(oldAd => oldAd.PickUpDateAndTime >= DateTime.Now && oldAd.AdOwner != currentlyLoggedInUser);
+
+            //TO Baierbrunn, passenger looking for drivers
+            if (ad?.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Passenger)
             {
+                result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= ad.NumberOfSeats);
+            }
+            //TO Baierbrunn, driver looking for passengers
+            if (ad?.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Driver)
+            {
+                result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= ad.NumberOfSeats);
+            }
+            //FROM Baierbrunn, passenger looking for drivers
+            if (ad?.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Passenger)
+            {
+                result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= ad.NumberOfSeats);
+            }
+            //FROM Baierbrunn, driver looking for passengers
+            if (ad?.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Driver)
+            {
+                result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= ad.NumberOfSeats);
+            }
 
-
-                List<Ad> adList = new List<Ad>();
-                var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
-                result = result.Where(oldAd => oldAd.PickUpDateAndTime >= DateTime.Now && oldAd.AdOwner != currentlyLoggedInUser);
-
-                //TO Baierbrunn, passenger looking for drivers
-                if (ad?.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Passenger)
+            foreach (var v in result)
+            {
+                if (v == ad)
                 {
-                    result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= ad.NumberOfSeats);
+                    continue;
                 }
-                //TO Baierbrunn, driver looking for passengers
-                if (ad?.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Driver)
+                if (ad is not null)
                 {
-                    result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= ad.NumberOfSeats);
-                }
-                //FROM Baierbrunn, passenger looking for drivers
-                if (ad?.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Passenger)
-                {
-                    result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= ad.NumberOfSeats);
-                }
-                //FROM Baierbrunn, driver looking for passengers
-                if (ad?.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Driver)
-                {
-                    result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= ad.NumberOfSeats);
-                }
-
-                foreach (var v in result)
-                {
-                    if (v == ad)
+                    int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpDateAndTime).TotalHours));
+                    if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
                     {
-                        continue;
-                    }
-                    if (ad is not null)
-                    {
-                        int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpDateAndTime).TotalHours));
-                        if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                        if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
                         {
-                            if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
-                            {
-                                adList.Add(v);
-                            }
+                            adList.Add(v);
                         }
                     }
-
                 }
-                return adList;
+
             }
+            return adList;
+
 
         }
 
@@ -468,13 +466,13 @@ namespace BaxiWebApp.Data
         /// <returns>List of Conversations</returns>
         public List<Conversation> findPreviousConvo(Ad ad, User? currentlyLoggedInUser)
         {
-            using (var context = _dbcFactory.CreateDbContext())
-            {
-                //check current ad if matching conversation exists:
-                var previousConversations = ad.adConversations.AsQueryable();
-                previousConversations = previousConversations.Where(Conversation => Conversation.contactingUser == currentlyLoggedInUser);
-                return previousConversations.ToList();
-            }
+            using var context = _dbcFactory.CreateDbContext();
+
+            //check current ad if matching conversation exists:
+            var previousConversations = ad.adConversations.AsQueryable();
+            previousConversations = previousConversations.Where(Conversation => Conversation.contactingUser == currentlyLoggedInUser);
+            return previousConversations.ToList();
+
         }
 
 
@@ -487,21 +485,21 @@ namespace BaxiWebApp.Data
         /// <returns>Conversation</returns>
         public Conversation createConvo(Ad ad, User currentlyLoggedInUser, string message)
         {
-            using (var context = _dbcFactory.CreateDbContext())
-            {
-                context.Attach(ad);
-                context.Attach(ad.AdOwner);
-                context.Attach(currentlyLoggedInUser);
-                Conversation conversation = new Conversation();
-                conversation.adOwnerUser = ad.AdOwner;
-                conversation.contactingUser = currentlyLoggedInUser;
-                conversation.messages = new List<Message>();
-                ad.adConversations.Add(conversation);
-                context.SaveChanges();
-                User? fromUser = getOtherUser(conversation, currentlyLoggedInUser);
-                SendChatMessage(conversation, currentlyLoggedInUser, message, conversation.ID);
-                return conversation;
-            }
+            using var context = _dbcFactory.CreateDbContext();
+
+            context.Attach(ad);
+            context.Attach(ad.AdOwner);
+            context.Attach(currentlyLoggedInUser);
+            Conversation conversation = new Conversation();
+            conversation.adOwnerUser = ad.AdOwner;
+            conversation.contactingUser = currentlyLoggedInUser;
+            conversation.messages = new List<Message>();
+            ad.adConversations.Add(conversation);
+            context.SaveChanges();
+            User? fromUser = getOtherUser(conversation, currentlyLoggedInUser);
+            SendChatMessage(conversation, currentlyLoggedInUser, message, conversation.ID);
+            return conversation;
+
         }
 
         /// <summary>
@@ -535,29 +533,28 @@ namespace BaxiWebApp.Data
         /// <param name="ID">ID of the conversation</param>
         public void SendChatMessage(Conversation C, User currentlyLoggedInUser, string TextMessage, int ID)
         {
-            using (var context = _dbcFactory.CreateDbContext())
+            using var context = _dbcFactory.CreateDbContext();
+            Conversation? CurrentConversation = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).FirstOrDefault(conversation => conversation.ID == ID);
+            Message message = new Message();
+            message.fromUser = context.Users.Find(currentlyLoggedInUser.Id);
+            if (currentlyLoggedInUser.Id == CurrentConversation.contactingUser.Id)
             {
-                Conversation? CurrentConversation = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).FirstOrDefault(conversation => conversation.ID == ID);
-                Message message = new Message();
-                message.fromUser = context.Users.Find(currentlyLoggedInUser.Id);
-                if (currentlyLoggedInUser.Id == CurrentConversation.contactingUser.Id)
-                {
-                    message.toUser = CurrentConversation.adOwnerUser;
-                }
-                else if (currentlyLoggedInUser.Id == CurrentConversation.adOwnerUser.Id)
-                {
-                    message.toUser = CurrentConversation.contactingUser;
-                }
-                message.messageText = TextMessage;
-                message.timeStamp = DateTime.Now;
-                CurrentConversation.messages.Add(message);
-                context.SaveChanges();
-                string emailMessage = _localizer["You_just_received_a_new_message_from_{0}_Go_and_check_it_out_http_localhost_5049_Chat_{1}", showUserNameWithStatus(message.fromUser), CurrentConversation.ID];
-                string emailAddress = message.toUser.Email.ToString();
-                string subject = _localizer["You_received_a_new_message"];
-                sendEmail(emailAddress, subject, emailMessage);
-                ChatChanged?.Invoke(this, CurrentConversation.ID);
+                message.toUser = CurrentConversation.adOwnerUser;
             }
+            else if (currentlyLoggedInUser.Id == CurrentConversation.adOwnerUser.Id)
+            {
+                message.toUser = CurrentConversation.contactingUser;
+            }
+            message.messageText = TextMessage;
+            message.timeStamp = DateTime.Now;
+            CurrentConversation.messages.Add(message);
+            context.SaveChanges();
+            string emailMessage = _localizer["You_just_received_a_new_message_from_{0}_Go_and_check_it_out_http_localhost_5049_Chat_{1}", showUserNameWithStatus(message.fromUser), CurrentConversation.ID];
+            string emailAddress = message.toUser.Email.ToString();
+            string subject = _localizer["You_received_a_new_message"];
+            sendEmail(emailAddress, subject, emailMessage);
+            ChatChanged?.Invoke(this, CurrentConversation.ID);
+
 
         }
 
@@ -573,11 +570,10 @@ namespace BaxiWebApp.Data
         /// <returns>Conversation object</returns>
         public Conversation? GetCurrentConversation(int ID)
         {
-            using (var context = _dbcFactory.CreateDbContext())
-            {
-                var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).FirstOrDefault(conversation => conversation.ID == ID);
-                return result;
-            }
+            using var context = _dbcFactory.CreateDbContext();
+
+            var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).FirstOrDefault(conversation => conversation.ID == ID);
+            return result;
         }
 
 
@@ -587,16 +583,16 @@ namespace BaxiWebApp.Data
         /// <param name="C">Conversation object</param>
         public void DeleteConversation(Conversation C)
         {
-            using (var context = _dbcFactory.CreateDbContext())
-            {
-                //first delete the messages that have the ID of this current conversation as long as the current conversation exists
-                IEnumerable<Message> messagesToDelete = context.Messages.ToList<Message>().AsEnumerable();
-                messagesToDelete = messagesToDelete.Where(m => m.ConversationID == C.ID);
-                context.Messages.RemoveRange(messagesToDelete);
-                //once the messages are removed I can delete the conversation
-                context.Conversations.Remove(C);
-                context.SaveChanges();
-            }
+            using var context = _dbcFactory.CreateDbContext();
+
+            //first delete the messages that have the ID of this current conversation as long as the current conversation exists
+            IEnumerable<Message> messagesToDelete = context.Messages.ToList<Message>().AsEnumerable();
+            messagesToDelete = messagesToDelete.Where(m => m.ConversationID == C.ID);
+            context.Messages.RemoveRange(messagesToDelete);
+            //once the messages are removed I can delete the conversation
+            context.Conversations.Remove(C);
+            context.SaveChanges();
+
         }
 
         /// <summary>
@@ -657,21 +653,21 @@ namespace BaxiWebApp.Data
         {
             if (user is not null)
             {
-                using (var context = _dbcFactory.CreateDbContext())
-                {
-                    user.isDeleted = true;
-                    user.isActive = false;
-                    user.FirstName = "Deleted user";
-                    user.LastName = "Deleted user";
-                    user.Contact = "Deleted user";
-                    user.Department = Department.SelectAll;
-                    user.PreferredLanguage = PreferredLanguage.SelectAll;
-                    user.Rating = 0;
-                    user.NumberOfWarnings = 0;
-                    user.LockoutEnd = DateTime.MaxValue;
-                    context.Update(user);
-                    context.SaveChanges();
-                }
+                using var context = _dbcFactory.CreateDbContext();
+
+                user.isDeleted = true;
+                user.isActive = false;
+                user.FirstName = "Deleted user";
+                user.LastName = "Deleted user";
+                user.Contact = "Deleted user";
+                user.Department = Department.SelectAll;
+                user.PreferredLanguage = PreferredLanguage.SelectAll;
+                user.Rating = 0;
+                user.NumberOfWarnings = 0;
+                user.LockoutEnd = DateTime.MaxValue;
+                context.Update(user);
+                context.SaveChanges();
+
             }
         }
 
@@ -682,17 +678,17 @@ namespace BaxiWebApp.Data
         /// <returns>bool</returns>
         public bool isUserDeleted(string emailAddress)
         {
-            using (var context = _dbcFactory.CreateDbContext())
+            using var context = _dbcFactory.CreateDbContext();
+
+            foreach (User u in context.Users.ToList<User>())
             {
-                foreach (User u in context.Users.ToList<User>())
+                if (u.Email == emailAddress && u.isDeleted == true)
                 {
-                    if (u.Email == emailAddress && u.isDeleted == true)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-                return false;
             }
+            return false;
+
         }
 
 

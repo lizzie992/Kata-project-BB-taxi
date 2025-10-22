@@ -29,6 +29,9 @@
 @using Pages.Res;
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Resources> localizer
+@using BaxiWebApp.Data
+@inject IDbContextFactory<BaxiWebAppContext> DbContextFactory
+
 
 
 <PageTitle>@localizer["Create_a_new_ad"]</PageTitle>
@@ -521,7 +524,7 @@
 			{
 				StateHasChanged();
 			});
-			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", currentlyLoggedInUser?.DefaultLatitude, currentlyLoggedInUser?.DefaultLongitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"], localizer["Pin_dropped_at"]);
+			await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad.Latitude, ad.Longitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
 		}
 	}
 
@@ -726,6 +729,7 @@
 	/// <returns>bool</returns>
 	async Task WriteData()
 	{
+		using var context = DbContextFactory.CreateDbContext();
 		context.Ads.Add(ad);
 		if (ad.SpecificRequests is null || ad.SpecificRequests == "")
 		{

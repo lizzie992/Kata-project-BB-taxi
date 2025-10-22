@@ -1,6 +1,7 @@
 ﻿@page "/ModifyAd/{ID:int}"
 
 @using BB
+@using BaxiWebApp.Data
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @inject Data.BaxiWebAppContext context;
@@ -15,6 +16,9 @@
 @inject IJSRuntime JSRuntime
 @inject Data.DataService DataService
 @using System.Timers
+@inject Data.DataService DataService
+@inject IDbContextFactory<BaxiWebAppContext> DbContextFactory
+@using Microsoft.EntityFrameworkCore;
 
 <PageTitle>@localizer["Modify_ad"]</PageTitle>
 
@@ -371,6 +375,7 @@
 	{
 		get
 		{
+			using var context = DbContextFactory.CreateDbContext();
 			var result = context.Ads.FirstOrDefault(Ad => Ad.ID == ID);
 			return result;
 		}
@@ -406,6 +411,7 @@
 	/// <returns></returns>
 	async Task WriteData()
 	{
+		using var context = DbContextFactory.CreateDbContext();
 		context.SaveChanges();
 		await DataService.CheckAdsForNotification(ad);
 		NavigationManager.NavigateTo("MyAds");

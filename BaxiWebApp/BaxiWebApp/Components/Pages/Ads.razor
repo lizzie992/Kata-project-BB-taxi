@@ -16,6 +16,8 @@
 @using Pages.Res;
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Resources> localizer
+@using BaxiWebApp.Data
+@inject IDbContextFactory<BaxiWebAppContext> DbContextFactory
 
 <PageTitle>@localizer["All_ads"]</PageTitle>
 
@@ -25,6 +27,10 @@
 			@if (currentlyLoggedInUser?.isActive == false)
 			{
 				<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
+			}
+			else if (adList.Count == 0)
+			{
+				<p style="text-align:center; font-size:150%;">No ads yet</p>
 			}
 			else
 			{
@@ -266,7 +272,7 @@
 
 @code {
 
-	public static List<Ad> AdList = new List<Ad>();
+	// public static List<Ad> AdList = new List<Ad>();
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
@@ -280,10 +286,13 @@
 	}
 
 
+
 	public List<Ad> adListForMap
 	{
 		get
 		{
+			using var context = DbContextFactory.CreateDbContext();
+
 			var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
 
 			result = result.Where(Ad =>
@@ -308,10 +317,14 @@
 
 	DateTime currentTime = DateTime.Now.AddMinutes(-30);
 
+	List<Ad> adList = new List<Ad>();
+
 	protected override void OnParametersSet()
 	{
-		AdList = context.Ads.ToList<Ad>();
-		// await identifyLoggedInUser();
+		using (var context = DbContextFactory.CreateDbContext())
+		{
+			adList = context.Ads.ToList<Ad>();
+		}
 		base.OnParametersSet();
 	}
 
@@ -340,6 +353,7 @@
 	DateTime _datetime2 = DateTime.Now.AddDays(90);
 
 
+	
 
 
 	QuickGrid<Ad>? grid;
@@ -348,6 +362,8 @@
 	{
 		get
 		{
+			using var context = DbContextFactory.CreateDbContext();
+
 			var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
 
 			result = result.Where(Ad =>
@@ -454,6 +470,7 @@
 	/// <param name="reasonForDeleting">string</param>
 	public void deleteAd(Ad ad, string reasonForDeleting)
 	{
+		using var context = DbContextFactory.CreateDbContext();
 		if (ad.AdOwner.Email is not null)
 		{
 			string text = localizer["Dear_{0}_your_ad_has_been_removed_by_the_admins_for_reasons_{1}_ad_ad_type_{2}_ad_direction_{3}_address_{4}_on_{5}_available_seats_{6}_any_specific_requests_{7}", DataService.showUserNameWithStatus(ad.AdOwner), reasonForDeleting, localizer[@ad.AdType.ToString()], localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats, ad.SpecificRequests];

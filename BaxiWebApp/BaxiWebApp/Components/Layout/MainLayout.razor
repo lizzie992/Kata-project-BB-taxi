@@ -11,7 +11,9 @@
 @inject AuthenticationStateProvider AuthStateProvider;
 @inject SignInManager<User> signInManger;
 @inject UserManager<User> UserManager;
-
+@inject Data.BaxiWebAppContext context;
+@using Microsoft.EntityFrameworkCore
+@using System.Text.Json
 
 <CascadingValue Name="currentlyLoggedInUser" Value=@currentlyLoggedInUser>
 	<div class="page">
@@ -41,7 +43,6 @@
 		<a href="" class="reload">Reload</a>
 		<a class="dismiss">🗙</a>
 	</div>
-
 </CascadingValue>
 
 
@@ -52,6 +53,8 @@
 		await identifyLoggedInUser();
 		base.OnParametersSet();
 	}
+
+
 
 	protected override async Task OnInitializedAsync()
 	{

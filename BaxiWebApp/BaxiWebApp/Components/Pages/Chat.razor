@@ -22,6 +22,9 @@
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Resources> localizer
 @inject IJSRuntime JSRuntime;
+@using BaxiWebApp.Data
+@inject IDbContextFactory<BaxiWebAppContext> DbContextFactory
+
 
 
 <PageTitle>@localizer["Chat"]</PageTitle>
@@ -447,6 +450,7 @@
 	{
 		get
 		{
+			using var context = DbContextFactory.CreateDbContext();
 			var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).FirstOrDefault(conversation => conversation.ID == ID);
 			if (result is null)
 			{
@@ -464,6 +468,7 @@
 	{
 		get
 		{
+			using var context = DbContextFactory.CreateDbContext();
 			List<Conversation> result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).ToList();
 			result = result
 		.Where(c => c.adOwnerUser.Id == currentlyLoggedInUser?.Id || c.contactingUser.Id == currentlyLoggedInUser?.Id)
@@ -515,6 +520,7 @@
 	{
 		if (C is not null)
 		{
+			using var context = DbContextFactory.CreateDbContext();
 			IEnumerable<Message> messagesToReport = context.Messages.Include(m => m.fromUser).Include(m => m.toUser).ToList<Message>().AsEnumerable();
 			messagesToReport = messagesToReport.Where(m => m.ConversationID == C.ID).OrderBy(c => c.timeStamp);
 			StringBuilder message = new StringBuilder();
@@ -552,6 +558,7 @@
 	/// <returns>Ad object</returns>
 	public Ad? GetAd(Conversation C)
 	{
+		using var context = DbContextFactory.CreateDbContext();
 		Ad? ad = null;
 		List<Ad> adlist = context.Ads.ToList();
 		foreach (Ad a in adlist)

@@ -22,7 +22,10 @@
 @inject IStringLocalizer<Resources> localizer
 @inject Data.DataService DataService
 @using Pages.Res;
-@inject Data.BaxiWebAppContext context;
+@inject Data.BaxiWebAppContext context
+@using BaxiWebApp.Data
+@inject IDbContextFactory<BaxiWebAppContext> DbContextFactory
+@using Microsoft.EntityFrameworkCore
 
 <PageTitle>@localizer["Change_your_profile_data"]</PageTitle>
 
@@ -404,6 +407,7 @@
 	/// <returns></returns>
 	public async Task Save()
 	{
+		using var context = DbContextFactory.CreateDbContext();
 		if (user?.DefaultPickUpAddress == "")
 		{
 			user.DefaultLatitude = 0;

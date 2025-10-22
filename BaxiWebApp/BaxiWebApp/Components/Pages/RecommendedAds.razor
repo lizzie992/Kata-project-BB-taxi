@@ -27,6 +27,10 @@
 @using Pages.Res;
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Resources> localizer
+@using BaxiWebApp.Data
+@inject IDbContextFactory<BaxiWebAppContext> DbContextFactory
+@using Microsoft.EntityFrameworkCore
+
 
 <PageTitle>@localizer["Recommended_ads"]</PageTitle>
 
@@ -176,6 +180,7 @@
 	{
 		get
 		{
+			using var context = DbContextFactory.CreateDbContext();
 			var result = context.Ads.FirstOrDefault(ad => ad.ID == ID);
 			return result;
 		}
@@ -183,6 +188,7 @@
 
 	public Ad? getCurrentAd(int ID)
 	{
+		using var context = DbContextFactory.CreateDbContext();
 		var result = context.Ads.FirstOrDefault(ad => ad.ID == ID);
 		return result;
 	}

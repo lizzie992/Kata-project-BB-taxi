@@ -15,6 +15,9 @@
 @inject Data.DataService DataService
 @using System.Globalization;
 @inject IJSRuntime JSRuntime
+@using BaxiWebApp.Data
+@inject IDbContextFactory<BaxiWebAppContext> DbContextFactory
+@using Microsoft.EntityFrameworkCore
 
 <PageTitle>@localizer["My_ads"]</PageTitle>
 
@@ -180,7 +183,10 @@
 	protected override void OnParametersSet()
 	{
 		// await identifyLoggedInUser();
-		AdList = context.Ads.ToList<Ad>();
+		using (var context = DbContextFactory.CreateDbContext())
+		{
+			AdList = context.Ads.ToList<Ad>();
+		}
 		base.OnParametersSet();
 	}
 
@@ -189,6 +195,7 @@
 	{
 		get
 		{
+			using var context = DbContextFactory.CreateDbContext();
 			var result = context.Ads.ToList<Ad>().AsQueryable();
 			result = result.Where(Ad => Ad.AdOwner == user);
 			return result;
@@ -214,6 +221,7 @@
 	{
 		if (ad is not null)
 		{
+			using var context = DbContextFactory.CreateDbContext();
 			context.Ads.Remove(ad);
 			context.SaveChanges();
 			closePopUpForDeletingAd();

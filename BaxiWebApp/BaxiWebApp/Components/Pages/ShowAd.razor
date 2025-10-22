@@ -27,6 +27,9 @@
 @inject NavigationManager NavigationManager
 @inject Data.DataService DataService
 @inject IJSRuntime JSRuntime
+@using BaxiWebApp.Data
+@inject IDbContextFactory<BaxiWebAppContext> DbContextFactory
+@using Microsoft.EntityFrameworkCore
 
 
 <PageTitle>@localizer["Show_me_the_ad"]</PageTitle>
@@ -238,6 +241,7 @@
 	{
 		get
 		{
+			using var context = DbContextFactory.CreateDbContext();
 			var result = context.Ads.Include(u => u.AdOwner).FirstOrDefault(ad => ad.ID == ID);
 			return result;
 		}
@@ -325,6 +329,7 @@
 	/// <param name="reasonForReporting">string</param>
 	public void reportAd(Ad? ad, string reasonForReporting)
 	{
+		using var context = DbContextFactory.CreateDbContext();
 		foreach (User u in context.Users.ToList<User>())
 		{
 			if (UserManager.GetRolesAsync(u).Result.First() == "Admin")
