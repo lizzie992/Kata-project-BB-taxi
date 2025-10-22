@@ -453,21 +453,13 @@
 	// 	currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	// }
 
-	public Conversation CurrentConversation
+	public Conversation? CurrentConversation
 	{
 		get
 		{
 			using var context = DbContextFactory.CreateDbContext();
 			var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).FirstOrDefault(conversation => conversation.ID == ID);
-			if (result is null)
-			{
-				result = new Conversation();
-				return result;
-			}
-			else
-			{
-				return result;
-			}
+			return result;
 		}
 	}
 
