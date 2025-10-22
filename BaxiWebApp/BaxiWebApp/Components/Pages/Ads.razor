@@ -121,7 +121,7 @@
 											<button @onclick="() => openChat(Ad)">@localizer["Contact_me"]!</button>
 										}
 									</TemplateColumn>
-									@if (currentlyLoggedInUser is not null && UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
+									@if (currentlyLoggedInUser is not null && isUserAdmin())
 									{
 										<TemplateColumn Title="@localizer["Delete_ad"]" Context="Ad">
 											<button @onclick="() => showPopUpForDeletingAd(Ad)">@localizer["Delete_ad"]</button>
@@ -168,7 +168,7 @@
 										{
 											<button @onclick="() => openChat(ad)">@localizer["Contact_me"]!</button>
 										}
-										@if (currentlyLoggedInUser is not null && UserManager.GetRolesAsync(currentlyLoggedInUser).Result.First() == "Admin")
+										@if (currentlyLoggedInUser is not null && isUserAdmin())
 										{
 											<button @onclick="() => showPopUpForDeletingAd(ad)">@localizer["Delete_ad"]</button>
 											@* <button type="button" data-bs-toggle="modal" data-bs-target="#deleteAdModal">
@@ -272,6 +272,9 @@
 
 @code {
 
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? currentlyLoggedInUser { get; set; }
+
 	// public static List<Ad> AdList = new List<Ad>();
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
@@ -328,6 +331,16 @@
 		base.OnParametersSet();
 	}
 
+	public bool isUserAdmin()
+	{
+		using var context = DbContextFactory.CreateDbContext();
+		IList<string> list = Task.Run(() => UserManager.GetRolesAsync(currentlyLoggedInUser)).Result;
+		if (list.Contains("Admin"))
+		{
+			return true;
+		}
+		return false;
+	}
 
 	protected override async Task OnAfterRenderAsync(bool firstrender)
 	{
@@ -430,8 +443,7 @@
 		NavigationManager.NavigateTo("Chat/" + id);
 	}
 
-	[CascadingParameter(Name = "currentlyLoggedInUser")]
-	private User? currentlyLoggedInUser { get; set; }
+
 
 	// public User? currentlyLoggedInUser;
 	// /// <summary>

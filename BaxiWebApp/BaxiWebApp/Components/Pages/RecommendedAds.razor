@@ -167,7 +167,7 @@
 	}
 
 
-	// Ad CurrentAd;
+	
 	List<Ad> recommendedAds = new List<Ad>();
 
 	QuickGrid<Ad>? grid;
@@ -186,12 +186,12 @@
 		}
 	}
 
-	public Ad? getCurrentAd(int ID)
-	{
-		using var context = DbContextFactory.CreateDbContext();
-		var result = context.Ads.FirstOrDefault(ad => ad.ID == ID);
-		return result;
-	}
+	// public Ad? getCurrentAd(int ID)
+	// {
+	// 	using var context = DbContextFactory.CreateDbContext();
+	// 	var result = context.Ads.FirstOrDefault(ad => ad.ID == ID);
+	// 	return result;
+	// }
 
 
 	// protected override async Task OnParametersSetAsync()
