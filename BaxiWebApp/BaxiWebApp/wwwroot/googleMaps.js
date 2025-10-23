@@ -95,8 +95,6 @@
 
 }
 
-
-
 let latitude = 0;
 let longitude = 0;
 
@@ -127,6 +125,49 @@ async function initMapForCreatingAd(lat, long, instruction, pinDroppedAt) {
         longitude = position.lng;
     });
 }
+
+async function initMapForOnePin(comment, latitude, longitude) {
+
+    const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+    const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
+        "marker",
+    );
+    const map = new Map(document.getElementById("map"), {
+        zoom: 9,
+        center: { lat: latitude, lng: longitude },
+        mapId: "4504f8b37365c3d0",
+    });
+
+    const BBMarker =
+        [
+            {
+                position: { lat: latitude, lng: longitude },
+            },
+        ];
+
+    // Create the markers.
+    BBMarker.forEach(({ position, title }, i) => {
+        const pin = new PinElement({
+            /*glyph: `${i}`,*/
+            scale: 1.5,
+        });
+        // [START maps_advanced_markers_accessibility_marker]
+        const marker = new AdvancedMarkerElement({
+            position,
+            map,
+            title: `${comment}`,
+            content: pin.element,
+            gmpClickable: true,
+        });
+    });
+
+    // Create an info window to share between markers.
+    const infoWindow = new InfoWindow();
+}
+
+
+
+
 
 function getLatitude() {
     return latitude;
