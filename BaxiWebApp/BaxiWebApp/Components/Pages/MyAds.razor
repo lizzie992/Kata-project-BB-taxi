@@ -179,29 +179,21 @@
 		});
 	}
 
-	public static List<Ad> AdList = new List<Ad>();
+	
+	private IQueryable<Ad> FilteredAds;
 	protected override void OnParametersSet()
 	{
-		// await identifyLoggedInUser();
 		using (var context = DbContextFactory.CreateDbContext())
 		{
-			AdList = context.Ads.ToList<Ad>();
+			FilteredAds = context.Ads.Include(ad => ad.AdOwner).ToList<Ad>().Where(Ad => Ad.AdOwner.Id == user.Id).AsQueryable();
 		}
 		base.OnParametersSet();
 	}
 
+
+
+
 	QuickGrid<Ad>? grid;
-	IQueryable<Ad> FilteredAds
-	{
-		get
-		{
-			using var context = DbContextFactory.CreateDbContext();
-			context.Attach(user);
-			var result = context.Ads.ToList<Ad>().AsQueryable();
-			result = result.Where(Ad => Ad.AdOwner.Id == user.Id);
-			return result;
-		}
-	}
 
 	private int ID;
 	/// <summary>

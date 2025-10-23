@@ -381,18 +381,18 @@
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
 		}
-		if (CurrentConversation is not null)
-		{
-			try
-			{
-				await JSRuntime.InvokeVoidAsync("scrollToBottom");
-				await JSRuntime.InvokeVoidAsync("scrollToBottomPhone");
-			}
-			catch (ArgumentException e)
-			{
-				Console.WriteLine($"Conversation cannot be scrolled to bottom for reason: {e.Message}");
-			}
-		}
+		// if (CurrentConversation is not null)
+		// {
+		// 	try
+		// 	{
+		// 		await JSRuntime.InvokeVoidAsync("scrollToBottom");
+		// 		await JSRuntime.InvokeVoidAsync("scrollToBottomPhone");
+		// 	}
+		// 	catch (ArgumentException e)
+		// 	{
+		// 		Console.WriteLine($"Conversation cannot be scrolled to bottom for reason: {e.Message}");
+		// 	}
+		// }
 	}
 
 
