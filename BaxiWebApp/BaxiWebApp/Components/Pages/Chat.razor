@@ -35,7 +35,9 @@
 	<div class="row-chat-laptop">
 		<div class="col">
 			<div class="col-all-convos">
-				<h2 style="text-align: center">@localizer["All_chat_conversations"]</h2>
+				<div class="all-convos-sign">
+					<h2 style="text-align: center; font-size: 16px">@localizer["All_chat_conversations"]</h2>
+				</div>
 				@if (ConvoList == null || ConvoList.Count == 0)
 				{
 					<p>@localizer["No_conversations_yet"]</p>
@@ -184,7 +186,7 @@
 		{
 			<button class="chat-back-button" @onclick="backToChat">@localizer["Back_to_the_chat"]</button>
 			<div class="col-chat">
-				@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
+				@if (CurrentConversation.adOwnerUser.Id == currentlyLoggedInUser.Id || CurrentConversation.contactingUser.Id == currentlyLoggedInUser.Id)
 				{
 					@if (ad is null)
 					{
