@@ -165,8 +165,10 @@
 @code {
 
 
-	List<Ad>? recommendedAds;
+	List<Ad> recommendedAds;
 
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? currentlyLoggedInUser { get; set; }
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
@@ -180,19 +182,16 @@
 
 	protected override async Task OnParametersSetAsync()
 	{
-		@* await identifyLoggedInUser(); *@
-		@* recommendedAds = await getRecommendedAds();
-		showPopUpRecommendedAds = true; *@
+		recommendedAds = await getRecommendedAds();
 		base.OnParametersSet();
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstrender)
 	{
 		if (firstrender)
-		{
-			DataService.loadCulture(currentlyLoggedInUser);
+		{	
 			recommendedAds = await getRecommendedAds();
-			showPopUpRecommendedAds = true;
+			DataService.loadCulture(currentlyLoggedInUser);
 			if (currentlyLoggedInUser != null && recommendedAds.Count > 0)
 			{
 				try
@@ -207,8 +206,7 @@
 		}
 	}
 
-	[CascadingParameter(Name = "currentlyLoggedInUser")]
-	private User? currentlyLoggedInUser { get; set; }
+
 
 	@* public static User? currentlyLoggedInUser;
 	/// <summary>
@@ -239,13 +237,13 @@
 	/// Collects a list of Ads that could be recommended to any ads of a specific user - sorts the ads by pick up date and time, and shows the first 3
 	/// </summary>
 	/// <returns>List of ads</returns>
-	public async Task<List<Ad>> getRecommendedAds() //TODO: make proper async mehtod
+	public async Task<List<Ad>> getRecommendedAds()
 	{
 		if (currentlyLoggedInUser is not null)
 		{
 			using var context = DbContextFactory.CreateDbContext();
 			var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsQueryable();
-			result = result.Where(Ad => Ad.AdOwner == currentlyLoggedInUser);
+			result = result.Where(Ad => Ad.AdOwner.Id == currentlyLoggedInUser.Id);
 			List<Ad> recommendedAds = new List<Ad>();
 			if (result is null)
 			{
