@@ -416,7 +416,7 @@
 			ad.NumberOfSeats = currentlyLoggedInUser.DefaultNumberOfSeats;
 			ad.SpecificRequests = currentlyLoggedInUser.DefaultSpecificRequests;
 		}
-		
+
 		timerObj = new Timer(1500);
 		timerObj.Elapsed += onTimer;
 		timerObj.AutoReset = false;
@@ -497,7 +497,7 @@
 			{
 				Console.WriteLine($"Modal failed to display: {e.Message}");
 			}
-			
+
 			await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -515,7 +515,7 @@
 			{
 				Console.WriteLine($"Modal failed to display: {e.Message}");
 			}
-			
+
 			await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -533,7 +533,7 @@
 			{
 				Console.WriteLine($"Modal failed to display: {e.Message}");
 			}
-			
+
 			await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -551,7 +551,7 @@
 			{
 				Console.WriteLine($"Modal failed to display: {e.Message}");
 			}
-			
+
 			await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -740,7 +740,7 @@
 			{
 				Console.WriteLine($"Modal failed to display: {e.Message}");
 			}
-			
+
 			StateHasChanged();
 		}
 		else if (distance == Constants.NULL_COORDINATES)
@@ -754,7 +754,7 @@
 			{
 				Console.WriteLine($"Modal failed to display: {e.Message}");
 			}
-			
+
 			StateHasChanged();
 		}
 		else if (distance == Constants.INVALID_ROUTE)
@@ -768,7 +768,7 @@
 			{
 				Console.WriteLine($"Modal failed to display: {e.Message}");
 			}
-			
+
 			StateHasChanged();
 		}
 		else if (DataService.IsItTooCloseToBB(distance))
@@ -782,7 +782,7 @@
 			{
 				Console.WriteLine($"Modal failed to display: {e.Message}");
 			}
-			
+
 			StateHasChanged();
 		}
 		else if (DataService.IsItTooFarFromBB(distance))
@@ -796,7 +796,7 @@
 			{
 				Console.WriteLine($"Modal failed to display: {e.Message}");
 			}
-			
+
 			StateHasChanged();
 		}
 		else if (ad.AdType == AdType.SelectAll)
@@ -810,7 +810,7 @@
 			{
 				Console.WriteLine($"Modal failed to display: {e.Message}");
 			}
-			
+
 			StateHasChanged();
 		}
 		else
@@ -826,6 +826,12 @@
 	async Task WriteData()
 	{
 		using var context = DbContextFactory.CreateDbContext();
+
+		// var test = context.Users.Find(ad.AdOwner.Id);
+		// ad.AdOwner = test;
+
+		context.Attach(ad.AdOwner);
+
 		context.Ads.Add(ad);
 		if (ad.SpecificRequests is null || ad.SpecificRequests == "")
 		{

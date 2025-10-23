@@ -520,6 +520,7 @@
 		if (C is not null)
 		{
 			using var context = DbContextFactory.CreateDbContext();
+			context.Attach(C);
 			IEnumerable<Message> messagesToReport = context.Messages.Include(m => m.fromUser).Include(m => m.toUser).ToList<Message>().AsEnumerable();
 			messagesToReport = messagesToReport.Where(m => m.ConversationID == C.ID).OrderBy(c => c.timeStamp);
 			StringBuilder message = new StringBuilder();
@@ -570,6 +571,7 @@
 	public Ad? GetAd(Conversation C)
 	{
 		using var context = DbContextFactory.CreateDbContext();
+		context.Attach(C);
 		Ad? ad = null;
 		List<Ad> adlist = context.Ads.ToList();
 		foreach (Ad a in adlist)

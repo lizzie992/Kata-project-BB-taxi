@@ -523,9 +523,10 @@
 	/// <param name="reasonForWarning">String</param>
 	public void giveUserAWarning(User? user, string reasonForWarning)
 	{
+		using var context = DbContextFactory.CreateDbContext();
+		context.Attach(user);
 		if (user is not null)
 		{
-			using var context = DbContextFactory.CreateDbContext();
 			user.NumberOfWarnings++;
 			context.Update(user);
 			context.SaveChanges();
@@ -556,6 +557,7 @@
 	public void deactivateUser(User? user, string reasonForDeactivating)
 	{
 		using var context = DbContextFactory.CreateDbContext();
+		context.Attach(user);
 		if (user is not null)
 		{
 			user.isActive = false;
@@ -579,6 +581,7 @@
 	public void reactivateUser(User? user)
 	{
 		using var context = DbContextFactory.CreateDbContext();
+		context.Attach(user);
 		if (user is not null)
 		{
 			user.isActive = true;
@@ -603,9 +606,10 @@
 	/// <param name="user">User</param>
 	public void makeUserAdmin(User? user)
 	{
+		using var context = DbContextFactory.CreateDbContext();
+		context.Attach(user);
 		if (user is not null && isUserAdmin(user))
 		{
-			using var context = DbContextFactory.CreateDbContext();
 			UserManager.RemoveFromRoleAsync(user, "Regular");
 			UserManager.AddToRoleAsync(user, "Admin");
 			context.SaveChanges();

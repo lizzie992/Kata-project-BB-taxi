@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaxiWebApp.Migrations
 {
     [DbContext(typeof(BaxiWebAppContext))]
-    [Migration("20250921111025_please")]
-    partial class please
+    [Migration("20251023124001_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,7 +46,7 @@ namespace BaxiWebApp.Migrations
                     b.Property<double?>("Longitude")
                         .HasColumnType("double");
 
-                    b.Property<int?>("NumberOfSeats")
+                    b.Property<int>("NumberOfSeats")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PickUpDateAndTime")
@@ -57,6 +57,7 @@ namespace BaxiWebApp.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("SpecificRequests")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("ID");

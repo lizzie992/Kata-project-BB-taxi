@@ -34,9 +34,9 @@ namespace BB
         }
 
 
-        private string _emailAddress;
+        private string? _emailAddress;
 
-        public string EmailAddress
+        public string? EmailAddress
         {
             get { return _emailAddress; }
             set { _emailAddress = value; }

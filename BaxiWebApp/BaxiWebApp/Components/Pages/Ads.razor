@@ -116,7 +116,7 @@
 										<button @onclick="() => showAd(Ad)">@localizer["Show_me_the_ad"]</button>
 									</TemplateColumn>
 									<TemplateColumn Title="@localizer["Contact_me"]" Context="Ad">
-										@if (Ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser != Ad.AdOwner)
+										@if (Ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser.Id != Ad.AdOwner.Id)
 										{
 											<button @onclick="() => openChat(Ad)">@localizer["Contact_me"]!</button>
 										}
@@ -375,7 +375,7 @@
 	DateTime _datetime2 = DateTime.Now.AddDays(90);
 
 
-	
+
 
 
 	QuickGrid<Ad>? grid;
@@ -450,7 +450,7 @@
 			{
 				Console.WriteLine($"Modal failed to display: {e.Message}");
 			}
-			
+
 		}
 	}
 
@@ -508,6 +508,7 @@
 	public void deleteAd(Ad ad, string reasonForDeleting)
 	{
 		using var context = DbContextFactory.CreateDbContext();
+		context.Attach(ad);
 		if (ad.AdOwner.Email is not null)
 		{
 			string text = localizer["Dear_{0}_your_ad_has_been_removed_by_the_admins_for_reasons_{1}_ad_ad_type_{2}_ad_direction_{3}_address_{4}_on_{5}_available_seats_{6}_any_specific_requests_{7}", DataService.showUserNameWithStatus(ad.AdOwner), reasonForDeleting, localizer[@ad.AdType.ToString()], localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats, ad.SpecificRequests];

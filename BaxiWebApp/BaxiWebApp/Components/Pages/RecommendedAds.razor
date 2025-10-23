@@ -38,7 +38,7 @@
 	<Authorized>
 
 		<body>
-			@if (CurrentAd != null && currentlyLoggedInUser == CurrentAd.AdOwner)
+			@if (CurrentAd != null && currentlyLoggedInUser.Id == CurrentAd.AdOwner.Id)
 			{
 				<h3 style="text-align:center">@localizer["Recommended_ads"]</h3>
 
@@ -156,6 +156,8 @@
 		});
 	}
 
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? currentlyLoggedInUser { get; set; }
 
 	protected override async Task OnAfterRenderAsync(bool firstrender)
 	{
@@ -163,19 +165,22 @@
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
 		}
-		try
+		if (recommendedAds.Count > 0)
 		{
-			await JSRuntime.InvokeVoidAsync("initMapForAdList", recommendedAds, localizer["Beautiful_baierbrunn"].ToString(), localizer["ToBaierbrunn"].ToString(), localizer["FromBaierbrunn"].ToString(), localizer["No_default_type"].ToString(), localizer["Driver"].ToString(), localizer["Passenger"].ToString(), localizer["Show_me_the_ad"].ToString(), localizer["Direction"].ToString(), localizer["Ad_type"].ToString(), localizer["Pick_up_date_and_time"].ToString(), localizer["From/to_this_address"].ToString(), localizer["Number_of_seats"].ToString(), localizer["Show_me_the_ad"].ToString());
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("initMapForAdList", recommendedAds, localizer["Beautiful_baierbrunn"].ToString(), localizer["ToBaierbrunn"].ToString(), localizer["FromBaierbrunn"].ToString(), localizer["No_default_type"].ToString(), localizer["Driver"].ToString(), localizer["Passenger"].ToString(), localizer["Show_me_the_ad"].ToString(), localizer["Direction"].ToString(), localizer["Ad_type"].ToString(), localizer["Pick_up_date_and_time"].ToString(), localizer["From/to_this_address"].ToString(), localizer["Number_of_seats"].ToString(), localizer["Show_me_the_ad"].ToString());
 
-		}
-		catch (ArgumentException e)
-		{
-			Console.WriteLine($"Map failed to display: {e.Message}");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Map failed to display: {e.Message}");
+			}
 		}
 	}
 
 
-	
+
 	List<Ad> recommendedAds = new List<Ad>();
 
 	QuickGrid<Ad>? grid;
@@ -189,7 +194,7 @@
 		get
 		{
 			using var context = DbContextFactory.CreateDbContext();
-			var result = context.Ads.FirstOrDefault(ad => ad.ID == ID);
+			var result = context.Ads.Include(ad => ad.AdOwner).FirstOrDefault(ad => ad.ID == ID);
 			return result;
 		}
 	}
@@ -202,12 +207,7 @@
 	// }
 
 
-	// protected override async Task OnParametersSetAsync()
-	// {
-	// 	recommendedAds = await collectRecommendedAds(CurrentAd);
-	// 	await identifyLoggedInUser();
-	// 	await base.OnParametersSetAsync();
-	// }
+
 	protected override async Task OnParametersSetAsync()
 	{
 		recommendedAds = await DataService.collectRecommendedAds(CurrentAd, currentlyLoggedInUser);
@@ -215,8 +215,7 @@
 		base.OnParametersSet();
 	}
 
-	[CascadingParameter(Name = "currentlyLoggedInUser")]
-	private User? currentlyLoggedInUser { get; set; }
+	
 
 	// public User? currentlyLoggedInUser;
 	// /// <summary>

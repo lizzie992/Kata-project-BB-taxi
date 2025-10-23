@@ -178,7 +178,6 @@ namespace BaxiWebApp.Migrations
                         .HasColumnType("varchar(256)");
 
                     b.Property<string>("EmailAddress")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("EmailConfirmed")

@@ -196,8 +196,9 @@
 		get
 		{
 			using var context = DbContextFactory.CreateDbContext();
+			context.Attach(user);
 			var result = context.Ads.ToList<Ad>().AsQueryable();
-			result = result.Where(Ad => Ad.AdOwner == user);
+			result = result.Where(Ad => Ad.AdOwner.Id == user.Id);
 			return result;
 		}
 	}
@@ -222,6 +223,7 @@
 		if (ad is not null)
 		{
 			using var context = DbContextFactory.CreateDbContext();
+			context.Attach(ad);
 			context.Ads.Remove(ad);
 			context.SaveChanges();
 			closePopUpForDeletingAd();

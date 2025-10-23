@@ -121,7 +121,7 @@
 								<th style="text-align: right">@CurrentAd.SpecificRequests</th>
 							</tr>
 						</table>
-						@if (CurrentAd.PickUpDateAndTime >= DateTime.Now.AddMinutes(-30) && currentlyLoggedInUser != CurrentAd.AdOwner)
+						@if (CurrentAd.PickUpDateAndTime >= DateTime.Now.AddMinutes(-30) && currentlyLoggedInUser.Id != CurrentAd.AdOwner.Id)
 						{
 							<button @onclick="() => openChat(CurrentAd)">@localizer["Contact_me"]</button>
 						}
@@ -318,7 +318,7 @@
 			int id = conversation.ID;
 			NavigationManager.NavigateTo("Chat/" + id);
 		}
-		
+
 	}
 
 
@@ -330,6 +330,7 @@
 	public void reportAd(Ad? ad, string reasonForReporting)
 	{
 		using var context = DbContextFactory.CreateDbContext();
+		context.Attach(ad);
 		foreach (User u in context.Users.ToList<User>())
 		{
 			if (isUserAdmin())

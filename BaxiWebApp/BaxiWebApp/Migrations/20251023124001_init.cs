@@ -5,12 +5,11 @@ using MySql.EntityFrameworkCore.Metadata;
 #nullable disable
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-#pragma warning disable CS8981
 
 namespace BaxiWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class please : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -114,8 +113,8 @@ namespace BaxiWebApp.Migrations
                     Latitude = table.Column<double>(type: "double", nullable: true),
                     Longitude = table.Column<double>(type: "double", nullable: true),
                     PickUpDateAndTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    NumberOfSeats = table.Column<int>(type: "int", nullable: true),
-                    SpecificRequests = table.Column<string>(type: "longtext", nullable: true),
+                    NumberOfSeats = table.Column<int>(type: "int", nullable: false),
+                    SpecificRequests = table.Column<string>(type: "longtext", nullable: false),
                     AdID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

@@ -410,7 +410,7 @@ namespace BaxiWebApp.Data
 
             List<Ad> adList = new List<Ad>();
             var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
-            result = result.Where(oldAd => oldAd.PickUpDateAndTime >= DateTime.Now && oldAd.AdOwner != currentlyLoggedInUser);
+            result = result.Where(oldAd => oldAd.PickUpDateAndTime >= DateTime.Now && oldAd.AdOwner.Id != currentlyLoggedInUser.Id);
 
             //TO Baierbrunn, passenger looking for drivers
             if (ad?.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Passenger)
