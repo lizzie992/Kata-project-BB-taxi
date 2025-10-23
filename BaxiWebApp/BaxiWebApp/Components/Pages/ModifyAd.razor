@@ -370,16 +370,23 @@
 	[Parameter]
 	public int ID { get; set; }
 
+	private Ad ad;
+	// protected override async Task OnInitializedAsync()
+	// {
+	// 	await base.OnInitializedAsync();
+	// 	using var context = DbContextFactory.CreateDbContext();
+	// 	ad = await context.Ads.FirstOrDefaultAsync(a => a.ID == ID);
+	// }
 
-	Ad ad
-	{
-		get
-		{
-			using var context = DbContextFactory.CreateDbContext();
-			var result = context.Ads.FirstOrDefault(Ad => Ad.ID == ID);
-			return result;
-		}
-	}
+	// Ad ad
+	// {
+	// 	get
+	// 	{
+	// 		using var context = DbContextFactory.CreateDbContext();
+	// 		var result = context.Ads.FirstOrDefault(Ad => Ad.ID == ID);
+	// 		return result;
+	// 	}
+	// }
 
 
 
@@ -412,7 +419,9 @@
 	async Task WriteData()
 	{
 		using var context = DbContextFactory.CreateDbContext();
-		context.SaveChanges();
+		context.Ads.Attach(ad);
+		context.Entry(ad).State = EntityState.Modified;
+		await context.SaveChangesAsync();
 		await DataService.CheckAdsForNotification(ad);
 		NavigationManager.NavigateTo("MyAds");
 	}
@@ -437,9 +446,8 @@
 
 	protected override async Task OnParametersSetAsync()
 	{
-		// await identifyLoggedInUser();
-		await showMapWithAddress();
-
+		using var context = DbContextFactory.CreateDbContext();
+		ad = await context.Ads.FirstOrDefaultAsync(a => a.ID == ID);
 		timerObj = new Timer(1500);
 		timerObj.Elapsed += onTimer;
 		timerObj.AutoReset = false;
@@ -452,8 +460,9 @@
 		if (firstrender)
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
-			if (showMap == true)
+			if (ad.Latitude >= 1 && ad.Longitude >= 1)
 			{
+				showMap = true;
 				await InvokeAsync(() =>
 			{
 				StateHasChanged();
@@ -468,8 +477,11 @@
 					Console.WriteLine($"Map failed to display: {e.Message}");
 				}
 			}
+			else
+			{
+				showMap = false;
+			}
 		}
-
 	}
 
 	/// <summary>
