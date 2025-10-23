@@ -72,9 +72,9 @@
 				}
 				else
 				{
-					@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
+					@if (CurrentConversation.adOwnerUser.Id == currentlyLoggedInUser.Id || CurrentConversation.contactingUser.Id == currentlyLoggedInUser.Id)
 					{
-						Ad? ad = GetAd(CurrentConversation);
+
 						@if (ad is null)
 						{
 							<div class="actions-for-chat">
@@ -109,9 +109,9 @@
 							}
 							else
 							{
-								@foreach (Message M in CurrentConversation.messages)
+								@foreach (Message M in messages)
 								{
-									if (currentlyLoggedInUser == M.fromUser)
+									if (currentlyLoggedInUser.Id == M.fromUser.Id)
 									{
 										<div class="message-right">
 											<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
@@ -119,7 +119,7 @@
 											<div class="timestamp">@M.timeStamp.ToString("g")</div>
 										</div>
 									}
-									if (currentlyLoggedInUser == M.toUser)
+									if (currentlyLoggedInUser.Id == M.toUser.Id)
 									{
 										<div class="message-left">
 											<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
@@ -186,7 +186,6 @@
 			<div class="col-chat">
 				@if (CurrentConversation.adOwnerUser == currentlyLoggedInUser || CurrentConversation.contactingUser == currentlyLoggedInUser)
 				{
-					Ad? ad = GetAd(CurrentConversation);
 					@if (ad is null)
 					{
 						<div class="actions-for-chat">
@@ -221,9 +220,9 @@
 						}
 						else
 						{
-							@foreach (Message M in CurrentConversation.messages)
+							@foreach (Message M in messages)
 							{
-								if (currentlyLoggedInUser == M.fromUser)
+								if (currentlyLoggedInUser.Id == M.fromUser.Id)
 								{
 									<div class="message-right">
 										<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
@@ -231,7 +230,7 @@
 										<div class="timestamp">@M.timeStamp.ToString("g")</div>
 									</div>
 								}
-								if (currentlyLoggedInUser == M.toUser)
+								if (currentlyLoggedInUser.Id == M.toUser.Id)
 								{
 									<div class="message-left">
 										<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
@@ -346,6 +345,13 @@
 	Conversation? selectedConvo;
 	private string TextMessage = "";
 	string reasonForReporting = "";
+	public Conversation? CurrentConversation;
+	Ad? ad;
+	List<Message> messages;
+
+	[CascadingParameter(Name = "currentlyLoggedInUser")]
+	private User? currentlyLoggedInUser { get; set; }
+
 
 	protected override void OnInitialized()
 	{
@@ -380,6 +386,12 @@
 		if (firstrender)
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
+		}
+		if (CurrentConversation is not null)
+		{
+			ad = GetAd(CurrentConversation);
+			messages = getMessages(CurrentConversation);
+			StateHasChanged();
 		}
 		// if (CurrentConversation is not null)
 		// {
@@ -430,14 +442,14 @@
 
 
 
-	// protected override async Task OnParametersSetAsync()
-	// {
-	// 	// await IdentifyLoggedInUser();
-	// 	base.OnParametersSet();
-	// }
+	protected override void OnParametersSet()
+	{
+		using var context = DbContextFactory.CreateDbContext();
+		CurrentConversation = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).FirstOrDefault(conversation => conversation.ID == ID);
+		base.OnParametersSet();
+	}
 
-	[CascadingParameter(Name = "currentlyLoggedInUser")]
-	private User? currentlyLoggedInUser { get; set; }
+
 
 	// /// <summary>
 	// /// Identifies the user who is currently logged in
@@ -453,15 +465,15 @@
 	// 	currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
 	// }
 
-	public Conversation? CurrentConversation
-	{
-		get
-		{
-			using var context = DbContextFactory.CreateDbContext();
-			var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).FirstOrDefault(conversation => conversation.ID == ID);
-			return result;
-		}
-	}
+	// public Conversation? CurrentConversation
+	// {
+	// 	get
+	// 	{
+	// 		using var context = DbContextFactory.CreateDbContext();
+	// 		var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).FirstOrDefault(conversation => conversation.ID == ID);
+	// 		return result;
+	// 	}
+	// }
 
 	public List<Conversation>? ConvoList
 	{
@@ -576,13 +588,22 @@
 		List<Ad> adlist = context.Ads.ToList();
 		foreach (Ad a in adlist)
 		{
-			if (a.adConversations.Contains(C))
+			if (a.ID == C.AdID)
 			{
 				ad = a;
 				return ad;
 			}
 		}
 		return ad;
+	}
+
+	public List<Message> getMessages(Conversation C)
+	{
+		using var context = DbContextFactory.CreateDbContext();
+		context.Attach(C);
+		var result = context.Messages.Include(m => m.fromUser).Include(m => m.toUser).Where(m => m.ConversationID == C.ID);
+		result = result.OrderBy(m => m.timeStamp);
+		return result.ToList<Message>();
 	}
 
 

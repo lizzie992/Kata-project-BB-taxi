@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaxiWebApp.Migrations
 {
     [DbContext(typeof(BaxiWebAppContext))]
-    [Migration("20251023124001_init")]
+    [Migration("20251023205438_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -75,7 +75,7 @@ namespace BaxiWebApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("AdID")
+                    b.Property<int>("AdID")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("TimeStamp")
@@ -419,7 +419,9 @@ namespace BaxiWebApp.Migrations
                 {
                     b.HasOne("BB.Ad", null)
                         .WithMany("adConversations")
-                        .HasForeignKey("AdID");
+                        .HasForeignKey("AdID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BB.User", "adOwnerUser")
                         .WithMany()

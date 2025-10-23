@@ -488,7 +488,6 @@ namespace BaxiWebApp.Data
             using var context = _dbcFactory.CreateDbContext();
 
             context.Attach(ad);
-            context.Attach(ad.AdOwner);
             context.Attach(currentlyLoggedInUser);
             Conversation conversation = new Conversation();
             conversation.adOwnerUser = ad.AdOwner;
@@ -510,11 +509,11 @@ namespace BaxiWebApp.Data
         public User? getOtherUser(Conversation C, User? currentlyLoggedInUser)
         {
             User? otherUser = new User();
-            if (currentlyLoggedInUser == C.contactingUser)
+            if (currentlyLoggedInUser.Id == C.contactingUser.Id)
             {
                 otherUser = C.adOwnerUser;
             }
-            if (currentlyLoggedInUser == C.adOwnerUser)
+            if (currentlyLoggedInUser.Id == C.adOwnerUser.Id)
             {
                 otherUser = C.contactingUser;
             }

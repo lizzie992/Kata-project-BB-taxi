@@ -72,7 +72,7 @@ namespace BaxiWebApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("AdID")
+                    b.Property<int>("AdID")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("TimeStamp")
@@ -416,7 +416,9 @@ namespace BaxiWebApp.Migrations
                 {
                     b.HasOne("BB.Ad", null)
                         .WithMany("adConversations")
-                        .HasForeignKey("AdID");
+                        .HasForeignKey("AdID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BB.User", "adOwnerUser")
                         .WithMany()

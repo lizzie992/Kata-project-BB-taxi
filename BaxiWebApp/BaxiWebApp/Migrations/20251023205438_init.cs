@@ -228,10 +228,10 @@ namespace BaxiWebApp.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    AdID = table.Column<int>(type: "int", nullable: false),
                     adOwnerUserId = table.Column<string>(type: "varchar(255)", nullable: true),
                     contactingUserId = table.Column<string>(type: "varchar(255)", nullable: true),
-                    TimeStamp = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    AdID = table.Column<int>(type: "int", nullable: true)
+                    TimeStamp = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -240,7 +240,8 @@ namespace BaxiWebApp.Migrations
                         name: "FK_Conversations_Ads_AdID",
                         column: x => x.AdID,
                         principalTable: "Ads",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Conversations_AspNetUsers_adOwnerUserId",
                         column: x => x.adOwnerUserId,
