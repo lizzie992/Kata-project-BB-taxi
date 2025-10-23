@@ -469,8 +469,9 @@ namespace BaxiWebApp.Data
             using var context = _dbcFactory.CreateDbContext();
 
             //check current ad if matching conversation exists:
-            var previousConversations = ad.adConversations.AsQueryable();
-            previousConversations = previousConversations.Where(Conversation => Conversation.contactingUser == currentlyLoggedInUser);
+            var previousConversations = context.Conversations.Include(C => C.contactingUser).AsQueryable();
+            previousConversations = previousConversations.Where(C => C.AdID == ad.ID);
+            previousConversations = previousConversations.Where(Conversation => Conversation.contactingUser.Id == currentlyLoggedInUser.Id);
             return previousConversations.ToList();
 
         }
