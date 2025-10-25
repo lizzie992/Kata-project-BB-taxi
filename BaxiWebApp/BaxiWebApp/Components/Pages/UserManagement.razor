@@ -464,7 +464,9 @@
 	{
 		get
 		{
-			var result = UserManager.Users.ToList<User>().AsQueryable();
+			using var context = DbContextFactory.CreateDbContext();
+
+			var result = context.Users.ToList<User>().AsQueryable();
 
 			result = result.Where(User => User.isDeleted == false);
 
@@ -604,15 +606,16 @@
 	/// Changes the user's role to Admin
 	/// </summary>
 	/// <param name="user">User</param>
-	public void makeUserAdmin(User? user)
+	public async void makeUserAdmin(User? user)
 	{
-		using var context = DbContextFactory.CreateDbContext();
-		context.Attach(user);
-		if (user is not null && isUserAdmin(user))
+		if (user is not null && !isUserAdmin(user))
 		{
-			UserManager.RemoveFromRoleAsync(user, "Regular");
-			UserManager.AddToRoleAsync(user, "Admin");
-			context.SaveChanges();
+			var freshUser = await UserManager.FindByIdAsync(user.Id);
+			if (freshUser != null)
+			{
+				await UserManager.RemoveFromRoleAsync(freshUser, "Regular");
+				await UserManager.AddToRoleAsync(freshUser, "Admin");
+			}
 			closePopUpForMakeUserAdmin();
 			grid?.RefreshDataAsync();
 		}
