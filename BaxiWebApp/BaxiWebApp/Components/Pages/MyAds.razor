@@ -179,7 +179,7 @@
 		});
 	}
 
-	
+
 	private IQueryable<Ad> FilteredAds;
 	protected override void OnParametersSet()
 	{
@@ -216,6 +216,9 @@
 		{
 			using var context = DbContextFactory.CreateDbContext();
 			context.Attach(ad);
+			var C = context.Conversations.Where(C => C.AdID == ad.ID);
+			Conversation convo = C.FirstOrDefault();
+			convo.AdID = null;
 			context.Ads.Remove(ad);
 			context.SaveChanges();
 			closePopUpForDeletingAd();

@@ -13,7 +13,7 @@ namespace BB
 
         private int _id;
 
-        public int AdID { get; set; }
+        public int? AdID { get; set; }
 
         public int ID
         {

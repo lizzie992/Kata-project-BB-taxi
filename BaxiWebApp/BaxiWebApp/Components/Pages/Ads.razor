@@ -348,15 +348,17 @@
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
 		}
-
-		try
+		if (adListForMap.Count > 0)
 		{
-			await JSRuntime.InvokeVoidAsync("initMapForAdList", adListForMap, localizer["Beautiful_baierbrunn"].ToString(), localizer["ToBaierbrunn"].ToString(), localizer["FromBaierbrunn"].ToString(), localizer["No_default_type"].ToString(), localizer["Driver"].ToString(), localizer["Passenger"].ToString(), localizer["Show_me_the_ad"].ToString(), localizer["Direction"].ToString(), localizer["Ad_type"].ToString(), localizer["Pick_up_date_and_time"].ToString(), localizer["From/to_this_address"].ToString(), localizer["Number_of_seats"].ToString(), localizer["Show_me_the_ad"].ToString());
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("initMapForAdList", adListForMap, localizer["Beautiful_baierbrunn"].ToString(), localizer["ToBaierbrunn"].ToString(), localizer["FromBaierbrunn"].ToString(), localizer["No_default_type"].ToString(), localizer["Driver"].ToString(), localizer["Passenger"].ToString(), localizer["Show_me_the_ad"].ToString(), localizer["Direction"].ToString(), localizer["Ad_type"].ToString(), localizer["Pick_up_date_and_time"].ToString(), localizer["From/to_this_address"].ToString(), localizer["Number_of_seats"].ToString(), localizer["Show_me_the_ad"].ToString());
 
-		}
-		catch (ArgumentException e)
-		{
-			Console.WriteLine($"Map failed to display: {e.Message}");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Map failed to display: {e.Message}");
+			}
 		}
 	}
 
@@ -509,6 +511,9 @@
 	{
 		using var context = DbContextFactory.CreateDbContext();
 		context.Attach(ad);
+		var C = context.Conversations.Where(C => C.AdID == ad.ID);
+		Conversation convo = C.FirstOrDefault();
+		convo.AdID = null;
 		if (ad.AdOwner.Email is not null)
 		{
 			string text = localizer["Dear_{0}_your_ad_has_been_removed_by_the_admins_for_reasons_{1}_ad_ad_type_{2}_ad_direction_{3}_address_{4}_on_{5}_available_seats_{6}_any_specific_requests_{7}", DataService.showUserNameWithStatus(ad.AdOwner), reasonForDeleting, localizer[@ad.AdType.ToString()], localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats, ad.SpecificRequests];
