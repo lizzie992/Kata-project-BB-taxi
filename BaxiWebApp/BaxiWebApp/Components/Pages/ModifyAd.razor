@@ -460,21 +460,26 @@
 		if (firstrender)
 		{
 			DataService.loadCulture(currentlyLoggedInUser);
-			if (ad.Latitude >= 1 && ad.Longitude >= 1)
+			using var context = DbContextFactory.CreateDbContext();
+			ad = await context.Ads.FirstOrDefaultAsync(a => a.ID == ID);
+			if (ad is not null)
 			{
-				showMap = true;
-				await InvokeAsync(() =>
-			{
-				StateHasChanged();
-			});
-				try
+				if (ad.Latitude >= 1 && ad.Longitude >= 1)
 				{
-					await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad?.Latitude, ad?.Longitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
+					showMap = true;
+					await InvokeAsync(() =>
+				{
+					StateHasChanged();
+				});
+					try
+					{
+						await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", ad?.Latitude, ad?.Longitude, localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"].ToString(), localizer["Pin_dropped_at"].ToString());
 
-				}
-				catch (ArgumentException e)
-				{
-					Console.WriteLine($"Map failed to display: {e.Message}");
+					}
+					catch (ArgumentException e)
+					{
+						Console.WriteLine($"Map failed to display: {e.Message}");
+					}
 				}
 			}
 			else

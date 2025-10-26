@@ -415,6 +415,7 @@
 	public async Task Save()
 	{
 		using var context = DbContextFactory.CreateDbContext();
+		context.Users.Attach(user);
 		if (user?.DefaultPickUpAddress == "")
 		{
 			user.DefaultLatitude = 0;
@@ -426,9 +427,13 @@
 			{
 				user.DefaultLatitude = await GetLatitude();
 				user.DefaultLongitude = await GetLongitude();
+				if (user.DefaultLatitude == 0 || user.DefaultLongitude == 0)
+				{
+					(user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);					
+				}
 			}
 		}
-		context.Users.Attach(user);
+		// context.Users.Attach(user);
 		context.Entry(user).State = EntityState.Modified;
 		await context.SaveChangesAsync();
 	}

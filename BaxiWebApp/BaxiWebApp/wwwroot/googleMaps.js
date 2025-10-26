@@ -133,7 +133,7 @@ async function initMapForOnePin(comment, latitude, longitude) {
         "marker",
     );
     const map = new Map(document.getElementById("map"), {
-        zoom: 9,
+        zoom: 12,
         center: { lat: latitude, lng: longitude },
         mapId: "4504f8b37365c3d0",
     });

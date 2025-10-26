@@ -91,10 +91,10 @@
 					{
 						<div class="col-12 col-md-6">
 							<div id="map">
-						</div>
-						<script>
-							(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-							({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+							</div>
+							<script>
+								(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+								({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
 							@* <p style="height: 100%">
 								<iframe class="framed-map-profile"
 										width="600"
@@ -175,19 +175,20 @@
 		if (firstrender)
 		{
 			DataService.loadCulture(user);
-			if (user?.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
+		}
+		if (user?.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
+		{
+			try
 			{
-				try
-				{
-					// await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", user.DefaultLatitude, user.DefaultLongitude, localizer["Your_default_pick_up_drop_off_location_on_the_map up"].ToString(), localizer["Pin_dropped_at"].ToString());
-					await JSRuntime.InvokeVoidAsync("initMapForOnePin", localizer["Your_default_pick_up_drop_off_location_on_the_map up"].ToString(), user.DefaultLatitude, user.DefaultLongitude);
-				}
-				catch (ArgumentException e)
-				{
-					Console.WriteLine($"Map failed to display: {e.Message}");
-				}
+				// await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", user.DefaultLatitude, user.DefaultLongitude, localizer["Your_default_pick_up_drop_off_location_on_the_map up"].ToString(), localizer["Pin_dropped_at"].ToString());
+				await JSRuntime.InvokeVoidAsync("initMapForOnePin", localizer["Your_default_pick_up_drop_off_location_on_the_map up"].ToString(), user.DefaultLatitude, user.DefaultLongitude);
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Map failed to display: {e.Message}");
 			}
 		}
+
 	}
 
 	[CascadingParameter(Name = "currentlyLoggedInUser")]
@@ -246,7 +247,7 @@
 		{
 			Console.WriteLine($"Modal failed to display: {e.Message}");
 		}
-		
+
 	}
 
 	/// <summary>
