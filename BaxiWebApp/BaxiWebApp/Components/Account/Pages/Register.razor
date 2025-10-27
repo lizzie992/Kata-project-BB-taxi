@@ -108,7 +108,7 @@
 				</div>
 				<div class="input-block">
 					<label for="Ad Type">@localizer["I_am_a"]</label>
-					<InputSelect @bind-Value="Input.DefaultAdType" id="DefaultAdType" class="input">
+					<InputSelect @bind-value="Input.DefaultAdType" id="DefaultAdType" class="input">
 						@foreach (var value in Enum.GetValues<AdType>())
 						{
 							if (value == AdType.SelectAll)
@@ -226,20 +226,22 @@
 		user.Contact = Input.Contact;
 		user.DefaultAdType = Input.DefaultAdType;
 		user.DefaultNumberOfSeats = Input.DefaultNumberOfSeats;
-		if (Input.DefaultSpecificRequests is not null)
-		{
-			user.DefaultSpecificRequests = Input.DefaultSpecificRequests;			
-		}
-		if (Input.DefaultPickUpAddress is not null)
+		user.DefaultSpecificRequests = Input.DefaultSpecificRequests;
+		if (Input.DefaultPickUpAddress != "")
 		{
 			user.DefaultPickUpAddress = Input.DefaultPickUpAddress;
 			(user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
+		}
+		else
+		{
+			user.DefaultPickUpAddress = "";
 		}
 		user.AreNotificationsOn = Input.notificationsOn;
 		user.Culture = "de-DE";
 		user.isActive = true;
 		user.isDeleted = false;
-		
+
+
 		// if (user.Email.Contains("admin"))
 		// {
 		// 	UserManager.AddToRoleAsync(user, "Admin");
@@ -250,7 +252,7 @@
 		// }
 
 		var result = await UserManager.CreateAsync(user, Input.Password);
-		await UserManager.AddToRoleAsync(user, "Regular");
+
 
 		if (!result.Succeeded)
 		{
@@ -267,7 +269,7 @@
 			NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
 			new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
 
-
+		await UserManager.AddToRoleAsync(user, "Regular");
 
 		await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
@@ -365,7 +367,7 @@
 		public string? Contact { get; set; } = ""; //not mandatory so it can stay null if someone does not want to give contact info
 
 		[Display(Name = "Type")]
-		public AdType DefaultAdType;
+		public AdType DefaultAdType { get; set; }
 
 		[Display(Name = "Default address")]
 		public string? DefaultPickUpAddress { get; set; } = "";
@@ -374,7 +376,7 @@
 		public int DefaultNumberOfSeats = 1;
 
 		[Display(Name = "Default specific request")]
-		public string? DefaultSpecificRequests { get; set; } = "";
+		public string DefaultSpecificRequests { get; set; } = "";
 
 		[Display(Name = "Notifications")]
 		public bool notificationsOn { get; set; }
