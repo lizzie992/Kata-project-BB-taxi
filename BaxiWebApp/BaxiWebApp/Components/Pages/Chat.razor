@@ -349,7 +349,7 @@
 	string reasonForReporting = "";
 	public Conversation? CurrentConversation;
 	Ad? ad;
-	List<Message> messages;
+	List<Message> messages { get; set; }
 
 	[CascadingParameter(Name = "currentlyLoggedInUser")]
 	private User? currentlyLoggedInUser { get; set; }
@@ -393,7 +393,7 @@
 		{
 			ad = GetAd(CurrentConversation);
 			messages = getMessages(CurrentConversation);
-			StateHasChanged();
+			// StateHasChanged();
 			try
 			{
 				await JSRuntime.InvokeVoidAsync("scrollToBottom");
@@ -415,6 +415,7 @@
 	/// <param name="contactID"></param>
 	public async void OnChatChanged(object? sender, int contactID)
 	{
+		messages = getMessages(CurrentConversation);
 		await InvokeAsync(() =>
 	{
 		StateHasChanged();
@@ -445,6 +446,11 @@
 	{
 		using var context = DbContextFactory.CreateDbContext();
 		CurrentConversation = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).FirstOrDefault(conversation => conversation.ID == ID);
+		if (CurrentConversation is not null)
+		{
+			ad = GetAd(CurrentConversation);
+			messages = getMessages(CurrentConversation);
+		}
 		base.OnParametersSet();
 	}
 
