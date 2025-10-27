@@ -555,7 +555,7 @@
 			string output = message.ToString();
 			foreach (User u in context.Users.ToList<User>())
 			{
-				if (isUserAdmin() && u.Email is not null && currentlyLoggedInUser is not null)
+				if (isUserAdmin(u) && u.Email is not null && currentlyLoggedInUser is not null)
 				{
 					string emailAddress = u.Email.ToString();
 					string subject = localizer["A_conversation_was_just_reported_to_you"];
@@ -568,10 +568,10 @@
 		}
 	}
 
-	public bool isUserAdmin()
+	public bool isUserAdmin(User user)
 	{
 		using var context = DbContextFactory.CreateDbContext();
-		IList<string> list = Task.Run(() => UserManager.GetRolesAsync(currentlyLoggedInUser)).Result;
+		IList<string> list = Task.Run(() => UserManager.GetRolesAsync(user)).Result;
 		if (list.Contains("Admin"))
 		{
 			return true;
