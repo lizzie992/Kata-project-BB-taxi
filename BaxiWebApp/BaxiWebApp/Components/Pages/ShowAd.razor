@@ -333,7 +333,7 @@
 		context.Attach(ad);
 		foreach (User u in context.Users.ToList<User>())
 		{
-			if (isUserAdmin())
+			if (isUserAdmin(u))
 			{
 				if (u.Email is not null && ad is not null)
 				{
@@ -349,10 +349,10 @@
 	}
 
 
-	public bool isUserAdmin()
+	public bool isUserAdmin(User user)
 	{
 		using var context = DbContextFactory.CreateDbContext();
-		IList<string> list = Task.Run(() => UserManager.GetRolesAsync(currentlyLoggedInUser)).Result;
+		IList<string> list = Task.Run(() => UserManager.GetRolesAsync(user)).Result;
 		if (list.Contains("Admin"))
 		{
 			return true;
