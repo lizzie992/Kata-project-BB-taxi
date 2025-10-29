@@ -119,13 +119,13 @@
 	}
 
 
-	protected override void OnAfterRender(bool firstrender)
-	{
-		if (firstrender)
-		{
-			DataService.loadCulture(user);
-		}
-	}
+	// protected override void OnAfterRender(bool firstrender)
+	// {
+	// 	if (firstrender)
+	// 	{
+	// 		DataService.loadCulture(user);
+	// 	}
+	// }
 
 
 	[CascadingParameter(Name = "currentlyLoggedInUser")]
@@ -148,6 +148,7 @@
 	private IQueryable<Ad> FilteredAds;
 	protected override void OnParametersSet()
 	{
+		DataService.loadCulture(user);
 		using (var context = DbContextFactory.CreateDbContext())
 		{
 			FilteredAds = context.Ads.Include(ad => ad.AdOwner).ToList<Ad>().Where(Ad => Ad.AdOwner.Id == user.Id).AsQueryable();
@@ -156,6 +157,11 @@
 	}
 
 
+	protected override bool ShouldRender()
+	{
+		DataService.loadCulture(user);
+		return base.ShouldRender();
+	}
 
 
 	QuickGrid<Ad>? grid;

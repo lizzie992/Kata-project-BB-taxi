@@ -332,7 +332,7 @@
 
 @code {
 
-	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
+	//	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
 	public async void OnCultureChanged(object? sender, CultureInfo culture)
 	{
@@ -374,7 +374,19 @@
 		timerObj = new Timer(1500);
 		timerObj.Elapsed += onTimer;
 		timerObj.AutoReset = false;
+		//set culture from user if avaiable
+		DataService.loadCulture(user);
+
+		//	DataService.CultureChanged += OnCultureChanged;
+
 		base.OnParametersSet();
+	}
+
+
+	protected override bool ShouldRender()
+	{
+		DataService.loadCulture(user);
+		return base.ShouldRender();
 	}
 
 
@@ -383,7 +395,7 @@
 	{
 		if (firstrender)
 		{
-			DataService.loadCulture(user);
+		//	DataService.loadCulture(user);
 			if (user?.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
 			{
 				showMap = true;

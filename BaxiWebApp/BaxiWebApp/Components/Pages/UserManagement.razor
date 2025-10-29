@@ -444,19 +444,25 @@
 	string reasonForDeactivating = "";
 	User? selectedUser;
 
-	// protected async override Task OnParametersSetAsync()
-	// {
-	// 	// await identifyLoggedInUser();
-	// 	base.OnParametersSet();
-	// }
-
-	protected override void OnAfterRender(bool firstrender)
+	protected override void OnParametersSet()
 	{
-		if (firstrender)
-		{
-			DataService.loadCulture(currentlyLoggedInUser);
-		}
+		DataService.loadCulture(currentlyLoggedInUser);
+		base.OnParametersSet();
 	}
+
+	protected override bool ShouldRender()
+	{
+		DataService.loadCulture(currentlyLoggedInUser);
+		return base.ShouldRender();
+	}
+
+	// protected override void OnAfterRender(bool firstrender)
+	// {
+	// 	if (firstrender)
+	// 	{
+	// 		DataService.loadCulture(currentlyLoggedInUser);
+	// 	}
+	// }
 
 	QuickGrid<User>? grid;
 

@@ -83,7 +83,7 @@ namespace BaxiWebApp.Data
             {
                 var selectedCulture = user.Culture.ToString();
                 setCulture(selectedCulture);
-                CultureChanged?.Invoke(this, CultureInfo.CurrentUICulture);
+        //        CultureChanged?.Invoke(this, CultureInfo.CurrentUICulture);
             }
         }
 

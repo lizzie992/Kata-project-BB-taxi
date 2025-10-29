@@ -163,18 +163,18 @@
 	{
 		if (firstrender)
 		{
-			DataService.loadCulture(currentlyLoggedInUser);
-		}
-		if (recommendedAds.Count > 0)
-		{
-			try
+			// DataService.loadCulture(currentlyLoggedInUser);
+			if (recommendedAds.Count > 0)
 			{
-				await JSRuntime.InvokeVoidAsync("initMapForAdList", recommendedAds, localizer["Beautiful_baierbrunn"].ToString(), localizer["ToBaierbrunn"].ToString(), localizer["FromBaierbrunn"].ToString(), localizer["No_default_type"].ToString(), localizer["Driver"].ToString(), localizer["Passenger"].ToString(), localizer["Show_me_the_ad"].ToString(), localizer["Direction"].ToString(), localizer["Ad_type"].ToString(), localizer["Pick_up_date_and_time"].ToString(), localizer["From/to_this_address"].ToString(), localizer["Number_of_seats"].ToString(), localizer["Show_me_the_ad"].ToString());
+				try
+				{
+					await JSRuntime.InvokeVoidAsync("initMapForAdList", recommendedAds, localizer["Beautiful_baierbrunn"].ToString(), localizer["ToBaierbrunn"].ToString(), localizer["FromBaierbrunn"].ToString(), localizer["No_default_type"].ToString(), localizer["Driver"].ToString(), localizer["Passenger"].ToString(), localizer["Show_me_the_ad"].ToString(), localizer["Direction"].ToString(), localizer["Ad_type"].ToString(), localizer["Pick_up_date_and_time"].ToString(), localizer["From/to_this_address"].ToString(), localizer["Number_of_seats"].ToString(), localizer["Show_me_the_ad"].ToString());
 
-			}
-			catch (ArgumentException e)
-			{
-				Console.WriteLine($"Map failed to display: {e.Message}");
+				}
+				catch (ArgumentException e)
+				{
+					Console.WriteLine($"Map failed to display: {e.Message}");
+				}
 			}
 		}
 	}
@@ -211,11 +211,15 @@
 	protected override async Task OnParametersSetAsync()
 	{
 		recommendedAds = await DataService.collectRecommendedAds(CurrentAd, currentlyLoggedInUser);
-		// await identifyLoggedInUser();
+		DataService.loadCulture(currentlyLoggedInUser);
 		base.OnParametersSet();
 	}
 
-	
+	protected override bool ShouldRender()
+	{
+		DataService.loadCulture(currentlyLoggedInUser);
+		return base.ShouldRender();
+	}
 
 	// public User? currentlyLoggedInUser;
 	// /// <summary>

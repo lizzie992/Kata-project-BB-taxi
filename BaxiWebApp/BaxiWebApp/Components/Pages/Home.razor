@@ -183,7 +183,15 @@
 	protected override async Task OnParametersSetAsync()
 	{
 		recommendedAds = await getRecommendedAds();
+		DataService.loadCulture(currentlyLoggedInUser);
 		base.OnParametersSet();
+	}
+
+
+	protected override bool ShouldRender()
+	{
+		DataService.loadCulture(currentlyLoggedInUser);
+		return base.ShouldRender();
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstrender)

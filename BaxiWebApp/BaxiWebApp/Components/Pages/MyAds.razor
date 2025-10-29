@@ -160,13 +160,13 @@
 	private User? user { get; set; }
 
 
-	protected override void OnAfterRender(bool firstrender)
-	{
-		if (firstrender)
-		{
-			DataService.loadCulture(user);
-		}
-	}
+	// protected override void OnAfterRender(bool firstrender)
+	// {
+	// 	if (firstrender)
+	// 	{
+	// 		DataService.loadCulture(user);
+	// 	}
+	// }
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
@@ -179,10 +179,17 @@
 		});
 	}
 
+	protected override bool ShouldRender()
+	{
+		DataService.loadCulture(user);
+		return base.ShouldRender();
+	}
+
 
 	private IQueryable<Ad> FilteredAds;
 	protected override void OnParametersSet()
 	{
+		DataService.loadCulture(user);
 		using (var context = DbContextFactory.CreateDbContext())
 		{
 			FilteredAds = context.Ads.Include(ad => ad.AdOwner).ToList<Ad>().Where(Ad => Ad.AdOwner.Id == user.Id).AsQueryable();

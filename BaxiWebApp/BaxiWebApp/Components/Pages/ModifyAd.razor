@@ -444,8 +444,15 @@
 	// }
 
 
+	protected override bool ShouldRender()
+	{
+		DataService.loadCulture(currentlyLoggedInUser);
+		return base.ShouldRender();
+	}
+
 	protected override async Task OnParametersSetAsync()
 	{
+		DataService.loadCulture(currentlyLoggedInUser);
 		using var context = DbContextFactory.CreateDbContext();
 		ad = await context.Ads.FirstOrDefaultAsync(a => a.ID == ID);
 		timerObj = new Timer(1500);
@@ -459,7 +466,7 @@
 	{
 		if (firstrender)
 		{
-			DataService.loadCulture(currentlyLoggedInUser);
+			// DataService.loadCulture(currentlyLoggedInUser);
 			using var context = DbContextFactory.CreateDbContext();
 			ad = await context.Ads.FirstOrDefaultAsync(a => a.ID == ID);
 			if (ad is not null)

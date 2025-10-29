@@ -23,12 +23,15 @@
 
 		<main>
 			<div class="top-row px-4">
-				<div class="languageSelection">
-					<select @onchange="(e) => DataService.ChangeCulture(e, currentlyLoggedInUser)">
-						<option value="de-DE">@localizer["German"]</option>
-						<option value="en-GB">@localizer["English"]</option>
-					</select>
-				</div>
+				@if (currentlyLoggedInUser is not null)
+				{
+					<div class="languageSelection">
+						<InputSelect @bind-Value="currentlyLoggedInUser.Culture" @onchange="(e) => DataService.ChangeCulture(e, currentlyLoggedInUser)">
+							<option value="de-DE">@localizer["German"]</option>
+							<option value="en-GB">@localizer["English"]</option>
+						</InputSelect>
+					</div>
+				}
 				@* <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a> *@
 			</div>
 

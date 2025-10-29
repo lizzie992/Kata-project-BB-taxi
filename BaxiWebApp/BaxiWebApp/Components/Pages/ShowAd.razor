@@ -44,7 +44,7 @@
 	{
 		<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
 	}
-	else
+	@if (currentlyLoggedInUser is not null)
 	{
 		<div class="row">
 			<div class="col" align="center">
@@ -247,15 +247,21 @@
 		}
 	}
 
-	// protected override async Task OnParametersSetAsync()
-	// {
-	// 	// await identifyLoggedInUser();
-	// 	base.OnParametersSet();
-	// }
+	protected override void OnParametersSet()
+	{
+		DataService.loadCulture(currentlyLoggedInUser);
+		base.OnParametersSet();
+	}
 
 	[CascadingParameter(Name = "currentlyLoggedInUser")]
 	private User? currentlyLoggedInUser { get; set; }
 
+
+	protected override bool ShouldRender()
+	{
+		DataService.loadCulture(currentlyLoggedInUser);
+		return base.ShouldRender();
+	}
 
 	public string message = "";
 
@@ -274,13 +280,13 @@
 	// }
 
 
-	protected override void OnAfterRender(bool firstrender)
-	{
-		if (firstrender)
-		{
-			DataService.loadCulture(currentlyLoggedInUser);
-		}
-	}
+	// protected override void OnAfterRender(bool firstrender)
+	// {
+	// 	if (firstrender)
+	// 	{
+	// 		DataService.loadCulture(currentlyLoggedInUser);
+	// 	}
+	// }
 
 	/// <summary>
 	/// First checks if there is already an existing conversation between the 2 users (the currently logged in user and the ad owner) connected to this ad, if there is, it redirects the user to that chat conversation

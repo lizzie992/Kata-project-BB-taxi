@@ -174,20 +174,21 @@
 	{
 		if (firstrender)
 		{
-			DataService.loadCulture(user);
-		}
-		if (user?.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
-		{
-			try
+			// DataService.loadCulture(user);
+			if (user?.DefaultLatitude >= 1 && user.DefaultLongitude >= 1)
 			{
-				// await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", user.DefaultLatitude, user.DefaultLongitude, localizer["Your_default_pick_up_drop_off_location_on_the_map up"].ToString(), localizer["Pin_dropped_at"].ToString());
-				await JSRuntime.InvokeVoidAsync("initMapForOnePin", localizer["Your_default_pick_up_drop_off_location_on_the_map up"].ToString(), user.DefaultLatitude, user.DefaultLongitude);
-			}
-			catch (ArgumentException e)
-			{
-				Console.WriteLine($"Map failed to display: {e.Message}");
+				try
+				{
+					// await JSRuntime.InvokeVoidAsync("initMapForCreatingAd", user.DefaultLatitude, user.DefaultLongitude, localizer["Your_default_pick_up_drop_off_location_on_the_map up"].ToString(), localizer["Pin_dropped_at"].ToString());
+					await JSRuntime.InvokeVoidAsync("initMapForOnePin", localizer["Your_default_pick_up_drop_off_location_on_the_map up"].ToString(), user.DefaultLatitude, user.DefaultLongitude);
+				}
+				catch (ArgumentException e)
+				{
+					Console.WriteLine($"Map failed to display: {e.Message}");
+				}
 			}
 		}
+		
 
 	}
 
@@ -208,11 +209,17 @@
 	// 	user = await UserManager.GetUserAsync(claims);
 	// }
 
-	// protected override async Task OnParametersSetAsync()
-	// {
-	// 	// await identifyLoggedInUser();
-	// 	base.OnParametersSet();
-	// }
+	protected override void OnParametersSet()
+	{
+		DataService.loadCulture(user);
+		base.OnParametersSet();
+	}
+
+	protected override bool ShouldRender()
+	{
+		DataService.loadCulture(user);
+		return base.ShouldRender();
+	}
 
 	// protected override async Task OnAfterRenderAsync(bool firstrender)
 	// {
