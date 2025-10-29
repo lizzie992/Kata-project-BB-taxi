@@ -54,6 +54,7 @@
 	protected override async Task OnParametersSetAsync()
 	{
 		await identifyLoggedInUser();
+		DataService.loadCulture(currentlyLoggedInUser);
 		base.OnParametersSet();
 	}
 
@@ -90,12 +91,18 @@
 		StateHasChanged();
 	}
 
-	protected override void OnAfterRender(bool firstrender)
+	// protected override void OnAfterRender(bool firstrender)
+	// {
+	// 	if (firstrender)
+	// 	{
+	// 		DataService.loadCulture(currentlyLoggedInUser);
+	// 	}
+	// }
+
+	protected override bool ShouldRender()
 	{
-		if (firstrender)
-		{
-			DataService.loadCulture(currentlyLoggedInUser);
-		}
+		DataService.loadCulture(currentlyLoggedInUser);
+		return base.ShouldRender();
 	}
 
 }

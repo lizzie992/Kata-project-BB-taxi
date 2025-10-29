@@ -47,7 +47,7 @@ namespace BaxiWebApp.Data
             var selectedCulture = e.Value?.ToString();
             if (selectedCulture is not null)
             {
-                setCulture(selectedCulture);
+                setCulture(selectedCulture, user);
                 CultureChanged?.Invoke(this, CultureInfo.CurrentUICulture);
                 if (user is not null)
                 {
@@ -65,12 +65,20 @@ namespace BaxiWebApp.Data
         /// Changes the current culture to a specific value
         /// </summary>
         /// <param name="culture">string</param>
-        public void setCulture(string culture)
+        public void setCulture(string culture, User user)
         {
             CultureInfo.CurrentCulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
                            .First(c => c.Name == culture);
             CultureInfo.CurrentUICulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
             .First(c => c.Name == culture);
+            if (user is not null)
+            {
+                using var context = _dbcFactory.CreateDbContext();
+                context.Update(user);
+                user.Culture = culture.ToString();
+                context.SaveChanges();
+
+            }
         }
 
         /// <summary>
@@ -82,7 +90,7 @@ namespace BaxiWebApp.Data
             if (user is not null)
             {
                 var selectedCulture = user.Culture.ToString();
-                setCulture(selectedCulture);
+                setCulture(selectedCulture, user);
         //        CultureChanged?.Invoke(this, CultureInfo.CurrentUICulture);
             }
         }
