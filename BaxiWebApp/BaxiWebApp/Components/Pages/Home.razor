@@ -23,7 +23,7 @@
 @inherits LayoutComponentBase
 @using BaxiWebApp.Data
 @inject IDbContextFactory<BaxiWebAppContext> DbContextFactory
-
+@using System.Text;
 
 
 <body>
@@ -39,8 +39,7 @@
 		<iframe class="framed-map"
 				loading="lazy"
 				allowfullscreen
-				src="https://www.google.com/maps/embed/v1/place?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
-    &q=Baierbrunn+Germany&zoom=9">
+				src=@googleMapsLink>
 		</iframe>
 	</div>
 </body>
@@ -164,6 +163,8 @@
 
 @code {
 
+	string APIKey = Environment.GetEnvironmentVariable("Google_Maps_API_Key");
+	string googleMapsLink = "";
 
 	List<Ad> recommendedAds;
 
@@ -180,10 +181,17 @@
 	});
 	}
 
+	
+
 	protected override async Task OnParametersSetAsync()
 	{
 		recommendedAds = await getRecommendedAds();
 		DataService.loadCulture(currentlyLoggedInUser);
+		StringBuilder link = new StringBuilder();
+		link.Append("https://www.google.com/maps/embed/v1/place?key=");
+		link.Append(APIKey);
+		link.Append("&q=Baierbrunn+Germany&zoom=9");
+		googleMapsLink = link.ToString();
 		base.OnParametersSet();
 	}
 
