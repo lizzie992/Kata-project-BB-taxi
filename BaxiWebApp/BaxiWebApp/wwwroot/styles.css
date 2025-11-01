@@ -11,6 +11,12 @@ body {
     background-color: #e6f0f9;
     color: #0066B2;
     width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+html, body {
+    overflow-x: hidden;
 }
 
 h1,
@@ -567,7 +573,6 @@ h3 {
     .message {
         color: #0066B2;
         text-align: left;
-        white-space: pre;
     }
 
     .timestamp {
@@ -594,6 +599,11 @@ h3 {
         padding: 20px;
         gap: 20px; /* Adds spacing between all items */
         overflow: hidden;
+        max-width: 100vw;
+    }
+
+    .page {
+        max-width: 100vw;
     }
 
     .row-chat-mobile {
@@ -660,6 +670,7 @@ h3 {
         max-height: 80vh;
         display: grid;
         grid-template-rows: 10% 80% 10%;
+        max-width: 60vw;
     }
 
     .actions-for-chat {
@@ -788,7 +799,7 @@ h3 {
     .message {
         color: #0066B2;
         text-align: left;
-        white-space: pre;
+        overflow-wrap: break-word;
     }
 
     .timestamp {
