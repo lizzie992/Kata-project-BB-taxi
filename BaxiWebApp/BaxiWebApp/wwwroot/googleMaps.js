@@ -48,7 +48,7 @@
       <li>${pickUp} ${ad.pickUpDateAndTime}</li>
       <li>${location} ${ad.pickUpDropOffLocation}</li>
       <li>${seats} ${ad.numberOfSeats}</li>
-      <li><a href="http://localhost:5049/ShowAd/${ad.id}" target="_blank">${clickHere}</a></li>
+      <li><a href="https://baxi.taxi/ShowAd/${ad.id}" target="_blank">${clickHere}</a></li>
     </ul>
   </div>
 `;

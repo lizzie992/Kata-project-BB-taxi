@@ -1349,7 +1349,7 @@ namespace BaxiWebApp.Components.Pages.Res {
         ///{2} 
         ///
         ///Open the ad here:  
-        ///http://localhost:5049/ShowAd/{3}.
+        ///https://baxi.taxi/ShowAd/{3}.
         /// </summary>
         public static string Please_check_out_the_following_ad_below_that__0__reported_to_you__1__the_reason_for_reporting_is__2__open_the_ad_here_http_localhost_5049_ShowAd__3_ {
             get {
@@ -1860,7 +1860,7 @@ namespace BaxiWebApp.Components.Pages.Res {
         ///Specific requests: {6} 
         ///
         ///Open the ad here:   
-        ///http://localhost:5049/ShowAd/{7}.
+        ///https://baxi.taxi/ShowAd/{7}.
         /// </summary>
         public static string This_ad_might_be_interesting_for_you_ad_owner__0__ad_type__1__ad_direction__2__address__3__pick_up_date_and_time__4__number_of_seats__5__specific_requests__6__open_the_ad_here_http_localhost_5049_ShowAd__7_ {
             get {
@@ -2074,7 +2074,7 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You just received a new message from {0} ! Go and check it out: http://localhost:5049/Chat/{1}.
+        ///   Looks up a localized string similar to You just received a new message from {0} ! Go and check it out: https://baxi.taxi/Chat/{1}.
         /// </summary>
         public static string You_just_received_a_new_message_from__0__Go_and_check_it_out_http_localhost_5049_Chat__1_ {
             get {

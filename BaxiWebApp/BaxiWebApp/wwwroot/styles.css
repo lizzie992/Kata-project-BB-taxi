@@ -21,7 +21,9 @@ html, body {
 
 h1,
 h2,
-h3 {
+h3,
+PageTitle,
+p {
     color: #0066B2;
 }
 

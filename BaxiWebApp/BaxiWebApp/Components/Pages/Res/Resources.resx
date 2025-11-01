@@ -710,7 +710,7 @@ Welcome aboard!</value>
     <value>New password</value>
   </data>
   <data name="You_just_received_a_new_message_from_{0}_Go_and_check_it_out_http_localhost_5049_Chat_{1}" xml:space="preserve">
-    <value>You just received a new message from {0} ! Go and check it out: http://localhost:5049/Chat/{1}</value>
+    <value>You just received a new message from {0} ! Go and check it out: https://baxi.taxi/Chat/{1}</value>
   </data>
   <data name="You_received_a_new_message" xml:space="preserve">
     <value>You received a new message!</value>
@@ -755,7 +755,7 @@ The reason for reporting is:
 {2} 
 
 Open the ad here:  
-http://localhost:5049/ShowAd/{3}</value>
+https://baxi.taxi/ShowAd/{3}</value>
   </data>
   <data name="An_ad_was_just_reported_to_you" xml:space="preserve">
     <value>An ad was just reported to you</value>
@@ -796,7 +796,7 @@ Number of seats: {5}
 Specific requests: {6} 
 
 Open the ad here:   
-http://localhost:5049/ShowAd/{7}</value>
+https://baxi.taxi/ShowAd/{7}</value>
   </data>
   <data name="Check_out_this_ad" xml:space="preserve">
     <value>Check out this ad</value>

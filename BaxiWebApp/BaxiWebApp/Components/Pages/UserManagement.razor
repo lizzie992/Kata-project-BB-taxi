@@ -151,7 +151,7 @@
 							<TemplateColumn Title=@localizer["Make_user_an_admin"] Context="User">
 								@if (User.isActive == true && !isUserAdmin(User))
 								{
-									<button @onclick="() => showPopUpForMakeUserAdmin(User)">@localizer["Give_this_user_admin_rights"]</button>
+									<button @onclick="() => showPopUpForMakeUserAdmin(User)">@localizer["Admin"]</button>
 								}
 							</TemplateColumn>
 							<TemplateColumn Title=@localizer["Warning"] Context="User">
@@ -221,7 +221,7 @@
 							</table>
 							@if (user.isActive == true && !isUserAdmin(user))
 							{
-								<button @onclick="() => showPopUpForMakeUserAdmin(user)">@localizer["Give_this_user_admin_rights"]</button>
+								<button @onclick="() => showPopUpForMakeUserAdmin(user)">@localizer["Admin"]</button>
 							}
 							@if (user.isActive == true)
 							{

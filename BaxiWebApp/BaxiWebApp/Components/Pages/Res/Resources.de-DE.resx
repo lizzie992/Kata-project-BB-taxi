@@ -472,7 +472,7 @@
     <value>Warnung:</value>
   </data>
   <data name="Give_a_warning" xml:space="preserve">
-    <value>Geben Sie eine Warnung!</value>
+    <value>Warnung</value>
   </data>
   <data name="Change_status" xml:space="preserve">
     <value>Status ändern:</value>
@@ -711,7 +711,7 @@ Schön, dass Sie dabei sind!</value>
     <value>Neues Passwort</value>
   </data>
   <data name="You_just_received_a_new_message_from_{0}_Go_and_check_it_out_http_localhost_5049_Chat_{1}" xml:space="preserve">
-    <value>Sie haben gerade eine neue Nachricht von {0} erhalten! Schauen Sie nach: http://localhost:5049/Chat/{1}</value>
+    <value>Sie haben gerade eine neue Nachricht von {0} erhalten! Schauen Sie nach: https://baxi.taxi/Chat/{1}</value>
   </data>
   <data name="You_received_a_new_message" xml:space="preserve">
     <value>Sie haben eine neue Nachricht erhalten!</value>
@@ -758,7 +758,7 @@ Der Grund für die Meldung ist:
 {2}  
 
 Öffnen Sie die Anzeige hier:  
-http://localhost:5049/ShowAd/{3}</value>
+https://baxi.taxi/ShowAd/{3}</value>
   </data>
   <data name="An_ad_was_just_reported_to_you" xml:space="preserve">
     <value>Eine Anzeige wurde Ihnen gerade gemeldet</value>
@@ -804,7 +804,7 @@ Anzahl der Plätze: {5}
 Besondere Wünsche: {6}  
 
 Öffnen Sie die Anzeige hier:  
-http://localhost:5049/ShowAd/{7}</value>
+https://baxi.taxi/ShowAd/{7}</value>
   </data>
   <data name="Check_out_this_ad" xml:space="preserve">
     <value>Schau dir diese Anzeige an</value>
