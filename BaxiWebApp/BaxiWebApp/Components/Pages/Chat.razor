@@ -94,11 +94,9 @@
 							<div class="actions-for-chat">
 								<div class="ad-description">@localizer["In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers", DataService.showUserNameWithStatus(ad.AdOwner), localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats]</div>
 								<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
-								@* <button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button> *@
 								<button type="button" data-bs-toggle="modal" data-bs-target="#deleteConvoModal">
 									@localizer["Delete_conversation"]
 								</button>
-								@* <button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button> *@
 								<button type="button" data-bs-toggle="modal" data-bs-target="#reportConvoModal">
 									@localizer["Report_conversation"]
 								</button>
@@ -205,11 +203,9 @@
 						<div class="actions-for-chat">
 							<div class="ad-description">@localizer["In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers", DataService.showUserNameWithStatus(ad.AdOwner), localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats]</div>
 							<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
-							@* <button @onclick="() => showPopUpForDeletingConversation(CurrentConversation)">@localizer["Delete_conversation"]</button> *@
 							<button type="button" data-bs-toggle="modal" data-bs-target="#deleteConvoModal">
 								@localizer["Delete_conversation"]
 							</button>
-							@* <button @onclick="() => showPopUpForReportConversation(CurrentConversation)">@localizer["Report_conversation"]</button> *@
 							<button type="button" data-bs-toggle="modal" data-bs-target="#reportConvoModal">
 								@localizer["Report_conversation"]
 							</button>
@@ -279,23 +275,6 @@
 	</div>
 </div>
 
-@* @if (popUpForDeletingConversation)
-{
-	<div class="modal" tabindex="-1" style="display:block" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h3 class="modal-title">@localizer["Delete_conversation"]</h3>
-					<button type="button" class="close" @onclick="closePopUpForDeletingConversation"> <span area-hidden="true">X</span></button>
-				</div>
-				<div class="modal-body">
-					<p>@localizer["Are_you_sure_you_want_to_delete_it"]</p>
-					<button type="button" class="close" @onclick="() => DeleteConversation(CurrentConversation)">@localizer["Delete_conversation"]</button>
-				</div>
-			</div>
-		</div>
-	</div>
-} *@
 
 @* //new pop up for reporting convos: *@
 <div class="modal fade" id="reportConvoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -316,24 +295,6 @@
 	</div>
 </div>
 
-@* @if (popUpForReportConversation)
-{
-	<div class="modal" tabindex="-1" style="display:block" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h3 class="modal-title">@localizer["Report_this_conversations_to_the_admins"]</h3>
-					<button type="button" class="close" @onclick="closePopUpForReportConversation"> <span area-hidden="true">X</span></button>
-				</div>
-				<div class="modal-body">
-					<p>@localizer["Please_write_here_the_reason_for_the_report"]</p>
-					<InputText @bind-Value="reasonForReporting"></InputText>
-					<button type="button" class="close" @onclick="() => ReportConversation(CurrentConversation, currentlyLoggedInUser, reasonForReporting)">@localizer["Report_conversation"]</button>
-				</div>
-			</div>
-		</div>
-	</div>
-} *@
 
 
 
@@ -393,13 +354,11 @@
 	{
 		if (firstrender)
 		{
-			// DataService.loadCulture(currentlyLoggedInUser);	
 		}
 		if (CurrentConversation is not null)
 		{
 			ad = GetAd(CurrentConversation);
 			messages = getMessages(CurrentConversation);
-			// StateHasChanged();
 			try
 			{
 				await JSRuntime.InvokeVoidAsync("scrollToBottom");
@@ -463,29 +422,7 @@
 
 
 
-	// /// <summary>
-	// /// Identifies the user who is currently logged in
-	// /// </summary>
-	// /// <returns>User</returns>
-	// public User? currentlyLoggedInUser;
-	// public async Task IdentifyLoggedInUser()
-	// {
-	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-
-	// 	var claims = authState.User;
-
-	// 	currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
-	// }
-
-	// public Conversation? CurrentConversation
-	// {
-	// 	get
-	// 	{
-	// 		using var context = DbContextFactory.CreateDbContext();
-	// 		var result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).FirstOrDefault(conversation => conversation.ID == ID);
-	// 		return result;
-	// 	}
-	// }
+	
 
 	public List<Conversation>? ConvoList
 	{

@@ -187,7 +187,7 @@
 	{
 		//read url parameter culture string
 
-		//set locaclizer language
+		//set localizer language
 
 		base.OnParametersSet();
 	}
@@ -241,15 +241,6 @@
 		user.isActive = true;
 		user.isDeleted = false;
 
-
-		// if (user.Email.Contains("admin"))
-		// {
-		// 	UserManager.AddToRoleAsync(user, "Admin");
-		// }
-		// else
-		// {
-		// 	UserManager.AddToRoleAsync(user, "Regular");
-		// }
 
 		var result = await UserManager.CreateAsync(user, Input.Password);
 

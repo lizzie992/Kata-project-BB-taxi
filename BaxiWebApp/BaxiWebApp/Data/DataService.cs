@@ -90,9 +90,7 @@ namespace BaxiWebApp.Data
             if (user is not null)
             {
                 var selectedCulture = user.Culture.ToString();
-                setCulture(selectedCulture, user);
-        //        CultureChanged?.Invoke(this, CultureInfo.CurrentUICulture);
-            }
+                setCulture(selectedCulture, user);            }
         }
 
 
@@ -196,20 +194,6 @@ namespace BaxiWebApp.Data
                     }
                 }
             }
-
-            //foreach (Step step1 in steps1)
-            //{
-            //    foreach (Step step2 in steps2)
-            //    {
-            //        if (step1.StartLocation.Latitude == step2.StartLocation.Latitude &&
-            //        step1.StartLocation.Longitude == step2.StartLocation.Longitude &&
-            //        step1.EndLocation.Latitude == step2.EndLocation.Latitude &&
-            //        step1.EndLocation.Longitude == step2.EndLocation.Longitude)
-            //        {
-            //            return true;
-            //        }
-            //    }
-            //}
 
             return false;
         }

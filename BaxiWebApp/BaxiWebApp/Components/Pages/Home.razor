@@ -102,61 +102,6 @@
 		</div>
 	</div>
 
-
-	{
-		@* <div class="modal" tabindex="-1" style="display:block" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h3 class="modal-title">@localizer["Have_you_seen_these_ads"]</h3>
-						<button type="button" class="close" @onclick="ClosePopUpRecommendedAds"> <span area-hidden="true">X</span></button>
-					</div>
-					<div class="modal-body">
-						<p>@localizer["These_might_be_interesting_for_you"]</p>
-						<div class="card-container">
-							@foreach (var ad in recommendedAds)
-							{
-								<div class="card">
-									<table>
-										<tr>
-											<th style="text-align: left">@localizer["Ad_type"]</th>
-											<th style="text-align: right">@localizer[@ad.AdType.ToString()]</th>
-										</tr>
-										<tr>
-											<th style="text-align: left">@localizer["Ad_owner"]</th>
-											<th style="text-align: right">@DataService.showUserNameWithStatus(ad.AdOwner)</th>
-										</tr>
-										<tr>
-											<th style="text-align: left">@localizer["Ad_direction"]</th>
-											<th style="text-align: right">@localizer[ad.AdDirection.ToString()]</th>
-										</tr>
-										<tr>
-											<th style="text-align: left">@localizer["From/to_this_address"]</th>
-											<th style="text-align: right">@ad.PickUpDropOffLocation</th>
-										</tr>
-										<tr>
-											<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
-											<th style="text-align: right">@ad.PickUpDateAndTime.ToString("g")</th>
-										</tr>
-										<tr>
-											<th style="text-align: left">@localizer["Number_of_seats"]</th>
-											<th style="text-align: right">@ad.NumberOfSeats</th>
-										</tr>
-										<tr>
-											<th style="text-align: left">@localizer["Specific_requests"]</th>
-											<th style="text-align: right">@ad.SpecificRequests</th>
-										</tr>
-									</table>
-									<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
-								</div>
-							}
-						</div>
-						<button type="button" style="margin: 25px; position: center" class="close" @onclick="navigateToRecommendedAds">@localizer["Show_me_all_recommendations"]</button>
-					</div>
-				</div>
-			</div>
-		</div> *@
-	}
 }
 
 
@@ -218,20 +163,7 @@
 
 
 
-	@* public static User? currentlyLoggedInUser;
-	/// <summary>
-	/// Identifies the user who is currently logged in
-	/// </summary>
-	/// <returns>User</returns>
-	public async Task identifyLoggedInUser()
-	{
-		var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-		var claims = authState.User;
-
-		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
-
-	} *@
 
 
 	bool showPopUpRecommendedAds = true;

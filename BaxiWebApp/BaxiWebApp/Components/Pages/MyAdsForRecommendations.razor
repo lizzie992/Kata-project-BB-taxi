@@ -119,31 +119,12 @@
 	}
 
 
-	// protected override void OnAfterRender(bool firstrender)
-	// {
-	// 	if (firstrender)
-	// 	{
-	// 		DataService.loadCulture(user);
-	// 	}
-	// }
 
 
 	[CascadingParameter(Name = "currentlyLoggedInUser")]
 	private User? user { get; set; }
 
-	// public User? user;
-	// /// <summary>
-	// /// Identifies the user who is currently logged in
-	// /// </summary>
-	// /// <returns>User</returns>
-	// public async Task identifyLoggedInUser()
-	// {
-	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-	// 	var claims = authState.User;
-
-	// 	user = await UserManager.GetUserAsync(claims);
-	// }
 
 	private IQueryable<Ad> FilteredAds;
 	protected override void OnParametersSet()

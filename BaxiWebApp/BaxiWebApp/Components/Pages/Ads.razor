@@ -171,9 +171,6 @@
 										@if (currentlyLoggedInUser is not null && isUserAdmin())
 										{
 											<button @onclick="() => showPopUpForDeletingAd(ad)">@localizer["Delete_ad"]</button>
-											@* <button type="button" data-bs-toggle="modal" data-bs-target="#deleteAdModal">
-												@localizer["Delete_ad"]
-											</button> *@
 										}
 									</div>
 								}
@@ -201,26 +198,6 @@
 					</div>
 				</div>
 
-				@* @if (popUpForDeletingAd)
-				{
-					<div class="modal" tabindex="-1" style="display:block" role="dialog">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h3 class="modal-title">@localizer["Delete_ad"]</h3>
-									<button type="button" class="close" @onclick="closePopUpForDeletingAd"> <span area-hidden="true">X</span></button>
-								</div>
-								<div class="modal-body">
-									<p>@localizer["Please_write_here_the_reason_for_deleting_this_ad"]</p>
-									<InputText class="inputText" @bind-Value="reasonForDeleting"></InputText>
-									<button type="button" class="close" @onclick="() => deleteAd(selectedAd, reasonForDeleting)">@localizer["Delete_ad"]</button>
-								</div>
-							</div>
-						</div>
-					</div>
-
-				}
- *@
 
 
 				//new pop up for new conversation starter:
@@ -243,25 +220,6 @@
 				</div>
 
 
-				@* @if (popUpForNewConversation)
-				{
-					<div class="modal" tabindex="-1" style="display:block" role="dialog">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h3 class="modal-title">@localizer["Please_write_your_first_message_here"]</h3>
-									<button type="button" class="close" @onclick="closePopUpForNewConversation"> <span area-hidden="true">X</span></button>
-								</div>
-								<div class="modal-body">
-									<p>@localizer["Your_first_message"]</p>
-									<InputText class="inputText" @bind-Value="message"></InputText>
-									<button type="button" class="close" @onclick="() => createChat(selectedAd)">@localizer["Send"]</button>
-								</div>
-							</div>
-						</div>
-					</div>
-
-				} *@
 
 			}
 
@@ -275,7 +233,6 @@
 	[CascadingParameter(Name = "currentlyLoggedInUser")]
 	private User? currentlyLoggedInUser { get; set; }
 
-	// public static List<Ad> AdList = new List<Ad>();
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
@@ -351,7 +308,6 @@
 	{
 		if (firstrender)
 		{
-			// DataService.loadCulture(currentlyLoggedInUser);
 			if (adListForMap.Count > 0)
 			{
 				try
@@ -447,7 +403,6 @@
 		else        //if not found, create new conversasion (+id)
 		{
 			selectedAd = ad;
-			// showPopUpForNewConversation(ad);
 
 			try
 			{
@@ -476,20 +431,6 @@
 	}
 
 
-
-	// public User? currentlyLoggedInUser;
-	// /// <summary>
-	// /// Identifies the user who is currently logged in
-	// /// </summary>
-	// /// <returns>User</returns>
-	// public async Task identifyLoggedInUser()
-	// {
-	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-
-	// 	var claims = authState.User;
-
-	// 	currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
-	// }
 
 	/// <summary>
 	/// Redirects the user to a new page showing the one specific ad they want to see
@@ -561,25 +502,6 @@
 
 
 
-	// bool popUpForNewConversation = false;
-
-	/// <summary>
-	/// Closes pop up window regarding new conversation
-	/// </summary>
-	// public void closePopUpForNewConversation()
-	// {
-	// 	popUpForNewConversation = false;
-	// 	message = "";
-	// }
-
-	/// <summary>
-	/// Opens pop up window regarding new conversation
-	/// </summary>
-	// public void showPopUpForNewConversation(Ad ad)
-	// {
-	// 	selectedAd = ad;
-	// 	popUpForNewConversation = true;
-	// }
-
+	
 
 }

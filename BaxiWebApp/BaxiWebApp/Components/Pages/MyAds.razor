@@ -88,9 +88,6 @@
 							</table>
 							<button @onclick="() => ModifyAd(ad)">@localizer["Modify_ad"]</button>
 							<button @onclick="() => showPopUpForDeletingAd(ad)">@localizer["Delete_ad"]</button>
-							@* <button type="button" data-bs-toggle="modal" data-bs-target="#deleteAdModal">
-								@localizer["Delete_ad"]
-							</button> *@
 						</div>
 					}
 				</div>
@@ -115,24 +112,6 @@
 			</div>
 		</div>
 
-		@* @if (popUpForDeletingAd)
-		{
-			<div class="modal" tabindex="-1" style="display:block" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h3 class="modal-title">@localizer["Delete_ad"]</h3>
-							<button type="button" class="close" @onclick="closePopUpForDeletingAd"> <span area-hidden="true">X</span></button>
-						</div>
-						<div class="modal-body">
-							<p>@localizer["Are_you_sure_you_want_to_delete_it"]</p>
-							<button type="button" class="close" @onclick="() => DeleteAd(selectedAd)">@localizer["Delete_ad"]</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		} *@
 
 	</Authorized>
 </AuthorizeView>
@@ -142,31 +121,10 @@
 	int adId { get; set; }
 
 
-	// public User? user;
-	// /// <summary>
-	// /// Identifies the user who is currently logged in
-	// /// </summary>
-	// /// <returns>User</returns>
-	// public async Task identifyLoggedInUser()
-	// {
-	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-
-	// 	var claims = authState.User;
-
-	// 	user = await UserManager.GetUserAsync(claims);
-	// }
 
 	[CascadingParameter(Name = "currentlyLoggedInUser")]
 	private User? user { get; set; }
 
-
-	// protected override void OnAfterRender(bool firstrender)
-	// {
-	// 	if (firstrender)
-	// 	{
-	// 		DataService.loadCulture(user);
-	// 	}
-	// }
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 

@@ -163,7 +163,6 @@
 	{
 		if (firstrender)
 		{
-			// DataService.loadCulture(currentlyLoggedInUser);
 			if (recommendedAds.Count > 0)
 			{
 				try
@@ -199,13 +198,6 @@
 		}
 	}
 
-	// public Ad? getCurrentAd(int ID)
-	// {
-	// 	using var context = DbContextFactory.CreateDbContext();
-	// 	var result = context.Ads.FirstOrDefault(ad => ad.ID == ID);
-	// 	return result;
-	// }
-
 
 
 	protected override async Task OnParametersSetAsync()
@@ -221,19 +213,7 @@
 		return base.ShouldRender();
 	}
 
-	// public User? currentlyLoggedInUser;
-	// /// <summary>
-	// /// Identifies the user who is currently logged in
-	// /// </summary>
-	// /// <returns>User</returns>
-	// public async Task identifyLoggedInUser()
-	// {
-	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
 
-	// 	var claims = authState.User;
-
-	// 	currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
-	// }
 
 
 	IQueryable<Ad> adListForGrid

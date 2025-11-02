@@ -154,24 +154,6 @@
 			</div>
 		</div>
 
-		@* @if (popUpForReportAd)
-		{
-			<div class="modal" tabindex="-1" style="display:block" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h3 class="modal-title">@localizer["Report_ad"]</h3>
-							<button type="button" class="close" @onclick="closePopUpForReportAd"> <span area-hidden="true">X</span></button>
-						</div>
-						<div class="modal-body">
-							<p>@localizer["Please_write_here_the_reason_for_the_reporting_this_ad"]</p>
-							<InputText @bind-Value="reasonForReporting"></InputText>
-							<button type="button" class="close" @onclick="() => reportAd(selectedAd, reasonForReporting)">@localizer["Report_ad"]</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		} *@
 
 
 		//new pop up for new conversation starter:
@@ -192,25 +174,6 @@
 				</div>
 			</div>
 		</div>
-
-		@* @if (popUpForNewConversation)
-		{
-			<div class="modal" tabindex="-1" style="display:block" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h3 class="modal-title">@localizer["Please_write_your_first_message_here"]</h3>
-							<button type="button" class="close" @onclick="closePopUpForNewConversation"> <span area-hidden="true">X</span></button>
-						</div>
-						<div class="modal-body">
-							<p>@localizer["Your_first_message"]</p>
-							<InputText @bind-Value="message"></InputText>
-							<button type="button" class="close" @onclick="() => createChat(selectedAd)">@localizer["Send"]</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		} *@
 
 	}
 </body>
@@ -265,28 +228,7 @@
 
 	public string message = "";
 
-	// public User? currentlyLoggedInUser;
-	// /// <summary>
-	// /// Identifies the user who is currently logged in
-	// /// </summary>
-	// /// <returns>User</returns>
-	// public async Task identifyLoggedInUser()
-	// {
-	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-
-	// 	var claims = authState.User;
-
-	// 	currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
-	// }
-
-
-	// protected override void OnAfterRender(bool firstrender)
-	// {
-	// 	if (firstrender)
-	// 	{
-	// 		DataService.loadCulture(currentlyLoggedInUser);
-	// 	}
-	// }
+	
 
 	/// <summary>
 	/// First checks if there is already an existing conversation between the 2 users (the currently logged in user and the ad owner) connected to this ad, if there is, it redirects the user to that chat conversation

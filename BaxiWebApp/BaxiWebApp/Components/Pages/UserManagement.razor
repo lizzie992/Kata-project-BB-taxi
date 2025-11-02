@@ -97,18 +97,6 @@
 						</InputSelect>
 					</div>
 
-					@* <div class="input-block">
-						<p>@localizer["Rating"]</p>
-						<InputSelect class="input" @bind-Value="_rating" id="_rating">
-							<option value="-1">@localizer["SelectAll"]</option>
-							<option value="0">@localizer["No_rating_yet"]</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-						</InputSelect>
-					</div> *@
 
 					<div class="input-block">
 						<p>@localizer["Number_of_warnings"]</p>
@@ -142,8 +130,6 @@
 							</PropertyColumn>
 							<PropertyColumn Title=@localizer["Preferred_language"] Property="@(User => localizer[@User.PreferredLanguage.ToString()])">
 							</PropertyColumn>
-							@* <PropertyColumn Title=@localizer["Rating"] Property="@(User => User.Rating)">
-							</PropertyColumn> *@
 							<PropertyColumn Title=@localizer["Number_of_warnings"] Property="@(User => User.NumberOfWarnings)">
 							</PropertyColumn>
 							<PropertyColumn Title=@localizer["Contact"] Property="@(User => User.Contact)">
@@ -206,10 +192,6 @@
 									<th style="text-align: left">@localizer["Preferred_language"]</th>
 									<th style="text-align: right">@localizer[@user.PreferredLanguage.ToString()]</th>
 								</tr>
-								@* 								<tr>
-									<th style="text-align: left">@localizer["Rating"]</th>
-									<th style="text-align: right">@user.Rating</th>
-								</tr> *@
 								<tr>
 									<th style="text-align: left">@localizer["Number_of_warnings"]</th>
 									<th style="text-align: right">@user.NumberOfWarnings</th>
@@ -262,25 +244,6 @@
 		</div>
 	</div>
 
-	@* @if (popUpForWarning)
-	{
-		<div class="modal" tabindex="-1" style="display:block" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h3 class="modal-title">@localizer["Warning"]</h3>
-						<button type="button" class="close" @onclick="closePopUpForWarning"> <span area-hidden="true">X</span></button>
-					</div>
-					<div class="modal-body">
-						<p>@localizer["Please_write_here_the_reason_for_the_warning"]</p>
-						<InputText @bind-Value="reasonForWarning"></InputText>
-						<br>
-						<button type="button" class="close" @onclick="() => giveUserAWarning(selectedUser, reasonForWarning)">@localizer["Give_a_warning"]</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	} *@
 
 	@* //new pop up for giving admin rights: *@
 	<div class="modal fade" id="adminRightsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -300,24 +263,6 @@
 		</div>
 	</div>
 
-	@* @if (popUpForMakeUserAdmin)
-	{
-		<div class="modal" tabindex="-1" style="display:block" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h3 class="modal-title">@localizer["Make_user_an_admin"]</h3>
-						<button type="button" class="close" @onclick="closePopUpForMakeUserAdmin"> <span area-hidden="true">X</span></button>
-					</div>
-					<div class="modal-body">
-						<p>@localizer["Are_you_sure_you_want_to_make_this_user_an_admin_it_cannot_be_revoked_anymore"]</p>
-						<br>
-						<button type="button" class="close" @onclick="() => makeUserAdmin(selectedUser)">@localizer["Give_this_user_admin_rights"]</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	} *@
 
 
 	@* //new pop up for deactivation: *@
@@ -339,24 +284,6 @@
 		</div>
 	</div>
 
-	@* @if (popUpForDeactivatingUser)
-	{
-		<div class="modal" tabindex="-1" style="display:block" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h3 class="modal-title">@localizer["Deactivate_user"]</h3>
-						<button type="button" class="close" @onclick="closePopUpForDeactivatingUser"> <span area-hidden="true">X</span></button>
-					</div>
-					<div class="modal-body">
-						<p>@localizer["Please_write_here_the_reason_for_the_deactivation"]</p>
-						<InputText @bind-Value="reasonForDeactivating"></InputText>
-						<button type="button" class="close" @onclick="() => deactivateUser(selectedUser, reasonForDeactivating)">@localizer["Deactivate_user"]</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	} *@
 
 
 	@* //new pop up for reactivation: *@
@@ -377,24 +304,6 @@
 		</div>
 	</div>
 
-	@* 	@if (popUpForReactivatingUser)
-	{
-		<div class="modal" tabindex="-1" style="display:block" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h3 class="modal-title">@localizer["Reactivate_user"]</h3>
-						<button type="button" class="close" @onclick="closePopUpForReactivatingUser"> <span area-hidden="true">X</span></button>
-					</div>
-					<div class="modal-body">
-						<p>@localizer["Are_you_sure_you_want_to_reactivate_this_user"]</p>
-						<br>
-						<button type="button" class="close" @onclick="() => reactivateUser(selectedUser)">@localizer["Reactivate_user"]</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	} *@
 
 </AuthorizeView>
 
@@ -455,14 +364,6 @@
 		DataService.loadCulture(currentlyLoggedInUser);
 		return base.ShouldRender();
 	}
-
-	// protected override void OnAfterRender(bool firstrender)
-	// {
-	// 	if (firstrender)
-	// 	{
-	// 		DataService.loadCulture(currentlyLoggedInUser);
-	// 	}
-	// }
 
 	QuickGrid<User>? grid;
 
@@ -630,17 +531,6 @@
 	[CascadingParameter(Name = "currentlyLoggedInUser")]
 	private User? currentlyLoggedInUser { get; set; }
 
-	// public User? currentlyLoggedInUser;
-	// /// <summary>
-	// /// Identifies the user who is currently logged in
-	// /// </summary>
-	// /// <returns>User</returns>
-	// public async Task identifyLoggedInUser()
-	// {
-	// 	var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-	// 	var claims = authState.User;
-	// 	currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
-	// }
 
 	/// <summary>
 	/// Finds the role of the selected user (Regular or Admin)
