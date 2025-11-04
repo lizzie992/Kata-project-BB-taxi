@@ -7,14 +7,12 @@ using GoogleMapsApi.Entities.Directions.Request;
 using GoogleMapsApi.Entities.Directions.Response;
 using GoogleMapsApi.Entities.Geocoding.Request;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using SQLitePCL;
 using System.Globalization;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
+
 
 
 namespace BaxiWebApp.Data

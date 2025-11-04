@@ -21,8 +21,10 @@ namespace BaxiWebApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var connectionString = builder.Configuration.GetConnectionString("BaxiWebAppContext") ?? throw new InvalidOperationException("Connection string 'BaxiWebAppContextConnection' not found."); ;
+            string passw = Environment.GetEnvironmentVariable("MySQL_container_password");
+            string connString = $"server= 87.106.134.4;port=3306;uid=root;pwd={passw};database=BaxiWebAppContext;";
 
+            var connectionString = connString ?? throw new InvalidOperationException("Connection string 'BaxiWebAppContextConnection' not found."); ;
 
             builder.Services.AddDbContextFactory<BaxiWebAppContext>(options => options.UseMySQL(connectionString));
 
