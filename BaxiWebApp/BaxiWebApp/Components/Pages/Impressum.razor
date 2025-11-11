@@ -1,0 +1,30 @@
+﻿@page "/Impressum"
+
+@using Microsoft.Extensions.Localization
+@using System.Globalization
+@inject IStringLocalizer<Resources> localizer
+@using Pages.Res;
+
+<PageTitle>Impressum</PageTitle>
+
+<h3 style="text-align:center">Impressum</h3>
+
+<div class="row">
+	<div class="col" align="center">
+		<div class="impressum-data">
+			<p>Owner: @name</p>
+			<p>Contact: @email</p>
+			<p><a href=@github target="_blank">Github</a></p>
+			<p><a href=@linkedin target="_blank">Linkedin</a></p>
+		</div>
+	</div>
+</div>
+
+
+@code {
+	string name = "Katalin Gulyás";
+	string email = "gulyaskata99@gmail.com";
+	string github = "https://github.com/lizzie992";
+	string linkedin = "https://www.linkedin.com/in/katalin-guly%C3%A1s-03522471/";
+
+}
