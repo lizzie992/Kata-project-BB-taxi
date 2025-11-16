@@ -507,11 +507,11 @@ namespace BaxiWebApp.Data
             {
                 return null;
             }
-            if (currentlyLoggedInUser.Id == C.contactingUser.Id)
+            if (currentlyLoggedInUser.Id == C.contactingUser?.Id)
             {
                 otherUser = C.adOwnerUser;
             }
-            if (currentlyLoggedInUser.Id == C.adOwnerUser.Id)
+            if (currentlyLoggedInUser.Id == C.adOwnerUser?.Id)
             {
                 otherUser = C.contactingUser;
             }
@@ -665,34 +665,36 @@ namespace BaxiWebApp.Data
                 }
 
                 //Conversations nr1
-                var convos = context.Conversations.Where(C => C.contactingUser.Id == user.Id);
+                var convos = context.Conversations.Include(C => C.adOwnerUser).Include(C => C.contactingUser).Where(C => C.contactingUser.Id == user.Id || C.adOwnerUser.Id == user.Id);
                 foreach (Conversation C in convos)
                 {
-                    C.contactingUser = null;
+                    if (C.contactingUser?.Id == user.Id)
+                    {
+                        C.contactingUser = null;
+                    }
+                    if (C.adOwnerUser?.Id == user.Id)
+                    {
+                        C.adOwnerUser = null;
+                    }
                 }
 
-                //Conversations nr2
-                var convos2 = context.Conversations.Where(C => C.adOwnerUser.Id == user.Id);
-                foreach (Conversation C in convos2)
-                {
-                    C.adOwnerUser = null;
-                }
 
 
                 //messages nr1
-                var messages = context.Messages.Where(M => M.fromUser.Id == user.Id);
+                var messages = context.Messages.Where(M => M.fromUser.Id == user.Id || M.toUser.Id == user.Id);
                 foreach (Message M in messages)
                 {
-                    M.fromUser = null;
+                    if (M.fromUser?.Id == user.Id)
+                    {
+                        M.fromUser = null;
+                    }
+                    if (M.toUser?.Id == user.Id)
+                    {
+                        M.toUser = null;
+                    }
                 }
 
-                //messages nr2
-                var messages2 = context.Messages.Where(M => M.toUser.Id == user.Id);
-                foreach (Message M in messages2)
-                {
-                    M.toUser = null;
-                }
-
+               
                 context.Users.Remove(user);
                 context.SaveChanges();
 
