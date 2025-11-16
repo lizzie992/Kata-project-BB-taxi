@@ -26,7 +26,8 @@ h1,
 h2,
 h3,
 PageTitle,
-p {
+p,
+li {
     color: #0066B2;
 }
 
@@ -123,7 +124,7 @@ p {
 
 
 .impressum-privacy {
-    position: fixed;
+    position: absolute;
     top: 1rem;
     right: 7rem;
     display: flex;
