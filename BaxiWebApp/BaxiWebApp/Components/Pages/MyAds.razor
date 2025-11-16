@@ -182,8 +182,10 @@
 			using var context = DbContextFactory.CreateDbContext();
 			context.Attach(ad);
 			var C = context.Conversations.Where(C => C.AdID == ad.ID);
-			Conversation convo = C.FirstOrDefault();
-			convo.AdID = null;
+			foreach (Conversation convo in C)
+			{
+				convo.AdID = null;
+			}
 			context.Ads.Remove(ad);
 			context.SaveChanges();
 			closePopUpForDeletingAd();

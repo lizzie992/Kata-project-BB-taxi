@@ -134,6 +134,7 @@ p {
 }
 
 .impressum-data {
+    width: 70%;
     box-sizing: border-box;
     background-color: #cce0f2;
     color: #0066B2;
