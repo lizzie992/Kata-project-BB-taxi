@@ -26,8 +26,8 @@ namespace BB
             set { _adList = value; }
         }
 
-        private User _adOwner;
-        public User AdOwner
+        private User? _adOwner;
+        public User? AdOwner
         {
             get { return _adOwner; }
             set { _adOwner = value; }

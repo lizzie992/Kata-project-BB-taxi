@@ -1,13 +1,16 @@
 ﻿using BaxiWebApp.Components.Pages;
 using BaxiWebApp.Components.Pages.Res;
 using BB;
+using GoogleApi.Entities.Search.Video.Common;
 using GoogleMapsApi;
 using GoogleMapsApi.Entities.Common;
 using GoogleMapsApi.Entities.Directions.Request;
 using GoogleMapsApi.Entities.Directions.Response;
 using GoogleMapsApi.Entities.Geocoding.Request;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Localization;
 using System.Globalization;
 using System.Net;
@@ -45,12 +48,11 @@ namespace BaxiWebApp.Data
             var selectedCulture = e.Value?.ToString();
             if (selectedCulture is not null)
             {
-                setCulture(selectedCulture, user);
                 CultureChanged?.Invoke(this, CultureInfo.CurrentUICulture);
                 if (user is not null)
                 {
+                    setCulture(selectedCulture, user);
                     using var context = _dbcFactory.CreateDbContext();
-
                     context.Update(user);
                     user.Culture = selectedCulture.ToString();
                     context.SaveChanges();
@@ -88,7 +90,8 @@ namespace BaxiWebApp.Data
             if (user is not null)
             {
                 var selectedCulture = user.Culture.ToString();
-                setCulture(selectedCulture, user);            }
+                setCulture(selectedCulture, user);
+            }
         }
 
 
@@ -644,22 +647,80 @@ namespace BaxiWebApp.Data
             if (user is not null)
             {
                 using var context = _dbcFactory.CreateDbContext();
+                context.Attach(user);
 
-                user.isDeleted = true;
-                user.isActive = false;
-                user.FirstName = "Deleted user";
-                user.LastName = "Deleted user";
-                user.Contact = "Deleted user";
-                user.Department = Department.SelectAll;
-                user.PreferredLanguage = PreferredLanguage.SelectAll;
-                user.Rating = 0;
-                user.NumberOfWarnings = 0;
-                user.LockoutEnd = DateTime.MaxValue;
-                context.Update(user);
+                //ads
+                var ads = context.Ads.Where(A => A.AdOwner.Id == user.Id);
+                foreach (Ad a in ads)
+                {
+                    deleteAd(a);
+                }
+
+                //Conversations nr1
+                var convos = context.Conversations.Where(C => C.contactingUser.Id == user.Id);
+                foreach (Conversation C in convos)
+                {
+                    C.contactingUser = null;
+                }
+
+                //Conversations nr2
+                var convos2 = context.Conversations.Where(C => C.adOwnerUser.Id == user.Id);
+                foreach (Conversation C in convos2)
+                {
+                    C.adOwnerUser = null;
+                }
+
+
+                //messages nr1
+                var messages = context.Messages.Where(M => M.fromUser.Id == user.Id);
+                foreach (Message M in messages)
+                {
+                    M.fromUser = null;
+                }
+
+                //messages nr2
+                var messages2 = context.Messages.Where(M => M.toUser.Id == user.Id);
+                foreach (Message M in messages2)
+                {
+                    M.toUser = null;
+                }
+
+                context.Users.Remove(user);
                 context.SaveChanges();
 
+   
+
+                //user.isDeleted = true;
+                //user.isActive = false;
+                //user.FirstName = "Deleted user";
+                //user.LastName = "Deleted user";
+                //user.Contact = "Deleted user";
+                //user.Department = Department.SelectAll;
+                //user.PreferredLanguage = PreferredLanguage.SelectAll;
+                //user.Rating = 0;
+                //user.NumberOfWarnings = 0;
+                //user.LockoutEnd = DateTime.MaxValue;
+                //context.Update(user);
+                //context.SaveChanges();
             }
         }
+
+        public void deleteAd(Ad ad)
+        {
+            if (ad is not null)
+            {
+                using var context = _dbcFactory.CreateDbContext();
+                context.Attach(ad);
+                var C = context.Conversations.Where(C => C.AdID == ad.ID);
+                foreach (Conversation convo in C)
+                {
+                    convo.AdID = null;
+                }
+                context.Ads.Remove(ad);
+                context.SaveChanges();
+            }
+        }
+
 
         /// <summary>
         /// Checks if the given user is deleted or not based on the isDeleted parameter

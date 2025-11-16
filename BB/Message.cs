@@ -12,15 +12,15 @@ namespace BB
 
         public int ConversationID { get; set; }
 
-        private User _fromUser;
-        public User fromUser
+        private User? _fromUser;
+        public User? fromUser
         {
             get { return _fromUser; }
             set { _fromUser = value; }
         }
 
-        private User _toUser;
-        public User toUser
+        private User? _toUser;
+        public User? toUser
         {
             get { return _toUser; }
             set { _toUser = value; }

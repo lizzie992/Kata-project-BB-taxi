@@ -430,7 +430,7 @@
 		using var context = DbContextFactory.CreateDbContext();
 		List<Conversation> result = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).ToList();
 		result = result
-	.Where(c => c.adOwnerUser.Id == currentlyLoggedInUser?.Id || c.contactingUser.Id == currentlyLoggedInUser?.Id)
+	.Where(c => c.adOwnerUser?.Id == currentlyLoggedInUser?.Id || c.contactingUser?.Id == currentlyLoggedInUser?.Id)
 	.ToList();
 		if (result.Count() == 0)
 		{

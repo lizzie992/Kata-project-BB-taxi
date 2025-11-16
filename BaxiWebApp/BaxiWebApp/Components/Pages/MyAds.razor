@@ -177,20 +177,9 @@
 	/// <param name="ad">Ad</param>
 	private void DeleteAd(Ad? ad)
 	{
-		if (ad is not null)
-		{
-			using var context = DbContextFactory.CreateDbContext();
-			context.Attach(ad);
-			var C = context.Conversations.Where(C => C.AdID == ad.ID);
-			foreach (Conversation convo in C)
-			{
-				convo.AdID = null;
-			}
-			context.Ads.Remove(ad);
-			context.SaveChanges();
-			closePopUpForDeletingAd();
-			grid?.RefreshDataAsync();
-		}
+		DataService.deleteAd(ad);
+		closePopUpForDeletingAd();
+		grid?.RefreshDataAsync();
 	}
 
 	Ad? selectedAd { get; set; }

@@ -156,14 +156,14 @@
 				}
 			}
 		}
-		
+
 
 	}
 
 	[CascadingParameter(Name = "currentlyLoggedInUser")]
 	private User? user { get; set; }
 
-	
+
 
 	protected override void OnParametersSet()
 	{
@@ -173,11 +173,14 @@
 
 	protected override bool ShouldRender()
 	{
-		DataService.loadCulture(user);
+		if (user is not null)
+		{
+			DataService.loadCulture(user);
+		}
 		return base.ShouldRender();
 	}
 
-	
+
 
 	bool popUpForDeletingUser = false;
 
@@ -211,6 +214,7 @@
 	public void deleteUser()
 	{
 		DataService.deleteUser(user);
+		user = null;
 		NavigationManager.NavigateTo("/Logout", forceLoad: true);
 	}
 
