@@ -503,6 +503,10 @@ namespace BaxiWebApp.Data
         public User? getOtherUser(Conversation C, User? currentlyLoggedInUser)
         {
             User? otherUser = new User();
+            if (C.contactingUser is null)
+            {
+                return null;
+            }
             if (currentlyLoggedInUser.Id == C.contactingUser.Id)
             {
                 otherUser = C.adOwnerUser;
@@ -634,6 +638,10 @@ namespace BaxiWebApp.Data
                 {
                     name = $"{user.FirstName} {user.LastName} - INACTIVATED";
                 }
+            }
+            if (user is null)
+            {
+                name = "Deleted user";
             }
             return name;
         }

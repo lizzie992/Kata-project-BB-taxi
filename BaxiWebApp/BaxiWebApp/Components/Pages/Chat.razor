@@ -92,7 +92,7 @@
 						else
 						{
 							<div class="actions-for-chat">
-								<div class="ad-description">@localizer["In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers", DataService.showUserNameWithStatus(ad.AdOwner), localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats]</div>
+								<div class="ad-description">@localizer["In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers", @DataService.showUserNameWithStatus(DataService.getOtherUser(CurrentConversation, currentlyLoggedInUser)), localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats]</div>
 								<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
 								<button type="button" data-bs-toggle="modal" data-bs-target="#deleteConvoModal">
 									@localizer["Delete_conversation"]
@@ -111,7 +111,7 @@
 							{
 								@foreach (Message M in messages)
 								{
-									if (currentlyLoggedInUser.Id == M.fromUser.Id)
+									if (currentlyLoggedInUser.Id == M.fromUser?.Id)
 									{
 										<div class="message-right">
 											<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
@@ -119,7 +119,7 @@
 											<div class="timestamp">@M.timeStamp.ToString("g")</div>
 										</div>
 									}
-									if (currentlyLoggedInUser.Id == M.toUser.Id)
+									if (currentlyLoggedInUser.Id == M.toUser?.Id)
 									{
 										<div class="message-left">
 											<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
@@ -201,7 +201,7 @@
 					else
 					{
 						<div class="actions-for-chat">
-							<div class="ad-description">@localizer["In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers", DataService.showUserNameWithStatus(ad.AdOwner), localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats]</div>
+							<div class="ad-description">@localizer["In_this_conversation_you_are_talking_to_{0}_to_arrange_a_ride_{1}_from_to_{2}_on_{3}_including_{4}_passengers", @DataService.showUserNameWithStatus(DataService.getOtherUser(CurrentConversation, currentlyLoggedInUser)), localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats]</div>
 							<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
 							<button type="button" data-bs-toggle="modal" data-bs-target="#deleteConvoModal">
 								@localizer["Delete_conversation"]
@@ -220,7 +220,7 @@
 						{
 							@foreach (Message M in messages)
 							{
-								if (currentlyLoggedInUser.Id == M.fromUser.Id)
+								if (currentlyLoggedInUser.Id == M.fromUser?.Id)
 								{
 									<div class="message-right">
 										<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
@@ -228,7 +228,7 @@
 										<div class="timestamp">@M.timeStamp.ToString("g")</div>
 									</div>
 								}
-								if (currentlyLoggedInUser.Id == M.toUser.Id)
+								if (currentlyLoggedInUser.Id == M.toUser?.Id)
 								{
 									<div class="message-left">
 										<div class="from-user">@localizer["From"] @DataService.showUserNameWithStatus(M.fromUser)</div>
