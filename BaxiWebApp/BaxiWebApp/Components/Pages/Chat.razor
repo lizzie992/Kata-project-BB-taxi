@@ -357,7 +357,6 @@
 		}
 		if (CurrentConversation is not null)
 		{
-			CurrentConversation = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).FirstOrDefault(conversation => conversation.ID == ID);
 			ad = GetAd(CurrentConversation);
 			messages = getMessages(CurrentConversation);
 			try
@@ -381,7 +380,6 @@
 	/// <param name="contactID"></param>
 	public async void OnChatChanged(object? sender, int contactID)
 	{
-		CurrentConversation = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).FirstOrDefault(conversation => conversation.ID == ID);
 		messages = getMessages(CurrentConversation);
 		ConvoList = getConvoList();
 		await InvokeAsync(() =>

@@ -534,11 +534,11 @@ namespace BaxiWebApp.Data
             Conversation? CurrentConversation = context.Conversations.Include(c => c.adOwnerUser).Include(c => c.contactingUser).Include(c => c.messages).FirstOrDefault(conversation => conversation.ID == ID);
             Message message = new Message();
             message.fromUser = context.Users.Find(currentlyLoggedInUser.Id);
-            if (currentlyLoggedInUser.Id == CurrentConversation.contactingUser.Id)
+            if (currentlyLoggedInUser.Id == CurrentConversation.contactingUser?.Id)
             {
                 message.toUser = CurrentConversation.adOwnerUser;
             }
-            else if (currentlyLoggedInUser.Id == CurrentConversation.adOwnerUser.Id)
+            else if (currentlyLoggedInUser.Id == CurrentConversation.adOwnerUser?.Id)
             {
                 message.toUser = CurrentConversation.contactingUser;
             }
@@ -546,10 +546,13 @@ namespace BaxiWebApp.Data
             message.timeStamp = DateTime.Now;
             CurrentConversation.messages.Add(message);
             context.SaveChanges();
-            string emailMessage = _localizer["You_just_received_a_new_message_from_{0}_Go_and_check_it_out_http_localhost_5049_Chat_{1}", showUserNameWithStatus(message.fromUser), CurrentConversation.ID];
-            string emailAddress = message.toUser.Email.ToString();
-            string subject = _localizer["You_received_a_new_message"];
-            sendEmail(emailAddress, subject, emailMessage);
+            if (message.toUser is not null)
+            {
+                string emailMessage = _localizer["You_just_received_a_new_message_from_{0}_Go_and_check_it_out_http_localhost_5049_Chat_{1}", showUserNameWithStatus(message.fromUser), CurrentConversation.ID];
+                string emailAddress = message.toUser.Email.ToString();
+                string subject = _localizer["You_received_a_new_message"];
+                sendEmail(emailAddress, subject, emailMessage);
+            }
             ChatChanged?.Invoke(this, CurrentConversation.ID);
 
 
