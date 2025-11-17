@@ -38,7 +38,7 @@ main {
 
 
 .languageSelection {
-    position: fixed;
+    position: absolute;
     right: 1rem;
     top: 1rem;
     width: min-content;
@@ -54,7 +54,7 @@ main {
         }
 
     .languageSelection {
-        position: fixed;
+        position: absolute;
         left: 1rem;
         top: 1rem;
     }
