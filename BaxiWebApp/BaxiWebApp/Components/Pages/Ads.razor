@@ -248,6 +248,17 @@
 	protected override bool ShouldRender()
 	{
 		DataService.loadCulture(currentlyLoggedInUser);
+		_ = Task.Run(async () =>
+   {
+	   try
+	   {
+		   await JSRuntime.InvokeVoidAsync("initMapForAdList", adListForMap, localizer["Beautiful_baierbrunn"].ToString(), localizer["ToBaierbrunn"].ToString(), localizer["FromBaierbrunn"].ToString(), localizer["No_default_type"].ToString(), localizer["Driver"].ToString(), localizer["Passenger"].ToString(), localizer["Show_me_the_ad"].ToString(), localizer["Direction"].ToString(), localizer["Ad_type"].ToString(), localizer["Pick_up_date_and_time"].ToString(), localizer["From/to_this_address"].ToString(), localizer["Number_of_seats"].ToString(), localizer["Show_me_the_ad"].ToString());
+	   }
+	   catch (ArgumentException e)
+	   {
+		   Console.WriteLine($"Map failed to display: {e.Message}");
+	   }
+   });
 		return base.ShouldRender();
 	}
 
@@ -308,7 +319,7 @@
 	{
 		if (firstrender)
 		{
-			if (adListForMap.Count > 0)
+			if (adListForMap.Count >= 0)
 			{
 				try
 				{
