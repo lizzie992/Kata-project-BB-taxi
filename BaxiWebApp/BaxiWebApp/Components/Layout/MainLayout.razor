@@ -92,7 +92,7 @@
 		var claims = authState.User;
 
 		currentlyLoggedInUser = await UserManager.GetUserAsync(claims);
-		StateHasChanged();
+		
 	}
 
 	// protected override void OnAfterRender(bool firstrender)
