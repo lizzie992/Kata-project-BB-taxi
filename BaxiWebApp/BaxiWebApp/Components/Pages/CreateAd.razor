@@ -284,7 +284,7 @@
 
 @code {
 
-	private static Ad ad { get; set; } = new();
+	private Ad ad { get; set; } = new();
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
@@ -319,10 +319,10 @@
 			ad = new Ad();
 			ad.AdOwner = currentlyLoggedInUser;
 			ad.AdType = currentlyLoggedInUser.DefaultAdType;
-			ad.AdDirection = CreateAd.ad.AdDirection;
+			ad.AdDirection = ad.AdDirection;
 			ad.PickUpDropOffLocation = currentlyLoggedInUser.DefaultPickUpAddress;
 			ad.PickUpDateAndTime = DateTime.Today.AddDays(1);
-			ad.PickUpDateAndTime = CreateAd.ad.PickUpDateAndTime;
+			ad.PickUpDateAndTime = ad.PickUpDateAndTime;
 			ad.NumberOfSeats = currentlyLoggedInUser.DefaultNumberOfSeats;
 			ad.SpecificRequests = currentlyLoggedInUser.DefaultSpecificRequests;
 		}
