@@ -71,10 +71,10 @@
 					<InputText @bind-Value="Input.Keyword" class="input" autocomplete="Keyword" aria-required="true" placeholder=@localizer["Keyword"] />
 				</div>
 				<div class="input-block">
-					<label for="First name">@localizer["First_name"]</label>
-					<InputText @bind-Value="Input.FirstName" class="input" autocomplete="firstName" aria-required="true" placeholder=@localizer["First_name"] />
+					<label for="First name">@localizer["Name"]</label>
+					<InputText @bind-Value="Input.FirstName" class="input" autocomplete="firstName" aria-required="true" placeholder=@localizer["Name"] />
 				</div>
-				<div class="input-block">
+				@* <div class="input-block">
 					<label for="Last name">@localizer["Last_name"]</label>
 					<InputText @bind-Value="Input.LastName" class="input" autocomplete="lastName" aria-required="true" placeholder=@localizer["Last_name"] />
 				</div>
@@ -95,14 +95,15 @@
 							<option value="@value">@localizer[@value.ToString()]</option>
 						}
 					</InputSelect>
-				</div>
+				</div> *@
 				<div class="input-block">
 					<label for="Contact">@localizer["Contact"] (@localizer["Not_mandatory_field"])</label>
 					<InputText @bind-Value="Input.Contact" class="input" autocomplete="contact" aria-required="true" placeholder=@localizer["Contact"] />
 				</div>
+				<button type="submit" class="div-block button" style="margin-top:20px">@localizer["Register"]</button>   
 			</div>
 
-			<div class="div-block" style="margin: 20px">
+			@* <div class="div-block" style="margin: 20px">
 				<div class="input-block" style="font-size: 20px">
 					@localizer["Below_you_can_add_some_additional_data_that_will_make_your_life_easier_when_creating_ads_in_the_application_this_is_not_mandatory_and_can_be_always_changed_deleted_in_your_profile"]
 				</div>
@@ -156,7 +157,7 @@
 					@localizer["If_you_check_this_box_you_will_automatically_receive_an_email_notification_when_another_user_posts_an_ad_that_would_be_matching_your_needs_it_is_less_than_{0}_km_away_from_you_and_less_than_{1}_hour_s_different_or_your_routes_will_meet_somewhere_on_the_way_and_could_be_convenient_for_both_of_you", @Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS/1000, @Constants.TIME_LIMIT_FOR_NOTIFICATIONS]
 				</div>
 				<button type="submit" class="div-block button" style="margin-top:20px">@localizer["Register"]</button>
-			</div>
+			</div> *@
 		</EditForm>
 	</div>
 	@* <div class="col-md-6 col-md-offset-2">
@@ -220,23 +221,26 @@
 		await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
 		user.FirstName = Input.FirstName;
-		user.LastName = Input.LastName;
-		user.Department = Input.Department;
-		user.PreferredLanguage = Input.PreferredLanguage;
+		user.LastName = "";
+		user.Department = Department.SelectAll;
+		user.PreferredLanguage = PreferredLanguage.German;
 		user.Contact = Input.Contact;
-		user.DefaultAdType = Input.DefaultAdType;
-		user.DefaultNumberOfSeats = Input.DefaultNumberOfSeats;
-		user.DefaultSpecificRequests = Input.DefaultSpecificRequests;
-		if (Input.DefaultPickUpAddress != "")
-		{
-			user.DefaultPickUpAddress = Input.DefaultPickUpAddress;
-			(user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
-		}
-		else
-		{
-			user.DefaultPickUpAddress = "";
-		}
-		user.AreNotificationsOn = Input.notificationsOn;
+		user.DefaultAdType = AdType.SelectAll;
+		user.DefaultNumberOfSeats = 1;
+		user.DefaultSpecificRequests = "";
+		user.DefaultPickUpAddress = "";
+		user.DefaultLatitude = null;
+		user.DefaultLongitude = null;
+		// if (Input.DefaultPickUpAddress != "")
+		// {
+		// 	user.DefaultPickUpAddress = Input.DefaultPickUpAddress;
+		// 	(user.DefaultLatitude, user.DefaultLongitude) = await DataService.GetCoordinatesFromAddress(user.DefaultPickUpAddress);
+		// }
+		// else
+		// {
+		// 	user.DefaultPickUpAddress = "";
+		// }
+		user.AreNotificationsOn = false;
 		user.Culture = "de-DE";
 		user.isActive = true;
 		user.isDeleted = false;
@@ -330,17 +334,17 @@
 		[Display(Name = "First Name")]
 		public string FirstName { get; set; } = "";
 
-		[Required]
+		 
 		[Display(Name = "Last Name")]
-		public string LastName { get; set; } = "";
+		public string? LastName { get; set; } = "";
 
 		[Required]
 		[Display(Name = "Department")]
-		public Department Department { get; set; }
+		public Department? Department { get; set; }
 
 		[Required]
 		[Display(Name = "Preferred language")]
-		public PreferredLanguage PreferredLanguage { get; set; } = PreferredLanguage.German;
+		public PreferredLanguage PreferredLanguage = PreferredLanguage.German;
 
 		[Required]
 		[Display(Name = "Rating")]

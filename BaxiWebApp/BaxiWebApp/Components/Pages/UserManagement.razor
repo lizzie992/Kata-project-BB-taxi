@@ -51,33 +51,28 @@
 							<option value="Inactive">@localizer["Inactive"]</option>
 						</InputSelect>
 					</div>
-
 					<div class="input-block">
 						<p>@localizer["Email_address_contains"]</p>
 						<input type="search" class="input" autofocus @bind="_searchEmail" @bind:event="oninput" placeholder=@localizer["Email"] />
 					</div>
-
-					<div class="input-block">
-						<p>@localizer["First_name"]</p>
-						<input type="search" class="input" autofocus @bind="_searchFirstName" @bind:event="oninput" placeholder=@localizer["First_name"] />
-					</div>
-
-
-					<div class="input-block">
+					@* <div class="input-block">
 						<p>@localizer["Last_name"]</p>
 						<input type="search" class="input" autofocus @bind="_searchLastName" @bind:event="oninput" placeholder=@localizer["Last_name"] />
-					</div>
+					</div> *@
 				</div>
 			</div>
 
 			<div class="col-12 col-md-6">
 				<div class="div-block-centered">
 					<div class="input-block">
+						<p>@localizer["Name"]</p>
+						<input type="search" class="input" autofocus @bind="_searchFirstName" @bind:event="oninput" placeholder=@localizer["Name"] />
+					</div>
+					<div class="input-block">
 						<p>@localizer["Contact"]</p>
 						<input type="search" class="input" autofocus @bind="_contact" @bind:event="oninput" placeholder=@localizer["Contact"] />
 					</div>
-
-					<div class="input-block">
+					@* <div class="input-block">
 						<p>@localizer["Department"]</p>
 						<InputSelect class="input" @bind-Value="_department" id="_department">
 							@foreach (var value in Enum.GetValues<Department>())
@@ -86,7 +81,6 @@
 							}
 						</InputSelect>
 					</div>
-
 					<div class="input-block">
 						<p>@localizer["Preferred_language"]</p>
 						<InputSelect class="input" @bind-Value="_preferredLanguage" id="_preferredLanguage">
@@ -95,9 +89,7 @@
 								<option value="@value">@localizer[@value.ToString()]</option>
 							}
 						</InputSelect>
-					</div>
-
-
+					</div> *@
 					<div class="input-block">
 						<p>@localizer["Number_of_warnings"]</p>
 						<InputSelect class="input" @bind-Value="_numberOfWarnings" id="_numberOfWarnings">
@@ -122,14 +114,14 @@
 							</PropertyColumn>
 							<PropertyColumn Title=@localizer["Email_address"] Property="@(User => User.Email)">
 							</PropertyColumn>
-							<PropertyColumn Title=@localizer["First_name"] Property="@(User => User.FirstName)">
+							<PropertyColumn Title=@localizer["Name"] Property="@(User => DataService.showUserNameWithStatus(User))">
 							</PropertyColumn>
-							<PropertyColumn Title=@localizer["Last_name"] Property="@(User => User.LastName)">
+							@* <PropertyColumn Title=@localizer["Last_name"] Property="@(User => User.LastName)">
 							</PropertyColumn>
 							<PropertyColumn Title=@localizer["Department"] Property="@(User => localizer[@User.Department.ToString()])">
 							</PropertyColumn>
 							<PropertyColumn Title=@localizer["Preferred_language"] Property="@(User => localizer[@User.PreferredLanguage.ToString()])">
-							</PropertyColumn>
+							</PropertyColumn> *@
 							<PropertyColumn Title=@localizer["Number_of_warnings"] Property="@(User => User.NumberOfWarnings)">
 							</PropertyColumn>
 							<PropertyColumn Title=@localizer["Contact"] Property="@(User => User.Contact)">
@@ -177,10 +169,10 @@
 									<th style="text-align: right">@user.Email</th>
 								</tr>
 								<tr>
-									<th style="text-align: left">@localizer["First_name"]</th>
-									<th style="text-align: right">@user.FirstName</th>
+									<th style="text-align: left">@localizer["Name"]</th>
+									<th style="text-align: right">@DataService.showUserNameWithStatus(user)</th>
 								</tr>
-								<tr>
+								@* <tr>
 									<th style="text-align: left">@localizer["Last_name"]</th>
 									<th style="text-align: right">@user.LastName</th>
 								</tr>
@@ -191,7 +183,7 @@
 								<tr>
 									<th style="text-align: left">@localizer["Preferred_language"]</th>
 									<th style="text-align: right">@localizer[@user.PreferredLanguage.ToString()]</th>
-								</tr>
+								</tr> *@
 								<tr>
 									<th style="text-align: left">@localizer["Number_of_warnings"]</th>
 									<th style="text-align: right">@user.NumberOfWarnings</th>

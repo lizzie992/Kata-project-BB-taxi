@@ -48,11 +48,11 @@
 							<EditForm Model="@user" OnValidSubmit="Save">
 
 								<div class="input-block">
-									@localizer["First_name"]
+									@localizer["Name"]
 									<InputText class="input" @bind-Value="user.FirstName"></InputText><br>
 								</div>
 
-								<div class="input-block">
+								@* <div class="input-block">
 									@localizer["Last_name"]
 									<InputText class="input" @bind-Value="user.LastName"></InputText><br>
 								</div>
@@ -79,7 +79,7 @@
 											<option value="@value">@localizer[@value.ToString()]</option>
 										}
 									</InputSelect>
-								</div>
+								</div> *@
 
 								<div class="input-block">
 									@localizer["Contact"]
