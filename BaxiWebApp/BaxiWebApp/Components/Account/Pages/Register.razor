@@ -334,27 +334,21 @@
 		[Display(Name = "First Name")]
 		public string FirstName { get; set; } = "";
 
-		 
 		[Display(Name = "Last Name")]
 		public string? LastName { get; set; } = "";
 
-		[Required]
 		[Display(Name = "Department")]
 		public Department? Department { get; set; }
 
-		[Required]
 		[Display(Name = "Preferred language")]
 		public PreferredLanguage PreferredLanguage = PreferredLanguage.German;
 
-		[Required]
 		[Display(Name = "Rating")]
 		public int? Rating;
 
-		[Required]
 		[Display(Name = "listOfRatings")]
 		public List<int>? ListOfRatings = new List<int>();
 
-		[Required]
 		[Display(Name = "numberOfWarnings")]
 		public int NumberOfWarnings = 0; //this is default 0, the admins can add warnings later if needed
 
