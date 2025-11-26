@@ -26,115 +26,121 @@
 	<Authorized>
 
 		<body>
-			@if (currentlyLoggedInUser?.isActive == false)
+			@if (currentlyLoggedInUser?.Id == ad.AdOwner?.Id)
 			{
-				<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
-			}
-			else
-			{
-				@if (ad != null)
+				@if (currentlyLoggedInUser?.isActive == false)
 				{
-					<div class="row">
-						<div class="col-12 col-md-6">
-							<EditForm Model="@ad" class="div-block">
-								<div class="input-block">
-									<p>@localizer["I_am_a"]</p>
-									<InputSelect class="input" @bind-Value="ad.AdType" id="adType">
-										<option value="@AdType.SelectAll">@localizer["Please_select"]</option>
-										@foreach (var value in Enum.GetValues<AdType>())
-										{
-											if (value == AdType.SelectAll)
-											{
-												continue;
-											}
-											<option value="@value">@localizer[value.ToString()]</option>
-										}
-									</InputSelect>
-								</div>
-
-								<div class="input-block">
-									<p>@localizer["Direction"] </p>
-									<InputSelect class="input" @bind-Value="ad.AdDirection" id="adDirection">
-										@foreach (var value in Enum.GetValues<AdDirection>())
-										{
-											if (value == AdDirection.SelectAll)
-											{
-												continue;
-											}
-											<option value="@value">@localizer[value.ToString()]</option>
-										}
-									</InputSelect>
-								</div>
-
-								<div class="input-block">
-									<p>@localizer["Pick_up_date_and_time"] </p>
-									<InputDate Type="InputDateType.DateTimeLocal" class="input"
-											   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
-									</InputDate>
-								</div>
-
-								<div class="input-block">
-									<p>@localizer["Number_of_seats"]</p>
-									<InputSelect class="input" @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-										<option value="6">6</option>
-									</InputSelect>
-									<ValidationMessage For=@(() => ad.NumberOfSeats) />
-								</div>
-
-								<div class="input-block">
-									<p>@localizer["Specific_requests"] </p>
-									<InputText class="input" @bind-Value="ad.SpecificRequests"></InputText><br>
-								</div>
-
-								<div class="input-block">
-									<p>@localizer["From/to_this_address"]</p>
-									<input class="input" @bind="ad.PickUpDropOffLocation" id="PickUpDropOffLocation"
-										   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
-									<ValidationMessage For="() => ad.PickUpDropOffLocation" />
-								</div>
-
-								@if (showMap)
-								{
-									<div class="input-block">
-										<div>@localizer["On_the_map_you_can_specify_the_exact_pick_up_drop_off_location"] @localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
-									</div>
-								}
-
-								<div class="input-block">
-									<p>@localizer["Save_the_ad"]</p>
-									<button @onclick="CheckAd">@localizer["Save"]</button>
-								</div>
-
-							</EditForm>
-						</div>
-
-						<div class="col-12 col-md-6">
-							@if (showMap)
-							{
-								<div id="map">
-								</div>
-								<script>
-									(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-									({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
-							}
-							else
-							{
-								<img src="/images/bb.jpeg" alt="Baierbrunn" style="width:100%">
-							}
-						</div>
-					</div>
-
+					<p style="text-align:center; font-size:150%;">@localizer["You_are_inactivated_this_page_is_not_available_for_you"]</p>
 				}
 				else
 				{
-					<p>@localizer["Ad_not_found"]</p>
-				}
+					@if (ad != null)
+					{
+						<div class="row">
+							<div class="col-12 col-md-6">
+								<EditForm Model="@ad" class="div-block">
+									<div class="input-block">
+										<p>@localizer["I_am_a"]</p>
+										<InputSelect class="input" @bind-Value="ad.AdType" id="adType">
+											<option value="@AdType.SelectAll">@localizer["Please_select"]</option>
+											@foreach (var value in Enum.GetValues<AdType>())
+											{
+												if (value == AdType.SelectAll)
+												{
+													continue;
+												}
+												<option value="@value">@localizer[value.ToString()]</option>
+											}
+										</InputSelect>
+									</div>
 
+									<div class="input-block">
+										<p>@localizer["Direction"] </p>
+										<InputSelect class="input" @bind-Value="ad.AdDirection" id="adDirection">
+											@foreach (var value in Enum.GetValues<AdDirection>())
+											{
+												if (value == AdDirection.SelectAll)
+												{
+													continue;
+												}
+												<option value="@value">@localizer[value.ToString()]</option>
+											}
+										</InputSelect>
+									</div>
+
+									<div class="input-block">
+										<p>@localizer["Pick_up_date_and_time"] </p>
+										<InputDate Type="InputDateType.DateTimeLocal" class="input"
+												   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
+										</InputDate>
+									</div>
+
+									<div class="input-block">
+										<p>@localizer["Number_of_seats"]</p>
+										<InputSelect class="input" @bind-Value="ad.NumberOfSeats" id="numberOfSeats">
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+										</InputSelect>
+										<ValidationMessage For=@(() => ad.NumberOfSeats) />
+									</div>
+
+									<div class="input-block">
+										<p>@localizer["Specific_requests"] </p>
+										<InputText class="input" @bind-Value="ad.SpecificRequests"></InputText><br>
+									</div>
+
+									<div class="input-block">
+										<p>@localizer["From/to_this_address"]</p>
+										<input class="input" @bind="ad.PickUpDropOffLocation" id="PickUpDropOffLocation"
+											   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
+										<ValidationMessage For="() => ad.PickUpDropOffLocation" />
+									</div>
+
+									@if (showMap)
+									{
+										<div class="input-block">
+											<div>@localizer["On_the_map_you_can_specify_the_exact_pick_up_drop_off_location"] @localizer["Please_move_the_marker_to_the_place_where_you_can_stop_with_your_car_wait_for_your_pick up"]</div>
+										</div>
+									}
+
+									<div class="input-block">
+										<p>@localizer["Save_the_ad"]</p>
+										<button @onclick="CheckAd">@localizer["Save"]</button>
+									</div>
+
+								</EditForm>
+							</div>
+
+							<div class="col-12 col-md-6">
+								@if (showMap)
+								{
+									<div id="map">
+									</div>
+									<script>
+										(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+										({key: "AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk", v: "beta"});</script>
+								}
+								else
+								{
+									<img src="/images/bb.jpeg" alt="Baierbrunn" style="width:100%">
+								}
+							</div>
+						</div>
+
+					}
+					else
+					{
+						<p>@localizer["Ad_not_found"]</p>
+					}
+				}
+			}
+			else
+			{
+				<p>@localizer["Ad_not_found"]</p>
 			}
 		</body>
 
@@ -175,7 +181,7 @@
 			</div>
 		</div>
 
-	
+
 
 
 		@* //new pop up for the time being in the past: *@
@@ -266,7 +272,7 @@
 	[Parameter]
 	public int ID { get; set; }
 
-	private Ad ad;
+	private Ad? ad;
 
 
 	//coordinates of Baierbrunn
@@ -313,11 +319,11 @@
 		return base.ShouldRender();
 	}
 
-	protected override async Task OnParametersSetAsync()
+	protected override void OnParametersSet()
 	{
 		DataService.loadCulture(currentlyLoggedInUser);
 		using var context = DbContextFactory.CreateDbContext();
-		ad = await context.Ads.FirstOrDefaultAsync(a => a.ID == ID);
+		ad = context.Ads.Include(ad => ad.AdOwner).FirstOrDefault(a => a.ID == ID);
 		timerObj = new Timer(1500);
 		timerObj.Elapsed += onTimer;
 		timerObj.AutoReset = false;
