@@ -39,7 +39,7 @@
 
 <AuthorizeView Context="authContext">
 	<Authorized>
-		
+
 
 		<body>
 			@if (currentlyLoggedInUser?.isActive == false)
@@ -112,6 +112,10 @@
 								</div>
 
 								<div class="input-block">
+									<div>@localizer["Please_type_in_the_address_first_and_then_move_the_marker_on_the_exact_spot_where_you_or_your_colleagues_could_stop_with_a_car"]</div>
+								</div>
+
+								<div class="input-block">
 									<div>@localizer["From/to_this_address"]</div>
 									<input @bind="ad.PickUpDropOffLocation" class="input" id="PickUpDropOffLocation"
 										   @bind:event="oninput" @onkeyup="OnValueChange"></input><br>
@@ -173,7 +177,7 @@
 			</div>
 		</div>
 
-	
+
 
 		@* //new pop up for location being too far from BB: *@
 		<div class="modal fade" id="tooFarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -193,7 +197,7 @@
 			</div>
 		</div>
 
-		
+
 
 
 		@* //new pop up for the time being in the past: *@
@@ -214,7 +218,7 @@
 			</div>
 		</div>
 
-		
+
 
 		@* //new pop up for invalid address: *@
 		<div class="modal fade" id="incorrectAddressModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -234,7 +238,7 @@
 			</div>
 		</div>
 
-		
+
 
 		@* //new pop up for invalid route: *@
 		<div class="modal fade" id="incorrectRouteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -254,7 +258,7 @@
 			</div>
 		</div>
 
-		
+
 
 
 		@* //new pop up for invalid ad type: *@
@@ -275,7 +279,7 @@
 			</div>
 		</div>
 
-		
+
 
 
 

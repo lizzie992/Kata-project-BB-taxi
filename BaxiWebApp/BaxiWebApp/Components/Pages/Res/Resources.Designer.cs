@@ -1417,6 +1417,16 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please type in the address first and then move the marker on the exact spot where you or your colleagues could stop with a car!.
+        /// </summary>
+        public static string Please_type_in_the_address_first_and_then_move_the_marker_on_the_exact_spot_where_you_or_your_colleagues_could_stop_with_a_car {
+            get {
+                return ResourceManager.GetString("Please_type_in_the_address_first_and_then_move_the_marker_on_the_exact_spot_where" +
+                        "_you_or_your_colleagues_could_stop_with_a_car", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please write here the reason for the deleting this ad:.
         /// </summary>
         public static string Please_write_here_the_reason_for_deleting_this_ad {

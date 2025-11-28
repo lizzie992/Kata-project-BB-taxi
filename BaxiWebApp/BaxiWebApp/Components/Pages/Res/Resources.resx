@@ -845,4 +845,7 @@ If it was not you, please, ignore this email!</value>
   <data name="The_password_and_confirmation_password_do_not_match" xml:space="preserve">
     <value>The password and confirmation password do not match.</value>
   </data>
+  <data name="Please_type_in_the_address_first_and_then_move_the_marker_on_the_exact_spot_where_you_or_your_colleagues_could_stop_with_a_car" xml:space="preserve">
+    <value>Please type in the address first and then move the marker on the exact spot where you or your colleagues could stop with a car!</value>
+  </data>
 </root>

@@ -854,4 +854,7 @@ Falls Sie es nicht waren, ignorieren Sie bitte diese E-Mail!</value>
   <data name="The_password_and_confirmation_password_do_not_match" xml:space="preserve">
     <value>Das Passwort und das Bestätigungspasswort stimmen nicht überein.</value>
   </data>
+  <data name="Please_type_in_the_address_first_and_then_move_the_marker_on_the_exact_spot_where_you_or_your_colleagues_could_stop_with_a_car" xml:space="preserve">
+    <value>Bitte geben Sie zuerst die Adresse ein und verschieben Sie dann die Markierung genau an die Stelle, an der Sie oder Ihre Kollegen mit dem Auto anhalten könnten!</value>
+  </data>
 </root>
