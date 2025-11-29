@@ -863,6 +863,15 @@
 		{
 			ad.SpecificRequests = "No Specific requests";
 		}
+		if (ad.AdFrequency == AdFrequency.OneTime)
+		{
+			ad.PickUpTimeMonday = new DateTime(1900, 01, 01, 00, 00, 00);
+			ad.PickUpTimeTuesday = new DateTime(1900, 01, 01, 00, 00, 00);
+			ad.PickUpTimeWednesday = new DateTime(1900, 01, 01, 00, 00, 00);
+			ad.PickUpTimeThursday = new DateTime(1900, 01, 01, 00, 00, 00);
+			ad.PickUpTimeFriday = new DateTime(1900, 01, 01, 00, 00, 00);
+			ad.PickUpDay = null;
+		}
 		if (ad.AdFrequency == AdFrequency.Recurring)
 		{
 			ad.PickUpDateAndTime = new DateTime(1900, 01, 01, 00, 00, 00);

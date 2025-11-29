@@ -151,37 +151,37 @@ namespace BB
         }
 
 
-        private DateTime? _pickUpTimeMonday;
+        private DateTime _pickUpTimeMonday;
 
-        public DateTime? PickUpTimeMonday
+        public DateTime PickUpTimeMonday
         {
             get { return _pickUpTimeMonday; }
             set { _pickUpTimeMonday = value; }
         }
 
-        private DateTime? _pickUpTimeTuesday;
-        public DateTime? PickUpTimeTuesday
+        private DateTime _pickUpTimeTuesday;
+        public DateTime PickUpTimeTuesday
         {
             get { return _pickUpTimeTuesday; }
             set { _pickUpTimeTuesday = value; }
         }
 
-        private DateTime? _pickUpTimeWednesday;
-        public DateTime? PickUpTimeWednesday
+        private DateTime _pickUpTimeWednesday;
+        public DateTime PickUpTimeWednesday
         {
             get { return _pickUpTimeWednesday; }
             set { _pickUpTimeWednesday = value; }
         }
 
-        private DateTime? _pickUpTimeThursday;
-        public DateTime? PickUpTimeThursday
+        private DateTime _pickUpTimeThursday;
+        public DateTime PickUpTimeThursday
         {
             get { return _pickUpTimeThursday; }
             set { _pickUpTimeThursday = value; }
         }
 
-        private DateTime? _pickUpTimeFriday;
-        public DateTime? PickUpTimeFriday
+        private DateTime _pickUpTimeFriday;
+        public DateTime PickUpTimeFriday
         {
             get { return _pickUpTimeFriday; }
             set { _pickUpTimeFriday = value; }
