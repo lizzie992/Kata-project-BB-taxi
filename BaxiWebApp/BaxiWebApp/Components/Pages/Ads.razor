@@ -434,11 +434,64 @@
 
 
 	DateTime _datetime1 = DateTime.Now;
-	DateTime _datetime2 = DateTime.Now.AddDays(90);
+	DateTime _datetime2 = DateTime.Now.AddDays(14);
 
 
+	List<Ad> checkRecurringAdsAgainstDatesAndTimes(DateTime firstDate, DateTime secondDate, List<Ad> adlist)
+	{
+		List<Ad> list = new List<Ad>();
+		for (DateTime date = firstDate; date <= secondDate; date = date.AddDays(1))
+		{
+			foreach (Ad ad in adlist)
+			{
+				if (ad.AdFrequency == AdFrequency.Recurring)
+				{
+					if (date.DayOfWeek == DayOfWeek.Monday && ad.PickUpDay.Contains(DayOfWeek.Monday))
+					{
+						if (TimeOnly.FromDateTime(ad.PickUpTimeMonday) >= TimeOnly.FromDateTime(firstDate) && TimeOnly.FromDateTime(ad.PickUpTimeMonday) <= TimeOnly.FromDateTime(secondDate))
+						{
+							list.Add(ad);
+						}
+					}
 
+					if (date.DayOfWeek == DayOfWeek.Tuesday && ad.PickUpDay.Contains(DayOfWeek.Tuesday))
+					{
+						if (TimeOnly.FromDateTime(ad.PickUpTimeTuesday) >= TimeOnly.FromDateTime(firstDate) && TimeOnly.FromDateTime(ad.PickUpTimeTuesday) <= TimeOnly.FromDateTime(secondDate))
+						{
+							list.Add(ad);
+						}
+					}
 
+					if (date.DayOfWeek == DayOfWeek.Wednesday && ad.PickUpDay.Contains(DayOfWeek.Wednesday))
+					{
+						if (TimeOnly.FromDateTime(ad.PickUpTimeWednesday) >= TimeOnly.FromDateTime(firstDate) && TimeOnly.FromDateTime(ad.PickUpTimeWednesday) <= TimeOnly.FromDateTime(secondDate))
+						{
+							list.Add(ad);
+						}
+					}
+
+					if (date.DayOfWeek == DayOfWeek.Thursday && ad.PickUpDay.Contains(DayOfWeek.Thursday))
+					{
+						if (TimeOnly.FromDateTime(ad.PickUpTimeThursday) >= TimeOnly.FromDateTime(firstDate) && TimeOnly.FromDateTime(ad.PickUpTimeThursday) <= TimeOnly.FromDateTime(secondDate))
+						{
+							list.Add(ad);
+						}
+					}
+
+					if (date.DayOfWeek == DayOfWeek.Friday && ad.PickUpDay.Contains(DayOfWeek.Friday))
+					{
+						if (TimeOnly.FromDateTime(ad.PickUpTimeFriday) >= TimeOnly.FromDateTime(firstDate) && TimeOnly.FromDateTime(ad.PickUpTimeFriday) <= TimeOnly.FromDateTime(secondDate))
+						{
+							list.Add(ad);
+						}
+					}
+				}
+			}
+		}
+		return list;
+	}
+
+	List<DayOfWeek> listDaysOfWeek = new List<DayOfWeek>();
 
 	QuickGrid<Ad>? grid;
 
@@ -450,12 +503,10 @@
 
 			var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
 
-			TimeSpan timeSpan = _datetime2 - _datetime1;
-			
-
+			List<Ad> matchingRecurringAds = checkRecurringAdsAgainstDatesAndTimes(_datetime1, _datetime2, result.Where(a => a.AdFrequency == AdFrequency.Recurring).ToList());
 
 			result = result.Where(ad =>
-				(ad.AdFrequency == AdFrequency.Recurring) || // Keep all recurring
+				(ad.AdFrequency == AdFrequency.Recurring && matchingRecurringAds.Contains(ad)) || // Keep all recurring + filtering the days and hours
 				(ad.AdFrequency == AdFrequency.OneTime && // For one-time, check date
 				 _datetime1 <= ad.PickUpDateAndTime &&
 				 ad.PickUpDateAndTime <= _datetime2)
