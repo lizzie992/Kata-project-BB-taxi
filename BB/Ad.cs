@@ -34,6 +34,15 @@ namespace BB
         }
 
 
+        private AdFrequency _adFrequency;
+
+        public AdFrequency AdFrequency
+        {
+            get { return _adFrequency; }
+            set { _adFrequency = value; }
+        }
+
+
         private AdType _adType;
 
         public AdType AdType
@@ -129,6 +138,56 @@ namespace BB
             get { return _adConversations; }
             set { _adConversations = value; }
         }
+
+
+
+
+        private List<DayOfWeek>? _pickUpDay;
+
+        public List<DayOfWeek>? PickUpDay
+        {
+            get { return _pickUpDay; }
+            set { _pickUpDay = value; }
+        }
+
+
+        private TimeOnly? _pickUpTimeMonday;
+
+        public TimeOnly? PickUpTimeMonday
+        {
+            get { return _pickUpTimeMonday; }
+            set { _pickUpTimeMonday = value; }
+        }
+
+        private TimeOnly? _pickUpTimeTuesday;
+        public TimeOnly? PickUpTimeTuesday
+        {
+            get { return _pickUpTimeTuesday; }
+            set { _pickUpTimeTuesday = value; }
+        }
+
+        private TimeOnly? _pickUpTimeWednesday;
+        public TimeOnly? PickUpTimeWednesday
+        {
+            get { return _pickUpTimeWednesday; }
+            set { _pickUpTimeWednesday = value; }
+        }
+
+        private TimeOnly? _pickUpTimeThursday;
+        public TimeOnly? PickUpTimeThursday
+        {
+            get { return _pickUpTimeThursday; }
+            set { _pickUpTimeThursday = value; }
+        }
+
+        private TimeOnly? _pickUpTimeFriday;
+        public TimeOnly? PickUpTimeFriday
+        {
+            get { return _pickUpTimeFriday; }
+            set { _pickUpTimeFriday = value; }
+        }
+
+
 
 
     }

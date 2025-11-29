@@ -8,8 +8,6 @@ namespace BaxiWebApp.Data
     public class BaxiWebAppContext(DbContextOptions<BaxiWebAppContext> options) : IdentityDbContext<User>(options)
     {
         public DbSet<Ad> Ads { get; set; }
-        public DbSet<RecurringAd> RecurringAds { get; set; }
-
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<Message> Messages { get; set; }
 
