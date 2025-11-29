@@ -788,6 +788,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Friday.
+        /// </summary>
+        public static string Friday {
+            get {
+                return ResourceManager.GetString("Friday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From:.
         /// </summary>
         public static string From {
@@ -948,6 +957,16 @@ namespace BaxiWebApp.Components.Pages.Res {
             get {
                 return ResourceManager.GetString("If_you_have_the_same_requests_regarding_the_ride_such_as_no_smokers_please_or_no_" +
                         "loud_music_etc_please_write_them_here", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you select a pick up day, you should also set up a pick up time for that day! Please do not leave it on 00:00!.
+        /// </summary>
+        public static string If_you_select_a_pick_up_day_you_should_also_set_up_a_pick_up_time_for_that_day_Please_do_not_leave_it_on_00_00 {
+            get {
+                return ResourceManager.GetString("If_you_select_a_pick_up_day_you_should_also_set_up_a_pick_up_time_for_that_day_Pl" +
+                        "ease_do_not_leave_it_on_00_00", resourceCulture);
             }
         }
         
@@ -1153,6 +1172,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Monday.
+        /// </summary>
+        public static string Monday {
+            get {
+                return ResourceManager.GetString("Monday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to More.
         /// </summary>
         public static string More {
@@ -1297,6 +1325,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to One-Time.
+        /// </summary>
+        public static string One_Time {
+            get {
+                return ResourceManager.GetString("One_Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Other.
         /// </summary>
         public static string Other {
@@ -1380,6 +1417,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please define if your ad will be a one-time ad or a recurring one:.
+        /// </summary>
+        public static string Please_define_if_your_ad_will_be_a_one_time_ad_or_a_recurring_one {
+            get {
+                return ResourceManager.GetString("Please_define_if_your_ad_will_be_a_one_time_ad_or_a_recurring_one", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please give me a correct Ad type.
         /// </summary>
         public static string Please_give_me_a_correct_ad_type {
@@ -1413,6 +1459,34 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Please_select {
             get {
                 return ResourceManager.GetString("Please_select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a correct ad frequency!.
+        /// </summary>
+        public static string Please_select_a_correct_ad_frequency {
+            get {
+                return ResourceManager.GetString("Please_select_a_correct_ad_frequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a correct hour for your pick up day!.
+        /// </summary>
+        public static string Please_select_a_correct_hour_for_your_pick_up_day {
+            get {
+                return ResourceManager.GetString("Please_select_a_correct_hour_for_your_pick_up_day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select the days when you are driving to/from Baierbrunn, and enter the time when you can meet your colleague:.
+        /// </summary>
+        public static string Please_select_the_days_when_you_are_driving_to_from_Baierbrunn_and_enter_the_time_when_you_can_meet_your_colleague {
+            get {
+                return ResourceManager.GetString("Please_select_the_days_when_you_are_driving_to_from_Baierbrunn_and_enter_the_time" +
+                        "_when_you_can_meet_your_colleague", resourceCulture);
             }
         }
         
@@ -1558,6 +1632,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Recommended_ads {
             get {
                 return ResourceManager.GetString("Recommended_ads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recurring.
+        /// </summary>
+        public static string Recurring {
+            get {
+                return ResourceManager.GetString("Recurring", resourceCulture);
             }
         }
         
@@ -1890,6 +1973,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thursday.
+        /// </summary>
+        public static string Thursday {
+            get {
+                return ResourceManager.GetString("Thursday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Timestamp:.
         /// </summary>
         public static string Timestamp {
@@ -1922,6 +2014,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Together_to_baierbrunn {
             get {
                 return ResourceManager.GetString("Together_to_baierbrunn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tuesday.
+        /// </summary>
+        public static string Tuesday {
+            get {
+                return ResourceManager.GetString("Tuesday", resourceCulture);
             }
         }
         
@@ -1986,6 +2087,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string Warning {
             get {
                 return ResourceManager.GetString("Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wednesday.
+        /// </summary>
+        public static string Wednesday {
+            get {
+                return ResourceManager.GetString("Wednesday", resourceCulture);
             }
         }
         
@@ -2090,6 +2200,15 @@ namespace BaxiWebApp.Components.Pages.Res {
             get {
                 return ResourceManager.GetString("You_just_received_a_new_message_from_{0}_Go_and_check_it_out_http_localhost_5049_" +
                         "Chat_{1}", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You need to select either a one-time ad or a recurring ad..
+        /// </summary>
+        public static string You_need_to_select_either_a_one_time_ad_or_a_recurring_ad {
+            get {
+                return ResourceManager.GetString("You_need_to_select_either_a_one_time_ad_or_a_recurring_ad", resourceCulture);
             }
         }
         

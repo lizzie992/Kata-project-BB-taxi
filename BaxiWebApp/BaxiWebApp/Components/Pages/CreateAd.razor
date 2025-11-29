@@ -57,6 +57,19 @@
 								<DataAnnotationsValidator />
 								<ValidationSummary />
 
+
+								<div class="input-block">
+									<div>@localizer["Please_define_if_your_ad_will_be_a_one_time_ad_or_a_recurring_one"]</div>
+								</div>
+								<div class="input-block">
+									<InputSelect class="input" @bind-Value="ad.AdFrequency" id="AdFrequency" @onchange="StateHasChanged">
+										<option value="@AdFrequency.SelectAll">@localizer["Please_select"]</option>
+										<option value="@AdFrequency.OneTime">@localizer["One_Time"]</option>
+										<option value="@AdFrequency.Recurring">@localizer["Recurring"]</option>
+									</InputSelect>
+								</div>
+
+
 								<div class="input-block">
 									<div>@localizer["I_am_a"]</div>
 									<InputSelect class="input" @bind-Value="ad.AdType" id="adType">
@@ -86,12 +99,48 @@
 									</InputSelect>
 								</div>
 
-								<div class="input-block">
-									<div>@localizer["Pick_up_date_and_time"] </div>
-									<InputDate Type="InputDateType.DateTimeLocal" class="input"
-											   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
-									</InputDate>
-								</div>
+								@if (ad.AdFrequency == AdFrequency.OneTime)
+								{
+									<div class="input-block">
+										<div>@localizer["Pick_up_date_and_time"] </div>
+										<InputDate Type="InputDateType.DateTimeLocal" class="input"
+												   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="ad.PickUpDateAndTime">
+										</InputDate>
+									</div>
+								}
+
+								@if (ad.AdFrequency == AdFrequency.Recurring)
+								{
+									<div class="input-block">
+										<div>@localizer["Please_select_the_days_when_you_are_driving_to_from_Baierbrunn_and_enter_the_time_when_you_can_meet_your_colleague"] </div>
+									</div>
+									<div class="input-block">
+										<input type="checkbox" class="input" unchecked @bind-value="@Monday">
+										<div>@localizer["Monday"] </div>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeMonday"></InputDate>
+									</div>
+									<div class="input-block">
+										<input type="checkbox" class="input" unchecked @bind-value="@Tuesday">
+										<div>@localizer["Tuesday"] </div>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeTuesday"></InputDate>
+									</div>
+									<div class="input-block">
+										<input type="checkbox" class="input" unchecked @bind-value="@Wednesday">
+										<div>@localizer["Wednesday"] </div>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeWednesday"></InputDate>
+									</div>
+									<div class="input-block">
+										<input type="checkbox" class="input" unchecked @bind-value="@Thursday">
+										<div>@localizer["Thursday"] </div>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeThursday"></InputDate>
+									</div>
+									<div class="input-block">
+										<input type="checkbox" class="input" unchecked @bind-value="@Friday">
+										<div>@localizer["Friday"] </div>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeFriday"></InputDate>
+									</div>
+								}
+
 
 								<div class="input-block">
 									<div>@localizer["Number_of_seats"]</div>
@@ -279,8 +328,41 @@
 			</div>
 		</div>
 
+		@* //new pop up for invalid ad frequency: *@
+		<div class="modal fade" id="incorrectAdFrequencyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">@localizer["Please_select_a_correct_ad_frequency"]</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>@localizer["You_need_to_select_either_a_one_time_ad_or_a_recurring_ad"]</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-bs-dismiss="modal" class="close">@localizer["I_will_correct_it"]</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-
+		@* //new pop up for no time info: *@
+		<div class="modal fade" id="missingTimeInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">@localizer["Please_select_a_correct_hour_for_your_pick_up_day"]</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>@localizer["If_you_select_a_pick_up_day_you_should_also_set_up_a_pick_up_time_for_that_day_Please_do_not_leave_it_on_00_00"]</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-bs-dismiss="modal" class="close">@localizer["I_will_correct_it"]</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 	</Authorized>
@@ -632,7 +714,33 @@
 			(ad.Latitude, ad.Longitude) = await DataService.GetCoordinatesFromAddress(ad.PickUpDropOffLocation);
 		}
 		int distance = await DataService.GetDistance(latitudeBB, longitudeBB, ad.Latitude, ad.Longitude);
-		if (ad.PickUpDateAndTime <= DateTime.Now)
+		if (ad.AdFrequency == AdFrequency.SelectAll)
+		{
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "incorrectAdFrequencyModal");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Modal failed to display: {e.Message}");
+			}
+		}
+		else if ((Monday && _pickUpTimeMonday == new TimeOnly(0, 0, 0)) ||
+(Tuesday && _pickUpTimeTuesday == new TimeOnly(0, 0, 0)) ||
+(Wednesday && _pickUpTimeWednesday == new TimeOnly(0, 0, 0)) ||
+(Thursday && _pickUpTimeThursday == new TimeOnly(0, 0, 0)) ||
+(Friday && _pickUpTimeFriday == new TimeOnly(0, 0, 0)))
+		{
+			try
+			{
+				await JSRuntime.InvokeVoidAsync("blazorModal.show", "missingTimeInfo");
+			}
+			catch (ArgumentException e)
+			{
+				Console.WriteLine($"Modal failed to display: {e.Message}");
+			}
+		}
+		else if (ad.AdFrequency == AdFrequency.OneTime && ad.PickUpDateAndTime <= DateTime.Now)
 		{
 			// ShowPopUpForTimeIsInPast();
 			try
@@ -722,6 +830,21 @@
 		}
 	}
 
+
+	bool Monday { get; set; }
+	bool Tuesday { get; set; }
+	bool Wednesday { get; set; }
+	bool Thursday { get; set; }
+	bool Friday { get; set; }
+
+	private TimeOnly _pickUpTimeMonday = new TimeOnly();
+	private TimeOnly _pickUpTimeTuesday = new TimeOnly();
+	private TimeOnly _pickUpTimeWednesday = new TimeOnly();
+	private TimeOnly _pickUpTimeThursday = new TimeOnly();
+	private TimeOnly _pickUpTimeFriday = new TimeOnly();
+
+
+
 	/// <summary>
 	/// Saves the ad in the database, triggers the method to compare the new ad with the old ads for possible notifications, and also redirects user to the Ads page
 	/// </summary>
@@ -739,6 +862,36 @@
 		if (ad.SpecificRequests is null || ad.SpecificRequests == "")
 		{
 			ad.SpecificRequests = "No Specific requests";
+		}
+		if (ad.AdFrequency == AdFrequency.Recurring)
+		{
+			ad.PickUpDateAndTime = new DateTime(1900, 01, 01, 00, 00, 00);
+			ad.PickUpTimeMonday = new DateTime(1900, 01, 01, _pickUpTimeMonday.Hour, _pickUpTimeMonday.Minute, 00);
+			ad.PickUpTimeTuesday = new DateTime(1900, 01, 01, _pickUpTimeTuesday.Hour, _pickUpTimeTuesday.Minute, 00);
+			ad.PickUpTimeWednesday = new DateTime(1900, 01, 01, _pickUpTimeWednesday.Hour, _pickUpTimeWednesday.Minute, 00);
+			ad.PickUpTimeThursday = new DateTime(1900, 01, 01, _pickUpTimeThursday.Hour, _pickUpTimeThursday.Minute, 00);
+			ad.PickUpTimeFriday = new DateTime(1900, 01, 01, _pickUpTimeFriday.Hour, _pickUpTimeFriday.Minute, 00);
+			ad.PickUpDay = new List<DayOfWeek>();
+			if (Monday)
+			{
+				ad.PickUpDay.Add(DayOfWeek.Monday);
+			}
+			if (Tuesday)
+			{
+				ad.PickUpDay.Add(DayOfWeek.Tuesday);
+			}
+			if (Wednesday)
+			{
+				ad.PickUpDay.Add(DayOfWeek.Wednesday);
+			}
+			if (Thursday)
+			{
+				ad.PickUpDay.Add(DayOfWeek.Thursday);
+			}
+			if (Friday)
+			{
+				ad.PickUpDay.Add(DayOfWeek.Friday);
+			}
 		}
 		context.SaveChanges();
 		await DataService.CheckAdsForNotification(ad);

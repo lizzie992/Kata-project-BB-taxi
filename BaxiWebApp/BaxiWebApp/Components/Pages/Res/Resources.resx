@@ -848,4 +848,43 @@ If it was not you, please, ignore this email!</value>
   <data name="Please_type_in_the_address_first_and_then_move_the_marker_on_the_exact_spot_where_you_or_your_colleagues_could_stop_with_a_car" xml:space="preserve">
     <value>Please type in the address first and then move the marker on the exact spot where you or your colleagues could stop with a car!</value>
   </data>
+  <data name="Please_define_if_your_ad_will_be_a_one_time_ad_or_a_recurring_one" xml:space="preserve">
+    <value>Please define if your ad will be a one-time ad or a recurring one:</value>
+  </data>
+  <data name="One_Time" xml:space="preserve">
+    <value>One-Time</value>
+  </data>
+  <data name="Recurring" xml:space="preserve">
+    <value>Recurring</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>Monday</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>Tuesday</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>Wednesday</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>Thursday</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>Friday</value>
+  </data>
+  <data name="Please_select_the_days_when_you_are_driving_to_from_Baierbrunn_and_enter_the_time_when_you_can_meet_your_colleague" xml:space="preserve">
+    <value>Please select the days when you are driving to/from Baierbrunn, and enter the time when you can meet your colleague:</value>
+  </data>
+  <data name="Please_select_a_correct_ad_frequency" xml:space="preserve">
+    <value>Please select a correct ad frequency!</value>
+  </data>
+  <data name="You_need_to_select_either_a_one_time_ad_or_a_recurring_ad" xml:space="preserve">
+    <value>You need to select either a one-time ad or a recurring ad.</value>
+  </data>
+  <data name="Please_select_a_correct_hour_for_your_pick_up_day" xml:space="preserve">
+    <value>Please select a correct hour for your pick up day!</value>
+  </data>
+  <data name="If_you_select_a_pick_up_day_you_should_also_set_up_a_pick_up_time_for_that_day_Please_do_not_leave_it_on_00_00" xml:space="preserve">
+    <value>If you select a pick up day, you should also set up a pick up time for that day! Please do not leave it on 00:00!</value>
+  </data>
 </root>

@@ -857,4 +857,43 @@ Falls Sie es nicht waren, ignorieren Sie bitte diese E-Mail!</value>
   <data name="Please_type_in_the_address_first_and_then_move_the_marker_on_the_exact_spot_where_you_or_your_colleagues_could_stop_with_a_car" xml:space="preserve">
     <value>Bitte geben Sie zuerst die Adresse ein und verschieben Sie dann die Markierung genau an die Stelle, an der Sie oder Ihre Kollegen mit dem Auto anhalten könnten!</value>
   </data>
+  <data name="Please_define_if_your_ad_will_be_a_one_time_ad_or_a_recurring_one" xml:space="preserve">
+    <value>Bitte legen Sie fest, ob Ihre Anzeige eine einmalige Anzeige oder eine wiederkehrende Anzeige sein wird:</value>
+  </data>
+  <data name="One_Time" xml:space="preserve">
+    <value>Einmalig</value>
+  </data>
+  <data name="Recurring" xml:space="preserve">
+    <value>Wiederkehrend</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>Montag</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>Dienstag</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>Mittwoch</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>Donnerstag</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>Freitag</value>
+  </data>
+  <data name="Please_select_the_days_when_you_are_driving_to_from_Baierbrunn_and_enter_the_time_when_you_can_meet_your_colleague" xml:space="preserve">
+    <value>Bitte wählen Sie die Tage aus, an denen Sie nach/von Baierbrunn fahren, und geben Sie die Uhrzeit an, zu der Sie Ihren Kollegen treffen können:</value>
+  </data>
+  <data name="Please_select_a_correct_ad_frequency" xml:space="preserve">
+    <value>Bitte wählen Sie eine korrekte Anzeigenfrequenz aus!</value>
+  </data>
+  <data name="You_need_to_select_either_a_one_time_ad_or_a_recurring_ad" xml:space="preserve">
+    <value>Sie müssen entweder eine einmalige Anzeige oder eine wiederkehrende Anzeige auswählen.</value>
+  </data>
+  <data name="Please_select_a_correct_hour_for_your_pick_up_day" xml:space="preserve">
+    <value>Bitte wählen Sie eine korrekte Uhrzeit für Ihren Abholtag aus!</value>
+  </data>
+  <data name="If_you_select_a_pick_up_day_you_should_also_set_up_a_pick_up_time_for_that_day_Please_do_not_leave_it_on_00_00" xml:space="preserve">
+    <value>Wenn Sie einen Abholtag auswählen, sollten Sie auch eine Abholzeit für diesen Tag festlegen! Bitte lassen Sie sie nicht auf 00:00!</value>
+  </data>
 </root>
