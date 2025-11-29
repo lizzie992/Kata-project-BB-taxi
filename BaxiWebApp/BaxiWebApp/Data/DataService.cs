@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Primitives;
 using System.Globalization;
 using System.Net;
 using System.Net.Mail;
@@ -64,10 +65,10 @@ namespace BaxiWebApp.Data
 
 
         /// <summary>
-        /// 
+        /// Takes a dateTime object and shows only the time part of it (nicely formatted as 00:00)
         /// </summary>
-        /// <param name="datetime"></param>
-        /// <returns></returns>
+        /// <param name="datetime">DateTime</param>
+        /// <returns>string</returns>
         public string showTimeWithoutDate(DateTime datetime)
         {
             var time = new StringBuilder();
@@ -76,6 +77,72 @@ namespace BaxiWebApp.Data
             time.Append(datetime.Minute.ToString("D2"));
             return time.ToString();
         }
+
+
+        /// <summary>
+        /// Checks an ad and returns the pick up times (wether it is a one-time or recurring ad) in a nicely formatted string
+        /// </summary>
+        /// <param name="ad">Ad</param>
+        /// <returns>string</returns>
+        public string showPickUpTimeForAnyTypeOfAd(Ad ad)
+        {
+            string pickUpTime = "";
+            if (ad.AdFrequency == AdFrequency.OneTime)
+            {
+                pickUpTime = ad.PickUpDateAndTime.ToString("g");
+            }
+            if (ad.AdFrequency == AdFrequency.Recurring)
+            {
+                var text = new StringBuilder();
+
+                if (ad.PickUpDay.Contains(DayOfWeek.Monday))
+                {
+                    text.Append(_localizer["Every_Monday_at"]);
+                    text.Append(showTimeWithoutDate(ad.PickUpTimeMonday));
+                    text.Append(", ");
+                }
+                if (ad.PickUpDay.Contains(DayOfWeek.Tuesday))
+
+                {
+                    text.Append(_localizer["Every_Tuesday_at"]);
+                    text.Append(showTimeWithoutDate(ad.PickUpTimeTuesday));
+                    text.Append(", ");
+                }
+                if (ad.PickUpDay.Contains(DayOfWeek.Wednesday))
+
+                {
+                    text.Append(_localizer["Every_Wednesday_at"]);
+                    text.Append(showTimeWithoutDate(ad.PickUpTimeWednesday));
+                    text.Append(", ");
+                }
+                if (ad.PickUpDay.Contains(DayOfWeek.Thursday))
+
+                {
+                    text.Append(_localizer["Every_Thursday_at"]);
+                    text.Append(showTimeWithoutDate(ad.PickUpTimeThursday));
+                    text.Append(", ");
+                }
+                if (ad.PickUpDay.Contains(DayOfWeek.Friday))
+
+
+                {
+                    text.Append(_localizer["Every_Friday_at"]);
+                    text.Append(showTimeWithoutDate(ad.PickUpTimeFriday));
+                    text.Append(", ");
+                }
+
+
+                text.Length--;
+                text.Length--;
+
+                pickUpTime = text.ToString();
+
+            }
+            return pickUpTime;
+        }
+
+
+
 
         /// <summary>
         /// Changes the current culture to a specific value
@@ -296,14 +363,14 @@ namespace BaxiWebApp.Data
                 {
                     if (oldAd.AdOwner.AreNotificationsOn == true)
                     {
-                        string messageNewAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", newAd.AdOwner, newAd.AdType, newAd.AdDirection, newAd.PickUpDropOffLocation, newAd.PickUpDateAndTime, newAd.NumberOfSeats, newAd.SpecificRequests, newAd.ID];
+                        string messageNewAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", newAd.AdOwner, newAd.AdType, newAd.AdDirection, newAd.PickUpDropOffLocation, showPickUpTimeForAnyTypeOfAd(newAd), newAd.NumberOfSeats, newAd.SpecificRequests, newAd.ID];
                         string emailAddress = oldAd.AdOwner.Email.ToString();
                         string subject = _localizer["Check_out_this_ad"];
                         sendEmail(emailAddress, subject, messageNewAd);
                     }
                     if (newAd.AdOwner.AreNotificationsOn == true)
                     {
-                        string messageOldAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", oldAd.AdOwner, oldAd.AdType, oldAd.AdDirection, oldAd.PickUpDropOffLocation, oldAd.PickUpDateAndTime, oldAd.NumberOfSeats, oldAd.SpecificRequests, oldAd.ID];
+                        string messageOldAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", oldAd.AdOwner, oldAd.AdType, oldAd.AdDirection, oldAd.PickUpDropOffLocation, showPickUpTimeForAnyTypeOfAd(oldAd), oldAd.NumberOfSeats, oldAd.SpecificRequests, oldAd.ID];
                         string emailAddress = newAd.AdOwner.Email.ToString();
                         string subject = _localizer["Check_out_this_ad"];
                         sendEmail(emailAddress, subject, messageOldAd);
@@ -313,14 +380,14 @@ namespace BaxiWebApp.Data
                 {
                     if (oldAd.AdOwner.AreNotificationsOn == true)
                     {
-                        string messageNewAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", newAd.AdOwner, newAd.AdType, newAd.AdDirection, newAd.PickUpDropOffLocation, newAd.PickUpDateAndTime, newAd.NumberOfSeats, newAd.SpecificRequests, newAd.ID];
+                        string messageNewAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", newAd.AdOwner, newAd.AdType, newAd.AdDirection, newAd.PickUpDropOffLocation, showPickUpTimeForAnyTypeOfAd(newAd), newAd.NumberOfSeats, newAd.SpecificRequests, newAd.ID];
                         string emailAddress = oldAd.AdOwner.Email.ToString();
                         string subject = _localizer["Check_out_this_ad"];
                         sendEmail(emailAddress, subject, messageNewAd);
                     }
                     if (newAd.AdOwner.AreNotificationsOn == true)
                     {
-                        string messageOldAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", oldAd.AdOwner, oldAd.AdType, oldAd.AdDirection, oldAd.PickUpDropOffLocation, oldAd.PickUpDateAndTime, oldAd.NumberOfSeats, oldAd.SpecificRequests, oldAd.ID];
+                        string messageOldAd = _localizer["This_ad_might_be_interesting_for_you_ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}_open_the_ad_here_http_localhost_5049_ShowAd_{7}", oldAd.AdOwner, oldAd.AdType, oldAd.AdDirection, oldAd.PickUpDropOffLocation, showPickUpTimeForAnyTypeOfAd(oldAd), oldAd.NumberOfSeats, oldAd.SpecificRequests, oldAd.ID];
                         string emailAddress = newAd.AdOwner.Email.ToString();
                         string subject = _localizer["Check_out_this_ad"];
                         sendEmail(emailAddress, subject, messageOldAd);
@@ -713,11 +780,11 @@ namespace BaxiWebApp.Data
                     }
                 }
 
-               
+
                 context.Users.Remove(user);
                 context.SaveChanges();
 
-   
+
 
                 //user.isDeleted = true;
                 //user.isActive = false;

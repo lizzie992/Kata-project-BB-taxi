@@ -41,7 +41,56 @@
 						</PropertyColumn>
 						<PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)">
 						</PropertyColumn>
-						<PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime.ToString("g"))" />
+						<PropertyColumn Title="@localizer["Frequency"]" Property="@(Ad => @localizer[@Ad.AdFrequency.ToString()])">
+						</PropertyColumn>
+						<TemplateColumn Title="@localizer["Pick_up_date_and_time"]" Context="Ad">
+							@if (Ad.AdFrequency == AdFrequency.OneTime)
+							{
+								@Ad.PickUpDateAndTime
+							}
+							@if (Ad.AdFrequency == AdFrequency.Recurring)
+							{
+								@if (Ad.PickUpDay.Contains(DayOfWeek.Monday))
+								{
+									<p>
+										@localizer["Every_Monday_at"]
+										@DataService.showTimeWithoutDate(Ad.PickUpTimeMonday)
+									</p>
+								}
+								@if (Ad.PickUpDay.Contains(DayOfWeek.Tuesday))
+								{
+									<p>
+										@localizer["Every_Tuesday_at"]
+										@DataService.showTimeWithoutDate(Ad.PickUpTimeTuesday)
+									</p>
+
+								}
+								@if (Ad.PickUpDay.Contains(DayOfWeek.Wednesday))
+								{
+									<p>
+										@localizer["Every_Wednesday_at"]
+										@DataService.showTimeWithoutDate(Ad.PickUpTimeWednesday)
+									</p>
+
+								}
+								@if (Ad.PickUpDay.Contains(DayOfWeek.Thursday))
+								{
+									<p>
+										@localizer["Every_Thursday_at"]
+										@DataService.showTimeWithoutDate(Ad.PickUpTimeThursday)
+									</p>
+
+								}
+								@if (Ad.PickUpDay.Contains(DayOfWeek.Friday))
+								{
+									<p>
+										@localizer["Every_Friday_at"]
+										@DataService.showTimeWithoutDate(Ad.PickUpTimeFriday)
+									</p>
+
+								}
+							}
+						</TemplateColumn>
 						<PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)" />
 						<PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)" />
 						<TemplateColumn Title="@localizer["Modify_ad"]" Context="Ad">
@@ -62,6 +111,10 @@
 									<th style="text-align: right">@localizer[@ad.AdType.ToString()]</th>
 								</tr>
 								<tr>
+									<th style="text-align: left">@localizer["Frequency"]</th>
+									<th style="text-align: right">@localizer[@ad.AdFrequency.ToString()]</th>
+								</tr>
+								<tr>
 									<th style="text-align: left">@localizer["Ad_owner"]</th>
 									<th style="text-align: right">@DataService.showUserNameWithStatus(ad.AdOwner)</th>
 								</tr>
@@ -73,10 +126,51 @@
 									<th style="text-align: left">@localizer["From/to_this_address"]</th>
 									<th style="text-align: right">@ad.PickUpDropOffLocation</th>
 								</tr>
-								<tr>
-									<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
-									<th style="text-align: right">@ad.PickUpDateAndTime.ToString("g")</th>
-								</tr>
+								@if (ad.AdFrequency == AdFrequency.OneTime)
+								{
+									<tr>
+										<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+										<th style="text-align: right">@ad.PickUpDateAndTime.ToString("g")</th>
+									</tr>
+								}
+								@if (ad.AdFrequency == AdFrequency.Recurring)
+								{
+									@if (ad.PickUpDay.Contains(DayOfWeek.Monday))
+									{
+										<tr>
+											<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+											<th style="text-align: right">@localizer["Every_Monday_at"]@DataService.showTimeWithoutDate(ad.PickUpTimeMonday)</th>
+										</tr>
+									}
+									@if (ad.PickUpDay.Contains(DayOfWeek.Tuesday))
+									{
+										<tr>
+											<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+											<th style="text-align: right">@localizer["Every_Tuesday_at"]@DataService.showTimeWithoutDate(ad.PickUpTimeTuesday)</th>
+										</tr>
+									}
+									@if (ad.PickUpDay.Contains(DayOfWeek.Wednesday))
+									{
+										<tr>
+											<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+											<th style="text-align: right">@localizer["Every_Wednesday_at"]@DataService.showTimeWithoutDate(ad.PickUpTimeWednesday)</th>
+										</tr>
+									}
+									@if (ad.PickUpDay.Contains(DayOfWeek.Thursday))
+									{
+										<tr>
+											<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+											<th style="text-align: right">@localizer["Every_Thursday_at"]@DataService.showTimeWithoutDate(ad.PickUpTimeThursday)</th>
+										</tr>
+									}
+									@if (ad.PickUpDay.Contains(DayOfWeek.Friday))
+									{
+										<tr>
+											<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+											<th style="text-align: right">@localizer["Every_Friday_at"]@DataService.showTimeWithoutDate(ad.PickUpTimeFriday)</th>
+										</tr>
+									}
+								}
 								<tr>
 									<th style="text-align: left">@localizer["Number_of_seats"]</th>
 									<th style="text-align: right">@ad.NumberOfSeats</th>

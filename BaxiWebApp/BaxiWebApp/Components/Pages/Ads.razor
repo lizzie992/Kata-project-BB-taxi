@@ -122,7 +122,6 @@
 									</PropertyColumn>
 									<PropertyColumn Title="@localizer["Frequency"]" Property="@(Ad => @localizer[@Ad.AdFrequency.ToString()])">
 									</PropertyColumn>
-									@* <PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime.ToString("g"))" /> *@
 									<TemplateColumn Title="@localizer["Pick_up_date_and_time"]" Context="Ad">
 										@if (Ad.AdFrequency == AdFrequency.OneTime)
 										{
@@ -202,6 +201,10 @@
 											<tr>
 												<th style="text-align: left">@localizer["Ad_type"]</th>
 												<th style="text-align: right">@localizer[@ad.AdType.ToString()]</th>
+											</tr>
+											<tr>
+												<th style="text-align: left">@localizer["Frequency"]</th>
+												<th style="text-align: right">@localizer[@ad.AdFrequency.ToString()]</th>
 											</tr>
 											<tr>
 												<th style="text-align: left">@localizer["Ad_owner"]</th>
@@ -373,32 +376,6 @@
 		return base.ShouldRender();
 	}
 
-	// public List<Ad> adListForMap
-	// {
-	// 	get
-	// 	{
-	// 		using var context = DbContextFactory.CreateDbContext();
-
-	// 		var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
-
-	// 		result = result.Where(Ad =>
-	// 						Ad.PickUpDropOffLocation.Contains(_searchAddress, StringComparison.CurrentCultureIgnoreCase)
-	// 			&& Ad.NumberOfSeats >= _requestedSeats
-	// 			&& _datetime1 <= Ad.PickUpDateAndTime
-	// 			&& Ad.PickUpDateAndTime <= _datetime2);
-
-	// 		if (_adType != AdType.SelectAll)
-	// 		{
-	// 			result = result.Where(Ad => Ad.AdType == _adType);
-	// 		}
-	// 		if (_adDirection != AdDirection.SelectAll)
-	// 		{
-	// 			result = result.Where(Ad => Ad.AdDirection == _adDirection);
-	// 		}
-
-	// 		return result.ToList();
-	// 	}
-	// }
 
 
 	DateTime currentTime = DateTime.Now.AddMinutes(-30);
@@ -600,7 +577,7 @@
 		convo.AdID = null;
 		if (ad.AdOwner.Email is not null)
 		{
-			string text = localizer["Dear_{0}_your_ad_has_been_removed_by_the_admins_for_reasons_{1}_ad_ad_type_{2}_ad_direction_{3}_address_{4}_on_{5}_available_seats_{6}_any_specific_requests_{7}", DataService.showUserNameWithStatus(ad.AdOwner), reasonForDeleting, localizer[@ad.AdType.ToString()], localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, ad.PickUpDateAndTime.ToString("g"), ad.NumberOfSeats, ad.SpecificRequests];
+			string text = localizer["Dear_{0}_your_ad_has_been_removed_by_the_admins_for_reasons_{1}_ad_ad_type_{2}_ad_direction_{3}_address_{4}_on_{5}_available_seats_{6}_any_specific_requests_{7}", DataService.showUserNameWithStatus(ad.AdOwner), reasonForDeleting, localizer[@ad.AdType.ToString()], localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, DataService.showPickUpTimeForAnyTypeOfAd(ad), ad.NumberOfSeats, ad.SpecificRequests];
 			string emailAddress = ad.AdOwner.Email.ToString();
 			string subject = localizer["Your_Baxi_ad_is_deleted"];
 			DataService.sendEmail(emailAddress, subject, text);

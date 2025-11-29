@@ -57,10 +57,10 @@
 								loading="lazy"
 								allowfullscreen
 								src="https://www.google.com/maps/embed/v1/directions
-																													?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
-																													&origin=@CurrentAd.Latitude?.ToString("F8", CultureInfo.InvariantCulture), @CurrentAd.Longitude?.ToString("F8", CultureInfo.InvariantCulture)
-																													&destination=Givaudan,Baierbrunn+Germany
-																													&avoid=tolls">
+																															?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
+																															&origin=@CurrentAd.Latitude?.ToString("F8", CultureInfo.InvariantCulture), @CurrentAd.Longitude?.ToString("F8", CultureInfo.InvariantCulture)
+																															&destination=Givaudan,Baierbrunn+Germany
+																															&avoid=tolls">
 						</iframe>
 					</div>
 
@@ -75,10 +75,10 @@
 								loading="lazy"
 								allowfullscreen
 								src="https://www.google.com/maps/embed/v1/directions
-																													?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
-																													&origin=Givaudan,Baierbrunn+Germany
-																													&destination=@CurrentAd.Latitude?.ToString("F8", CultureInfo.InvariantCulture), @CurrentAd.Longitude?.ToString("F8", CultureInfo.InvariantCulture)
-																													&avoid=tolls">
+																															?key=AIzaSyANS3CV3B_21cbYSCLWxTr0gOZpJSPmnvk
+																															&origin=Givaudan,Baierbrunn+Germany
+																															&destination=@CurrentAd.Latitude?.ToString("F8", CultureInfo.InvariantCulture), @CurrentAd.Longitude?.ToString("F8", CultureInfo.InvariantCulture)
+																															&avoid=tolls">
 						</iframe>
 					</div>
 
@@ -97,6 +97,10 @@
 								<th style="text-align: right">@localizer[@CurrentAd.AdType.ToString()]</th>
 							</tr>
 							<tr>
+								<th style="text-align: left">@localizer["Frequency"]</th>
+								<th style="text-align: right">@localizer[@CurrentAd.AdFrequency.ToString()]</th>
+							</tr>
+							<tr>
 								<th style="text-align: left">@localizer["Ad_owner"]</th>
 								<th style="text-align: right">@DataService.showUserNameWithStatus(CurrentAd.AdOwner)</th>
 							</tr>
@@ -108,10 +112,51 @@
 								<th style="text-align: left">@localizer["From/to_this_address"]</th>
 								<th style="text-align: right">@CurrentAd.PickUpDropOffLocation</th>
 							</tr>
-							<tr>
-								<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
-								<th style="text-align: right">@CurrentAd.PickUpDateAndTime.ToString("g")</th>
-							</tr>
+							@if (CurrentAd.AdFrequency == AdFrequency.OneTime)
+							{
+								<tr>
+									<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+									<th style="text-align: right">@CurrentAd.PickUpDateAndTime.ToString("g")</th>
+								</tr>
+							}
+							@if (CurrentAd.AdFrequency == AdFrequency.Recurring)
+							{
+								@if (CurrentAd.PickUpDay.Contains(DayOfWeek.Monday))
+								{
+									<tr>
+										<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+										<th style="text-align: right">@localizer["Every_Monday_at"]@DataService.showTimeWithoutDate(CurrentAd.PickUpTimeMonday)</th>
+									</tr>
+								}
+								@if (CurrentAd.PickUpDay.Contains(DayOfWeek.Tuesday))
+								{
+									<tr>
+										<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+										<th style="text-align: right">@localizer["Every_Tuesday_at"]@DataService.showTimeWithoutDate(CurrentAd.PickUpTimeTuesday)</th>
+									</tr>
+								}
+								@if (CurrentAd.PickUpDay.Contains(DayOfWeek.Wednesday))
+								{
+									<tr>
+										<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+										<th style="text-align: right">@localizer["Every_Wednesday_at"]@DataService.showTimeWithoutDate(CurrentAd.PickUpTimeWednesday)</th>
+									</tr>
+								}
+								@if (CurrentAd.PickUpDay.Contains(DayOfWeek.Thursday))
+								{
+									<tr>
+										<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+										<th style="text-align: right">@localizer["Every_Thursday_at"]@DataService.showTimeWithoutDate(CurrentAd.PickUpTimeThursday)</th>
+									</tr>
+								}
+								@if (CurrentAd.PickUpDay.Contains(DayOfWeek.Friday))
+								{
+									<tr>
+										<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+										<th style="text-align: right">@localizer["Every_Friday_at"]@DataService.showTimeWithoutDate(CurrentAd.PickUpTimeFriday)</th>
+									</tr>
+								}
+							}
 							<tr>
 								<th style="text-align: left">@localizer["Number_of_seats"]</th>
 								<th style="text-align: right">@CurrentAd.NumberOfSeats</th>
@@ -228,7 +273,7 @@
 
 	public string message = "";
 
-	
+
 
 	/// <summary>
 	/// First checks if there is already an existing conversation between the 2 users (the currently logged in user and the ad owner) connected to this ad, if there is, it redirects the user to that chat conversation
@@ -286,7 +331,7 @@
 				if (u.Email is not null && ad is not null)
 				{
 					string emailAddress = u.Email.ToString();
-					string adDetails = localizer["Ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}", DataService.showUserNameWithStatus(ad.AdOwner), ad.AdType, ad.AdDirection, ad.PickUpDropOffLocation, ad.PickUpDateAndTime, ad.NumberOfSeats, ad.SpecificRequests];
+					string adDetails = localizer["Ad_owner_{0}_ad_type_{1}_ad_direction_{2}_address_{3}_pick_up_date_and_time_{4}_number_of_seats_{5}_specific_requests_{6}", DataService.showUserNameWithStatus(ad.AdOwner), ad.AdType, ad.AdDirection, ad.PickUpDropOffLocation, DataService.showPickUpTimeForAnyTypeOfAd(ad), ad.NumberOfSeats, ad.SpecificRequests];
 					string subject = localizer["An_ad_was_just_reported_to_you"];
 					string text = localizer["Please_check_out_the_following_ad_below_that_{0}_reported_to_you_{1}_the_reason_for_reporting_is_{2}_open_the_ad_here_http_localhost_5049_ShowAd_{3}", DataService.showUserNameWithStatus(currentlyLoggedInUser), adDetails, reasonForReporting, ad.ID];
 					DataService.sendEmail(emailAddress, subject, text);
@@ -332,7 +377,7 @@
 		{
 			Console.WriteLine($"Modal failed to display: {e.Message}");
 		}
-		
+
 		popUpForReportAd = true;
 	}
 
@@ -361,7 +406,7 @@
 		{
 			Console.WriteLine($"Modal failed to display: {e.Message}");
 		}
-		
+
 		popUpForNewConversation = true;
 	}
 
