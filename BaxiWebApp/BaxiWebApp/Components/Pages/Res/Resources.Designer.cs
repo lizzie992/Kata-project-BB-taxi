@@ -725,6 +725,51 @@ namespace BaxiWebApp.Components.Pages.Res {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Every Friday at.
+        /// </summary>
+        public static string Every_Friday_at {
+            get {
+                return ResourceManager.GetString("Every_Friday_at", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Every Monday at .
+        /// </summary>
+        public static string Every_Monday_at {
+            get {
+                return ResourceManager.GetString("Every_Monday_at", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Every Thursday at.
+        /// </summary>
+        public static string Every_Thursday_at {
+            get {
+                return ResourceManager.GetString("Every_Thursday_at", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Every Tuesday at.
+        /// </summary>
+        public static string Every_Tuesday_at {
+            get {
+                return ResourceManager.GetString("Every_Tuesday_at", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Every Wednesday at.
+        /// </summary>
+        public static string Every_Wednesday_at {
+            get {
+                return ResourceManager.GetString("Every_Wednesday_at", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find me ads that could match this ad.
         /// </summary>
         public static string Find_me_ads_that_would_match_this_ad {
@@ -784,6 +829,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string French {
             get {
                 return ResourceManager.GetString("French", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frequency: .
+        /// </summary>
+        public static string Frequency {
+            get {
+                return ResourceManager.GetString("Frequency", resourceCulture);
             }
         }
         
@@ -1330,6 +1384,15 @@ namespace BaxiWebApp.Components.Pages.Res {
         public static string One_Time {
             get {
                 return ResourceManager.GetString("One_Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One-Time.
+        /// </summary>
+        public static string OneTime {
+            get {
+                return ResourceManager.GetString("OneTime", resourceCulture);
             }
         }
         

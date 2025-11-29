@@ -896,4 +896,25 @@ Falls Sie es nicht waren, ignorieren Sie bitte diese E-Mail!</value>
   <data name="If_you_select_a_pick_up_day_you_should_also_set_up_a_pick_up_time_for_that_day_Please_do_not_leave_it_on_00_00" xml:space="preserve">
     <value>Wenn Sie einen Abholtag auswählen, sollten Sie auch eine Abholzeit für diesen Tag festlegen! Bitte lassen Sie sie nicht auf 00:00!</value>
   </data>
+  <data name="Every_Monday_at" xml:space="preserve">
+    <value>Jeden Montag um </value>
+  </data>
+  <data name="Every_Tuesday_at" xml:space="preserve">
+    <value>Jeden Dienstag um </value>
+  </data>
+  <data name="Every_Wednesday_at" xml:space="preserve">
+    <value>Jeden Mittwoch um </value>
+  </data>
+  <data name="Every_Thursday_at" xml:space="preserve">
+    <value>Jeden Donnerstag um </value>
+  </data>
+  <data name="Every_Friday_at" xml:space="preserve">
+    <value>Jeden Freitag um </value>
+  </data>
+  <data name="Frequency" xml:space="preserve">
+    <value>Frequenz: </value>
+  </data>
+  <data name="OneTime" xml:space="preserve">
+    <value>Einmalig</value>
+  </data>
 </root>

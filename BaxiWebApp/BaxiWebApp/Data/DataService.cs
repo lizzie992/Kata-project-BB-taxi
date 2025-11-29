@@ -15,6 +15,7 @@ using Microsoft.Extensions.Localization;
 using System.Globalization;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 
 
@@ -59,6 +60,21 @@ namespace BaxiWebApp.Data
 
                 }
             }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="datetime"></param>
+        /// <returns></returns>
+        public string showTimeWithoutDate(DateTime datetime)
+        {
+            var time = new StringBuilder();
+            time.Append(datetime.Hour.ToString("D2"));
+            time.Append(":");
+            time.Append(datetime.Minute.ToString("D2"));
+            return time.ToString();
         }
 
         /// <summary>

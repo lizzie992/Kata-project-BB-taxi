@@ -39,6 +39,17 @@
 					<div class="row">
 						<div class="col-12 col-md-6">
 							<div class="div-block">
+
+								<div class="input-block">
+									<div>@localizer["Frequency"]</div>
+									<InputSelect class="input" @bind-Value="_adFrequency" id="adFrequency">
+										@foreach (var value in Enum.GetValues<AdFrequency>())
+										{
+											<option value="@value">@localizer[value.ToString()]</option>
+										}
+									</InputSelect>
+								</div>
+
 								<div class="input-block">
 									<div>@localizer["I_am_looking_for_a"]</div>
 									<InputSelect class="input" @bind-Value="_adType" id="adType">
@@ -109,14 +120,68 @@
 									</PropertyColumn>
 									<PropertyColumn Title="@localizer["From/to_this_address"]" Property="@(Ad => Ad.PickUpDropOffLocation)">
 									</PropertyColumn>
-									<PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime.ToString("g"))" />
+									<PropertyColumn Title="@localizer["Frequency"]" Property="@(Ad => @localizer[@Ad.AdFrequency.ToString()])">
+									</PropertyColumn>
+									@* <PropertyColumn Title="@localizer["Pick_up_date_and_time"]" Property="@(Ad => Ad.PickUpDateAndTime.ToString("g"))" /> *@
+									<TemplateColumn Title="@localizer["Pick_up_date_and_time"]" Context="Ad">
+										@if (Ad.AdFrequency == AdFrequency.OneTime)
+										{
+											@Ad.PickUpDateAndTime
+										}
+										@if (Ad.AdFrequency == AdFrequency.Recurring)
+										{
+											@if (Ad.PickUpDay.Contains(DayOfWeek.Monday))
+											{
+												<p>
+													@localizer["Every_Monday_at"]
+													@DataService.showTimeWithoutDate(Ad.PickUpTimeMonday)
+												</p>
+											}
+											@if (Ad.PickUpDay.Contains(DayOfWeek.Tuesday))
+											{
+												<p>
+													@localizer["Every_Tuesday_at"]
+													@DataService.showTimeWithoutDate(Ad.PickUpTimeTuesday)
+												</p>
+
+											}
+											@if (Ad.PickUpDay.Contains(DayOfWeek.Wednesday))
+											{
+												<p>
+													@localizer["Every_Wednesday_at"]
+													@DataService.showTimeWithoutDate(Ad.PickUpTimeWednesday)
+												</p>
+
+											}
+											@if (Ad.PickUpDay.Contains(DayOfWeek.Thursday))
+											{
+												<p>
+													@localizer["Every_Thursday_at"]
+													@DataService.showTimeWithoutDate(Ad.PickUpTimeThursday)
+												</p>
+
+											}
+											@if (Ad.PickUpDay.Contains(DayOfWeek.Friday))
+											{
+												<p>
+													@localizer["Every_Friday_at"]
+													@DataService.showTimeWithoutDate(Ad.PickUpTimeFriday)
+												</p>
+
+											}
+										}
+									</TemplateColumn>
 									<PropertyColumn Title="@localizer["Number_of_seats"]" Property="@(Ad => Ad.NumberOfSeats)" />
 									<PropertyColumn Title="@localizer["Specific_requests"]" Property="@(Ad => Ad.SpecificRequests)" />
 									<TemplateColumn Title="@localizer["Show_me_the_ad"]" Context="Ad">
 										<button @onclick="() => showAd(Ad)">@localizer["Show_me_the_ad"]</button>
 									</TemplateColumn>
 									<TemplateColumn Title="@localizer["Contact_me"]" Context="Ad">
-										@if (Ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser.Id != Ad.AdOwner.Id)
+										@if (Ad.AdFrequency == AdFrequency.OneTime && Ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser?.Id != Ad.AdOwner?.Id)
+										{
+											<button @onclick="() => openChat(Ad)">@localizer["Contact_me"]!</button>
+										}
+										@if (Ad.AdFrequency == AdFrequency.Recurring && currentlyLoggedInUser?.Id != Ad.AdOwner?.Id)
 										{
 											<button @onclick="() => openChat(Ad)">@localizer["Contact_me"]!</button>
 										}
@@ -150,10 +215,52 @@
 												<th style="text-align: left">@localizer["From/to_this_address"]</th>
 												<th style="text-align: right">@ad.PickUpDropOffLocation</th>
 											</tr>
-											<tr>
-												<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
-												<th style="text-align: right">@ad.PickUpDateAndTime.ToString("g")</th>
-											</tr>
+
+											@if (ad.AdFrequency == AdFrequency.OneTime)
+											{
+												<tr>
+													<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+													<th style="text-align: right">@ad.PickUpDateAndTime.ToString("g")</th>
+												</tr>
+											}
+											@if (ad.AdFrequency == AdFrequency.Recurring)
+											{
+												@if (ad.PickUpDay.Contains(DayOfWeek.Monday))
+												{
+													<tr>
+														<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+														<th style="text-align: right">@localizer["Every_Monday_at"]@DataService.showTimeWithoutDate(ad.PickUpTimeMonday)</th>
+													</tr>
+												}
+												@if (ad.PickUpDay.Contains(DayOfWeek.Tuesday))
+												{
+													<tr>
+														<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+														<th style="text-align: right">@localizer["Every_Tuesday_at"]@DataService.showTimeWithoutDate(ad.PickUpTimeTuesday)</th>
+													</tr>
+												}
+												@if (ad.PickUpDay.Contains(DayOfWeek.Wednesday))
+												{
+													<tr>
+														<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+														<th style="text-align: right">@localizer["Every_Wednesday_at"]@DataService.showTimeWithoutDate(ad.PickUpTimeWednesday)</th>
+													</tr>
+												}
+												@if (ad.PickUpDay.Contains(DayOfWeek.Thursday))
+												{
+													<tr>
+														<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+														<th style="text-align: right">@localizer["Every_Thursday_at"]@DataService.showTimeWithoutDate(ad.PickUpTimeThursday)</th>
+													</tr>
+												}
+												@if (ad.PickUpDay.Contains(DayOfWeek.Friday))
+												{
+													<tr>
+														<th style="text-align: left">@localizer["Pick_up_date_and_time"]</th>
+														<th style="text-align: right">@localizer["Every_Friday_at"]@DataService.showTimeWithoutDate(ad.PickUpTimeFriday)</th>
+													</tr>
+												}
+											}
 											<tr>
 												<th style="text-align: left">@localizer["Number_of_seats"]</th>
 												<th style="text-align: right">@ad.NumberOfSeats</th>
@@ -164,7 +271,11 @@
 											</tr>
 										</table>
 										<button @onclick="() => showAd(ad)">@localizer["Show_me_the_ad"]</button>
-										@if (ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser != ad.AdOwner)
+										@if (ad.AdFrequency == AdFrequency.OneTime && ad.PickUpDateAndTime >= currentTime && currentlyLoggedInUser?.Id != ad.AdOwner?.Id)
+										{
+											<button @onclick="() => openChat(ad)">@localizer["Contact_me"]!</button>
+										}
+										@if (ad.AdFrequency == AdFrequency.Recurring && currentlyLoggedInUser?.Id != ad.AdOwner?.Id)
 										{
 											<button @onclick="() => openChat(ad)">@localizer["Contact_me"]!</button>
 										}
@@ -249,45 +360,45 @@
 	{
 		DataService.loadCulture(currentlyLoggedInUser);
 		_ = Task.Run(async () =>
-   {
-	   try
-	   {
-		   await JSRuntime.InvokeVoidAsync("initMapForAdList", adListForMap, localizer["Beautiful_baierbrunn"].ToString(), localizer["ToBaierbrunn"].ToString(), localizer["FromBaierbrunn"].ToString(), localizer["No_default_type"].ToString(), localizer["Driver"].ToString(), localizer["Passenger"].ToString(), localizer["Show_me_the_ad"].ToString(), localizer["Direction"].ToString(), localizer["Ad_type"].ToString(), localizer["Pick_up_date_and_time"].ToString(), localizer["From/to_this_address"].ToString(), localizer["Number_of_seats"].ToString(), localizer["Show_me_the_ad"].ToString());
-	   }
-	   catch (ArgumentException e)
-	   {
-		   Console.WriteLine($"Map failed to display: {e.Message}");
-	   }
-   });
+			{
+				try
+				{
+					await JSRuntime.InvokeVoidAsync("initMapForAdList", FilteredAds, localizer["Beautiful_baierbrunn"].ToString(), localizer["ToBaierbrunn"].ToString(), localizer["FromBaierbrunn"].ToString(), localizer["No_default_type"].ToString(), localizer["Driver"].ToString(), localizer["Passenger"].ToString(), localizer["Show_me_the_ad"].ToString(), localizer["Direction"].ToString(), localizer["Ad_type"].ToString(), localizer["Pick_up_date_and_time"].ToString(), localizer["From/to_this_address"].ToString(), localizer["Number_of_seats"].ToString(), localizer["Show_me_the_ad"].ToString());
+				}
+				catch (ArgumentException e)
+				{
+					Console.WriteLine($"Map failed to display: {e.Message}");
+				}
+			});
 		return base.ShouldRender();
 	}
 
-	public List<Ad> adListForMap
-	{
-		get
-		{
-			using var context = DbContextFactory.CreateDbContext();
+	// public List<Ad> adListForMap
+	// {
+	// 	get
+	// 	{
+	// 		using var context = DbContextFactory.CreateDbContext();
 
-			var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
+	// 		var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
 
-			result = result.Where(Ad =>
-							Ad.PickUpDropOffLocation.Contains(_searchAddress, StringComparison.CurrentCultureIgnoreCase)
-				&& Ad.NumberOfSeats >= _requestedSeats
-				&& _datetime1 <= Ad.PickUpDateAndTime
-				&& Ad.PickUpDateAndTime <= _datetime2);
+	// 		result = result.Where(Ad =>
+	// 						Ad.PickUpDropOffLocation.Contains(_searchAddress, StringComparison.CurrentCultureIgnoreCase)
+	// 			&& Ad.NumberOfSeats >= _requestedSeats
+	// 			&& _datetime1 <= Ad.PickUpDateAndTime
+	// 			&& Ad.PickUpDateAndTime <= _datetime2);
 
-			if (_adType != AdType.SelectAll)
-			{
-				result = result.Where(Ad => Ad.AdType == _adType);
-			}
-			if (_adDirection != AdDirection.SelectAll)
-			{
-				result = result.Where(Ad => Ad.AdDirection == _adDirection);
-			}
+	// 		if (_adType != AdType.SelectAll)
+	// 		{
+	// 			result = result.Where(Ad => Ad.AdType == _adType);
+	// 		}
+	// 		if (_adDirection != AdDirection.SelectAll)
+	// 		{
+	// 			result = result.Where(Ad => Ad.AdDirection == _adDirection);
+	// 		}
 
-			return result.ToList();
-		}
-	}
+	// 		return result.ToList();
+	// 	}
+	// }
 
 
 	DateTime currentTime = DateTime.Now.AddMinutes(-30);
@@ -319,11 +430,11 @@
 	{
 		if (firstrender)
 		{
-			if (adListForMap.Count >= 0)
+			if (FilteredAds.Count() >= 0)
 			{
 				try
 				{
-					await JSRuntime.InvokeVoidAsync("initMapForAdList", adListForMap, localizer["Beautiful_baierbrunn"].ToString(), localizer["ToBaierbrunn"].ToString(), localizer["FromBaierbrunn"].ToString(), localizer["No_default_type"].ToString(), localizer["Driver"].ToString(), localizer["Passenger"].ToString(), localizer["Show_me_the_ad"].ToString(), localizer["Direction"].ToString(), localizer["Ad_type"].ToString(), localizer["Pick_up_date_and_time"].ToString(), localizer["From/to_this_address"].ToString(), localizer["Number_of_seats"].ToString(), localizer["Show_me_the_ad"].ToString());
+					await JSRuntime.InvokeVoidAsync("initMapForAdList", FilteredAds, localizer["Beautiful_baierbrunn"].ToString(), localizer["ToBaierbrunn"].ToString(), localizer["FromBaierbrunn"].ToString(), localizer["No_default_type"].ToString(), localizer["Driver"].ToString(), localizer["Passenger"].ToString(), localizer["Show_me_the_ad"].ToString(), localizer["Direction"].ToString(), localizer["Ad_type"].ToString(), localizer["Pick_up_date_and_time"].ToString(), localizer["From/to_this_address"].ToString(), localizer["Number_of_seats"].ToString(), localizer["Show_me_the_ad"].ToString());
 
 				}
 				catch (ArgumentException e)
@@ -341,7 +452,7 @@
 
 	BB.AdType _adType = AdType.SelectAll;
 	BB.AdDirection _adDirection = AdDirection.SelectAll;
-
+	BB.AdFrequency _adFrequency = AdFrequency.SelectAll;
 
 
 
@@ -362,11 +473,22 @@
 
 			var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
 
-			result = result.Where(Ad =>
-							Ad.PickUpDropOffLocation.Contains(_searchAddress, StringComparison.CurrentCultureIgnoreCase)
-				&& Ad.NumberOfSeats >= _requestedSeats
-				&& _datetime1 <= Ad.PickUpDateAndTime
-				&& Ad.PickUpDateAndTime <= _datetime2);
+			TimeSpan timeSpan = _datetime2 - _datetime1;
+			
+
+
+			result = result.Where(ad =>
+				(ad.AdFrequency == AdFrequency.Recurring) || // Keep all recurring
+				(ad.AdFrequency == AdFrequency.OneTime && // For one-time, check date
+				 _datetime1 <= ad.PickUpDateAndTime &&
+				 ad.PickUpDateAndTime <= _datetime2)
+			);
+
+
+			result = result.Where(ad =>
+				ad.PickUpDropOffLocation.Contains(_searchAddress, StringComparison.CurrentCultureIgnoreCase)
+				&& ad.NumberOfSeats >= _requestedSeats
+			);
 
 			if (_adType != AdType.SelectAll)
 			{
@@ -375,6 +497,11 @@
 			if (_adDirection != AdDirection.SelectAll)
 			{
 				result = result.Where(Ad => Ad.AdDirection == _adDirection);
+			}
+
+			if (_adFrequency != AdFrequency.SelectAll)
+			{
+				result = result.Where(Ad => Ad.AdFrequency == _adFrequency);
 			}
 
 			return result;
@@ -511,6 +638,6 @@
 		popUpForDeletingAd = true;
 	}
 
-	
+
 
 }

@@ -887,4 +887,25 @@ If it was not you, please, ignore this email!</value>
   <data name="If_you_select_a_pick_up_day_you_should_also_set_up_a_pick_up_time_for_that_day_Please_do_not_leave_it_on_00_00" xml:space="preserve">
     <value>If you select a pick up day, you should also set up a pick up time for that day! Please do not leave it on 00:00!</value>
   </data>
+  <data name="Every_Monday_at" xml:space="preserve">
+    <value>Every Monday at </value>
+  </data>
+  <data name="Every_Tuesday_at" xml:space="preserve">
+    <value>Every Tuesday at</value>
+  </data>
+  <data name="Every_Wednesday_at" xml:space="preserve">
+    <value>Every Wednesday at</value>
+  </data>
+  <data name="Every_Thursday_at" xml:space="preserve">
+    <value>Every Thursday at</value>
+  </data>
+  <data name="Every_Friday_at" xml:space="preserve">
+    <value>Every Friday at</value>
+  </data>
+  <data name="Frequency" xml:space="preserve">
+    <value>Frequency: </value>
+  </data>
+  <data name="OneTime" xml:space="preserve">
+    <value>One-Time</value>
+  </data>
 </root>
