@@ -125,7 +125,7 @@
 									<TemplateColumn Title="@localizer["Pick_up_date_and_time"]" Context="Ad">
 										@if (Ad.AdFrequency == AdFrequency.OneTime)
 										{
-											@Ad.PickUpDateAndTime
+											@DataService.showPickUpTimeForAnyTypeOfAd(Ad)
 										}
 										@if (Ad.AdFrequency == AdFrequency.Recurring)
 										{
@@ -437,59 +437,92 @@
 	DateTime _datetime2 = DateTime.Now.AddDays(14);
 
 
-	List<Ad> checkRecurringAdsAgainstDatesAndTimes(DateTime firstDate, DateTime secondDate, List<Ad> adlist)
+	List<Ad> checkRecurringAdsAgainstTimespan(DateTime firstDate, DateTime secondDate, List<Ad> adlist)
 	{
 		List<Ad> list = new List<Ad>();
 		for (DateTime date = firstDate; date <= secondDate; date = date.AddDays(1))
 		{
 			foreach (Ad ad in adlist)
 			{
-				if (ad.AdFrequency == AdFrequency.Recurring)
+				if (date.DayOfWeek == DayOfWeek.Monday && ad.PickUpDay.Contains(DayOfWeek.Monday))
 				{
-					if (date.DayOfWeek == DayOfWeek.Monday && ad.PickUpDay.Contains(DayOfWeek.Monday))
+					if (isRecurringAdBetweenTwoDates(firstDate, secondDate, ad.PickUpTimeMonday, date))
 					{
-						if (TimeOnly.FromDateTime(ad.PickUpTimeMonday) >= TimeOnly.FromDateTime(firstDate) && TimeOnly.FromDateTime(ad.PickUpTimeMonday) <= TimeOnly.FromDateTime(secondDate))
-						{
-							list.Add(ad);
-						}
+						list.Add(ad);
 					}
+				}
 
-					if (date.DayOfWeek == DayOfWeek.Tuesday && ad.PickUpDay.Contains(DayOfWeek.Tuesday))
+				if (date.DayOfWeek == DayOfWeek.Tuesday && ad.PickUpDay.Contains(DayOfWeek.Tuesday))
+				{
+					if (isRecurringAdBetweenTwoDates(firstDate, secondDate, ad.PickUpTimeTuesday, date))
 					{
-						if (TimeOnly.FromDateTime(ad.PickUpTimeTuesday) >= TimeOnly.FromDateTime(firstDate) && TimeOnly.FromDateTime(ad.PickUpTimeTuesday) <= TimeOnly.FromDateTime(secondDate))
-						{
-							list.Add(ad);
-						}
+						list.Add(ad);
 					}
+				}
 
-					if (date.DayOfWeek == DayOfWeek.Wednesday && ad.PickUpDay.Contains(DayOfWeek.Wednesday))
+				if (date.DayOfWeek == DayOfWeek.Wednesday && ad.PickUpDay.Contains(DayOfWeek.Wednesday))
+				{
+					if (isRecurringAdBetweenTwoDates(firstDate, secondDate, ad.PickUpTimeWednesday, date))
 					{
-						if (TimeOnly.FromDateTime(ad.PickUpTimeWednesday) >= TimeOnly.FromDateTime(firstDate) && TimeOnly.FromDateTime(ad.PickUpTimeWednesday) <= TimeOnly.FromDateTime(secondDate))
-						{
-							list.Add(ad);
-						}
+						list.Add(ad);
 					}
+				}
 
-					if (date.DayOfWeek == DayOfWeek.Thursday && ad.PickUpDay.Contains(DayOfWeek.Thursday))
+				if (date.DayOfWeek == DayOfWeek.Thursday && ad.PickUpDay.Contains(DayOfWeek.Thursday))
+				{
+					if (isRecurringAdBetweenTwoDates(firstDate, secondDate, ad.PickUpTimeThursday, date))
 					{
-						if (TimeOnly.FromDateTime(ad.PickUpTimeThursday) >= TimeOnly.FromDateTime(firstDate) && TimeOnly.FromDateTime(ad.PickUpTimeThursday) <= TimeOnly.FromDateTime(secondDate))
-						{
-							list.Add(ad);
-						}
+						list.Add(ad);
 					}
+				}
 
-					if (date.DayOfWeek == DayOfWeek.Friday && ad.PickUpDay.Contains(DayOfWeek.Friday))
+				if (date.DayOfWeek == DayOfWeek.Friday && ad.PickUpDay.Contains(DayOfWeek.Friday))
+				{
+					if (isRecurringAdBetweenTwoDates(firstDate, secondDate, ad.PickUpTimeFriday, date))
 					{
-						if (TimeOnly.FromDateTime(ad.PickUpTimeFriday) >= TimeOnly.FromDateTime(firstDate) && TimeOnly.FromDateTime(ad.PickUpTimeFriday) <= TimeOnly.FromDateTime(secondDate))
-						{
-							list.Add(ad);
-						}
+						list.Add(ad);
 					}
 				}
 			}
 		}
 		return list;
 	}
+
+
+	bool isRecurringAdBetweenTwoDates(DateTime firstDate, DateTime secondDate, DateTime adPickUpTime, DateTime date)
+	{
+		if (DateOnly.FromDateTime(firstDate) == DateOnly.FromDateTime(secondDate))
+		{
+			if (TimeOnly.FromDateTime(adPickUpTime) >= TimeOnly.FromDateTime(firstDate) && TimeOnly.FromDateTime(adPickUpTime) <= TimeOnly.FromDateTime(secondDate))
+			{
+				return true;
+			}
+		}
+		else if (date == firstDate)
+		{
+			if (TimeOnly.FromDateTime(adPickUpTime) >= TimeOnly.FromDateTime(firstDate))
+			{
+				return true;
+			}
+		}
+		else if (date == secondDate)
+		{
+			if (TimeOnly.FromDateTime(adPickUpTime) <= TimeOnly.FromDateTime(secondDate))
+			{
+				return true;
+			}
+		}
+		else if (date != firstDate && date != secondDate)
+		{
+			return true;
+		}
+		return false;
+	}
+
+
+
+
+
 
 	List<DayOfWeek> listDaysOfWeek = new List<DayOfWeek>();
 
@@ -503,10 +536,10 @@
 
 			var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
 
-			List<Ad> matchingRecurringAds = checkRecurringAdsAgainstDatesAndTimes(_datetime1, _datetime2, result.Where(a => a.AdFrequency == AdFrequency.Recurring).ToList());
+			List<Ad> matchingRecurringAds = checkRecurringAdsAgainstTimespan(_datetime1, _datetime2, result.Where(a => a.AdFrequency == AdFrequency.Recurring).ToList());
 
 			result = result.Where(ad =>
-				(ad.AdFrequency == AdFrequency.Recurring && matchingRecurringAds.Contains(ad)) || // Keep all recurring + filtering the days and hours
+				(ad.AdFrequency == AdFrequency.Recurring && matchingRecurringAds.Contains(ad)) || // Keep all recurring + filtering the days
 				(ad.AdFrequency == AdFrequency.OneTime && // For one-time, check date
 				 _datetime1 <= ad.PickUpDateAndTime &&
 				 ad.PickUpDateAndTime <= _datetime2)

@@ -46,7 +46,7 @@
 						<TemplateColumn Title="@localizer["Pick_up_date_and_time"]" Context="Ad">
 							@if (Ad.AdFrequency == AdFrequency.OneTime)
 							{
-								@Ad.PickUpDateAndTime
+								@DataService.showPickUpTimeForAnyTypeOfAd(Ad)
 							}
 							@if (Ad.AdFrequency == AdFrequency.Recurring)
 							{
