@@ -75,15 +75,53 @@
 									<input class="input" type="search" autofocus @bind="_searchAddress" @bind:event="oninput" placeholder="@localizer["Address..."]" />
 								</div>
 
-								<div class="input-block">
-									<div>@localizer["Between_the_following_date_and_time"]</div>
-									<InputDate Type="InputDateType.DateTimeLocal" class="input"
-											   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
-									</InputDate>
-									<InputDate Type="InputDateType.DateTimeLocal" class="input"
-											   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime2">
-									</InputDate>
-								</div>
+								@if (_adFrequency == AdFrequency.Recurring)
+								{
+									<div class="input-block">
+										<input type="checkbox" class="input" unchecked @bind-value="@Monday">
+										<div>@localizer["Monday"] </div>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeMondayfrom"></InputDate>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeMondayto"></InputDate>
+									</div>
+									<div class="input-block">
+										<input type="checkbox" class="input" unchecked @bind-value="@Tuesday">
+										<div>@localizer["Tuesday"] </div>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeTuesdayfrom"></InputDate>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeTuesdayto"></InputDate>
+									</div>
+									<div class="input-block">
+										<input type="checkbox" class="input" unchecked @bind-value="@Wednesday">
+										<div>@localizer["Wednesday"] </div>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeWednesdayfrom"></InputDate>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeWednesdayto"></InputDate>
+									</div>
+									<div class="input-block">
+										<input type="checkbox" class="input" unchecked @bind-value="@Thursday">
+										<div>@localizer["Thursday"] </div>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeThursdayfrom"></InputDate>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeThursdayto"></InputDate>
+									</div>
+									<div class="input-block">
+										<input type="checkbox" class="input" unchecked @bind-value="@Friday">
+										<div>@localizer["Friday"] </div>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeFridayfrom"></InputDate>
+										<InputDate Type="InputDateType.Time" class="input" @bind-Value="_pickUpTimeFridayto"></InputDate>
+									</div>
+								}
+
+								@if (_adFrequency != AdFrequency.Recurring)
+								{
+									<div class="input-block">
+										<div>@localizer["Between_the_following_date_and_time"]</div>
+										<InputDate Type="InputDateType.DateTimeLocal" class="input"
+												   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime1">
+										</InputDate>
+										<InputDate Type="InputDateType.DateTimeLocal" class="input"
+												   min="@DateTime.Today.ToString("yyyy-MM-dd")" @bind-Value="_datetime2">
+										</InputDate>
+									</div>
+								}
+
 
 								<div class="input-block">
 									<div>@localizer["Number_of_seats"]</div>
@@ -347,6 +385,23 @@
 	[CascadingParameter(Name = "currentlyLoggedInUser")]
 	private User? currentlyLoggedInUser { get; set; }
 
+	bool Monday = false;
+	bool Tuesday = false;
+	bool Wednesday = false;
+	bool Thursday = false;
+	bool Friday = false;
+
+	private TimeOnly _pickUpTimeMondayfrom = new TimeOnly(05, 00);
+	private TimeOnly _pickUpTimeTuesdayfrom = new TimeOnly(05, 00);
+	private TimeOnly _pickUpTimeWednesdayfrom = new TimeOnly(05, 00);
+	private TimeOnly _pickUpTimeThursdayfrom = new TimeOnly(05, 00);
+	private TimeOnly _pickUpTimeFridayfrom = new TimeOnly(05, 00);
+
+	private TimeOnly _pickUpTimeMondayto = new TimeOnly(22, 00);
+	private TimeOnly _pickUpTimeTuesdayto = new TimeOnly(22, 00);
+	private TimeOnly _pickUpTimeWednesdayto = new TimeOnly(22, 00);
+	private TimeOnly _pickUpTimeThursdayto = new TimeOnly(22, 00);
+	private TimeOnly _pickUpTimeFridayto = new TimeOnly(22, 00);
 
 	protected override void OnInitialized() => DataService.CultureChanged += OnCultureChanged;
 
@@ -437,6 +492,13 @@
 	DateTime _datetime2 = DateTime.Now.AddDays(14);
 
 
+	/// <summary>
+	/// Checks which ads from a list of recurring ads is present between 2 datetimes, day by day (by workdays only)
+	/// </summary>
+	/// <param name="firstDate">First datetime of the timespan</param>
+	/// <param name="secondDate">Second datetime of the timespan</param>
+	/// <param name="adlist">List of recurring ads</param>
+	/// <returns>List of ads</returns>
 	List<Ad> checkRecurringAdsAgainstTimespan(DateTime firstDate, DateTime secondDate, List<Ad> adlist)
 	{
 		List<Ad> list = new List<Ad>();
@@ -489,7 +551,15 @@
 	}
 
 
-	bool isRecurringAdBetweenTwoDates(DateTime firstDate, DateTime secondDate, DateTime adPickUpTime, DateTime date)
+	/// <summary>
+	/// Method used in the checkRecurringAdsAgainstTimespan method (to avoid repetition), it decides if a recurring ad's pickup time is between 2 dates
+	/// </summary>
+	/// <param name="firstDate">First datetime of the timespan</param>
+	/// <param name="secondDate">Second datetime of the timespan</param>
+	/// <param name="adPickUpTime">Recurring ad's pickup time</param>
+	/// <param name="specificDay">This is iterating over the days of the given timespan - from the method checkRecurringAdsAgainstTimespan</param>
+	/// <returns>Bool</returns>
+	bool isRecurringAdBetweenTwoDates(DateTime firstDate, DateTime secondDate, DateTime adPickUpTime, DateTime specificDay)
 	{
 		if (DateOnly.FromDateTime(firstDate) == DateOnly.FromDateTime(secondDate))
 		{
@@ -498,21 +568,21 @@
 				return true;
 			}
 		}
-		else if (date == firstDate)
+		else if (specificDay == firstDate)
 		{
 			if (TimeOnly.FromDateTime(adPickUpTime) >= TimeOnly.FromDateTime(firstDate))
 			{
 				return true;
 			}
 		}
-		else if (date == secondDate)
+		else if (specificDay == secondDate)
 		{
 			if (TimeOnly.FromDateTime(adPickUpTime) <= TimeOnly.FromDateTime(secondDate))
 			{
 				return true;
 			}
 		}
-		else if (date != firstDate && date != secondDate)
+		else if (specificDay != firstDate && specificDay != secondDate)
 		{
 			return true;
 		}
@@ -520,6 +590,71 @@
 	}
 
 
+
+	/// <summary>
+	/// Checks recurring ads if they are valid for a specific day of the week (monday until friday) between 2 hours
+	/// </summary>
+	/// <param name="ad">Ad</param>
+	/// <returns>Bool</returns>
+	bool checkRecurringAd(Ad ad)
+	{
+		if (Monday)
+		{
+			if (ad.PickUpDay.Contains(DayOfWeek.Monday))
+			{
+				if (TimeOnly.FromDateTime(ad.PickUpTimeMonday) >= _pickUpTimeMondayfrom && TimeOnly.FromDateTime(ad.PickUpTimeMonday) <= _pickUpTimeMondayto)
+				{
+					return true;					
+				}
+			}
+		}
+
+		if (Tuesday)
+		{
+			if (ad.PickUpDay.Contains(DayOfWeek.Tuesday))
+			{
+				if (TimeOnly.FromDateTime(ad.PickUpTimeTuesday) >= _pickUpTimeTuesdayfrom && TimeOnly.FromDateTime(ad.PickUpTimeTuesday) <= _pickUpTimeTuesdayto)
+				{
+					return true;
+				}
+			}
+		}
+
+		if (Wednesday)
+		{
+			if (ad.PickUpDay.Contains(DayOfWeek.Wednesday))
+			{
+				if (TimeOnly.FromDateTime(ad.PickUpTimeWednesday) >= _pickUpTimeWednesdayfrom && TimeOnly.FromDateTime(ad.PickUpTimeWednesday) <= _pickUpTimeWednesdayto)
+				{
+					return true;					
+				}
+			}
+		}
+
+		if (Thursday)
+		{
+			if (ad.PickUpDay.Contains(DayOfWeek.Thursday))
+			{
+				if (TimeOnly.FromDateTime(ad.PickUpTimeThursday) >= _pickUpTimeThursdayfrom && TimeOnly.FromDateTime(ad.PickUpTimeThursday) <= _pickUpTimeThursdayto)
+				{
+					return true;					
+				}
+			}
+		}
+
+		if (Friday)
+		{
+			if (ad.PickUpDay.Contains(DayOfWeek.Friday))
+			{
+				if (TimeOnly.FromDateTime(ad.PickUpTimeFriday) >= _pickUpTimeFridayfrom && TimeOnly.FromDateTime(ad.PickUpTimeFriday) <= _pickUpTimeFridayto)
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
 
 
 
@@ -536,14 +671,34 @@
 
 			var result = context.Ads.Include(a => a.AdOwner).Include(a => a.adConversations).ToList<Ad>().AsQueryable();
 
-			List<Ad> matchingRecurringAds = checkRecurringAdsAgainstTimespan(_datetime1, _datetime2, result.Where(a => a.AdFrequency == AdFrequency.Recurring).ToList());
 
-			result = result.Where(ad =>
-				(ad.AdFrequency == AdFrequency.Recurring && matchingRecurringAds.Contains(ad)) || // Keep all recurring + filtering the days
-				(ad.AdFrequency == AdFrequency.OneTime && // For one-time, check date
-				 _datetime1 <= ad.PickUpDateAndTime &&
-				 ad.PickUpDateAndTime <= _datetime2)
-			);
+			if (_adFrequency == AdFrequency.SelectAll)
+			{
+				List<Ad> matchingRecurringAds = checkRecurringAdsAgainstTimespan(_datetime1, _datetime2, result.Where(a => a.AdFrequency == AdFrequency.Recurring).ToList());
+
+				result = result.Where(ad =>
+					(ad.AdFrequency == AdFrequency.Recurring && matchingRecurringAds.Contains(ad)) || // Keep all recurring + filtering the days an hours
+					(ad.AdFrequency == AdFrequency.OneTime && // For one-time, check date
+					 _datetime1 <= ad.PickUpDateAndTime &&
+					 ad.PickUpDateAndTime <= _datetime2)
+				);
+			}
+			else if (_adFrequency == AdFrequency.OneTime)
+			{
+				result = result.Where(ad =>
+					ad.AdFrequency == AdFrequency.OneTime && // For one-time, check date
+					 _datetime1 <= ad.PickUpDateAndTime &&
+					 ad.PickUpDateAndTime <= _datetime2
+				);
+			}
+			else if (_adFrequency == AdFrequency.Recurring)
+			{
+				result = result.Where(ad =>
+					ad.AdFrequency == AdFrequency.Recurring  // Keep all recurring + filtering the days and hours specifically for recurring ads
+					 && checkRecurringAd(ad)
+				);
+			}
+
 
 
 			result = result.Where(ad =>
