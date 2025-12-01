@@ -417,7 +417,9 @@
 	protected override bool ShouldRender()
 	{
 		DataService.loadCulture(currentlyLoggedInUser);
-		_ = Task.Run(async () =>
+		if (FilteredAds.Count() > 0)
+		{
+			_ = Task.Run(async () =>
 			{
 				try
 				{
@@ -428,6 +430,7 @@
 					Console.WriteLine($"Map failed to display: {e.Message}");
 				}
 			});
+		}
 		return base.ShouldRender();
 	}
 
@@ -462,7 +465,7 @@
 	{
 		if (firstrender)
 		{
-			if (FilteredAds.Count() >= 0)
+			if (FilteredAds.Count() > 0)
 			{
 				try
 				{
