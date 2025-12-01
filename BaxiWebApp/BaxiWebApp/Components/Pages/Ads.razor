@@ -812,8 +812,14 @@
 		using var context = DbContextFactory.CreateDbContext();
 		context.Attach(ad);
 		var C = context.Conversations.Where(C => C.AdID == ad.ID);
-		Conversation convo = C.FirstOrDefault();
-		convo.AdID = null;
+		if (C.Count() > 0)
+		{
+			Conversation convo = C.FirstOrDefault();
+			if (convo is not null)
+			{
+				convo.AdID = null;
+			}
+		}
 		if (ad.AdOwner.Email is not null)
 		{
 			string text = localizer["Dear_{0}_your_ad_has_been_removed_by_the_admins_for_reasons_{1}_ad_ad_type_{2}_ad_direction_{3}_address_{4}_on_{5}_available_seats_{6}_any_specific_requests_{7}", DataService.showUserNameWithStatus(ad.AdOwner), reasonForDeleting, localizer[@ad.AdType.ToString()], localizer[ad.AdDirection.ToString()], ad.PickUpDropOffLocation, DataService.showPickUpTimeForAnyTypeOfAd(ad), ad.NumberOfSeats, ad.SpecificRequests];
@@ -823,9 +829,10 @@
 		}
 		context.Remove(ad);
 		context.SaveChanges();
-		reasonForDeleting = "";
 		closePopUpForDeletingAd();
-		grid?.RefreshDataAsync();
+		// grid?.RefreshDataAsync();
+		StateHasChanged();
+		reasonForDeleting = "";
 	}
 
 	bool popUpForDeletingAd = false;
@@ -842,6 +849,7 @@
 	/// </summary>
 	public async void showPopUpForDeletingAd(Ad ad)
 	{
+		reasonForDeleting = "";
 		selectedAd = ad;
 		try
 		{
