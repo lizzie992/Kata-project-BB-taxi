@@ -23,8 +23,8 @@ namespace BB
 
         public static int MAX_NUMBER_OF_WARNINGS = 3;
 
-        public const string SECURITY_KEYWORD = "WirSindBaierbrunn";
 
+        
 
         public static char SELECT_REGISTER = 'R';
         public static char SELECT_LOGIN = 'L';

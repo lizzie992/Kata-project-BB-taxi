@@ -66,6 +66,12 @@
 					<InputText type="password" @bind-Value="Input.ConfirmPassword" class="input" autocomplete="new-password" aria-required="true" placeholder=@localizer["Password"] />
 					<ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
 				</div>
+				@if (Input.Keyword != "" && Input.Keyword != passw)
+				{
+				<div class="input-block">
+						<p style="color: red">Das Schlüsselwort ist falsch. Bitte kontaktieren Sie jemanden, um das richtige Sicherheits-Schlüsselwort zu erhalten!</p>
+				</div>
+				}
 				<div class="input-block">
 					<label for="Keyword">@localizer["Keyword"]</label>
 					<InputText @bind-Value="Input.Keyword" class="input" autocomplete="Keyword" aria-required="true" placeholder=@localizer["Keyword"] />
@@ -100,7 +106,7 @@
 					<label for="Contact">@localizer["Contact"] (@localizer["Not_mandatory_field"])</label>
 					<InputText @bind-Value="Input.Contact" class="input" autocomplete="contact" aria-required="true" placeholder=@localizer["Contact"] />
 				</div>
-				<button type="submit" class="div-block button" style="margin-top:20px">@localizer["Register"]</button>   
+				<button type="submit" class="div-block button" style="margin-top:20px">@localizer["Register"]</button>
 			</div>
 
 			@* <div class="div-block" style="margin: 20px">
@@ -245,38 +251,45 @@
 		user.isActive = true;
 		user.isDeleted = false;
 
-
-		var result = await UserManager.CreateAsync(user, Input.Password);
-
-
-		if (!result.Succeeded)
+		if (Input.Keyword == passw)
 		{
-			identityErrors = result.Errors;
-			return;
+			var result = await UserManager.CreateAsync(user, Input.Password);
+
+			if (!result.Succeeded)
+			{
+				identityErrors = result.Errors;
+				return;
+			}
+
+			Logger.LogInformation("User created a new account with password.");
+
+			var userId = await UserManager.GetUserIdAsync(user);
+			var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+			code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+			var callbackUrl = NavigationManager.GetUriWithQueryParameters(
+				NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
+				new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
+
+			await UserManager.AddToRoleAsync(user, "Regular");
+
+			await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
+
+			if (UserManager.Options.SignIn.RequireConfirmedAccount)
+			{
+				RedirectManager.RedirectTo(
+					"Account/RegisterConfirmation",
+					new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
+			}
+
+			await SignInManager.SignInAsync(user, isPersistent: false);
+			RedirectManager.RedirectTo(ReturnUrl);
+		}
+		else
+		{
+			StateHasChanged();
 		}
 
-		Logger.LogInformation("User created a new account with password.");
 
-		var userId = await UserManager.GetUserIdAsync(user);
-		var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-		code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-		var callbackUrl = NavigationManager.GetUriWithQueryParameters(
-			NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
-			new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
-
-		await UserManager.AddToRoleAsync(user, "Regular");
-
-		await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
-
-		if (UserManager.Options.SignIn.RequireConfirmedAccount)
-		{
-			RedirectManager.RedirectTo(
-				"Account/RegisterConfirmation",
-				new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
-		}
-
-		await SignInManager.SignInAsync(user, isPersistent: false);
-		RedirectManager.RedirectTo(ReturnUrl);
 
 	}
 
@@ -307,6 +320,11 @@
 
 	int distanceLimit = Constants.DISTANCE_LIMIT_FOR_NOTIFICATIONS / 1000;
 
+
+	public string passw = Environment.GetEnvironmentVariable("SecurityPassword");
+
+
+
 	private sealed class InputModel
 	{
 		[Required]
@@ -325,9 +343,10 @@
 		[Compare("Password", ErrorMessage = "Das Passwort und das Bestätigungspasswort stimmen nicht überein.")]
 		public string ConfirmPassword { get; set; } = "";
 
+
 		[Required]
 		[Display(Name = "Security keyword")]
-		[AllowedValues(BB.Constants.SECURITY_KEYWORD, ErrorMessage = "Das Schlüsselwort ist falsch. Bitte kontaktieren Sie jemanden, um das richtige Sicherheits-Schlüsselwort zu erhalten!")]
+		// [AllowedValues(passw, ErrorMessage = "Das Schlüsselwort ist falsch. Bitte kontaktieren Sie jemanden, um das richtige Sicherheits-Schlüsselwort zu erhalten!")]
 		public string Keyword { get; set; } = "";
 
 		[Required]
