@@ -808,9 +808,12 @@ namespace BaxiWebApp.Data
                 using var context = _dbcFactory.CreateDbContext();
                 context.Attach(ad);
                 var C = context.Conversations.Where(C => C.AdID == ad.ID);
-                foreach (Conversation convo in C)
+                if (C.Count() > 0)
                 {
-                    convo.AdID = null;
+                    foreach (Conversation convo in C)
+                    {
+                        convo.AdID = null;
+                    }
                 }
                 context.Ads.Remove(ad);
                 context.SaveChanges();
