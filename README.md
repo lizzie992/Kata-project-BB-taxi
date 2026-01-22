@@ -14,6 +14,8 @@
 - **Safety is guaranteed with password-protected registration and reporting options where admins can take action in case of any issues (with deleting ads and warning or banning users)**
 - **Supports all cultures with language selection options**
 
+## Introduction Video in English
+[![Watch Baxi Demo](https://img.youtube.com/vi/1QEUl1pSrtI/maxresdefault.jpg)](https://www.youtube.com/watch?v=1QEUl1pSrtI)
 
   
 ### Key Technical Info and Features
