@@ -17,7 +17,12 @@
 ## Introduction Video in English
 [![Watch Baxi Demo](https://img.youtube.com/vi/1QEUl1pSrtI/maxresdefault.jpg)](https://www.youtube.com/watch?v=1QEUl1pSrtI)
 
-  
+## Introduction Video in German
+[![Watch Baxi Demo](https://img.youtube.com/vi/5GR0aDssb9s/maxresdefault.jpg)](https://www.youtube.com/watch?v=5GR0aDssb9s)
+
+## Introduction Video in Hungarian
+[![Watch Baxi Demo](https://img.youtube.com/vi/4YBxYwHhnbE/maxresdefault.jpg)](https://www.youtube.com/watch?v=4YBxYwHhnbE)
+
 ### Key Technical Info and Features
 
 - **C#/.NET**
