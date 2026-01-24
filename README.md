@@ -54,6 +54,7 @@
 **Developer**: Katalin Gulyás  
 **Email**: gulyaskata99@gmail.com  
 **GitHub**: [@lizzie992](https://github.com/lizzie992)
+**Linkedin**: ([https://github.com/lizzie992](https://www.linkedin.com/in/katalin-gulyas/))
 
 ### Acknowledgements
 Grateful for Florian and all members of Rakete Mentoring for their endless support
