@@ -583,10 +583,136 @@ namespace BaxiWebApp.Data
                 if (ad.AdFrequency == AdFrequency.Recurring)
                 {
 
+                    //for one-time ads
+                    foreach (var v in oneTimeResults)
+                    {
+                        DayOfWeek day = v.PickUpDateAndTime.DayOfWeek;
+                        if (ad.PickUpDay.Contains(day))
+                        {
+                            if (day == DayOfWeek.Monday)
+                            {
+                                int timeDifference = Math.Abs((int)Math.Round((v.PickUpDateAndTime - ad.PickUpTimeMonday).TotalHours));
+                                if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                                {
+                                    if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                    {
+                                        result.Append(v);
+                                    }
+                                }
+                            }
+                            if (day == DayOfWeek.Tuesday)
+                            {
+                                int timeDifference = Math.Abs((int)Math.Round((v.PickUpDateAndTime - ad.PickUpTimeTuesday).TotalHours));
+                                if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                                {
+                                    if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                    {
+                                        result.Append(v);
+                                    }
+                                }
+                            }
+                            if (day == DayOfWeek.Wednesday)
+                            {
+                                int timeDifference = Math.Abs((int)Math.Round((v.PickUpDateAndTime - ad.PickUpTimeWednesday).TotalHours));
+                                if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                                {
+                                    if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                    {
+                                        result.Append(v);
+                                    }
+                                }
+                            }
+                            if (day == DayOfWeek.Thursday)
+                            {
+                                int timeDifference = Math.Abs((int)Math.Round((v.PickUpDateAndTime - ad.PickUpTimeThursday).TotalHours));
+                                if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                                {
+                                    if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                    {
+                                        result.Append(v);
+                                    }
+                                }
+                            }
+                            if (day == DayOfWeek.Friday)
+                            {
+                                int timeDifference = Math.Abs((int)Math.Round((v.PickUpDateAndTime - ad.PickUpTimeFriday).TotalHours));
+                                if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                                {
+                                    if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                    {
+                                        result.Append(v);
+                                    }
+                                }
+                            }
+                        }
+                    }
 
 
 
 
+                    //for recurring ads:
+                    foreach (var v in recurringResults)
+                    {
+                        if (ad.PickUpDay.Contains(DayOfWeek.Monday) && v.PickUpDay.Contains(DayOfWeek.Monday))
+                        {
+                            int timeDifference = Math.Abs((int)Math.Round((ad.PickUpTimeMonday - v.PickUpTimeMonday).TotalHours));
+                            if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                            {
+                                if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                {
+                                    result.Append(v);
+                                }
+                            }
+
+                        }
+                        if (ad.PickUpDay.Contains(DayOfWeek.Tuesday) && v.PickUpDay.Contains(DayOfWeek.Tuesday))
+                        {
+                            int timeDifference = Math.Abs((int)Math.Round((ad.PickUpTimeTuesday - v.PickUpTimeTuesday).TotalHours));
+                            if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                            {
+                                if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                {
+                                    result.Append(v);
+                                }
+                            }
+
+                        }
+                        if (ad.PickUpDay.Contains(DayOfWeek.Wednesday) && v.PickUpDay.Contains(DayOfWeek.Wednesday))
+                        {
+                            int timeDifference = Math.Abs((int)Math.Round((ad.PickUpTimeWednesday - v.PickUpTimeWednesday).TotalHours));
+                            if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                            {
+                                if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                {
+                                    result.Append(v);
+                                }
+                            }
+
+                        }
+                        if (ad.PickUpDay.Contains(DayOfWeek.Thursday) && v.PickUpDay.Contains(DayOfWeek.Thursday))
+                        {
+                            int timeDifference = Math.Abs((int)Math.Round((ad.PickUpTimeThursday - v.PickUpTimeThursday).TotalHours));
+                            if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                            {
+                                if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                {
+                                    result.Append(v);
+                                }
+                            }
+
+                        }
+                        if (ad.PickUpDay.Contains(DayOfWeek.Friday) && v.PickUpDay.Contains(DayOfWeek.Friday))
+                        {
+                            int timeDifference = Math.Abs((int)Math.Round((ad.PickUpTimeFriday - v.PickUpTimeFriday).TotalHours));
+                            if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                            {
+                                if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                {
+                                    result.Append(v);
+                                }
+                            }
+                        }
+                    }
                 }
 
 
