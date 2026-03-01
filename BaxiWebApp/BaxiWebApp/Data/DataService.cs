@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Primitives;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -482,56 +483,145 @@ namespace BaxiWebApp.Data
         /// <returns>List of ads</returns>
         public async Task<List<Ad>> collectRecommendedAds(Ad? ad, User? currentlyLoggedInUser)
         {
-            using var context = _dbcFactory.CreateDbContext();
+            var result = new List<Ad>().AsEnumerable();
+            if (ad is not null)
+            {
+                using var context = _dbcFactory.CreateDbContext();
 
-            List<Ad> adList = new List<Ad>();
-            var result = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
-            result = result.Where(oldAd => oldAd.PickUpDateAndTime >= DateTime.Now && oldAd.AdOwner.Id != currentlyLoggedInUser.Id);
+                var oneTimeResults = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
+                oneTimeResults = oneTimeResults.Where(oldAd => oldAd.AdFrequency == AdFrequency.OneTime);
+                oneTimeResults = oneTimeResults.Where(oldAd => oldAd.PickUpDateAndTime >= DateTime.Now && oldAd.AdOwner.Id != currentlyLoggedInUser.Id);
 
-            //TO Baierbrunn, passenger looking for drivers
-            if (ad?.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Passenger)
-            {
-                result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= ad.NumberOfSeats);
-            }
-            //TO Baierbrunn, driver looking for passengers
-            if (ad?.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Driver)
-            {
-                result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= ad.NumberOfSeats);
-            }
-            //FROM Baierbrunn, passenger looking for drivers
-            if (ad?.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Passenger)
-            {
-                result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= ad.NumberOfSeats);
-            }
-            //FROM Baierbrunn, driver looking for passengers
-            if (ad?.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Driver)
-            {
-                result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats <= ad.NumberOfSeats);
-            }
+                var recurringResults = context.Ads.Include(u => u.AdOwner).ToList<Ad>().AsEnumerable();
+                recurringResults = recurringResults.Where(oldAd => oldAd.AdFrequency == AdFrequency.Recurring && oldAd.AdOwner.Id != currentlyLoggedInUser.Id);
 
-            foreach (var v in result)
-            {
-                if (v == ad)
+
+                //when the selected ad is a one-time ad:
+                if (ad.AdFrequency == AdFrequency.OneTime)
                 {
-                    continue;
-                }
-                if (ad is not null)
-                {
-                    int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpDateAndTime).TotalHours));
-                    if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                    //for one-time ads:
+                    foreach (var v in oneTimeResults)
                     {
-                        if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                        int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpDateAndTime).TotalHours));
+                        if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
                         {
-                            adList.Add(v);
+                            if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                            {
+                                result.Append(v);
+                            }
                         }
                     }
+
+                    //for recurring ads:
+                    foreach (var v in recurringResults)
+                    {
+                        DayOfWeek day = ad.PickUpDateAndTime.DayOfWeek;
+                        if (v.PickUpDay.Contains(day))
+                        {
+                            if (day == DayOfWeek.Monday)
+                            {
+                                int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpTimeMonday).TotalHours));
+                                if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                                {
+                                    if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                    {
+                                        result.Append(v);
+                                    }
+                                }
+                            }
+                            if (day == DayOfWeek.Tuesday)
+                            {
+                                int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpTimeTuesday).TotalHours));
+                                if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                                {
+                                    if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                    {
+                                        result.Append(v);
+                                    }
+                                }
+                            }
+                            if (day == DayOfWeek.Wednesday)
+                            {
+                                int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpTimeWednesday).TotalHours));
+                                if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                                {
+                                    if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                    {
+                                        result.Append(v);
+                                    }
+                                }
+                            }
+                            if (day == DayOfWeek.Thursday)
+                            {
+                                int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpTimeThursday).TotalHours));
+                                if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                                {
+                                    if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                    {
+                                        result.Append(v);
+                                    }
+                                }
+                            }
+                            if (day == DayOfWeek.Friday)
+                            {
+                                int timeDifference = Math.Abs((int)Math.Round((ad.PickUpDateAndTime - v.PickUpTimeFriday).TotalHours));
+                                if (timeDifference <= Constants.TIME_LIMIT_FOR_MATCHING_ROUTE)
+                                {
+                                    if (await CheckMatchingRoutes(ad.Latitude, ad.Longitude, v.Latitude, v.Longitude))
+                                    {
+                                        result.Append(v);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+
+                //when the selected ad is a recurring ad:
+                if (ad.AdFrequency == AdFrequency.Recurring)
+                {
+
+
+
+
+
+                }
+
+
+
+                //then check directions, driver/passengers and number of seats:
+
+                //TO Baierbrunn, passenger looking for drivers
+                if (ad?.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Passenger)
+                {
+                    result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= ad.NumberOfSeats);
+                }
+                //TO Baierbrunn, driver looking for passengers
+                if (ad?.AdDirection == AdDirection.ToBaierbrunn && ad.AdType == AdType.Driver)
+                {
+                    result = result.Where(oldAd => oldAd.AdDirection == AdDirection.ToBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats >= ad.NumberOfSeats);
+                }
+                //FROM Baierbrunn, passenger looking for drivers
+                if (ad?.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Passenger)
+                {
+                    result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Driver && oldAd.NumberOfSeats >= ad.NumberOfSeats);
+                }
+                //FROM Baierbrunn, driver looking for passengers
+                if (ad?.AdDirection == AdDirection.FromBaierbrunn && ad.AdType == AdType.Driver)
+                {
+                    result = result.Where(oldAd => oldAd.AdDirection == AdDirection.FromBaierbrunn && oldAd.AdType == AdType.Passenger && oldAd.NumberOfSeats >= ad.NumberOfSeats);
                 }
 
             }
-            return adList;
 
+            return result.ToList<Ad>();
 
         }
+
+
+
 
 
         /// <summary>
