@@ -71,7 +71,6 @@ As a user-friendly application, Baxi offers:
 
 - Move the ride-matching calculation to a background job for larger ad volumes, rather than computing it on request
 - Add automated tests around the matching logic, which is currently the most complex part of the app and the easiest to regress
-- Replace the current email notification setup with a queued/retryable delivery system
 
 ## Screenshots
 
